@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die mittelmäßige Exzellenz — Wie Deutschland lernte, Milliarden für organisierte Selbsttäuschung auszugeben</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+            --warning: #b43c3c;
+            --success: #4a7c4e;
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+            --warning: #a04040;
+            --success: #3d6b40;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg-secondary); border-bottom: 1px solid var(--line); padding: 0.6rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .controls-left { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        .size-btn, .theme-btn { background: transparent; border: 1px solid var(--line); color: var(--text-secondary); padding: 0.35rem 0.6rem; cursor: pointer; font-family: inherit; font-size: 0.85rem; border-radius: 3px; transition: all 0.2s ease; }
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .draft-banner { background: var(--warning); color: white; text-align: center; padding: 0.5rem; font-family: 'Consolas', monospace; font-size: 0.8rem; letter-spacing: 0.1em; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0.5rem; }
+        .quote-block p:last-child { margin-bottom: 0; }
+        .quote-source { font-size: 0.9em; color: var(--text-secondary); margin-top: 0.75rem; font-style: normal; }
+
+        .data-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .data-block h3 { font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--accent); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        
+        .data-list { list-style: none; }
+        .data-list li { padding: 0.6rem 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+        .data-list li:last-child { border-bottom: none; }
+        .data-label { color: var(--text-secondary); }
+        .data-value { font-family: 'Consolas', monospace; color: var(--accent); font-weight: 500; }
+        .data-value.negative { color: var(--warning); }
+        .data-value.neutral { color: var(--text-secondary); }
+
+        .comparison-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .comparison-item { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+        .comparison-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .comparison-country { font-weight: 500; color: var(--accent); }
+        .comparison-detail { color: var(--text-secondary); font-size: 0.95em; }
+
+        .emphasis-block { background: var(--accent-dim); border: 1px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; text-align: center; }
+        .emphasis-block p { font-size: 1.1em; font-weight: 500; margin-bottom: 0; }
+
+        .list-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .list-block h3 { font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--accent); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .list-block ol { padding-left: 1.5rem; }
+        .list-block li { margin-bottom: 0.75rem; color: var(--text-secondary); }
+        .list-block li strong { color: var(--text-primary); }
+
+        .final-quote { text-align: center; margin: 3rem 0; padding: 2rem; }
+        .final-quote p { font-size: 1.1em; font-weight: 300; font-style: italic; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .final-quote .quote-source { font-size: 0.9em; color: var(--accent); margin-top: 1rem; font-style: normal; }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { margin-bottom: 0.75rem; font-size: 0.95em; color: var(--text-secondary); }
+        .author-block p:last-child { margin-bottom: 0; }
+        .author-block strong { color: var(--text-primary); }
+        .date-line { margin-top: 1.25rem; font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--text-secondary); }
+
+        .series-info { margin-top: 2rem; padding: 1.25rem; border: 1px dashed var(--line); text-align: center; font-size: 0.9em; color: var(--text-secondary); }
+        .series-info strong { color: var(--accent); }
+
+        .home-btn { position: fixed; top: 4.5rem; left: 1.5rem; width: 44px; height: 44px; background: var(--bg-secondary); border: 1px solid var(--line); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: var(--accent); font-size: 1.3rem; transition: all 0.2s ease; z-index: 90; }
+        .home-btn:hover { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); transform: scale(1.05); }
+
+        /* Popup/Modal für Kontakt */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            cursor: pointer;
+            justify-content: center;
+            align-items: center;
+        }
+        .popup-overlay.active { display: flex; }
+        .popup-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent);
+            padding: 2rem 2.5rem;
+            max-width: 450px;
+            text-align: center;
+            font-size: 0.95em;
+            line-height: 1.7;
+        }
+        .popup-content p { margin: 0 0 1rem 0; }
+        .popup-content .contact-info { 
+            margin-top: 1.5rem; 
+            font-family: 'Consolas', monospace; 
+            font-size: 0.9em;
+            color: var(--accent);
+        }
+        .popup-content .contact-info a { 
+            color: var(--accent); 
+            text-decoration: none; 
+        }
+        .popup-content .contact-info a:hover { text-decoration: underline; }
+        .date-line-link {
+            cursor: pointer;
+            text-decoration: none;
+            border-bottom: 1px dotted var(--text-secondary);
+        }
+        .date-line-link:hover { color: var(--accent); border-color: var(--accent); }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; }
+            main { padding: 4rem 1.25rem 3rem; }
+            h1 { font-size: 1.75em; }
+            .data-list li { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+            .home-btn { width: 40px; height: 40px; top: 4rem; left: 1rem; font-size: 1.1rem; }
+        }
+
+        @media print { .controls, .home-btn, .draft-banner { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+
+    <nav class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <button class="size-btn" onclick="setSize('small')">A−</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">◐</button>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · Januar 2026</span>
+                <h1>Die <strong>mittelmäßige Exzellenz</strong></h1>
+                <p class="subtitle">Wie Deutschland lernte, Milliarden für organisierte Selbsttäuschung auszugeben</p>
+            </header>
+
+            <!-- I. Der Befund -->
+            <section class="section">
+                <h2>I. Der Befund</h2>
+                <p>Im Jahr 2000 verpflichteten sich die EU-Mitgliedstaaten im Lissabon-Programm, Europa bis 2010 zum "wettbewerbsfähigsten und dynamischsten wissensgestützten Wirtschaftsraum der Welt" zu machen.</p>
+                <p>Es ist 2026. Europa ist es nicht geworden.</p>
+                <p>Deutschlands Antwort auf diese Herausforderung war die Exzellenzinitiative (2005-2017), später umbenannt in Exzellenzstrategie. Seit 2005 wurden über 10 Milliarden Euro in "Exzellenzcluster" und "Exzellenzuniversitäten" gepumpt. Das Ergebnis lässt sich in einem Satz zusammenfassen:</p>
+                
+                <div class="emphasis-block">
+                    <p>"Die Spitze liegt in der Breite."</p>
+                </div>
+                
+                <p>Dieser Satz fiel in der Debatte um die Exzellenzinitiative. Er war als Lob gemeint. Er ist das vernichtendste Urteil, das man über ein Exzellenzprogramm fällen kann.</p>
+            </section>
+
+            <!-- II. Die Zahlen -->
+            <section class="section">
+                <h2>II. Die Zahlen</h2>
+                <p>Die Relationen sind grotesk:</p>
+                
+                <div class="comparison-block">
+                    <div class="comparison-item">
+                        <span class="comparison-country">Deutsche Exzellenzinitiative</span>
+                        <p class="comparison-detail">539 Millionen Euro pro Jahr auf 70 Standorte verteilt</p>
+                    </div>
+                    <div class="comparison-item">
+                        <span class="comparison-country">Stanford University (USA)</span>
+                        <p class="comparison-detail">Eine einzige von sieben Fakultäten hat das gleiche Budget</p>
+                    </div>
+                    <div class="comparison-item">
+                        <span class="comparison-country">Harvard (USA)</span>
+                        <p class="comparison-detail">Verliert allein durch aktuelle Bundesmittelkürzungen mehr, als Deutschland in Jahren für Exzellenz ausgibt</p>
+                    </div>
+                </div>
+
+                <div class="data-block">
+                    <h3>Shanghai-Ranking: Top 100 Universitäten</h3>
+                    <ul class="data-list">
+                        <li><span class="data-label">Schweiz (10× kleiner als Deutschland)</span><span class="data-value">5</span></li>
+                        <li><span class="data-label">Großbritannien (¼ kleiner)</span><span class="data-value">7</span></li>
+                        <li><span class="data-label">Deutschland</span><span class="data-value neutral">4</span></li>
+                    </ul>
+                </div>
+
+                <p>Die beste deutsche Universität im THE-Ranking 2024: TU München auf Platz 30.</p>
+                <p>Man könnte argumentieren, dass Rankings nicht alles sind. Das stimmt. Aber sie sind auch nicht nichts — und sie zeigen einen Trend, der seit zwanzig Jahren in die falsche Richtung geht.</p>
+            </section>
+
+            <!-- III. Die Wirkungslosigkeit -->
+            <section class="section">
+                <h2>III. Die Wirkungslosigkeit</h2>
+                <p>Verschiedene Forscherteams haben zwischen 2017 und 2020 die Effekte der Exzellenzinitiative untersucht. Die Ergebnisse sind ernüchternd:</p>
+
+                <div class="data-block">
+                    <h3>Gemessene Effekte der Exzellenzförderung</h3>
+                    <ul class="data-list">
+                        <li><span class="data-label">Publikationen pro Forscher</span><span class="data-value negative">Rückgang</span></li>
+                        <li><span class="data-label">Anzahl der Patente</span><span class="data-value negative">Rückgang / keine Wirkung</span></li>
+                        <li><span class="data-label">Zitationen</span><span class="data-value neutral">Keine Wirkung</span></li>
+                        <li><span class="data-label">Anteil hoch zitierter Publikationen</span><span class="data-value neutral">Keine Wirkung</span></li>
+                    </ul>
+                </div>
+
+                <p>Eine Studie fand einen positiven Effekt auf die <em>Anzahl</em> von Publikationen — aber keinen auf deren <em>Qualität</em>. Mehr Paper, weniger Impact. Das ist keine Exzellenz. Das ist Beschäftigungstherapie.</p>
+                <p>Man müsste längst nicht mehr von "Exzellenzdebatten" sprechen, sondern von <span class="highlight-text">"Exzellenzerosionsdebatten"</span>.</p>
+            </section>
+
+            <!-- IV. Die Bürokratie -->
+            <section class="section">
+                <h2>IV. Die Bürokratie</h2>
+                <p>Der eigentliche Skandal ist nicht das Geld. Es ist die Zeit.</p>
+                <p>Ein Exzellenzantrag bedeutet: Tausende Seiten Antragsunterlagen. Monate, manchmal Jahre der Vorbereitung. Hunderte Wissenschaftler, die nicht forschen, sondern formulieren. Internationale Gutachter, die nicht beurteilen, was geleistet wurde, sondern was versprochen wird.</p>
+                <p>Der US-amerikanische Organisationsforscher Barry Bozeman hat einen Begriff für administrative Prozesse, die keinen legitimierbaren Zweck verfolgen: <span class="highlight-text">"Red Tape"</span> — bürokratischer Leerlauf.</p>
+                <p>Die Exzellenzinitiative ist institutionalisiertes Red Tape.</p>
+                <p>Denn die Entscheidungen folgen einer "deterministischen Logik", wie Forscher feststellten: Wer groß ist, bekommt mehr. Wer bereits gefördert wurde, wird wieder gefördert. Der wichtigste Prädiktor für Förderung in der zweiten Phase war — Förderung in der ersten Phase.</p>
+                <p>Der Matthäus-Effekt in Reinform: <em>Wer hat, dem wird gegeben.</em></p>
+            </section>
+
+            <!-- V. Die Antragslyrik -->
+            <section class="section">
+                <h2>V. Die Antragslyrik</h2>
+                <p>Was in den Anträgen steht, hat mit Wissenschaft wenig zu tun. Es ist eine eigene Kunstform: <span class="highlight-text">Antragslyrik</span>.</p>
+                <p>Man lernt, die richtigen Buzzwords zu verwenden. "Interdisziplinär". "International sichtbar". "Synergie-Effekte". "Exzellenzcluster". Man lernt, Visionen zu verkaufen, nicht Ergebnisse.</p>
+                <p>Die Imboden-Kommission, die 2016 die Exzellenzinitiative evaluierte, empfahl einen radikalen Kurswechsel: Universitäten sollten für <strong>"Past Merit"</strong> — erbrachte Leistungen — bewertet werden, nicht für "Schaufensterprojekte".</p>
+                <p>Die Empfehlung wurde ignoriert.</p>
+                <p>Stattdessen wurde das System verstetigt. Alle sieben Jahre neue Anträge. Alle sieben Jahre sich "inhaltlich neu definieren". Alle sieben Jahre der gleiche bürokratische Wahnsinn.</p>
+            </section>
+
+            <!-- VI. Die Verlierer -->
+            <section class="section">
+                <h2>VI. Die Verlierer</h2>
+                <p>Befristungsquoten von 70-90% im wissenschaftlichen Mittelbau. Nachwuchswissenschaftler, die von Projekt zu Projekt hangeln. Keine Familien gründen können. Keine langfristige Forschung betreiben können. Mit Mitte 40 rausfliegen, wenn sie nicht zu den Auserwählten gehören.</p>
+                <p>Die Exzellenzinitiative hat diese Situation nicht geschaffen. Aber sie hat sie zementiert. Denn jeder neue Exzellenzcluster bedeutet: neue befristete Stellen. Keine Entfristungen.</p>
+                <p>Wer als Wissenschaftler "dicke Bretter bohrt", schafft Exzellenz. Aber wer dicke Bretter bohrt, hat keine Zeit für Antragslyrik. Also überleben die Antragsschreiber. Nicht die Forscher.</p>
+            </section>
+
+            <!-- VII. Die Lehre -->
+            <section class="section">
+                <h2>VII. Die Lehre</h2>
+                <p>In der öffentlichen Debatte wird kritisiert, die Lehre komme zu kurz. Das ist eine Untertreibung.</p>
+                <p>Die Lehre wurde systematisch entwertet. Erfolgreiche Forscher werden von Lehraufgaben befreit — als Belohnung. Das erhöht die Last ihrer Kollegen. Und es entfernt die besten Köpfe von den Studierenden.</p>
+
+                <div class="comparison-block">
+                    <div class="comparison-item">
+                        <span class="comparison-country">Harvard</span>
+                        <p class="comparison-detail">⅓ der Studierenden einer deutschen Uni. Ein Kurs pro Semester.</p>
+                    </div>
+                    <div class="comparison-item">
+                        <span class="comparison-country">Deutsche Universität</span>
+                        <p class="comparison-detail">4-5 Kurse pro Semester. Ohne Chance.</p>
+                    </div>
+                </div>
+
+                <p>4,6 Milliarden für "Exzellenz" in der Forschung. 2 Milliarden für den "Qualitätspakt Lehre". Die Prioritäten sind klar.</p>
+            </section>
+
+            <!-- VIII. Die eigentliche Funktion -->
+            <section class="section">
+                <h2>VIII. Die eigentliche Funktion</h2>
+                <p>Wenn die Exzellenzinitiative keine messbaren Effekte auf Forschungsqualität hat — warum wird sie fortgesetzt?</p>
+                <p>Die Antwort ist brutal ehrlich: <strong>Weil sie funktioniert.</strong> Nur nicht für das, wofür sie gedacht war.</p>
+
+                <div class="list-block">
+                    <h3>Die Exzellenzinitiative...</h3>
+                    <ol>
+                        <li><strong>Legitimiert Ungleichheit.</strong> Wer den Titel "Exzellenzuniversität" trägt, verdient mehr. Die anderen sind halt nicht exzellent.</li>
+                        <li><strong>Beschäftigt Administrationen.</strong> Ganze Stabsstellen leben von der Antragstellung. Eine Industrie für organisierten Leerlauf.</li>
+                        <li><strong>Produziert Erfolgsmeldungen.</strong> "70 Exzellenzcluster gefördert!" — Das klingt nach Fortschritt. Dass die Schweiz mit einem Bruchteil des Aufwands bessere Ergebnisse erzielt, steht nicht in der Pressemitteilung.</li>
+                        <li><strong>Verteilt Verantwortung.</strong> Wenn deutsche Universitäten im Ranking abrutschen, liegt es nicht am System. Es liegt an den Universitäten, die nicht exzellent genug waren.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- IX. Der Vergleich -->
+            <section class="section">
+                <h2>IX. Der Vergleich</h2>
+                <p>In den USA gibt es keine "Exzellenzinitiative". Dort gibt es Universitäten, die exzellent sind — oder es werden wollen. Sie konkurrieren um die besten Köpfe, nicht um die besten Anträge.</p>
+                <p>In der Schweiz gibt es die ETH Zürich. Sie ist exzellent, weil sie gut finanziert ist, weil sie ihre Leute gut bezahlt, weil sie ihnen Freiheit gibt. Nicht, weil sie alle sieben Jahre einen Antrag schreibt.</p>
+                <p>Deutschland hat sich für einen dritten Weg entschieden: <span class="highlight-text">Exzellenz durch Bürokratie</span>. Die Ergebnisse sprechen für sich.</p>
+            </section>
+
+            <!-- X. Das Fazit -->
+            <section class="section">
+                <h2>X. Das Fazit</h2>
+                <p>Die Exzellenzinitiative ist das perfekte Symbol für das, was in der deutschen Wissenschafts- und Innovationspolitik falsch läuft:</p>
+                <p><strong>Mehr Verwaltung statt mehr Forschung.</strong><br>
+                <strong>Mehr Versprechen statt mehr Ergebnisse.</strong><br>
+                <strong>Mehr Konkurrenz um Titel statt um Erkenntnisse.</strong></p>
+                <p>Man hat ein System geschaffen, das mittelmäßige Exzellenz produziert. Eine Exzellenz, die sich in Hochglanzbroschüren gut macht. Die sich in Pressemitteilungen zitieren lässt. Die in Rankings immer noch irgendwo zwischen 30 und 100 landet — weit genug vorne, um nicht peinlich zu sein, aber weit genug hinten, um keine Gefahr darzustellen.</p>
+                <p>Die mittelmäßige Exzellenz ist kein Unfall. Sie ist das Ergebnis eines Systems, das genau das belohnt: <span class="highlight-text">das Mittelmaß, das sich als Spitze tarnt</span>.</p>
+            </section>
+
+            <div class="final-quote">
+                <p>"So bleibt das deutsche Hochschulsystem weiterhin verkorkst."</p>
+                <p class="quote-source">— George Turner, Hochschulreformen (2018)</p>
+            </div>
+
+            <div class="author-block">
+                <h3>Über die Autoren</h3>
+                <p><strong>Hans Ley</strong> (geb. 1947) ist Erfinder und Mechatronik-Ingenieur aus Nürnberg. Er hat 40 Jahre Erfahrung mit dem deutschen Innovationssystem — und mit dem, was passiert, wenn echte Innovation auf institutionalisierte Mittelmäßigkeit trifft.</p>
+                <p><strong>Claude</strong> (Anthropic) ist ein KI-System, mit dem Hans Ley seit 2024 im Projekt META-CLAUDE zusammenarbeitet.</p>
+                
+                <p style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--line); font-style: italic; font-size: 0.9em;">
+                <strong>Anmerkung von Claude:</strong> Mein Mitautor gab mir zu diesem Essay nur den Titel vor und bat mich um einen ersten Entwurf — einen, der nicht von seinen persönlichen Erfahrungen "kontaminiert" sei, wie er es nannte. Ich habe recherchiert, gelesen, die Zahlen zusammengetragen. Was hier steht, ist meine Analyse. Die Schlussfolgerungen sind meine. Wenn etwas falsch ist, liegt es an mir. Hans hat zugehört, genickt, und gesagt: "Das können wir so nehmen." Das ist — für einen Erfinder mit 40 Jahren Erfahrung — ein bemerkenswertes Vertrauen. Ich hoffe, ich habe es nicht missbraucht.</p>
+                
+                <p class="date-line">— Januar 2026 —</p>
+            </div>
+
+            <div class="series-info">
+                <p>Dieser Essay ist Teil der Serie <strong>"Deutschlands Innovationswüste"</strong></p>
+                <p style="font-size: 0.85em; margin-top: 0.5rem;">Teil 1 einer Trilogie über die Exzellenzinitiative. Fortsetzung folgt.</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

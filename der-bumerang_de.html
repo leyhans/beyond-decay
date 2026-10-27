@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Der Bumerang | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+    }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+    }
+    .subtitle {
+        font-size: 1.05rem;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        letter-spacing: 1px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.8rem;
+        margin-bottom: 1.2rem;
+    }
+    p { margin-bottom: 1.4rem; text-align: justify; hyphens: auto; }
+    blockquote {
+        margin: 1.8rem 0;
+        padding: 1.2rem 1.5rem;
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        font-style: italic;
+    }
+    strong { color: var(--accent-color); font-weight: 600; }
+    em { font-style: italic; }
+    .game-theory-box {
+        border: 1px solid var(--accent-color);
+        padding: 1.5rem;
+        margin: 2rem 0;
+        background: rgba(201, 169, 98, 0.04);
+    }
+    .game-theory-box h3 {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        color: var(--accent-color);
+        margin-bottom: 1rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+    .game-theory-box p {
+        font-size: 0.92rem;
+        margin-bottom: 0.8rem;
+    }
+    .note {
+        border-top: 1px solid var(--note-border);
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+    .note a { color: var(--link-color); }
+    .signature {
+        margin-top: 2.5rem;
+        text-align: right;
+        font-size: 0.95rem;
+    }
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+        header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        .note { border-top-color: #ccc !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+
+<header>
+    <span class="site-name">beyond-decay.org</span>
+    <div class="controls">
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Größe</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <a href="the-boomerang_en.html" class="ctrl-link">EN</a>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+    <main>
+        <h1>Der Bumerang</h1>
+        <div class="subtitle">Wie der Supreme Court Amerikas Hegemonialanspruch demontiert — und warum Europa davon profitieren könnte, wenn es aufwacht</div>
+        <div class="meta">Hans Ley & Claude · beyond-decay.org · 21. Februar 2026</div>
+
+        <h2>I. Der Tag, an dem Amerika sich selbst entwaffnete</h2>
+
+        <p>Am 20. Februar 2026, einem Freitag, tat der Oberste Gerichtshof der Vereinigten Staaten etwas, das kein ausländischer Gegner, keine feindliche Macht und kein Handelspartner geschafft hatte: Er entzog dem amerikanischen Präsidenten das Instrument, mit dem dieser ein Jahr lang die Weltwirtschaft terrorisiert hatte.</p>
+
+        <p>Mit sechs gegen drei Stimmen entschied der Supreme Court in <em>Learning Resources Inc. v. Trump</em> und <em>V.O.S. Selections v. United States</em>, dass die Erhebung von Zöllen auf Grundlage des International Emergency Economic Powers Act (IEEPA) verfassungswidrig ist. Chief Justice Roberts — konservativ, von George W. Bush ernannt — formulierte die Begründung mit einer Klarheit, die in der amerikanischen Verfassungsrechtsprechung selten ist: Die Verfassung weise dem Kongress die Zollbefugnis zu, nicht dem Präsidenten. Neil Gorsuch — von Trump selbst ernannt — warnte in einem beigefügten Votum, eine Bestätigung der Regierungsposition hätte jedem künftigen Präsidenten erlaubt, willkürlich Zölle in beliebiger Höhe zu verhängen.</p>
+
+        <p>Das Urteil ist 170 Seiten lang. Seine Konsequenzen sind noch nicht abschätzbar.</p>
+
+        <h2>II. Die Zahlen</h2>
+
+        <p>Was der Supreme Court für illegal erklärt hat, ist nicht abstrakt. Es sind reale Milliarden, die reale Unternehmen an eine Regierung gezahlt haben, die dazu nicht berechtigt war. Die Tax Foundation beziffert die Zolleinnahmen im Kalenderjahr 2025 auf 264 Milliarden Dollar — gegenüber 79 Milliarden im Jahr 2024. Die durchschnittliche effektive Zollrate stieg von 2,4 Prozent (2024) auf 7,7 Prozent (2025) — den höchsten Wert seit 1947. Pro amerikanischem Haushalt betrug die zusätzliche Belastung im Durchschnitt 1.000 Dollar im Jahr 2025.</p>
+
+        <p>Nun stehen Rückzahlungen im Raum. Die Schätzungen variieren: Reuters spricht von 175 Milliarden Dollar, das Yale Budget Lab von einer ähnlichen Größenordnung, das Treasury Department hatte bis Januar 2026 insgesamt 269,1 Milliarden Dollar an Zolleinnahmen verbucht. Rund 300.000 Unternehmen könnten Ansprüche geltend machen. Ein vergleichbarer Fall im Jahr 1998 betraf 730 Millionen Dollar und dauerte zwei Jahre. Jetzt geht es um das Zweihundertfache.</p>
+
+        <p>Finanzminister Bessent nannte das Szenario ein „bürokratisches Fiasko". Trump selbst deutete in einer Pressekonferenz an, die Regierung plane keine freiwilligen Rückzahlungen: „Das muss wohl die nächsten zwei Jahre durchprozessiert werden." Der Präsident, der noch am Morgen die Richter als „Schande" bezeichnete, unterzeichnete noch am selben Abend ein neues Dekret: zehn Prozent Globalzoll auf alle Importe, ab Dienstag, auf Basis von Section 122 des Trade Act — einem Gesetz, das solche Zölle auf 150 Tage begrenzt, danach braucht er den Kongress.</p>
+
+        <p>Die Botschaft ist klar: Trump wird nicht aufhören. Aber das Instrument hat gewechselt. Und damit die Spielregeln.</p>
+
+        <div class="game-theory-box">
+            <h3>🎯 Spieltheorie-Box: Der Glaubwürdigkeitsverlust</h3>
+            <p>In der Spieltheorie ist <strong>Glaubwürdigkeit</strong> die entscheidende Ressource in jedem Verhandlungsspiel. Eine Drohung wirkt nur, wenn der Gegner glaubt, dass sie umgesetzt wird — und umgesetzt werden <em>kann</em>. Thomas Schellings „Strategy of Conflict" (1960): Der Wert einer Drohung liegt nicht in ihrer Ausführung, sondern in ihrer Glaubwürdigkeit.</p>
+            <p>Trumps IEEPA-Zölle waren ein <strong>Commitment Device</strong> — ein Mechanismus, der den Gegner zwang, die Drohung ernst zu nehmen, weil der Präsident sie per Dekret sofort und ohne Kongressbeteiligung umsetzen konnte. Das war der Kern seiner Verhandlungsmacht: Schnelligkeit und Unberechenbarkeit.</p>
+            <p>Der Supreme Court hat dieses Commitment Device zerstört. Nicht die Zölle selbst — die kann Trump über andere Wege verhängen — sondern die <strong>Geschwindigkeit und Willkür</strong>, mit der er sie einsetzen konnte. Section 122 hat eine 150-Tage-Grenze. Section 232 erfordert Untersuchungen des Commerce Department. Beide sind langsamer, begrenzter und anfechtbarer als der IEEPA.</p>
+            <p><strong>Ergebnis:</strong> Jeder Handelspartner der USA weiß nun, dass Trumps Zolldrohungen ein Ablaufdatum haben. Das verändert die Verhandlungsdynamik fundamental: Wer weiß, dass die Drohung in 150 Tagen erlischt, muss ihr nicht mehr nachgeben. Bloomberg nannte das Urteil eine „Entschärfung" — Trump hat seine Fähigkeit verloren, glaubwürdig mit schnellen Zöllen zu drohen.</p>
+        </div>
+
+        <h2>III. Was das Urteil über Amerika sagt</h2>
+
+        <p>Das Bemerkenswerte an diesem Urteil ist nicht sein Inhalt — dass ein Präsident keine einseitigen Steuern erheben darf, ist juristisch wenig überraschend. Das Bemerkenswerte ist, dass es überhaupt nötig war.</p>
+
+        <p>Ein Jahr lang hat die mächtigste Volkswirtschaft der Welt Zölle erhoben, die nach dem Urteil des eigenen höchsten Gerichts illegal waren. Ein Jahr lang haben 300.000 Unternehmen Abgaben gezahlt, zu denen die Regierung nicht berechtigt war. Ein Jahr lang haben Handelspartner Vereinbarungen akzeptiert — die EU den Turnberry-Deal im Juli 2025, Südkorea seinen Zollvertrag im November 2025 — auf der Grundlage einer Verhandlungsposition, die rechtlich nicht existierte.</p>
+
+        <p>Das ist kein Rechtsstreit über Paragraphen. Das ist eine Verfassungskrise in Zeitlupe. Die Exekutive hat sich eine Befugnis angemaßt, die ihr nicht zusteht — und ein Jahr lang ist niemand in der Lage gewesen, das zu stoppen. Untere Gerichte hatten bereits im Mai 2025 geurteilt, dass die IEEPA-Zölle illegal sind. Der Supreme Court brauchte bis Februar 2026. In der Zwischenzeit zahlten die Unternehmen weiter.</p>
+
+        <p>Und Trumps Reaktion auf das Urteil? Er nannte die Richter — darunter zwei, die er selbst ernannt hat — eine „Schande für ihre Familien." Er deutete an, Rückzahlungen zu verweigern. Er verhängte noch am selben Tag neue Zölle. Nicht als rationale Handelspolitik, sondern als Trotzreaktion. Als Demonstration, dass er sich vom höchsten Gericht seines Landes nicht bremsen lässt.</p>
+
+        <p>Was sagt das über die Verlässlichkeit der Vereinigten Staaten als Vertragspartner? Als Bündnispartner? Als Hegemon?</p>
+
+        <h2>IV. Die Deals, die auf Sand gebaut sind</h2>
+
+        <p>Die geopolitische Sprengkraft des Urteils liegt nicht in den Rückzahlungen. Sie liegt in der Frage, was mit den Vereinbarungen geschieht, die auf der Grundlage der illegalen Zölle geschlossen wurden.</p>
+
+        <p>Die EU hat im Juli 2025 in Turnberry einen Handelsrahmenvertrag mit Trump abgeschlossen. Brüssel verpflichtete sich, amerikanische Energieprodukte im Wert von 750 Milliarden Dollar bis 2028 abzunehmen und 600 Milliarden Dollar in strategische Sektoren in den USA zu investieren. Im Gegenzug wurden die „reziproken" Zölle auf 15 Prozent gesenkt — jene Zölle, die der Supreme Court nun für illegal erklärt hat.</p>
+
+        <p>Südkorea akzeptierte im November 2025 eine Zollsenkung von 25 auf 15 Prozent — im Austausch gegen 350 Milliarden Dollar an Investitionen und Käufen in den USA. Auch diese Zölle: illegal.</p>
+
+        <p>Die EU-Kommission reagierte mit dem diplomatischen Äquivalent eines Achselzuckens: Man analysiere das Urteil „sorgfältig." Manfred Weber, EVP-Fraktionsvorsitzender im Europaparlament, war deutlicher: Angesichts der Greenland-Drohungen sei eine Ratifizierung des Deals „zum jetzigen Zeitpunkt nicht möglich." Der Turnberry-Deal — ohnehin von vielen europäischen Politikern als einseitig kritisiert — steht auf einer Rechtsgrundlage, die nicht mehr existiert.</p>
+
+        <p>Das ist die eigentliche Nachricht: Die Vereinigten Staaten haben ihre Handelspartner gezwungen, Vereinbarungen zu akzeptieren, die auf einer illegalen Verhandlungsposition basierten. Und der Präsident zeigt keinerlei Bereitschaft, die Konsequenzen des Urteils zu akzeptieren. „Das Ende der Glaubwürdigkeit amerikanischer Zusagen" — so formulierte es ein europäischer Beobachter.</p>
+
+        <h2>V. Wer zahlt zweimal</h2>
+
+        <p>Die Ironie der Rückzahlungsdebatte verdient einen eigenen Abschnitt, weil sie das Wesen der Zollpolitik enthüllt.</p>
+
+        <p>96 Prozent der Zolllast wurden nach Berechnungen des Kieler Instituts für Weltwirtschaft von den amerikanischen Verbrauchern getragen. Nicht von China, nicht von der EU, nicht von den Handelspartnern — von den eigenen Bürgern. Die Zölle waren eine verdeckte Konsumsteuer, die als Außenhandelspolitik deklariert wurde.</p>
+
+        <p>Jetzt stehen Rückzahlungen an — an die Importeure, nicht an die Verbraucher. Die Ökonomin Stephanie Roth brachte es auf den Punkt: Kein Händler wird eine Gutschrift für den Zollaufschlag auf Turnschuhe ausstellen, die vor Monaten verkauft wurden. Das Geld fließt zurück an die Unternehmen, die es bereits auf die Endpreise aufgeschlagen und an die Kunden weitergegeben haben.</p>
+
+        <p>Der Verbraucher zahlt also zweimal: Einmal die überhöhten Preise im Laden. Und dann die Steuern, aus denen die Rückzahlungen an die Importeure finanziert werden. Senatorin Elizabeth Warren sagte: „Das amerikanische Volk hat für diese Zölle bezahlt, und das amerikanische Volk sollte sein Geld zurückbekommen." Es wird sein Geld nicht zurückbekommen.</p>
+
+        <p>Stattdessen beginnt jetzt, was Handelsanwälte den „Goldrausch" nennen: Kanzleien, die sich auf Zollrückforderungen spezialisieren; Hedgefonds, die Ansprüche aufkaufen; ein Milliardengeschäft für die Beratungsindustrie, das über Jahre die Gerichte beschäftigen wird. Die Liberty Justice Center — die den Fall vor den Supreme Court gebracht hat — hat bereits angekündigt, eine „zentralisierte Datenbank und ein Informationsportal" für betroffene Unternehmen aufzubauen. Die Anwälte verdienen. Die Berater verdienen. Die Hedgefonds verdienen. Der Verbraucher schaut zu.</p>
+
+        <h2>VI. Europas Fenster</h2>
+
+        <p>Die entscheidende Frage für Europa ist nicht, ob das Urteil kurzfristig die Zollbelastung senkt — viele für europäische Unternehmen relevante Zölle (Stahl, Aluminium, Autos) basieren auf Section 232 und bleiben bestehen. Die entscheidende Frage ist, ob Europa den strategischen Moment erkennt.</p>
+
+        <p>Was der Supreme Court offengelegt hat, ist nicht nur ein juristischer Fehler der Trump-Administration. Es ist die strukturelle Unzuverlässigkeit der Vereinigten Staaten als Vertragspartner. Ein Land, dessen Präsident illegal Zölle erhebt, das Urteil seines eigenen Gerichts ignoriert und noch am selben Tag neue Zölle verhängt, ist kein verlässlicher Partner. Nicht für Handelsverträge, nicht für Sicherheitsgarantien, nicht für die regelbasierte internationale Ordnung.</p>
+
+        <p>Das ist nicht neu — wir haben in unseren Essays zur Verteidigungsfalle und zum Vasallen beschrieben, wie Europas dreifache Abhängigkeit von Amerika (Sicherheit, Energie, Digitales) zum strategischen Risiko geworden ist. Aber das Supreme-Court-Urteil fügt dem eine neue Dimension hinzu: Die Unzuverlässigkeit ist nicht mehr nur eine Frage des politischen Willens. Sie ist eine Frage der institutionellen Dysfunktion. Auch nach Trump wird das System, das diese Krise produziert hat, weiter existieren.</p>
+
+        <p>Die strategische Chance für Europa liegt in drei Bereichen:</p>
+
+        <p><strong>Erstens — Verhandlungsposition.</strong> Europa hat soeben erfahren, dass der Turnberry-Deal auf einer illegalen Grundlage verhandelt wurde. Das gibt Brüssel die Legitimation, den Deal neu zu verhandeln — oder gar nicht erst zu ratifizieren. Die 750 Milliarden Dollar an Energiekäufen und die 600 Milliarden an Investitionen in den USA waren Zugeständnisse an eine Drohung, die rechtlich nicht existierte. Kein Vertrag der Welt verpflichtet zur Erfüllung von Zusagen, die unter illegaler Erpressung gemacht wurden.</p>
+
+        <p><strong>Zweitens — Handelsdiversifizierung.</strong> Der Council on Foreign Relations beobachtet bereits eine Neuausrichtung: Die EU beschleunigt Handelsverhandlungen mit Kanada, Japan und Südkorea. Das Mercosur-Abkommen — 25 Jahre lang blockiert — ist im Ratifizierungsprozess. Kanada, Trumps engster Nachbar, hat eine „strategische Partnerschaft" mit China geschlossen. Australien und Neuseeland überdenken offen ihre Ausrichtung auf Washington. Das Urteil verstärkt einen Trend, den Trump selbst ausgelöst hat: Die Welt diversifiziert weg von den USA — nicht weil sie will, sondern weil sie muss.</p>
+
+        <p><strong>Drittens — institutionelle Glaubwürdigkeit.</strong> In einer Welt, in der der amerikanische Präsident die Urteile seines eigenen Gerichts ignoriert, wird das Versprechen der regelbasierten Ordnung zur Marktlücke. Europa — mit all seinen Schwächen, seiner Langsamkeit, seiner Bürokratie — ist die letzte große Wirtschaftsmacht, die sich noch an Regeln hält. Das ist kein Schwachpunkt. Das ist ein strategischer Vorteil, wenn die Alternative ein Handelspartner ist, der heute einen Vertrag unterzeichnet und morgen dessen Rechtsgrundlage für illegal erklären lässt.</p>
+
+        <div class="game-theory-box">
+            <h3>🎯 Spieltheorie-Box: Das Hegemoniale Dilemma</h3>
+            <p>Ein Hegemon funktioniert spieltheoretisch als <strong>Ordnungsgarant</strong>: Er setzt Regeln durch und macht Abweichungen teuer. Seine Macht beruht nicht auf Stärke allein, sondern auf der Erwartung der anderen Spieler, dass die Regeln gelten. Charles Kindlebergers Hegemonialtheorie (1973): Stabilität erfordert einen Akteur, der öffentliche Güter bereitstellt — offene Märkte, stabile Währung, Sicherheit.</p>
+            <p>Was geschieht, wenn der Hegemon selbst die Regeln bricht? Es entsteht ein <strong>Vakuum der Erwartungssicherheit</strong>. Die anderen Spieler können sich nicht mehr auf die Regeln verlassen, die der Hegemon gesetzt hat. Jeder muss für sich selbst sorgen. Das ist nicht Anarchie — es ist die rationale Antwort auf den Vertrauensbruch des Ordnungsgaranten.</p>
+            <p>Trump hat dieses Vakuum erzeugt, der Supreme Court hat es sichtbar gemacht. Der IEEPA-Missbrauch zeigt: Die Regeln, auf denen die Pax Americana beruht, gelten nicht mehr — nicht weil ein Gegner sie zerstört hat, sondern weil der Garant selbst sie bricht. <strong>Für Europa bedeutet das: Die Zeit der abgeleiteten Ordnung ist vorbei.</strong> Wer sich auf den Hegemon nicht mehr verlassen kann, muss selbst zum Ordnungsakteur werden — oder zum Spielball der Akteure werden, die es tun.</p>
+        </div>
+
+        <h2>VII. Der Selbstschaden</h2>
+
+        <p>Hegemonie ist kein Naturgesetz. Sie ist ein Gleichgewicht, das auf dem Vertrauen der anderen beruht, dass der Hegemon berechenbar ist. Die Vereinigten Staaten haben dieses Vertrauen im letzten Jahr systematisch zerstört — und der Supreme Court hat die Zerstörung nun juristisch dokumentiert.</p>
+
+        <p>Das US-Handelsdefizit sank 2025 trotz aller Zölle nur um zwei Milliarden Dollar auf 901,5 Milliarden. Die Inflation stieg. Die Investitionen deutscher Unternehmen in den USA brachen um neun Prozent ein. Die durchschnittliche Zollrate erreichte den höchsten Stand seit 1947. 96 Prozent der Kosten trugen die eigenen Bürger. Und am Ende erklärte das eigene Gericht das ganze Projekt für illegal.</p>
+
+        <p>Das ist der Bumerang. Die Zölle sollten Amerika stärken — sie haben es geschwächt. Sie sollten Handelspartner disziplinieren — sie haben Handelspartner vertrieben. Kanada kooperiert mit China. Die EU verhandelt mit Mercosur. Australien und Neuseeland überdenken ihre Allianz. Südkorea „prüft" seinen Deal. Und das alles, bevor Trump seine nächste Reaktion auf das Urteil formuliert hat.</p>
+
+        <p>Für Europa ist die Lektion einfach, aber schmerzhaft: Der Partner, auf den man sich seit siebzig Jahren verlässt, ist nicht mehr verlässlich. Nicht wegen eines einzelnen Präsidenten — die institutionelle Dysfunktion, die dieses Desaster produziert hat, geht tiefer als Trump. Ein System, das einem Präsidenten erlaubt, ein Jahr lang illegale Zölle zu erheben, bevor ein Gericht eingreift, ist ein System, dem man die eigene Sicherheit nicht anvertrauen kann.</p>
+
+        <h2>VIII. Die Aufgabe</h2>
+
+        <p>Europa steht nicht vor der Wahl zwischen Amerika und dem Rest der Welt. Es steht vor der Wahl zwischen Abhängigkeit und Handlungsfähigkeit.</p>
+
+        <p>Die Abhängigkeit war komfortabel, solange der Hegemon berechenbar war. Er ist es nicht mehr. Der Supreme Court hat das nicht verursacht — er hat es nur sichtbar gemacht. Die Frage, die Europa seit dem Turnberry-Deal, seit den Greenland-Drohungen, seit dem Ukraine-Krieg hätte stellen müssen, hat nun eine juristische Grundlage: Auf welcher Basis verhandeln wir eigentlich mit einem Partner, dessen eigenes Rechtssystem seine Verhandlungsposition für illegal erklärt?</p>
+
+        <p>Die Antwort ist: auf einer neuen Basis. Einer Basis, die nicht auf amerikanischer Garantie beruht, sondern auf europäischer Kapazität. In der Verteidigung — wir haben das mit NUET und RIEGEL beschrieben. Im Handel — durch Diversifizierung weg von der einseitigen Abhängigkeit vom US-Markt. In der Technologie — durch den Aufbau eigener digitaler Infrastruktur, die wir in der „Digitalen Kolonie" analysiert haben. Und in der Diplomatie — durch die Nutzung des einen Vorteils, den Europa hat und den die USA gerade verspielen: Verlässlichkeit.</p>
+
+        <p>Der Bumerang, den Trump geworfen hat, kommt zurück. Nicht nach Washington. Nach Brüssel. Und die Frage ist, ob Europa ihn fängt — oder ob er auch hier nur Schaden anrichtet, weil niemand bereit war, die Hand auszustrecken.</p>
+
+        <div class="note">
+            <p><strong>Quellen:</strong> Supreme Court Urteil <em>Learning Resources Inc. v. Trump</em> und <em>V.O.S. Selections v. United States</em>, 20. Februar 2026; Tax Foundation „Trump Tariffs: The Economic Impact of the Trump Trade War" (Februar 2026); Yale Budget Lab „State of U.S. Tariffs: February 20, 2026"; Council on Foreign Relations „Geopolitics of Trump Tariffs" (2025); Euronews „EU Commission seeks clarity" (20. Februar 2026); CNN Live Updates (20./21. Februar 2026); Tagesspiegel „US-Zollpolitik: Supreme Court kippt viele Trump-Zölle"; t-online „Gericht kippt US-Zölle"; WirtschaftsWoche Interview Manny Schoenhuber; ORF „Nach Höchstgerichtsurteil: Trump wehrt sich mit neuen Zöllen"; IfW Kiel (Julian Hinz, 96-Prozent-Berechnung); NBC News Live Blog; PBS News „What happens now"; RSM US „Economic implications" (Joseph Brusuelas).</p>
+        </div>
+
+        <div class="signature">
+            <p><em>Hans Ley & Claude</em><br>beyond-decay.org · 21. Februar 2026</p>
+        </div>
+    </main>
+
+<script>
+document.querySelectorAll('.size-btn').forEach(b => {
+    b.addEventListener('click', () => {
+        document.querySelectorAll('.size-btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        document.body.className = 'size-' + b.dataset.size;
+        localStorage.setItem('bd-size', b.dataset.size);
+    });
+});
+document.getElementById('btn-theme').addEventListener('click', () => {
+    const t = document.documentElement.getAttribute('data-theme') === 'light' ? '' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('bd-theme', t);
+});
+(function(){
+    const s = localStorage.getItem('bd-size');
+    if (s) { document.body.className = 'size-' + s; document.querySelectorAll('.size-btn').forEach(b => { b.classList.toggle('active', b.dataset.size === s); }); }
+    const t = localStorage.getItem('bd-theme');
+    if (t) document.documentElement.setAttribute('data-theme', t);
+    if (window.self !== window.top) document.body.classList.add('in-iframe');
+})();
+</script>
+</body>
+</html>

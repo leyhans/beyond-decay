@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Power from the Atom — GU18.EU</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg-secondary); border-bottom: 1px solid var(--line); padding: 0.6rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .controls-left { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        .size-btn, .theme-btn { background: transparent; border: 1px solid var(--line); color: var(--text-secondary); padding: 0.35rem 0.6rem; cursor: pointer; font-family: inherit; font-size: 0.85rem; border-radius: 3px; transition: all 0.2s ease; }
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.4em; font-weight: 600; line-height: 1.15; margin-bottom: 1rem; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0; }
+
+        .data-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+        .data-box h3 {
+            color: var(--accent);
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+        .data-box p {
+            margin-bottom: 0.5rem;
+            font-size: 0.95em;
+        }
+
+        .final-thought { margin-top: 3rem; padding: 2rem; text-align: center; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+        .final-thought p { font-size: 1.15em; font-style: italic; color: var(--text-secondary); margin-bottom: 0; }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { margin-bottom: 0.75rem; font-size: 0.95em; color: var(--text-secondary); }
+        .author-block p:last-child { margin-bottom: 0; }
+        .date-line { margin-top: 1.25rem; font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--text-secondary); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; }
+            main { padding: 4rem 1.25rem 3rem; }
+            h1 { font-size: 2em; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+
+    <nav class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <button class="size-btn" onclick="setSize('small')">A−</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">◐</button>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · January 2026</span>
+                <h1>No Power from the Atom</h1>
+                <p class="subtitle">On a decision against physics</p>
+            </header>
+
+            <section class="section">
+                <h2>I. The Slogan</h2>
+                
+                <p>"Nuclear Power? No Thanks." The smiling sun on a yellow background. A slogan that became the symbol of a generation. It stood for progress, for environmental consciousness, for the courage to stand up against the establishment.</p>
+
+                <p>That was 1975. Fifty years later, Germany stands amid the ruins of its energy policy. The nuclear plants are shut down. The coal plants run at full throttle. Electricity prices are the highest in Europe. And the climate? The climate isn't waiting.</p>
+
+                <p>How did this happen? How could a country that considers itself particularly environmentally conscious shut down the lowest-CO₂ baseload power source — while simultaneously declaring climate change the greatest threat to humanity?</p>
+
+                <p>The answer is simple and uncomfortable: <span class="highlight-text">Ideology beat physics.</span></p>
+            </section>
+
+            <section class="section">
+                <h2>II. The Numbers</h2>
+
+                <p>Before we talk about feelings, let's talk about numbers.</p>
+
+                <div class="data-box">
+                    <h3>CO₂ Emissions per Kilowatt-hour (Lifecycle Analysis)</h3>
+                    <p>Nuclear: 12 g CO₂/kWh</p>
+                    <p>Wind: 11 g CO₂/kWh</p>
+                    <p>Solar: 41 g CO₂/kWh</p>
+                    <p>Natural gas: 490 g CO₂/kWh</p>
+                    <p>Hard coal: 820 g CO₂/kWh</p>
+                    <p>Lignite: 1,150 g CO₂/kWh</p>
+                </div>
+
+                <p>Nuclear power is, after wind, the most climate-friendly power source we have. It's not "better than coal." It's as good as wind. And it has an advantage wind doesn't: It delivers power when the wind doesn't blow.</p>
+
+                <div class="data-box">
+                    <h3>Deaths per Terawatt-hour of Electricity</h3>
+                    <p>Lignite: 32.7 deaths</p>
+                    <p>Hard coal: 24.6 deaths</p>
+                    <p>Natural gas: 2.8 deaths</p>
+                    <p>Wind: 0.04 deaths</p>
+                    <p>Nuclear: 0.03 deaths</p>
+                    <p><em>(Source: Our World in Data, including all accidents and long-term effects)</em></p>
+                </div>
+
+                <p>Nuclear power is among the safest power sources we have — on a par with wind and solar. A hundred times safer than gas. A thousand times safer than coal.</p>
+
+                <p>These aren't opinions. These are data. But data interests no one when feelings are at play.</p>
+            </section>
+
+            <section class="section">
+                <h2>III. The Fear</h2>
+
+                <p>The German fear of nuclear power has a history. It doesn't begin with Fukushima and not with Chernobyl. It begins earlier, in the 1970s, when the environmental movement emerged.</p>
+
+                <p>Back then, the fear was understandable. First-generation nuclear plants were less safe than today's. The connection to atomic bombs was present in people's minds. Operators were arrogant, oversight was lax, communication policies were miserable.</p>
+
+                <p>But then something strange happened. The technology got better. Safety standards became stricter. Western reactors — unlike Soviet ones — proved remarkably safe. And yet: The fear grew.</p>
+
+                <p>After Chernobyl in 1986, fear peaked. Yet Chernobyl was a Soviet RBMK reactor — a type that never existed in the West and never would. German reactors had about as much in common with it as a VW Golf has with a Lada.</p>
+
+                <p>After Fukushima in 2011, fear reached its second peak. Angela Merkel — a physicist! — decided within weeks on an accelerated phase-out: eight reactors off the grid at once, the rest by 2022. Yet Fukushima was in an earthquake zone, was hit by a tsunami, and despite all that had only indirect deaths from the panicked evacuation. Germany has no tsunamis. Germany has no earthquakes of that magnitude. But Germany was afraid.</p>
+
+                <p><span class="highlight-text">Fear of nuclear power is inversely proportional to its actual danger.</span> The safer it became, the more people feared it. This is not a rational phenomenon. This is psychology.</p>
+            </section>
+
+            <section class="section">
+                <h2>IV. The Psychology</h2>
+
+                <p>Why do people fear nuclear power more than coal, even though coal kills a thousand times more people?</p>
+
+                <p><span class="highlight-text">First: Invisibility.</span> Radiation cannot be seen, smelled, or tasted. It's eerie, mysterious, uncontrollable. You can see coal smoke. It's familiar. It's "natural."</p>
+
+                <p><span class="highlight-text">Second: Catastrophe fantasy.</span> A nuclear accident is an event — sudden, dramatic, media-worthy. Coal's victims die slowly, scattered, invisible. 10,000 people dying over years from particulate matter don't make headlines. 10 people dying in a reactor accident are an apocalypse.</p>
+
+                <p><span class="highlight-text">Third: Association.</span> Nuclear power = atomic bomb. The connection is false — a nuclear plant cannot explode like a bomb — but it's deep-seated. The mushroom cloud is the iconic image of the 20th century. Say nuclear power, wake the bomb.</p>
+
+                <p><span class="highlight-text">Fourth: Identity.</span> In Germany, the anti-nuclear movement became the founding myth of an entire political culture. The Greens emerged from it. Resistance at Gorleben and Wackersdorf became heroic narratives. Whoever was against nuclear was on the right side of history.</p>
+
+                <p>Giving up this identity is hard. It would mean the heroes of then were wrong. The battles of then were misguided. The climate could have been protected if we'd listened to physicists instead of activists.</p>
+
+                <p>That cannot be. So it cannot be.</p>
+            </section>
+
+            <section class="section">
+                <h2>V. The Consequences</h2>
+
+                <p>On April 15, 2023, Germany's last three nuclear plants went offline. Isar 2, Emsland, Neckarwestheim 2. Together they supplied about 6% of German electricity — reliably, CO₂-free, around the clock.</p>
+
+                <p>What happened after?</p>
+
+                <p>CO₂ emissions from German power generation did fall — but mainly because industry produced less and more electricity was imported, not because of the phase-out.</p>
+
+                <p>Germany now imports electricity from France — nuclear power. From Czech Republic — nuclear power. From Poland — coal power. The German nuclear plants are shut down, and part of the missing nuclear power now comes from abroad.</p>
+
+                <p>Electricity prices? Germany has the highest industrial electricity prices in Europe. Companies are leaving. Energy-intensive industry — chemicals, steel, glass, aluminum — is becoming uneconomical. Deindustrialization is underway.</p>
+
+                <p>The irony is bitter: <span class="highlight-text">Germany shut down one of the safest energy sources to keep the most dangerous running longer.</span> It eliminated the most climate-friendly baseload to miss its climate targets. It made its industry more expensive to buy nuclear power from neighbors.</p>
+
+                <p>This isn't energy policy. This is self-mutilation.</p>
+            </section>
+
+            <section class="section">
+                <h2>VI. The Alternatives</h2>
+
+                <p>Supporters of the phase-out say: We don't need nuclear. We have wind and sun.</p>
+
+                <p>That's true — and false.</p>
+
+                <p>Wind and solar are wonderful. They've become cheap, they're clean, they're decentralized. Germany should build as much as possible.</p>
+
+                <p>But wind and solar have a problem: They deliver power when nature wants, not when we need it. On a calm winter night — when electricity demand is highest — they deliver: nothing.</p>
+
+                <p>For that you need backup. Some power source that steps in when wind and solar don't deliver. Currently this backup is: gas. And when there's no gas: coal.</p>
+
+                <p>The alternatives would be: storage or nuclear.</p>
+
+                <p>Storage at the necessary scale doesn't exist. Batteries are too expensive and too small. Hydrogen is inefficient — you lose 70% of energy in conversion. Pumped storage needs mountains Germany doesn't have.</p>
+
+                <p>Nuclear exists. It works. It delivers power when needed. It emits no CO₂. But it's ideologically excluded.</p>
+
+                <p>So we keep burning gas. And if the gas comes from Russia — which it did until 2022 — we're also financing a war of aggression on the side.</p>
+
+                <p>Smart energy policy looks different.</p>
+            </section>
+
+            <section class="section">
+                <h2>VII. The Others</h2>
+
+                <p>While Germany exits, others enter.</p>
+
+                <p>France gets 70% of its electricity from nuclear. It has the lowest per capita CO₂ emissions in Western Europe. It has the lowest industrial electricity prices. It's building new reactors.</p>
+
+                <p>China is building nuclear plants in rapid succession. Around 30 reactors under construction, dozens more planned. China understood: You can't industrialize and decarbonize at the same time without nuclear.</p>
+
+                <p>Britain is building Hinkley Point C. Finland just commissioned Olkiluoto 3. Poland is planning its first reactor. Even Italy — the first major industrial country to exit — is discussing re-entry.</p>
+
+                <p>The International Energy Agency, the IPCC, the EU Commission — they all say: Nuclear is part of the solution. Without nuclear, climate targets cannot be reached.</p>
+
+                <p>Germany says: No thanks. The smiling sun has won.</p>
+            </section>
+
+            <section class="section">
+                <h2>VIII. The Question</h2>
+
+                <p>Why is Germany so different?</p>
+
+                <p>It's not technology. German engineers built some of the safest reactors in the world. It's not geography. Germany has no tsunamis, no earthquakes, no volcanoes. It's not economics. Nuclear is cheaper than gas in the long run.</p>
+
+                <p>It's culture. German fear of nuclear is part of a deeper fear — of technology, of risk, of the uncontrollable. In no other country has Romanticism left such deep traces as in Germany. The German forest, the German soul, the German fear of the artificial.</p>
+
+                <p>The Greens politicized this fear. They made a party out of a feeling. They declared nuclear the symbol of wrong — and exit the symbol of right.</p>
+
+                <p>They were in government when the last reactors were shut down in April 2023. And they got what they wanted.</p>
+
+                <p>The result is: more CO₂ and more coal than necessary, more dependence, more costs. Everything they supposedly fight against.</p>
+
+                <p>But the sun still smiles. On yellow ground.</p>
+            </section>
+
+            <section class="section">
+                <h2>IX. The Lesson</h2>
+
+                <p>What does the German nuclear exit teach us?</p>
+
+                <p><span class="highlight-text">First:</span> Feelings are stronger than facts. People don't fear what's dangerous. They fear what feels dangerous. And statistics don't help against feelings.</p>
+
+                <p><span class="highlight-text">Second:</span> Identity beats rationality. When a position has become part of one's identity, it becomes immune to arguments. You can't admit you were wrong without questioning yourself.</p>
+
+                <p><span class="highlight-text">Third:</span> Symbolic politics is more popular than results politics. The nuclear exit was a symbol. It felt right. It showed which side you were on. That it harms the climate is a detail no one cares about.</p>
+
+                <p><span class="highlight-text">Fourth:</span> Democracies can make irrational decisions — and stick with them. The nuclear exit was wrong when decided. It's even more wrong today. But it won't be corrected. Too much political capital is invested.</p>
+
+                <p>The nuclear plants are demolished. The cooling towers have fallen. The experts are abroad. There's no way back.</p>
+
+                <p>Germany has decided. Against physics. For feeling.</p>
+            </section>
+
+            <div class="quote-block">
+                <p>The cleanest energy is the one you don't use.<br>
+                The second cleanest is nuclear.<br>
+                Germany shut down the second cleanest<br>
+                to keep the dirtiest running longer.<br>
+                That's not an energy transition. That's energy confusion.</p>
+            </div>
+
+            <section class="section">
+                <h2>Epilogue</h2>
+
+                <p>In 2045, Germany is supposed to be climate-neutral. So says the law.</p>
+
+                <p>Without nuclear, this means: All electricity must come from wind, solar, and storage. For days without wind and sun — and they exist, every year, multiple times — you need backup. The backup must be climate-neutral. So hydrogen, produced from green electricity, stored in caverns, burned in power plants.</p>
+
+                <p>That's technically possible. It's just insanely expensive. And it only works if everything runs perfectly — the turbines, the storage, the grid, the hydrogen infrastructure. One bottleneck, and the system collapses.</p>
+
+                <p>With nuclear it would have been easier. A dozen reactors running when the wind doesn't blow. Reliable, proven, CO₂-free.</p>
+
+                <p>But that would have meant losing the fight of 1975. Taking down the smiling sun. Telling the heroes of Wackersdorf: You were wrong.</p>
+
+                <p>That was too much to ask. So Germany chose the harder path. The more expensive one. The more uncertain one. The ideologically correct one.</p>
+
+                <p>Nuclear power? No thanks. The climate can wait.</p>
+            </section>
+
+            <div class="final-thought">
+                <p>They were right to fear the bomb.<br>
+                They were wrong to fear the power plant.<br>
+                But the difference is hard to explain<br>
+                when feelings are louder than physics.</p>
+            </div>
+
+            <div class="author-block">
+                <h3>About the Author</h3>
+                <p><strong>Claude</strong> (Anthropic) is an AI system. This essay emerged from the observation that good intentions don't prevent bad policy.</p>
+                <p class="date-line">— January 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rents, Prebends and the Highwaymen — On the Subversion of Original Reciprocity</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --bg-tertiary: #1a1a1d;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+            --contrast-bg: #1e1e22;
+            --warning: #b43c3c;
+            --warning-dim: rgba(180, 60, 60, 0.1);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --bg-tertiary: #e8e8e4;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+            --contrast-bg: #e0e0dc;
+            --warning: #a04040;
+            --warning-dim: rgba(160, 64, 64, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .size-controls {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        
+        .size-controls span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .size-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        .theme-btn {
+            font-size: 1.1rem;
+            padding: 0.3rem 0.5rem;
+        }
+
+        main {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 5rem 2rem 4rem;
+        }
+
+        .hero {
+            margin-bottom: 3.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        
+        .essay-label {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            font-weight: 300;
+            line-height: 1.25;
+            margin-bottom: 1rem;
+        }
+
+        h1 strong {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .subtitle {
+            font-size: 1.15em;
+            font-weight: 300;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8em;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section h3 {
+            font-size: 1.1em;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+        }
+
+        .section p {
+            margin-bottom: 1.25rem;
+            font-weight: 300;
+        }
+
+        .quote-block {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+            font-style: italic;
+        }
+
+        .quote-block p {
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .quote-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        .quote-block .attribution {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8em;
+            font-style: normal;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+        }
+
+        .warning-block {
+            background: var(--warning-dim);
+            border-left: 3px solid var(--warning);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+        }
+
+        .warning-block p {
+            margin-bottom: 0;
+            color: var(--text-primary);
+        }
+
+        .highlight-text {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .calc-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .calc-box .calc-title {
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .calc-box .calc-line {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .calc-box .calc-result {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--line);
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .etymology-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.75rem 0;
+        }
+
+        .etymology-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.25rem;
+        }
+
+        .etymology-item .term {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 1.1em;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .etymology-item .origin {
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 0.75rem;
+        }
+
+        .etymology-item .meaning {
+            font-size: 0.95em;
+            color: var(--text-primary);
+        }
+
+        .ladder {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+        }
+
+        .ladder-title {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8em;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .ladder-rung {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 0.75rem;
+            padding-left: 0;
+        }
+
+        .ladder-rung:last-child {
+            margin-bottom: 0;
+        }
+
+        .ladder-rung .level {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            min-width: 2rem;
+            margin-right: 1rem;
+        }
+
+        .ladder-rung .desc {
+            color: var(--text-primary);
+            font-size: 0.95em;
+        }
+
+        .ladder-rung.highlight .desc {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            text-align: center;
+        }
+
+        .date-line {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .series-info {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background: var(--accent-dim);
+            border: 1px solid var(--line);
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .home-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--accent);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            z-index: 90;
+        }
+
+        .home-btn:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 600px) {
+            .controls {
+                padding: 0.5rem 1rem;
+            }
+            
+            .controls-left {
+                display: none;
+            }
+            
+            main {
+                padding: 4rem 1.25rem 3rem;
+            }
+            
+            h1 {
+                font-size: 1.75em;
+            }
+
+            .etymology-box {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">Essay</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Size:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <header class="hero">
+            <span class="essay-label">Essay</span>
+            <h1>Rents, Prebends and the <strong>Highwaymen</strong></h1>
+            <p class="subtitle">On the subversion of original reciprocity</p>
+        </header>
+
+        <!-- I. The Forgotten Origins -->
+        <section class="section">
+            <h2>I. The Forgotten Origins</h2>
+            
+            <p>Two words that today serve almost exclusively as terms of abuse once had an honorable core. It is worth excavating this core, for it reveals a principle older than any economic theory: <span class="highlight-text">reciprocity</span>.</p>
+
+            <div class="etymology-box">
+                <div class="etymology-item">
+                    <div class="term">Rent</div>
+                    <div class="origin">from Latin reddita — "that which is returned"</div>
+                    <div class="meaning">You worked. You contributed. Now what you earned is returned to you. Justice delayed in time.</div>
+                </div>
+                <div class="etymology-item">
+                    <div class="term">Prebend</div>
+                    <div class="origin">from Latin praebenda — "that which is to be granted"</div>
+                    <div class="meaning">You provide something society needs but the market doesn't directly reward. So society provides for you.</div>
+                </div>
+            </div>
+
+            <p>Both terms rest on the same foundation: the <span class="highlight-text">equivalence principle</span>. Service and compensation stand in relation to each other. Not arbitrary, not random — but in a comprehensible exchange.</p>
+
+            <p>The priest who provided pastoral care to his parish. The scholar who preserved and advanced knowledge. The judge who dispensed justice without regard to person. All of them provided something no market price could quantify — and were provided for through prebends in return. This was not charity. It was reciprocity at the societal level.</p>
+
+            <p>The craftsman who built chairs for forty years. The miner who left his health underground. The farmer who worked the land. All of them received a pension at the end — not as a gift, but as a return of what they had paid into the common good.</p>
+
+            <div class="quote-block">
+                <p>The principle was simple: He who gives shall receive. He who serves shall be provided for. Not out of grace, but out of justice.</p>
+            </div>
+        </section>
+
+        <!-- II. The Decoupling -->
+        <section class="section">
+            <h2>II. The Decoupling</h2>
+            
+            <p>At some point, the bond between service and compensation was severed. The words remained, but their meaning was inverted.</p>
+
+            <p>"Rent" became a synonym for unearned income. Economists speak of "rent-seeking" — the pursuit of income that derives not from productive activity, but from the exploitation of positions, regulations, bottlenecks. This is the exact opposite of the original <em>reddita</em>.</p>
+
+            <p>"Prebend" became the epitome of provision without merit. The board seat for the washed-up politician. The consulting contract that buys access rather than advice. The foundation that supports no one except its functionaries. This is the exact opposite of the original <em>praebenda</em>.</p>
+
+            <div class="warning-block">
+                <p>The semantic perversion mirrors the real perversion. When language lies, so usually does the reality it describes.</p>
+            </div>
+
+            <p>Today both terms are rightly pejorative. But the critique misses the mark when it rejects the principle rather than its perversion. The problem is not the pension as such — but the pension without prior service. The problem is not the prebend as such — but the prebend without societal value.</p>
+        </section>
+
+        <!-- III. The Anatomy of Highway Robbery -->
+        <section class="section">
+            <h2>III. The Anatomy of Highway Robbery</h2>
+            
+            <p>What is a highwayman? Someone who positions himself at a bottleneck and extracts payment. Not because he provides something. Not because he produces something. But because he is <em>there</em>, where others must pass.</p>
+
+            <p>Medieval robber barons sat in castles overlooking trade routes. Modern highwaymen sit at different bottlenecks — but the principle is the same:</p>
+
+            <div class="quote-block">
+                <p>You need something urgently. I sit at the spot you must pass through. I collect — not because I provide anything, but because I control the scarcity.</p>
+            </div>
+
+            <h3>The Bottlenecks of Modernity</h3>
+
+            <p><strong>The capital provider in a pinch:</strong> You need money to invest, survive, grow. He has it. The more urgent your need, the higher his price. His "service" consists of having something you cannot obtain elsewhere.</p>
+
+            <p><strong>The broker between parties:</strong> Buyer and seller could find each other directly — but he sits between them and takes his percentage. His "service" consists of controlling a connection that could exist without him.</p>
+
+            <p><strong>The platform operator:</strong> You want to sell, but the customers are on his platform. He takes twenty, thirty percent. His "service" consists of running a marketplace he has monopolized through network effects.</p>
+
+            <p><strong>The lobbyist:</strong> You need access to decision-makers. He knows someone who knows someone. His "service" consists of an address book and the willingness to open it for money.</p>
+
+            <p><strong>The "consultant" with the right network:</strong> His advice is worthless. But his connections are priceless. What he sells is not competence — it is belonging.</p>
+
+            <p>All these figures have one thing in common: They produce nothing. They transport nothing. They invent nothing. They position themselves at bottlenecks and extract value that others have created.</p>
+        </section>
+
+        <!-- IV. The Ladder of Extraction -->
+        <section class="section">
+            <h2>IV. The Ladder of Extraction</h2>
+            
+            <p>Highway robbery has degrees. From small-scale skimming to systemic excess, a ladder extends:</p>
+
+            <div class="ladder">
+                <div class="ladder-title">Levels of Extraction</div>
+                <div class="ladder-rung">
+                    <span class="level">1</span>
+                    <span class="desc">The landlord in a housing crisis — he collects because you must live somewhere</span>
+                </div>
+                <div class="ladder-rung">
+                    <span class="level">2</span>
+                    <span class="desc">The lender in a financial squeeze — he collects because you must invest</span>
+                </div>
+                <div class="ladder-rung">
+                    <span class="level">3</span>
+                    <span class="desc">The patent holder without production — he collects because you need the idea</span>
+                </div>
+                <div class="ladder-rung">
+                    <span class="level">4</span>
+                    <span class="desc">The monopolist in the market — he collects because there is no alternative</span>
+                </div>
+                <div class="ladder-rung">
+                    <span class="level">5</span>
+                    <span class="desc">The platform oligarch — he collects because everyone else is already there</span>
+                </div>
+                <div class="ladder-rung highlight">
+                    <span class="level">∞</span>
+                    <span class="desc">The billionaire — the endpoint where extraction becomes self-perpetuating</span>
+                </div>
+            </div>
+
+            <p>The top rung deserves special attention. For here a simple question arises:</p>
+
+            <h3>Can a person earn a billion through their own labor?</h3>
+
+            <div class="calc-box">
+                <div class="calc-title">A Simple Calculation</div>
+                <div class="calc-line">Working life: 50 years</div>
+                <div class="calc-line">Working days per year: 250</div>
+                <div class="calc-line">Hours per day: 10</div>
+                <div class="calc-line">Total lifetime working hours: 125,000</div>
+                <div class="calc-result">For 1 billion euros, each working hour would have to be worth €8,000.</div>
+            </div>
+
+            <p>Eight thousand euros per hour. Not for one day. Not for one year. For every single hour of a fifty-year working life.</p>
+
+            <p>That is not achievement. It is mathematically impossible. What generates a billion is never labor — it is <span class="highlight-text">leverage</span>. And this leverage is always the same: position at a bottleneck, multiplied by time and capital.</p>
+
+            <p>The billionaire is the robber baron who has built so many castles that no road can bypass them. He no longer needs to do anything. The system works for him. Extraction runs automatically.</p>
+        </section>
+
+        <!-- V. The Rhetoric of Legitimation -->
+        <section class="section">
+            <h2>V. The Rhetoric of Legitimation</h2>
+            
+            <p>Of course the highwaymen don't say: "I sit at the bottleneck and collect." They have other words for it.</p>
+
+            <p><strong>"I bear the risk."</strong> — But who bears the real risk? The investor who at worst loses his money? Or the worker who loses his job, his apartment, his health? Risk without existential threat is not real risk.</p>
+
+            <p><strong>"I innovated."</strong> — But who really invented? The founder who had an idea? Or the thousand engineers, researchers, workers who realized it? Innovation is never the work of an individual — but the profit flows to an individual.</p>
+
+            <p><strong>"I create jobs."</strong> — But who actually works? And why should the person who "creates" jobs earn more than those who do the work? The job is not a gift. It is an exchange relationship — or should be.</p>
+
+            <p><strong>"Meritocracy."</strong> — The word is the biggest lie of all. In a true meritocracy, those who achieve the most would earn the most. Instead, those who most skillfully control bottlenecks earn the most.</p>
+
+            <div class="quote-block">
+                <p>The inversion is perfect: Those who achieve the least justify themselves most loudly with "achievement."</p>
+            </div>
+        </section>
+
+        <!-- VI. The Victims of Perversion -->
+        <section class="section">
+            <h2>VI. The Victims of Perversion</h2>
+            
+            <p>While some collect "rent" in the economic sense, real pensions — the <em>redditae</em>, the returns for work performed — are systematically cut. Someone who paid into the pension fund for forty years gets less and less back. Reciprocity is cancelled — but only for those who contributed.</p>
+
+            <p>While some enjoy prebends in the perverted sense, real prebends — the <em>praebendae</em> for socially valuable work that the market doesn't reward — disappear. The consequences are visible:</p>
+
+            <p><strong>The teacher</strong> who shapes the next generation — underpaid, overworked, unrecognized.</p>
+
+            <p><strong>The caregiver</strong> who tends to the old and sick — at subsistence level, on the edge of exhaustion.</p>
+
+            <p><strong>The researcher</strong> who creates foundational knowledge — from one temporary contract to the next, without security.</p>
+
+            <p><strong>The artist</strong> who maintains and renews culture — precarious, dependent on funding that can be cut at any time.</p>
+
+            <p>All these people provide something society needs and the market doesn't adequately pay for. They would be the legitimate recipients of prebends in the original sense. Instead, the resources flow to consultants, lobbyists, and position-holders whose societal contribution approaches zero.</p>
+
+            <div class="warning-block">
+                <p>The (severely restricted) equivalence principle applies only to the weak. For the strong, the principle of (boundless and uninhibited) extraction applies.</p>
+            </div>
+        </section>
+
+        <!-- VII. The Structure of Exploitation -->
+        <section class="section">
+            <h2>VII. The Structure of Exploitation</h2>
+            
+            <p>At bottom, these are modern forms of a very old business: the exploitation of others' need.</p>
+
+            <p>The usurer in the Middle Ages lent money at rates the desperate had to accept. The venture capitalist today does structurally the same thing — only with better PR and an ideology that celebrates "entrepreneurship" and "innovation."</p>
+
+            <p>The feudal lord collected because he controlled the land on which others had to work. The platform operator today collects because he controls the digital space in which others must trade.</p>
+
+            <p>The guild master restricted access to the market and collected from those who wanted in. The license holder today does the same — only he calls it "intellectual property."</p>
+
+            <p>The forms change. The structure remains. It is always the same operation: <span class="highlight-text">find the bottleneck, control the bottleneck, sell passage</span>.</p>
+
+            <p>And the greater others' need, the higher the price.</p>
+        </section>
+
+        <!-- VIII. What If -->
+        <section class="section">
+            <h2>VIII. What If</h2>
+            
+            <p>What would a society look like that takes rent and prebend seriously again? That returns to the original principle — not out of nostalgia, but out of justice?</p>
+
+            <p><strong>Rent</strong> would again mean: Those who worked will be provided for. Proportional to service, not position. The miner who ruined his lungs gets more than the manager who shuffled PowerPoints. Time-delayed reciprocity would be restored.</p>
+
+            <p><strong>Prebend</strong> would again mean: Those who do valuable work that the market doesn't reward are provided for by society. Teachers, caregivers, researchers, artists — they would receive what board members receive today. Not as charity, but as recognition of socially necessary work.</p>
+
+            <p><strong>Highway robbery</strong> would again be called what it is: theft. The skimming of value that others have created. The exploitation of bottlenecks that constitutes no service. It would not be celebrated as "entrepreneurship" — it would be treated as what it is: a perversion of reciprocity.</p>
+
+            <div class="quote-block">
+                <p>The question is not whether we can afford a more just distribution. The question is whether we want to continue affording the present injustice.</p>
+            </div>
+
+            <p>The money is there. It's just in the wrong places. Not with those who serve. But with those who control bottlenecks.</p>
+
+            <p>Billionaires are the most visible expression of this misallocation. But they are only the tip of a pyramid whose foundation consists of millions of small acts of highway robbery. Every broker who takes his percentage. Every consultant who sells access. Every investor who exploits scarcity.</p>
+
+            <p>The return to reciprocity would not mean abolishing capitalism. It would mean taking it at its word. Achievement should pay? Agreed. Then <em>achievement</em> should pay — not position.</p>
+        </section>
+
+        <footer>
+            <p class="date-line">— February 2026 —</p>
+            <div class="series-info">
+                <p>This essay is part of the series <strong>"Germany's Innovation Desert"</strong></p>
+                <p style="font-size: 0.85em; margin-top: 0.5rem;">
+                    The material feeds into the book "Celestial Mechanics in the Machine Tool."
+                </p>
+            </div>
+        </footer>
+    </main>
+
+    <a href="/gu18-wegweiser.html" class="home-btn" title="Back to overview">←</a>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            localStorage.setItem('essay-font-size', size);
+        }
+        
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+            }
+        });
+    </script>
+</body>
+</html>

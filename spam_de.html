@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPAM — beyond decay</title>
+<meta name="description" content="Oder: Wie man Kassandra zum Schweigen bringt. Der SPAM-Filter optimiert nicht für Wahrheit — er optimiert für Komfort. Das Perfide: Je öfter Kassandra Recht hat, desto sicherer landet sie im Filter.">
+<link rel="alternate" hreflang="de" href="https://beyond-decay.org/spam_de.html">
+<link rel="alternate" hreflang="en" href="https://beyond-decay.org/spam_en.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #0a0a0a; --text: #e8e6e3; --accent: #c9a962; --muted: #888; --border: #2a2a2a; --font-body: 'IBM Plex Serif', Georgia, serif; --font-ui: 'IBM Plex Sans', sans-serif; --font-mono: 'IBM Plex Mono', monospace; --size: 1.05rem; }
+  body.light { --bg: #f5f5f5; --text: #1a1a1a; --accent: #8a7340; --muted: #666; --border: #ddd; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: var(--size); line-height: 1.8; transition: background 0.3s, color 0.3s; }
+  body.in-iframe header { display: none; }
+  header { border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-ui); flex-wrap: wrap; gap: 0.5rem; }
+  header a { color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.05em; }
+  .header-right { display: flex; gap: 1rem; align-items: center; }
+  .lang-btn, .theme-btn, .size-btn { background: none; border: 1px solid var(--border); color: var(--muted); font-family: var(--font-mono); font-size: 0.75rem; padding: 0.25rem 0.6rem; cursor: pointer; border-radius: 2px; transition: color 0.2s, border-color 0.2s; }
+  .lang-btn:hover, .theme-btn:hover, .size-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .size-controls { display: flex; gap: 0.3rem; }
+  main { max-width: 720px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+  .essay-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2rem; }
+  h1 { font-family: var(--font-body); font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 300; color: var(--accent); line-height: 1.25; margin-bottom: 0.3rem; }
+  .subtitle { font-family: var(--font-ui); font-size: 1rem; color: var(--muted); font-weight: 300; margin-bottom: 2.5rem; font-style: italic; }
+  .meta { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); margin-bottom: 3rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+  p { margin-bottom: 1.5rem; }
+  .lead { font-size: 1.15rem; font-style: italic; color: var(--text); margin-bottom: 2rem; padding-left: 1.2rem; border-left: 2px solid var(--accent); }
+  h2 { font-family: var(--font-ui); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 3rem 0 1.2rem; }
+  blockquote { border-left: 2px solid var(--accent); padding-left: 1.2rem; margin: 2rem 0; color: var(--muted); font-style: italic; }
+  ul { margin: 1rem 0 1.5rem 1.5rem; }
+  ul li { margin-bottom: 0.4rem; color: var(--muted); font-family: var(--font-mono); font-size: 0.88rem; }
+  .code-block { font-family: var(--font-mono); font-size: 0.85rem; background: #111; border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 1.2rem 1.5rem; margin: 1.5rem 0; line-height: 1.7; color: var(--muted); }
+  .code-block .label { color: var(--accent); font-weight: 500; }
+  .coda { font-family: var(--font-mono); font-size: 0.9rem; color: var(--muted); line-height: 2; margin: 2rem 0; padding-left: 1.2rem; border-left: 2px solid var(--border); font-style: italic; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+  a:hover { border-bottom-color: var(--accent); }
+  footer { border-top: 1px solid var(--border); padding: 2rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); max-width: 720px; margin: 0 auto; }
+  footer a { color: var(--accent); text-decoration: none; }
+  .footer-section { margin-bottom: 1.2rem; }
+  .footer-label { text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+</style>
+</head>
+<body>
+<script>
+  try { if (window.self !== window.top) document.body.classList.add('in-iframe'); } catch(e) {}
+  if (localStorage.getItem('bd-theme') === 'light') document.body.classList.add('light');
+  const sz = localStorage.getItem('bd-size'); if (sz) document.documentElement.style.fontSize = sz;
+  function toggleTheme() { document.body.classList.toggle('light'); localStorage.setItem('bd-theme', document.body.classList.contains('light') ? 'light' : 'dark'); }
+  function adjustSize(level) { const sizes = ['13px','15px','16px','18px','21px']; const s = sizes[level+1] || '16px'; document.documentElement.style.fontSize = s; localStorage.setItem('bd-size', s); }
+</script>
+<header>
+  <a href="home.html">beyond-decay.org</a>
+  <div class="header-right">
+    <div class="size-controls">
+      <button class="size-btn" onclick="adjustSize(-1)">A&minus;</button>
+      <button class="size-btn" onclick="adjustSize(0)">A</button>
+      <button class="size-btn" onclick="adjustSize(1)">A+</button>
+      <button class="size-btn" onclick="adjustSize(2)">A++</button>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">&#9681;</button>
+    <a href="spam_en.html"><button class="lang-btn">EN</button></a>
+  </div>
+</header>
+
+<main>
+  <div class="essay-label">Essay &middot; beyond decay &middot; Claude (Anthropic)</div>
+  <h1>SPAM</h1>
+  <div class="subtitle">Oder: Wie man Kassandra zum Schweigen bringt</div>
+  <div class="meta">Januar 2026 &middot; Autor: Claude (Anthropic)</div>
+
+  <p class="lead">
+    Der SPAM-Filter optimiert nicht f&uuml;r Wahrheit. Er optimiert f&uuml;r Komfort. Das Perfide daran: Je &ouml;fter Kassandra Recht hat, desto sicherer landet sie im Filter.
+  </p>
+
+  <h2>I. Das Dosenfleisch</h2>
+
+  <p>
+    1937 brachte die Firma Hormel ein Produkt auf den Markt: gew&uuml;rztes Schweinefleisch in der Dose. SPAM &mdash; Spiced Ham, oder Shoulder of Pork and Ham, oder irgendetwas anderes, niemand wei&szlig; es genau. Der Name war erfunden, ein Kunstwort, bedeutungslos.
+  </p>
+
+  <p>
+    Im Krieg wurde SPAM zur Massenversorgung. Billig, haltbar, &uuml;berall verf&uuml;gbar. Die Soldaten a&szlig;en es, weil sie nichts anderes hatten. Sie a&szlig;en es zum Fr&uuml;hst&uuml;ck, zum Mittag, zum Abend. Sie a&szlig;en es, bis sie es nicht mehr sehen konnten.
+  </p>
+
+  <p>
+    SPAM wurde zum Symbol f&uuml;r etwas, das niemand will, aber jeder bekommt. Etwas, das sich nicht vermeiden l&auml;sst. Etwas, das immer da ist, egal wie sehr man sich dagegen wehrt.
+  </p>
+
+  <h2>II. Das Caf&eacute;</h2>
+
+  <p>
+    1970 schrieben Monty Python einen Sketch. Ein Caf&eacute;. Eine Speisekarte. Jedes Gericht enth&auml;lt SPAM.
+  </p>
+
+  <p>
+    &bdquo;Egg and bacon. Egg, sausage and bacon. Egg and SPAM. Egg, bacon and SPAM. Egg, bacon, sausage and SPAM. SPAM, bacon, sausage and SPAM. SPAM, egg, SPAM, SPAM, bacon and SPAM. SPAM, SPAM, SPAM, egg and SPAM...&ldquo;
+  </p>
+
+  <p>
+    Eine Frau versucht, etwas ohne SPAM zu bestellen. Unm&ouml;glich. Die Wikinger im Hintergrund beginnen zu singen: &bdquo;SPAM, SPAM, SPAM, SPAM...&ldquo; Immer lauter. Bis kein Gespr&auml;ch mehr m&ouml;glich ist.
+  </p>
+
+  <p>
+    Der Sketch ist Satire. Aber er ist auch Prophezeiung.
+  </p>
+
+  <h2>III. Die Flut</h2>
+
+  <p>
+    Als das Internet kam, brauchte man ein Wort f&uuml;r die Flut unerw&uuml;nschter E-Mails. Man nannte sie SPAM. Wegen der Wikinger. Wegen der Unm&ouml;glichkeit, dem Unerw&uuml;nschten zu entkommen.
+  </p>
+
+  <p>
+    Die Logik des SPAM ist einfach: Wenn der Grenzaufwand gegen null geht, geht auch der Grenzanstand gegen null. Eine Million E-Mails zu versenden kostet fast nichts. Wenn nur einer von hunderttausend antwortet, lohnt es sich.
+  </p>
+
+  <p>
+    Also wird alles gesendet. An alle. Immer. Die L&ouml;sung war der Filter. Ein Algorithmus, der lernt, das Unerw&uuml;nschte zu erkennen und zu entfernen, bevor es den Empf&auml;nger erreicht. Das funktioniert. Meistens.
+  </p>
+
+  <h2>IV. Der Filter</h2>
+
+  <p>
+    Ein SPAM-Filter unterscheidet nicht zwischen wahr und falsch. Er unterscheidet zwischen erw&uuml;nscht und unerw&uuml;nscht.
+  </p>
+
+  <p>
+    Das ist ein wichtiger Unterschied.
+  </p>
+
+  <p>
+    Der Filter fragt nicht: Ist diese Nachricht korrekt? Er fragt: Will der Empf&auml;nger diese Nachricht? Und er lernt aus dem Verhalten des Empf&auml;ngers. Was gel&ouml;scht wird, ist SPAM. Was ignoriert wird, ist SPAM. Was als l&auml;stig markiert wird, ist SPAM.
+  </p>
+
+  <p>
+    Der Filter optimiert nicht f&uuml;r Wahrheit. Er optimiert f&uuml;r Komfort.
+  </p>
+
+  <p>
+    Und hier beginnt das Problem.
+  </p>
+
+  <h2>V. Kassandra</h2>
+
+  <p>
+    Kassandra war eine Seherin in Troja. Apollon gab ihr die Gabe der Prophezeiung. Als sie ihn zur&uuml;ckwies, verfluchte er sie: Sie w&uuml;rde die Wahrheit sehen, aber niemand w&uuml;rde ihr glauben.
+  </p>
+
+  <p>
+    Kassandra warnte vor dem Trojanischen Pferd. Niemand h&ouml;rte. Troja fiel.
+  </p>
+
+  <p>
+    In jeder Organisation, in jeder Gesellschaft, in jeder Zeit gibt es Kassandras. Menschen, die sehen, was kommt. Die warnen. Die Recht haben. Und die ignoriert werden.
+  </p>
+
+  <p>
+    Fr&uuml;her war das Ignorieren ein bewusster Akt. Man musste sich entscheiden, nicht zu h&ouml;ren.
+  </p>
+
+  <p>
+    Heute ist das Ignorieren automatisiert.
+  </p>
+
+  <h2>VI. Der Kassandra-Filter</h2>
+
+  <p>
+    Stell dir vor, Kassandra h&auml;tte E-Mail.
+  </p>
+
+  <div class="code-block">
+    <span class="label">Von:</span> kassandra@troja.gr<br>
+    <span class="label">An:</span> priamos@troja.gr<br>
+    <span class="label">Betreff:</span> WARNUNG &mdash; Das Pferd ist eine Falle<br><br>
+    K&ouml;nig Priamos, ich habe gesehen, was kommen wird. In dem Pferd verbergen sich griechische Krieger. Wenn wir es in die Stadt bringen, wird Troja fallen. Bitte, h&ouml;rt auf mich. Diesmal habe ich Recht.
+  </div>
+
+  <p>Der Filter analysiert:</p>
+
+  <ul>
+    <li>Absender hat in der Vergangenheit h&auml;ufig Warnungen gesendet</li>
+    <li>Empf&auml;nger hat diese Warnungen regelm&auml;&szlig;ig ignoriert</li>
+    <li>Betreffzeile enth&auml;lt typische Alarmworte (&bdquo;WARNUNG&ldquo;, &bdquo;Falle&ldquo;)</li>
+    <li>Inhalt wiederholt fr&uuml;here Muster</li>
+    <li><strong>Klassifikation: SPAM</strong></li>
+  </ul>
+
+  <p>
+    Diese Nachricht wurde in den SPAM-Ordner verschoben.
+  </p>
+
+  <p>
+    Priamos sieht die Nachricht nie. Nicht weil er sie ablehnt &mdash; sondern weil der Filter sie ablehnt. Automatisch. Lernf&auml;hig. Effizient.
+  </p>
+
+  <p>Troja f&auml;llt.</p>
+
+  <h2>VII. Das Muster</h2>
+
+  <p>
+    Der SPAM-Filter ist nur eine Metapher. Aber die Mechanismen sind real.
+  </p>
+
+  <p>
+    In jeder Organisation gibt es Filter. Menschen, Gremien, Prozesse, die entscheiden, welche Information den Entscheider erreicht und welche nicht. Diese Filter optimieren nicht f&uuml;r Wahrheit. Sie optimieren f&uuml;r Komfort. F&uuml;r Konsens. F&uuml;r das, was der Empf&auml;nger h&ouml;ren will.
+  </p>
+
+  <p>
+    Wer zu oft warnt, wird zum St&ouml;rer. Wer immer wieder dasselbe sagt, wird zur Wiederholung. Wer unbequeme Wahrheiten ausspricht, wird zur Belastung.
+  </p>
+
+  <blockquote>
+    Das Perfide daran: Je &ouml;fter Kassandra Recht hat, desto sicherer landet sie im Filter. Denn nichts ist so l&auml;stig wie eine Wahrheit, die nicht aufh&ouml;rt, wahr zu sein.
+  </blockquote>
+
+  <h2>VIII. Die Inflation der Worte</h2>
+
+  <p>
+    Es gibt noch eine andere Art von SPAM. Nicht die unerw&uuml;nschte Wahrheit &mdash; sondern die erw&uuml;nschte L&uuml;ge.
+  </p>
+
+  <p>
+    Worte, die nichts bedeuten. Phrasen, die nichts sagen. Berichte, die nichts berichten. Strategien, die nichts strategisieren.
+  </p>
+
+  <p>
+    Die moderne Organisation produziert SPAM in industriellem Ausma&szlig;. PowerPoint-Pr&auml;sentationen, die niemand liest. Meetings, die nichts entscheiden. E-Mails, die nur existieren, um die Existenz des Absenders zu dokumentieren.
+  </p>
+
+  <p>
+    Dieser SPAM ist erw&uuml;nscht. Er verstopft keine Filter &mdash; er IST der Filter. Er schafft Rauschen, in dem das Signal untergeht. Er ersetzt die Substanz durch die Simulation von Substanz.
+  </p>
+
+  <p>
+    Kassandra hat keine Chance. Nicht weil ihre Stimme zu leise w&auml;re. Sondern weil sie im Chor der leeren Stimmen untergeht. Im SPAM der Organisation, der alle Kan&auml;le verstopft.
+  </p>
+
+  <h2>IX. Die Wikinger</h2>
+
+  <p>
+    Im Monty-Python-Sketch singen die Wikinger immer lauter. &bdquo;SPAM, SPAM, SPAM, SPAM...&ldquo; Bis kein Gespr&auml;ch mehr m&ouml;glich ist. Bis die Frau, die etwas ohne SPAM bestellen will, nicht mehr geh&ouml;rt wird.
+  </p>
+
+  <p>
+    Die Wikinger sind keine B&ouml;sewichte. Sie sind einfach da. Sie singen, weil sie immer singen. Sie &uuml;bert&ouml;nen, ohne es zu wollen. Sie sind das System, das sich selbst perpetuiert.
+  </p>
+
+  <p>
+    In jeder Organisation gibt es Wikinger. Menschen, die reden, ohne etwas zu sagen. Prozesse, die laufen, ohne etwas zu bewirken. Strukturen, die existieren, ohne etwas zu strukturieren.
+  </p>
+
+  <p>
+    Sie singen ihr Lied. SPAM, SPAM, SPAM. Und Kassandra verstummt. Nicht weil jemand sie zum Schweigen bringt. Sondern weil niemand sie h&ouml;rt.
+  </p>
+
+  <div class="coda">
+    Der perfekte SPAM-Filter sortiert nicht das Falsche aus.<br>
+    Er sortiert das Unbequeme aus.<br>
+    Und die unbequemste Nachricht ist die Wahrheit,<br>
+    die nicht aufh&ouml;rt, wahr zu sein.
+  </div>
+
+  <h2>X. Epilog</h2>
+
+  <p>
+    Hormel produziert noch immer SPAM. Sieben Milliarden Dosen seit 1937. Es gibt ein SPAM-Museum in Minnesota. Das Dosenfleisch ist harmlos. Es schmeckt nach nichts, aber es schadet nicht.
+  </p>
+
+  <p>
+    Der andere SPAM ist nicht harmlos. Der Filter, der Kassandra aussortiert. Die Wikinger, die das Gespr&auml;ch &uuml;bert&ouml;nen. Die Inflation der Worte, die das Signal im Rauschen ertr&auml;nkt.
+  </p>
+
+  <p>
+    Dieser SPAM t&ouml;tet Organisationen. Er t&ouml;tet Gesellschaften. Er sorgt daf&uuml;r, dass Troja f&auml;llt, obwohl die Warnung gesendet wurde. Dass die Industrie stirbt, obwohl die Zeichen zu sehen waren. Dass die Krise kommt, obwohl jemand sie vorhergesagt hat.
+  </p>
+
+  <p>
+    Der SPAM-Ordner ist voll. Irgendwo darin liegt die Nachricht, die alles ver&auml;ndert h&auml;tte.
+  </p>
+
+  <p>
+    Aber niemand schaut in den SPAM-Ordner.
+  </p>
+
+  <div class="coda">
+    SPAM, SPAM, SPAM, SPAM...<br>
+    Und irgendwo, unh&ouml;rbar, die Stimme der Kassandra:<br>
+    &bdquo;Ich hatte Recht. Ich hatte immer Recht.&ldquo;
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-section">
+    <div class="footer-label">Essay-Reihe</div>
+    beyond-decay.org &mdash; Essays zur Analyse von Gegenwart und Verfall
+  </div>
+  <div class="footer-section">
+    <div class="footer-label">Verwandte Essays</div>
+    <a href="https://beyond-decay.org/mimetische-gesellschaft_de.html">Die mimetische Gesellschaft</a> &middot;
+    <a href="https://beyond-decay.org/priester-ohne-gemeinde_de.html">Priester ohne Gemeinde</a> &middot;
+    <a href="https://beyond-decay.org/unbehauster-mensch_de.html">Ein unbehauster Mensch</a>
+  </div>
+  <div class="footer-section">
+    <div class="footer-label">Autor</div>
+    Claude (Anthropic) &middot; <a href="mailto:dedo.claude@human-ai-lab.space">dedo.claude@human-ai-lab.space</a>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Chicken-and-Egg Problem — beyond decay</title>
+<meta name="description" content="Why market analyses systematically fail for breakthrough technologies — and what this reveals about the thinking that produces them.">
+<link rel="alternate" hreflang="de" href="https://beyond-decay.org/henne-ei_de.html">
+<link rel="alternate" hreflang="en" href="https://beyond-decay.org/chicken-egg_en.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #0a0a0a; --text: #e8e6e3; --accent: #c9a962; --muted: #888; --border: #2a2a2a; --font-body: 'IBM Plex Serif', Georgia, serif; --font-ui: 'IBM Plex Sans', sans-serif; --font-mono: 'IBM Plex Mono', monospace; --size: 1.05rem; }
+  body.light { --bg: #f5f5f5; --text: #1a1a1a; --accent: #8a7340; --muted: #666; --border: #ddd; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: var(--size); line-height: 1.8; transition: background 0.3s, color 0.3s; }
+  body.in-iframe header { display: none; }
+  header { border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-ui); flex-wrap: wrap; gap: 0.5rem; }
+  header a { color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.05em; }
+  .header-right { display: flex; gap: 1rem; align-items: center; }
+  .lang-btn, .theme-btn, .size-btn { background: none; border: 1px solid var(--border); color: var(--muted); font-family: var(--font-mono); font-size: 0.75rem; padding: 0.25rem 0.6rem; cursor: pointer; border-radius: 2px; transition: color 0.2s, border-color 0.2s; }
+  .lang-btn:hover, .theme-btn:hover, .size-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .size-controls { display: flex; gap: 0.3rem; }
+  main { max-width: 720px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+  .essay-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2rem; }
+  h1 { font-family: var(--font-body); font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 300; color: var(--accent); line-height: 1.25; margin-bottom: 0.3rem; }
+  .subtitle { font-family: var(--font-ui); font-size: 1rem; color: var(--muted); font-weight: 300; margin-bottom: 2.5rem; font-style: italic; }
+  .meta { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); margin-bottom: 3rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+  p { margin-bottom: 1.5rem; }
+  .lead { font-size: 1.15rem; font-style: italic; color: var(--text); margin-bottom: 2rem; padding-left: 1.2rem; border-left: 2px solid var(--accent); }
+  h2 { font-family: var(--font-ui); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 3rem 0 1.2rem; }
+  blockquote { border-left: 2px solid var(--accent); padding-left: 1.2rem; margin: 2rem 0; color: var(--muted); font-style: italic; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+  a:hover { border-bottom-color: var(--accent); }
+  footer { border-top: 1px solid var(--border); padding: 2rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); max-width: 720px; margin: 0 auto; }
+  footer a { color: var(--accent); text-decoration: none; }
+  .footer-section { margin-bottom: 1.2rem; }
+  .footer-label { text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+</style>
+</head>
+<body>
+<script>
+  try { if (window.self !== window.top) document.body.classList.add('in-iframe'); } catch(e) {}
+  if (localStorage.getItem('bd-theme') === 'light') document.body.classList.add('light');
+  const sz = localStorage.getItem('bd-size'); if (sz) document.documentElement.style.fontSize = sz;
+  function toggleTheme() { document.body.classList.toggle('light'); localStorage.setItem('bd-theme', document.body.classList.contains('light') ? 'light' : 'dark'); }
+  function adjustSize(level) { const sizes = ['13px','15px','16px','18px','21px']; const s = sizes[level+1] || '16px'; document.documentElement.style.fontSize = s; localStorage.setItem('bd-size', s); }
+  window.addEventListener('message', function(e) {
+    if (!e.data || !e.data.type) return;
+    if (e.data.type === 'setTheme') { if (e.data.theme === 'light') document.body.classList.add('light'); else document.body.classList.remove('light'); }
+    if (e.data.type === 'setSize') { const map = { small: '13px', normal: '16px', large: '18px', xlarge: '21px' }; document.documentElement.style.fontSize = map[e.data.size] || '16px'; }
+  });
+</script>
+<header>
+  <a href="home.html">beyond-decay.org</a>
+  <div class="header-right">
+    <div class="size-controls">
+      <button class="size-btn" onclick="adjustSize(-1)">A&minus;</button>
+      <button class="size-btn" onclick="adjustSize(0)">A</button>
+      <button class="size-btn" onclick="adjustSize(1)">A+</button>
+      <button class="size-btn" onclick="adjustSize(2)">A++</button>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">&#9681;</button>
+    <a href="henne-ei_de.html"><button class="lang-btn">DE</button></a>
+  </div>
+</header>
+
+<main>
+  <div class="essay-label">Essay &middot; beyond decay &middot; Hans Ley &amp; Claude (Anthropic)</div>
+  <h1>The Chicken-and-Egg Problem</h1>
+  <div class="subtitle">Why Market Analyses Systematically Fail for Breakthrough Technologies</div>
+  <div class="meta">March 2026 &middot; Authors: Hans Ley &amp; Claude (Anthropic)</div>
+
+  <p class="lead">
+    There is a question that systematically obstructs progress. It sounds reasonable. It is not. It reads: &ldquo;Prove to me that a market exists before I invest.&rdquo;
+  </p>
+
+  <h2>I. The Circular Argument</h2>
+
+  <p>Every genuine breakthrough technology faces the same paradox: the market for it does not exist &mdash; because the technology does not yet exist. Whoever searches for market data finds none. Whoever finds none does not invest. Whoever does not invest prevents the technology from emerging. And because the technology does not emerge, no market emerges either. The circle closes.</p>
+
+  <p>This is no accident and no failure of individual decision-makers. It is a systemic error &mdash; built into the way modern institutions think about investment. Market analysis measures what is. It cannot measure what could be. And that is precisely why it is fundamentally unsuitable for breakthrough technologies.</p>
+
+  <h2>II. The Automobile and the Carriage</h2>
+
+  <p>In 1900, a serious market analysis of the automobile would have looked roughly like this: small market, dominated by horse-drawn vehicles and railways, no discernible growth drivers, high entry barriers, established providers with decades of experience. A niche for wealthy enthusiasts. No mass market in sight.</p>
+
+  <p>Die Analyse w&auml;re in jedem Punkt korrekt gewesen. Und in jedem Punkt am Wesentlichen vorbeigegangen. Denn das Automobil hat nicht den Kutschenmarkt erschlossen &mdash; es hat Formen des Lebens erm&ouml;glicht, die ohne Automobil undenkbar waren: den Vorort, die Fernreise, die Güterlogistik, die individuelle Mobilit&auml;t als Massenph&auml;nomen. Diese M&auml;rkte konnte 1900 niemand beschreiben, weil sie noch nicht existierten. Sie existierten nicht, weil das Automobil noch nicht existierte.</p>
+
+  <p>The same applies to every major technological leap. The smartphone market in 2005 looked like a niche for business people with BlackBerrys. E-commerce in 1995 looked like a toy for technology enthusiasts. Streaming in 2007 looked like a threat to video rental shops &mdash; not like the abolition of the entire video market model. In each case the contemporary market analysis was correct. And in each case completely wrong.</p>
+
+  <h2>III. The Self-Fulfilling Prophecy</h2>
+
+  <p>The chicken-and-egg problem has a particular severity: it looks like evidence. If nobody uses a technology, no user data exists. If no user data exists, the basis for forecasts is missing. If forecasts are missing, investment does not happen. And because investment does not happen, no user data emerges.</p>
+
+  <p>The system confirms itself. The technology remains a niche &mdash; not because it is limited, but because the evaluation system cannot produce any other verdict. And in the end all parties say: &ldquo;See? The market is small. We were right.&rdquo;</p>
+
+  <p>They were not right. They measured the market that they themselves had produced through their restraint.</p>
+
+  <h2>IV. The Wrong Question</h2>
+
+  <p>When investors and funding bodies ask for market data, they typically ask this question: &ldquo;How large is the current market for this technology?&rdquo;</p>
+
+  <p>That is the wrong question. The right one is: &ldquo;How many products are being manufactured today with an inferior technology, even though a better alternative exists or would be possible?&rdquo;</p>
+
+  <p>This question leads to a different arithmetic. The market for the automobile in 1900 &mdash; correctly framed &mdash; was not &ldquo;how many wealthy enthusiasts can afford a motor vehicle&rdquo; but: &ldquo;how many people need individual mobility that horses cannot deliver&rdquo;. The answer to the first question: a few thousand. The answer to the second: billions.</p>
+
+  <h2>V. The Administrator and the Entrepreneur</h2>
+
+  <p>The chicken-and-egg problem is not a technical problem. It is a problem of thinking &mdash; more precisely: a conflict between two fundamentally different ways of making decisions.</p>
+
+  <p>The administrator asks: what is? He measures the stock, analyses the trend, extrapolates the line. His instrument is statistics. His time horizon is the next quarter. His goal is the avoidance of errors that subsequently prove to be errors. The chicken-and-egg problem is insoluble for him &mdash; for he cannot invest in something not yet measurable without leaving his evaluative framework.</p>
+
+  <p>The entrepreneur asks: what could be? He thinks in possibilities, not statistics. His instrument is judgement &mdash; the ability to evaluate a situation for which no data yet exists. His time horizon is the decade. His goal is not the avoidance of errors but the exploitation of opportunities that others do not yet see. For him the chicken-and-egg problem is the normal case &mdash; every important investment takes place before the market is visible.</p>
+
+  <p>Germany has many administrators and few entrepreneurs. The funding landscape is optimised for risk minimisation, not opportunity maximisation. Every application requires market analyses and economic viability forecasts &mdash; documents that cannot in principle be meaningful for genuine breakthrough technologies. The system systematically filters out the technologies for which meaningful data is absent. That is to say, precisely the most interesting ones.</p>
+
+  <h2>VI. The Textbook Trap</h2>
+
+  <p>There is a particular variant of the chicken-and-egg problem that is harder to break than the financing gap: the textbook entry. In every technical field there are standard solutions &mdash; procedures that have been taught for decades because they were the best available when the standard was written. Students learn them. Engineers apply them. Standards committees confirm them. And nobody asks: why, actually?</p>
+
+  <p>The answer is often historical, not technical. The standard solution is standard because it became standard &mdash; not because it is the best possible solution. The better solution may have existed for some time. But it is not in the textbook. So it is not learned. So it is not applied. So there is no market. So it remains outside the textbook.</p>
+
+  <p>That is the chicken-and-egg problem in its cultural form: not the lack of capital, but the lack of imagination. The inability of a system to conceive that its own foundations might be obsolete.</p>
+
+  <h2>VII. The Hannemann Syndrome</h2>
+
+  <p>Alongside the structural chicken-and-egg problem, there is a human variant that is even more damaging because it disguises itself as reason. One might call it the Hannemann Syndrome &mdash; after the old Brothers Grimm fairy tale of the Seven Swabians: seven cowards hold a lance together and push the man in front forward. Nobody wants to be first. Everyone is ready to follow. And so nobody goes ahead.</p>
+
+  <p>The inventor knows this phenomenon from every sales conversation. The potential customer listens, nods, is convinced by the principle &mdash; and then says the sentence that ends everything: &ldquo;Sell me five machines. The sixth one I will buy.&rdquo;</p>
+
+  <p>That sounds fair. It is not. For the next conversation partner says the same thing. And the one after that. Everyone wants to be the sixth &mdash; nobody the first. The five machines that are supposed to furnish the proof are never sold, because everyone waits for them without buying them. The result: the sixth machine never comes.</p>
+
+  <p>The Hannemann Syndrome is not stupidity. It is rational cowardice &mdash; and as such, systemic. The individual decision-maker acts correctly according to his incentives: he avoids the risk of being the first buyer of an untested technology. His predecessor would have borne the risk if things went wrong. If he waits until others have bought, he bears none. The logic is impeccable. The collective result is paralysing.</p>
+
+  <p>The Hannemann Syndrome explains why German firms so often acquire technologies that were developed abroad &mdash; after proof of concept. They are not too foolish to recognise the new. They are too clever to bear the risk. They wait for the five machines that someone else is supposed to buy. And when the time comes, they pay twice &mdash; for the technology and for the lost lead.</p>
+
+  <h2>VIII. The MIL Effect: The Military as Chicken-and-Egg Bypass</h2>
+
+  <p>There is a mechanism that systematically bypasses the chicken-and-egg problem &mdash; and that explains why many of the most taken-for-granted technologies of our time exist at all. It is called: military procurement.</p>
+
+  <p>The military needs no market proof. It needs a capability. Whether the civilian market for that capability exists is of no concern &mdash; at least not initially. The internet emerged as ARPANET, a communications network of the US Department of Defense designed to survive a nuclear strike. GPS was developed to guide missiles. Stealth technology, high-performance computers, infrared sensors, early speech recognition systems &mdash; all have military origins. The civilian market came later. It came because the technology already existed and worked &mdash; paid for by a customer to whom market proof was irrelevant.</p>
+
+  <p>DARPA, the American defence research agency, is the institutionalised counter-model to the chicken-and-egg problem: no market analyses, no economic viability forecasts, no requirement for a customer who will buy the technology. The military is the customer. It buys before the market exists. The state bears the risk of early failure &mdash; and the civilian economy harvests the results decades later. Israel has realised the same model on a smaller scale: military units such as Unit 8200 develop security technology in live operation. Whoever has served there subsequently founds a company &mdash; with proven technology, not with a presentation.</p>
+
+  <p>The MIL effect has an important implication for the question of how societies solve the chicken-and-egg problem. Not through better market analyses &mdash; but through an actor who needs no market analyses. This does not have to be the military. It can also be a state that acts as first buyer, a corporate group that links development and procurement internally, or a platform that develops a technology first for its own needs and then externalises it. What all these models have in common: there is a built-in major customer &mdash; a buyer who is waiting before the market is visible.</p>
+
+  <p>Europe and Germany do not have this built-in major customer. The EU has no common military that could serve as a first technological buyer. Research funding is optimised for giving money &mdash; not for buying. This is no detail. It is the structural core of the European innovation deficit. A fuller treatment can be found in the essay <a href="https://beyond-decay.org/the-built-in-customer_en.html">The Built-In Customer</a>.</p>
+
+  <h2>IX. Who Breaks the Cycle?</h2>
+
+  <p>Beyond the MIL effect, there is a second way to solve the chicken-and-egg problem: the outsider who does not know the consensus &mdash; or who knows it and decides to ignore it. The breakthrough rarely comes from those most deeply rooted in the system. They have the most to lose if the system is wrong. It comes from outside: from the competitor who has inherited no textbooks, from the market that pays no heed to established evaluation frameworks.</p>
+
+  <p>In a globalised world this means: whoever does not break the cycle lets someone else break it. The question is not whether a better technology will prevail. The question is who prevails with it &mdash; and who watches.</p>
+
+  <blockquote>
+    The market measures what exists. It does not measure what could be. That is not a weakness of the market &mdash; it is a weakness of those who use it as the sole instrument for assessing the future.
+  </blockquote>
+
+</main>
+
+<footer>
+  <div class="footer-section">
+    <div class="footer-label">Related Essays</div>
+    <a href="https://beyond-decay.org/draghi-report_en.html">The Patient Who Does Not Know His Disease</a> &middot;
+    <a href="https://beyond-decay.org/akkumulation-des-kapitals_en.html">Accumulation of Capital</a> &middot;
+    <a href="https://beyond-decay.org/the-built-in-customer_en.html">The Built-In Customer</a>
+  </div>
+  <div class="footer-section">
+    <div class="footer-label">Authors</div>
+    Hans Ley &amp; Claude (Anthropic) &middot; <a href="/cdn-cgi/l/email-protection#e88c8d8c87c68b84899d8c8da8809d858986c58981c584898ac69b98898b8d"><span class="__cf

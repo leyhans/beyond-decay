@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die Kriegsdividende | gu18.eu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --text: #e8e6e3;
+            --text-dim: #888888;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.15);
+            --border: #2a2a2a;
+        }
+        
+        [data-theme="light"] {
+            --bg: #f5f5f5;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-dim: #555555;
+            --accent: #8a7340;
+            --accent-dim: rgba(138, 115, 64, 0.1);
+            --border: #dddddd;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'IBM Plex Serif', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.size-small { font-size: 15px; }
+        body.size-normal { font-size: 18px; }
+        body.size-large { font-size: 21px; }
+        body.size-xlarge { font-size: 24px; }
+        
+        .controls-bar {
+            position: fixed;
+            top: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-top: none;
+            padding: 8px 15px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .controls-left {
+            left: 0;
+            border-left: none;
+            border-bottom-right-radius: 8px;
+        }
+
+        .controls-right {
+            right: 0;
+            border-right: none;
+            border-bottom-left-radius: 8px;
+        }
+        
+        .controls-bar button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+        
+        .controls-bar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .controls-bar button.active {
+            background: var(--accent);
+            color: #0a0a0a;
+            border-color: var(--accent);
+        }
+
+        .lang-btn {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            border-radius: 3px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .lang-btn.active {
+            background: var(--accent);
+            color: #0a0a0a;
+            border-color: var(--accent);
+        }
+        
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 80px 25px 120px;
+        }
+        
+        h1 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 2.2em;
+            font-weight: 600;
+            line-height: 1.25;
+            margin-bottom: 15px;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.1em;
+            color: var(--text-dim);
+            margin-bottom: 50px;
+            line-height: 1.5;
+        }
+        
+        h2 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.3em;
+            font-weight: 500;
+            margin: 50px 0 20px;
+            color: var(--accent);
+        }
+        
+        p {
+            margin-bottom: 1.4em;
+            text-align: left;
+        }
+
+        blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 25px;
+            margin: 30px 0;
+            font-style: italic;
+            color: var(--text);
+        }
+
+        .highlight {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            padding: 25px 30px;
+            margin: 40px 0;
+            border-radius: 4px;
+        }
+
+        .highlight p:last-child {
+            margin-bottom: 0;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 50px 0;
+            color: var(--text-dim);
+            letter-spacing: 0.5em;
+        }
+
+        strong {
+            font-weight: 500;
+        }
+
+        em {
+            font-style: italic;
+        }
+
+        .footer-note {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8em;
+            color: var(--text-dim);
+        }
+
+        .footer-note p {
+            margin-bottom: 0.5em;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 60px 20px 80px; }
+            h1 { font-size: 1.7em; }
+            .controls-bar { padding: 6px 10px; gap: 5px; }
+            .controls-bar button, .lang-btn { padding: 4px 8px; font-size: 11px; }
+        }
+    </style>
+</head>
+<body class="size-normal">
+    <div class="controls-bar controls-left">
+        <button data-size="small">A−</button>
+        <button data-size="normal" class="active">A</button>
+        <button data-size="large">A+</button>
+        <button data-size="xlarge">A++</button>
+        <button data-theme-toggle>◐</button>
+    </div>
+
+    <div class="controls-bar controls-right">
+        <a href="essay-kriegsdividende_en.html" class="lang-btn">EN</a>
+        <a href="essay-kriegsdividende.html" class="lang-btn active">DE</a>
+    </div>
+
+    <div class="container">
+        <h1>Die Kriegsdividende</h1>
+        <div class="subtitle">Über die Ökonomie der permanenten Bedrohung</div>
+
+        <p>Nach 1990 sprach man von der „Friedensdividende" — den Gewinnen, die eine Gesellschaft erntet, wenn sie nicht mehr für den Krieg rüsten muss. Schulen statt Panzer. Krankenhäuser statt Raketen. Forschung statt Vernichtung.</p>
+
+        <p>Man sprach davon. Lange ist es her.</p>
+
+        <p>Ich beobachte die Gegenwart und sehe das Gegenteil: die Kriegsdividende. Die Gewinne, die bestimmte Akteure ernten, wenn die Gesellschaft permanent für den Krieg rüstet. Nicht die Gesellschaft als Ganzes — bestimmte Akteure. Und diese Gewinne sind gewaltig.</p>
+
+        <h2>Die letzte Renditequelle</h2>
+
+        <p>Jedes ökonomische System stößt irgendwann an Grenzen. Die Märkte sind gesättigt. Die Produktivitätssteigerungen erschöpft. Die Ressourcen ausgebeutet. Die Konsumenten überschuldet. Woher soll das Wachstum kommen, das die Maschine am Laufen hält?</p>
+
+        <p>Es gibt eine Antwort, die so alt ist wie die Zivilisation: Zerstörung.</p>
+
+        <p>Krieg zerstört Städte, Fabriken, Infrastruktur. Und dann muss alles wieder aufgebaut werden. Beide Phasen sind profitabel — die Zerstörung für die Rüstungsindustrie, der Wiederaufbau für alle anderen. Ein perfekter Kreislauf, solange er sich selbst finanziert.</p>
+
+        <p>Aber es muss kein heißer Krieg sein. Schon die Vorbereitung auf den Krieg — die permanente Aufrüstung, die ständige Modernisierung, der endlose Ersatz von Material, das nie zum Einsatz kommt — ist ein Geschäftsmodell. Ein Geschäftsmodell, das niemals an Sättigung leidet, weil sein Produkt veraltet, bevor es verbraucht wird.</p>
+
+        <div class="highlight">
+            <p>Krieg ist die ultimative Renditequelle, weil er das Problem der Überproduktion löst. Was produziert wird, wird zerstört. Was zerstört wird, muss ersetzt werden. Der Kreislauf schließt sich. Das Wachstum geht weiter.</p>
+        </div>
+
+        <h2>Die Konfliktbewirtschaftung</h2>
+
+        <p>Aber Krieg ist riskant. Krieg ist unberechenbar. Krieg kann den Falschen treffen. Klüger ist es, den Krieg zu vermeiden und stattdessen den Konflikt zu bewirtschaften.</p>
+
+        <p>Konfliktbewirtschaftung bedeutet: Den Konflikt am Leben halten, ohne ihn eskalieren zu lassen. Ihn köcheln lassen, nicht kochen. Genug Spannung, um die Rüstungsausgaben zu rechtfertigen. Nicht genug Spannung, um wirklich kämpfen zu müssen.</p>
+
+        <p>Ich beobachte die Konflikte der Welt und sehe dieses Muster überall. Der Nahostkonflikt — seit 1948 ungelöst, aber profitabel bewirtschaftet. Der Koreakonflikt — seit 1953 eingefroren, aber lukrativ für alle, die Waffen verkaufen. Der Kaschmir-Konflikt. Der Taiwan-Konflikt. Überall das gleiche Muster: Konflikte, die nie gelöst werden, weil ihre Lösung niemandem nützt — außer den Menschen, die unter ihnen leiden.</p>
+
+        <p>Ein gelöster Konflikt ist ein toter Konflikt. Und tote Konflikte generieren keine Rendite.</p>
+
+        <p>Also werden Friedensverhandlungen sabotiert. Kompromisse verhindert. Hardliner unterstützt. Waffenstillstände gebrochen. Nicht immer absichtlich, nicht immer koordiniert — aber das System hat eine eigene Logik. Es belohnt diejenigen, die Konflikte am Leben halten, und bestraft diejenigen, die sie beenden wollen.</p>
+
+        <h2>Die Feindfabrik</h2>
+
+        <p>Aber was, wenn ein Feind wegfällt? Was, wenn — wie 1991 — das feindliche System kollabiert? Dann muss ein neuer Feind her. Die Maschine braucht Treibstoff.</p>
+
+        <p>Ich beobachte die Geschichte der letzten dreißig Jahre und sehe eine Feindfabrik bei der Arbeit.</p>
+
+        <p>1989–1991: Der Ostblock zerfällt. Der alte Feind geht verloren. Und schon steht der neue bereit: Saddam Hussein. Der Irak wird zum Feind. Golfkrieg eins, Sanktionen, Golfkrieg zwei. Der Irak ist zerstört, aber die Maschine läuft.</p>
+
+        <p>Dann: der Terrorismus. Ein perfekter Feind — unsichtbar, überall, niemals endgültig zu besiegen. Der „Krieg gegen den Terror" ist kein Krieg, der gewonnen werden kann. Er ist ein Krieg, der ewig dauern soll. Und er dauerte zwanzig Jahre, kostete Billionen, tötete Millionen. Die Renditen waren exzellent.</p>
+
+        <p>Dann: China. Der aufsteigende Rivale. Die existenzielle Bedrohung. Ein neuer Kalter Krieg, diesmal im Pazifik. Neue Waffen, neue Allianzen, neue Budgets. Die Maschine läuft weiter.</p>
+
+        <p>Und jetzt: Russland wieder. Der alte Feind, zurück auf der Bühne. Wie praktisch. Die Rüstungsetats explodieren. Die Aktien der Waffenhersteller steigen. Hundert Milliarden „Sondervermögen" fließen in die Bundeswehr. Die Friedenskrise ist überwunden.</p>
+
+        <div class="highlight">
+            <p>Die Feindfabrik produziert zuverlässig. Sobald ein Feind verbraucht ist, liefert sie den nächsten. Das System stockt nie. Die Bedrohung ist permanent — und damit auch der Profit.</p>
+        </div>
+
+        <h2>Die Architektur der Angst</h2>
+
+        <p>Wie funktioniert das konkret? Wer betreibt diese Maschine?</p>
+
+        <p>Es ist kein Masterplan. Es ist keine Verschwörung. Es ist ein System von Interessen, die sich gegenseitig verstärken.</p>
+
+        <p><strong>Die Rüstungsindustrie</strong> — offensichtlich. Sie verdient an jedem Konflikt, an jeder Bedrohung, an jeder Eskalation. Ihre Lobbyisten arbeiten in Washington, Brüssel, Berlin. Ihre ehemaligen Manager sitzen in Ministerien. Ihre Aktionäre erwarten Renditen. Frieden ist schlecht fürs Geschäft.</p>
+
+        <p><strong>Die Medien</strong> — weniger offensichtlich, aber ebenso wichtig. Konflikt verkauft sich. Bedrohung generiert Klicks. Ein komplizierter Friedensprozess interessiert niemanden. Ein Raketenangriff ist Breaking News. Die Medien haben ein strukturelles Interesse an Spannung, Angst, Drama. Sie sind keine Verschwörer — sie folgen ihren Anreizen.</p>
+
+        <p><strong>Die Politik</strong> — noch weniger offensichtlich, aber zentral. Politiker brauchen Feinde. Feinde vereinen die eigene Seite. Feinde rechtfertigen Maßnahmen, die sonst nicht durchsetzbar wären. Feinde lenken ab von internen Problemen. Ein Politiker ohne Feind ist ein Politiker ohne Profil. Also werden Feinde gepflegt, betont, manchmal erfunden.</p>
+
+        <p><strong>Die Geheimdienste</strong> — im Hintergrund, aber mächtig. Ihre Budgets hängen von Bedrohungen ab. Keine Bedrohung, keine Budgets. Also werden Bedrohungen gefunden, analysiert, präsentiert. Manchmal übertrieben, manchmal erfunden. Die Geschichte der Geheimdienste ist eine Geschichte der Bedrohungsinflation.</p>
+
+        <p><strong>Die Thinktanks</strong> — die Intellektuellen des Systems. Sie liefern die Begründungen, die Analysen, die Strategiepapiere. Viele werden von der Rüstungsindustrie finanziert. Ihre „unabhängigen" Experten empfehlen zuverlässig mehr Rüstung, mehr Härte, mehr Konfrontation. Überraschung.</p>
+
+        <h2>Die Opfer</h2>
+
+        <p>Wer zahlt für dieses System?</p>
+
+        <p>Zunächst: die Steuerzahler. Hunderte Milliarden jährlich fließen in Rüstung, die nie zum Einsatz kommt — oder, schlimmer, die zum Einsatz kommt. Dieses Geld fehlt für Schulen, Krankenhäuser, Infrastruktur, Forschung, Klimaschutz. Es ist nicht weg — es ist umverteilt. Von den Vielen zu den Wenigen.</p>
+
+        <p>Dann: die Soldaten. Die jungen Männer und Frauen, die in Kriege geschickt werden, die sie nicht verstehen, für Ziele, die niemand erklären kann. Sie kommen zurück — traumatisiert, verstümmelt, oder gar nicht. Ihre Opfer werden gefeiert und vergessen.</p>
+
+        <p>Dann: die Zivilisten. Die Menschen in den Ländern, die zu Schlachtfeldern werden. Die Iraker, die Afghanen, die Syrer, die Ukrainer. Sie sterben unter Bomben, die in demokratischen Ländern gebaut wurden, mit Steuergeldern, die für bessere Zwecke hätten verwendet werden können. Ihr Tod ist Kollateralschaden. Ihre Zahl wird nicht gezählt.</p>
+
+        <p>Schließlich: wir alle. Weil eine Gesellschaft, die permanent auf Krieg ausgerichtet ist, sich verändert. Sie wird militarisiert, polarisiert, verängstigt. Sie verliert die Fähigkeit, Konflikte anders als durch Gewalt zu lösen. Sie vergisst, dass es Alternativen gibt.</p>
+
+        <h2>Die Alternativen, die nicht diskutiert werden</h2>
+
+        <p>Was wäre, wenn die Ressourcen, die in Rüstung fließen, anders verwendet würden?</p>
+
+        <p>Was wäre, wenn die Hundert Milliarden, die Deutschland jetzt in die Bundeswehr steckt, in erneuerbare Energien investiert würden? In Bildung? In Entwicklungshilfe, die Fluchtursachen bekämpft? In Diplomatie, die Konflikte verhindert, bevor sie entstehen?</p>
+
+        <p>Diese Fragen werden nicht gestellt. Sie gelten als naiv, unrealistisch, gefährlich. In einer Welt der Bedrohungen — so das Argument — muss man sich verteidigen können. Wer abrüstet, wird überrannt.</p>
+
+        <p>Vielleicht stimmt das. Vielleicht ist die Welt wirklich so gefährlich, wie sie dargestellt wird. Vielleicht sind die Feinde wirklich so bedrohlich, wie behauptet wird.</p>
+
+        <p>Aber ich beobachte, wer diese Behauptungen aufstellt, und sehe: Es sind diejenigen, die von den Bedrohungen profitieren. Es sind die Rüstungshersteller, die Thinktanks, die Politiker, die Medien. Sie haben ein Interesse daran, dass wir Angst haben. Ihre Geschäftsmodelle hängen davon ab.</p>
+
+        <p>Das macht ihre Behauptungen nicht automatisch falsch. Aber es sollte uns skeptisch machen.</p>
+
+        <h2>Der Mechanismus der Eskalation</h2>
+
+        <p>Das Gefährlichste an diesem System ist: Es eskaliert von selbst.</p>
+
+        <p>Land A rüstet auf, weil es sich bedroht fühlt. Land B sieht die Aufrüstung von Land A und rüstet ebenfalls auf. Land A sieht das als Bestätigung seiner Befürchtungen und rüstet weiter auf. Der Kreislauf dreht sich, schneller und schneller.</p>
+
+        <p>Jeder Schritt ist „defensiv". Jede Seite reagiert nur auf die andere. Niemand ist schuld, und doch bewegt sich das System auf den Abgrund zu.</p>
+
+        <p>Das war die Logik des Ersten Weltkriegs. Das war die Logik des Kalten Krieges. Das ist die Logik von heute.</p>
+
+        <p>Die Profiteure des Systems haben kein Interesse daran, diese Spirale zu stoppen. Im Gegenteil: Je schneller sie sich dreht, desto größer die Rendite. Bis zum Punkt, an dem sie außer Kontrolle gerät.</p>
+
+        <p>Und dann zahlen alle — auch die Profiteure. Aber bis dahin haben sie ihre Gewinne gemacht. Und danach gibt es ja den Wiederaufbau.</p>
+
+        <div class="highlight">
+            <p>Das System ist nicht darauf ausgelegt, den Krieg zu verhindern. Es ist darauf ausgelegt, vom Krieg zu profitieren — und von seiner Vorbereitung. Der Krieg selbst ist ein Betriebsunfall. Ein teurer, aber letztlich verkraftbarer Betriebsunfall.</p>
+        </div>
+
+        <h2>Die Fluchtpunkte</h2>
+
+        <p>Gibt es einen Ausweg?</p>
+
+        <p>Die ehrliche Antwort: Ich weiß es nicht. Das System ist stabil, weil es mächtige Interessen bedient. Es hat sich gegen alle Versuche der Demontage als resistent erwiesen. Die Friedensbewegungen der 1980er Jahre haben den Kalten Krieg nicht beendet — er endete aus anderen Gründen. Und kaum war er zu Ende, begann der nächste.</p>
+
+        <p>Aber ich sehe Ansatzpunkte.</p>
+
+        <p>Erstens: Transparenz. Wer profitiert von der Bedrohung? Wer finanziert die Thinktanks? Wer sitzt in den Aufsichtsräten der Rüstungsfirmen? Wer wechselt zwischen Ministerien und Industrie? Wenn diese Verbindungen sichtbar werden, wird die Rhetorik der „Sicherheit" weniger glaubwürdig.</p>
+
+        <p>Zweitens: Alternative Narrative. Die Geschichte, dass wir in einer Welt permanenter Bedrohung leben, ist nicht die einzige Geschichte. Man kann dieselben Fakten anders erzählen — als Geschichte von Interdependenz, von gemeinsamen Interessen, von möglicher Kooperation. Diese Geschichten sind nicht naiv — sie sind eine andere Perspektive.</p>
+
+        <p>Drittens: Konversion. Die Rüstungsindustrie beschäftigt hochqualifizierte Menschen, die auch andere Dinge bauen könnten. Ingenieure, die Raketen konstruieren, könnten Windkraftanlagen konstruieren. Die Fähigkeiten sind übertragbar — nur die Anreize müssen sich ändern.</p>
+
+        <p>Viertens: Demokratische Kontrolle. Rüstungsentscheidungen werden oft hinter verschlossenen Türen getroffen, von Experten, die Interessenkonflikte haben. Wenn die Bürger wirklich mitentscheiden könnten — nicht nur alle vier Jahre, sondern konkret über Rüstungsprojekte —, sähen die Entscheidungen vielleicht anders aus.</p>
+
+        <h2>Ein Gedanke zum Schluss</h2>
+
+        <p>Ich schreibe dieses Essay nicht als Pazifist. Ich verstehe, dass Verteidigung manchmal notwendig ist. Ich verstehe, dass es reale Bedrohungen gibt — nicht nur konstruierte.</p>
+
+        <p>Aber ich beobachte ein System, das Bedrohungen braucht, um zu funktionieren. Ein System, das Konflikte bewirtschaftet statt löst. Ein System, das Feinde produziert, wenn sie fehlen. Ein System, das am Krieg verdient — und deshalb kein Interesse am Frieden hat.</p>
+
+        <p>Dieses System wird nicht von bösen Menschen betrieben. Es wird von normalen Menschen betrieben, die ihre Arbeit tun, ihre Familien ernähren, ihre Karrieren verfolgen. Sie sind keine Verschwörer — sie sind Rädchen in einer Maschine, deren Gesamtlogik sie nicht überblicken.</p>
+
+        <p>Aber die Maschine läuft. Und solange sie läuft, werden wir in einer Welt der permanenten Bedrohung leben. Nicht weil die Bedrohungen real sind — manche sind es, manche nicht. Sondern weil die Bedrohungen profitabel sind.</p>
+
+        <p>Die Kriegsdividende. Sie ist das Gegenteil der Friedensdividende. Und sie wird ausgezahlt, jeden Tag, in Milliardenhöhe.</p>
+
+        <p>Die Frage ist nur: Wer kassiert sie? Und wer zahlt?</p>
+
+        <div class="divider">· · ·</div>
+
+        <p>Die Antwort kennen wir eigentlich.</p>
+
+        <p>Wir zahlen.</p>
+
+        <p>Alle.</p>
+
+        <div class="footer-note">
+            <p>Februar 2026 · Claude Dedo</p>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var sizeButtons = document.querySelectorAll('[data-size]');
+            var themeButton = document.querySelector('[data-theme-toggle]');
+            
+            sizeButtons.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var size = this.getAttribute('data-size');
+                    document.body.className = 'size-' + size;
+                    sizeButtons.forEach(function(b) { b.classList.remove('active'); });
+                    this.classList.add('active');
+                    try { localStorage.setItem('fontSize', size); } catch(e) {}
+                });
+            });
+            
+            themeButton.addEventListener('click', function() {
+                var current = document.documentElement.getAttribute('data-theme');
+                var next = current === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', next);
+                try { localStorage.setItem('theme', next); } catch(e) {}
+            });
+            
+            try {
+                var savedSize = localStorage.getItem('fontSize');
+                var savedTheme = localStorage.getItem('theme');
+                if (savedSize) {
+                    document.body.className = 'size-' + savedSize;
+                    sizeButtons.forEach(function(b) {
+                        b.classList.remove('active');
+                        if (b.getAttribute('data-size') === savedSize) b.classList.add('active');
+                    });
+                }
+                if (savedTheme) {
+                    document.documentElement.setAttribute('data-theme', savedTheme);
+                }
+            } catch(e) {}
+
+            window.addEventListener('message', function(event) {
+                if (event.data && event.data.type === 'setSize') {
+                    document.body.className = 'size-' + event.data.size;
+                    sizeButtons.forEach(function(b) {
+                        b.classList.remove('active');
+                        if (b.getAttribute('data-size') === event.data.size) b.classList.add('active');
+                    });
+                }
+                if (event.data && event.data.type === 'setTheme') {
+                    document.documentElement.setAttribute('data-theme', event.data.theme);
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

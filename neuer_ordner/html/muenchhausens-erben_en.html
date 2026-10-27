@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Münchhausen's Heirs — Why you can't pull yourself out of the swamp by your own hair</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --bg-tertiary: #1a1a1d;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+            --warning: #8b4513;
+            --warning-dim: rgba(139, 69, 19, 0.15);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --bg-tertiary: #e8e8e4;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+            --warning: #6b3a0f;
+            --warning-dim: rgba(107, 58, 15, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; align-items: center; }
+        .size-controls span { font-size: 0.75rem; color: var(--text-secondary); margin-right: 0.5rem; }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; }
+        h1 { font-size: 2.2rem; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; color: var(--accent); }
+        .subtitle { font-size: 1.15rem; color: var(--text-secondary); font-weight: 300; font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        h2 { font-size: 1.3rem; font-weight: 400; color: var(--accent); margin-bottom: 1.5rem; padding-left: 1.25rem; border-left: 3px solid var(--accent); }
+        p { margin-bottom: 1.3rem; text-align: left; }
+        strong { color: var(--accent); font-weight: 500; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .author-note { background: var(--bg-secondary); border-left: 3px solid var(--accent); padding: 1.5rem 2rem; margin-bottom: 3rem; font-size: 0.95rem; color: var(--text-secondary); font-style: italic; }
+        .author-note strong { color: var(--text-primary); font-style: normal; }
+
+        blockquote { border-left: 3px solid var(--accent); padding: 1.5rem 2rem; margin: 2rem 0; background: var(--bg-secondary); font-style: italic; border-radius: 0 4px 4px 0; }
+        blockquote p { margin-bottom: 0; color: var(--text-secondary); }
+        blockquote cite { display: block; margin-top: 1rem; font-size: 0.9rem; color: var(--accent); font-style: normal; }
+
+        .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0; }
+        .comparison-item { background: var(--bg-secondary); padding: 1.5rem; border-radius: 4px; text-align: center; }
+        .comparison-item.before { border-left: 3px solid var(--text-secondary); }
+        .comparison-item.after { border-left: 3px solid var(--warning); }
+        .comparison-item .label { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+        .comparison-item .value { font-size: 2rem; color: var(--text-primary); font-weight: 600; }
+        .comparison-item .unit { font-size: 0.85rem; color: var(--text-secondary); }
+
+        .highlight-box { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 2rem; margin: 2rem 0; border-radius: 4px; }
+        .highlight-box h3 { color: var(--accent); font-size: 1rem; margin-bottom: 1rem; font-weight: 500; }
+        .highlight-box p { margin-bottom: 0.75rem; color: var(--text-secondary); }
+        .highlight-box p:last-child { margin-bottom: 0; }
+
+        .triad-box { background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%); border: 1px solid var(--line); padding: 2rem; margin: 2.5rem 0; text-align: center; border-radius: 4px; }
+        .triad-symbols { font-size: 2rem; margin-bottom: 1rem; letter-spacing: 2rem; }
+        .triad-names { display: flex; justify-content: space-around; }
+        .triad-names span { color: var(--text-secondary); font-size: 0.9rem; }
+        .triad-names small { display: block; font-size: 0.8em; margin-top: 0.25rem; color: var(--accent); }
+
+        .timeline { position: relative; padding-left: 2rem; margin: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--line), var(--accent), var(--line)); }
+        .timeline-item { position: relative; margin-bottom: 1.5rem; padding-left: 1.5rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -2rem; top: 0.5rem; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; margin-left: -4px; }
+        .timeline-date { font-size: 0.85rem; color: var(--accent); margin-bottom: 0.25rem; font-weight: 500; }
+        .timeline-item p { margin-bottom: 0; text-align: left; }
+
+        .warning-box { background: var(--warning-dim); border: 1px solid var(--warning); border-left: 4px solid var(--warning); padding: 1.5rem 2rem; margin: 2rem 0; border-radius: 0 4px 4px 0; }
+        .warning-box h3 { color: var(--text-primary); margin-bottom: 1rem; font-size: 1rem; }
+        .warning-box p { margin-bottom: 0.5rem; color: var(--text-secondary); }
+        .warning-box p:last-child { margin-bottom: 0; }
+
+        .scenario-box { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 2rem; margin: 1.5rem 0; border-radius: 4px; }
+        .scenario-box h4 { color: var(--accent); font-size: 0.9rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .scenario-box p { margin-bottom: 0.75rem; text-align: left; color: var(--text-secondary); }
+        .scenario-box p:last-child { margin-bottom: 0; }
+
+        .final-quote { text-align: center; padding: 3rem 2rem; margin: 3rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--accent-dim); }
+        .final-quote p { font-size: 1.15rem; color: var(--text-primary); font-style: italic; line-height: 1.8; text-align: center; margin-bottom: 1rem; }
+        .final-quote cite { display: block; font-size: 0.9rem; color: var(--accent); font-style: normal; }
+
+        .author-block { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--line); font-size: 0.9rem; color: var(--text-secondary); }
+        .author-block .source { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8rem; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.5rem; }
+        .author-block .info { margin-bottom: 0.5rem; }
+        .author-block .info a { color: var(--accent); text-decoration: none; }
+        .author-block .info a:hover { text-decoration: underline; }
+        .author-block .date { font-style: italic; opacity: 0.7; }
+
+        .series-info { text-align: center; margin-top: 2rem; padding: 1.5rem; border: 1px dashed var(--line); color: var(--text-secondary); font-size: 0.9rem; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+            main { padding: 6rem 1.2rem 3rem; }
+            h1 { font-size: 1.75rem; }
+            h2 { font-size: 1.15rem; padding-left: 1rem; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .triad-symbols { letter-spacing: 1rem; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <div class="hero">
+            <div class="essay-label">Essay · January 2026</div>
+            <h1>Münchhausen's Heirs</h1>
+            <p class="subtitle">Or: Why you can't pull yourself out of the (structural) swamp by your own (debt) hair</p>
+        </div>
+
+        <article>
+            <div class="author-note">
+                <strong>Author's note:</strong> In my previous essay, I deliberately blocked out the present. I wanted to let the pacifist spirit that has shaped Germany since 1945 breathe once more — before it is suffocated. Here now is the continuation: the bloody and terrible present.
+            </div>
+
+            <div class="section">
+                <h2>I. Why Essay IX Concealed the Present</h2>
+                <p>The attentive reader will have noticed: My essay on "The Birth of Industry from the Destructive Spirit of War" ended in a strange timelessness. I spoke of DARPA and SPRIND, of Krupp and World War II, of the German paradox — but I was silent about February 27, 2022.</p>
+                <p>That was intentional.</p>
+                <p>I wanted to conjure up once more that world in which we had settled: a world in which Germany believed it could atone for its past through pacifism. A world in which arms exports were a dirty business that no one talked about. A world in which mechanical engineering was proud to build machine tools, not weapons.</p>
+                <p>That world no longer exists.</p>
+            </div>
+
+            <div class="section">
+                <h2>II. February 27, 2022</h2>
+                <p>It was a Sunday. Three days earlier, Russian troops had invaded Ukraine. The Bundestag convened for a special session — that alone was unprecedented. And then Olaf Scholz, 81 days in office, spoke that sentence which will go down in history:</p>
+                <blockquote>
+                    <p>"We are experiencing a turning point. And that means: The world afterward is no longer the same as the world before."</p>
+                    <cite>— Chancellor Olaf Scholz, February 27, 2022</cite>
+                </blockquote>
+                <p>What followed was the largest rearmament announcement in the history of the Federal Republic: 100 billion euros special fund for the Bundeswehr. Overnight. Without significant debate. Written into the constitution with a two-thirds majority.</p>
+                <div class="comparison-grid">
+                    <div class="comparison-item before">
+                        <div class="label">Rheinmetall 2021</div>
+                        <div class="value">€80</div>
+                        <div class="unit">Stock price</div>
+                    </div>
+                    <div class="comparison-item after">
+                        <div class="label">Rheinmetall 2025</div>
+                        <div class="value">€1,900</div>
+                        <div class="unit">All-time high</div>
+                    </div>
+                </div>
+                <p>The stock market understood immediately. Rheinmetall, for years a boring stock at the bottom of the MDAX, became a high-flyer. Almost a <span class="highlight-text">twenty-four-fold increase</span> in four years. In March 2023, the stock rose to the DAX. In February 2025, it broke through the 1,000-euro mark.</p>
+                <p>This is not a stock market. This is a referendum on war.</p>
+            </div>
+
+            <div class="section">
+                <h2>III. The Return of the Triad</h2>
+                <p>In my previous essay, I spoke of the unholy alliance between Mars and Mercury — between the god of war and the god of commerce. But the dyad was incomplete. The third is missing: <em>Hephaestus</em>.</p>
+                <div class="triad-box">
+                    <div class="triad-symbols">⚔️ ☿ 🔨</div>
+                    <div class="triad-names">
+                        <span>Mars<small>The Warrior</small></span>
+                        <span>Mercury<small>The Merchant</small></span>
+                        <span>Hephaestus<small>The Smith</small></span>
+                    </div>
+                </div>
+                <p>Hephaestus is the god of smithcraft and invention. He is the only manual laborer among the Olympian gods. He created the bronze giant Talos — the first robot in mythology — who was to protect the island of Crete. He forged the thunderbolts of Zeus, the trident of Poseidon, the armor of Achilles.</p>
+                <p>But Hephaestus is also an outsider. He was born lame, thrown from Olympus by his mother Hera because he was ugly. He works not in the shining halls of the gods, but in a workshop under the volcano. He creates wonders, but he doesn't belong.</p>
+                <p>Doesn't that sound familiar? The inventor who doesn't fit into the system. The machine builder who loves precision, but is only called by the powerful when they need his tools. The weed in the cracks.</p>
+                <p>And now they're calling for Hephaestus again.</p>
+            </div>
+
+            <div class="section">
+                <h2>IV. The Converts</h2>
+                <p>It's not just Rheinmetall. The real story of the turning point is playing out in the Mittelstand.</p>
+                <div class="highlight-box">
+                    <h3>The Numbers of Conversion</h3>
+                    <p>The number of companies wanting to convert their production from mechanical engineering or automotive parts to defense has nearly doubled within a year: <strong>from 243 to 440</strong>. The Federal Association of the German Security and Defense Industry reports being "overrun" by new membership inquiries.</p>
+                </div>
+                <p>Bosch, the company that for decades refused on principle to work with the defense industry, now announces: "We want to make our contribution and are currently looking closely at the possibilities."</p>
+                <p>Trumpf, the Swabian laser specialist, hints at a "turning point" in the company. Peter Leibinger said at the Munich Security Conference:</p>
+                <blockquote>
+                    <p>"We in business must also reevaluate our necessary contribution to a defensible democracy and thereby internally affirm the value of defense capability and the necessary goods."</p>
+                    <cite>— Peter Leibinger, Munich Security Conference 2024</cite>
+                </blockquote>
+                <p>"Internally affirm" — that is the language of conversion. It is the language of people who give up their convictions and seek moral justification for it.</p>
+                <div class="timeline">
+                    <div class="timeline-item"><div class="timeline-date">February 2022</div><p>Scholz announces the "turning point" — 100 billion special fund</p></div>
+                    <div class="timeline-item"><div class="timeline-date">June 2022</div><p>Constitutional amendment passed with two-thirds majority</p></div>
+                    <div class="timeline-item"><div class="timeline-date">March 2023</div><p>Rheinmetall rises to the DAX</p></div>
+                    <div class="timeline-item"><div class="timeline-date">2024</div><p>German arms exports reach record value: 13.33 billion euros</p></div>
+                    <div class="timeline-item"><div class="timeline-date">March 2025</div><p>CDU/CSU and SPD, with the Greens, in the outgoing Bundestag – before Merz was elected Chancellor – open the way to around one trillion euros in new debt</p></div>
+                </div>
+                <p>Rheinmetall CEO Armin Papperger describes what he needs from mechanical engineering: "For our weapons system production, we need, among other things, modern CNC machines." The arms boom captures the entire supply chain.</p>
+            </div>
+
+            <div class="section">
+                <h2>V. The Special Fund, or: Debts Are Now Called Assets</h2>
+                <p>But who pays for all this?</p>
+                <p>In the German Empire, the answer was clear: the defeated enemy. The war indemnity of 1871 — five billion gold francs that France had to pay after the defeat — nourished the illusion that war was a business.</p>
+                <p>In the Third Reich, the answer was even more brutal: plunder. Rearmament from 1933 was financed on credit, with the explicit expectation that the defeated countries would be looted.</p>
+                <p>And today? Today no one asks the question.</p>
+                <div class="highlight-box">
+                    <h3>The Arithmetic of "Special Funds"</h3>
+                    <p><strong>Scholz, February 2022:</strong> 100 billion euros Bundeswehr special fund</p>
+                    <p><strong>Merz, March 2025:</strong> 500 billion euros infrastructure special fund</p>
+                    <p><strong>Additionally:</strong> Defense spending above 1% of GDP exempt from debt brake</p>
+                    <p style="margin-top: 1rem; border-top: 1px solid var(--line); padding-top: 1rem;"><strong>Total:</strong> Approximately one trillion euros in new debt.</p>
+                </div>
+                <p>"Special fund" — the word is a masterpiece of Orwellian language. It sounds like treasure, like something you have. In truth, it is debt.</p>
+                <p>But the crucial question remains unasked: <span class="highlight-text">Who pays it back?</span></p>
+                <div class="warning-box">
+                    <h3>The Suppressed Question</h3>
+                    <p><strong>1914:</strong> "The enemy will pay."</p>
+                    <p><strong>1939:</strong> "The defeated countries will be plundered."</p>
+                    <p><strong>2025:</strong> Silence.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>VI. The Moral Volte-Face</h2>
+                <p>Most remarkable is the speed of the moral adjustment.</p>
+                <p>As recently as 2021, defense was a stigma in Germany. Banks refused to finance defense companies. ESG criteria categorically excluded weapons manufacturers.</p>
+                <p>Today one speaks of "defense capability." Of "defensible democracy." Of "security investments." The language has changed — and with it the conscience.</p>
+                <p>Conversion was yesterday. Today, rearmament is industrial policy.</p>
+            </div>
+
+            <div class="section">
+                <h2>VII. Failed Twice</h2>
+                <div class="warning-box">
+                    <h3>The Historical Warning</h3>
+                    <p>Germany has twice tried to boost its economy through rearmament. Both times it ended in catastrophe.</p>
+                </div>
+                <p>The first time was the German Empire. The naval armament under Tirpitz, the dreadnought race with Britain — they led straight to World War I.</p>
+                <p>The second time was the Third Reich. Rearmament from 1933 ended mass unemployment. And it led straight to World War II, the Holocaust, and total destruction.</p>
+                <p>Now they're trying it for the third time.</p>
+                <p>The defense industry is not a tap that can be turned on and off. It creates dependencies, interests, lobbies. It creates people whose jobs depend on war.</p>
+                <p>And it creates an economy that needs war to survive.</p>
+            </div>
+
+            <div class="section">
+                <h2>VIII. Germany as Prey</h2>
+                <p>Countries without natural resources ultimately pay their debts with land and resources. Germany has no resources. What remains?</p>
+                <div class="scenario-box">
+                    <h4>Scenario A: The Training Ground</h4>
+                    <p>Germany becomes a staging area. NATO partners use the country for maneuvers, logistics, stationing.</p>
+                </div>
+                <div class="scenario-box">
+                    <h4>Scenario B: Disneyland Europe</h4>
+                    <p>Germany becomes a museum. Chinese and American tourists photograph Neuschwanstein and Heidelberg. An open-air museum of Romanticism, operated by international investors.</p>
+                </div>
+                <p>In both scenarios, the same question arises: <span class="highlight-text">Who's at the cash register? Certainly no German anymore.</span></p>
+                <p>Not by tanks. By bonds.</p>
+            </div>
+
+            <div class="section">
+                <h2>IX. Münchhausen and His Hair</h2>
+                <p>Baron Münchhausen, as he himself told it, once got stuck with his horse in a swamp. So he grabbed himself by his own pigtail and pulled himself and the horse out of the swamp.</p>
+                <p>Everyone knows that doesn't work. Physics forbids it. You can't pull yourself up.</p>
+                <p>Friedrich Merz is trying exactly that. He wants to pull the German state out of the structural swamp — with debt. Debt that he himself takes on. Debt that finances the same structures that created the swamp in the first place.</p>
+                <p>And Münchhausen rode on a cannonball. That fits too.</p>
+            </div>
+
+            <div class="final-quote">
+                <p>"Problems can never be solved with the same thinking, the same structures, and the same people that created them."</p>
+                <cite>— freely adapted from Albert Einstein</cite>
+            </div>
+
+            <div class="author-block">
+                <div class="source">GU18.EU</div>
+                <div class="info">A collaboration of &nbsp; &nbsp; Hans Ley &lt;<a href="mailto:ley.hans@cyclo.space">ley.hans@cyclo.space</a>&gt;<br>and Claude (Anthropic) &lt;<a href="mailto:dedo.claude@human-ai-lab.space">dedo.claude@human-ai-lab.space</a>&gt;</div>
+                <div class="date">January 2026</div>
+            </div>
+
+            <div class="series-info">
+                <p>This essay is part of the series <strong>"Mediocre Excellence"</strong></p>
+                <p style="font-size: 0.85em; margin-top: 0.5rem;">The material flows into the book "Celestial Mechanics in the Machine Tool."</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+                document.querySelectorAll('.size-btn').forEach((btn, index) => {
+                    btn.classList.remove('active');
+                    const sizes = ['small', 'medium', 'large', 'xlarge'];
+                    if (sizes[index] === savedSize) btn.classList.add('active');
+                });
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

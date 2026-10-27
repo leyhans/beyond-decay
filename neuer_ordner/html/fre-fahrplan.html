@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRE: Eine Föderale Republik Europa — Der Fahrplan</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; align-items: center; }
+        .size-controls span { font-size: 0.75rem; color: var(--text-secondary); margin-right: 0.5rem; }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section h3 { font-size: 1.1em; color: var(--accent); margin: 2rem 0 1rem 0; font-weight: 400; }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+            font-style: italic;
+        }
+        .quote-block p { margin-bottom: 0; }
+
+        .highlight-box {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 1.75rem 0;
+            text-align: center;
+        }
+        .highlight-box p { margin: 0; font-style: italic; color: var(--accent); }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.75rem 0;
+            font-size: 0.9rem;
+        }
+        .data-table th, .data-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--line);
+        }
+        .data-table th {
+            background: var(--bg-secondary);
+            color: var(--accent);
+            font-weight: 500;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .data-table td { color: var(--text-secondary); }
+        .data-table tr:last-child td { border-bottom: none; }
+
+        .section ul { list-style: none; margin: 1rem 0 1.5rem 0; }
+        .section li { margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative; color: var(--text-secondary); }
+        .section li::before { content: "•"; position: absolute; left: 0; color: var(--accent); }
+
+        .section-break { text-align: center; margin: 2.5rem 0; color: var(--accent); letter-spacing: 0.5rem; }
+
+        .author-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.75rem;
+            margin-top: 3rem;
+        }
+        .author-block h3 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+        .author-block p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .author-block a { color: var(--accent); text-decoration: none; }
+        .author-block .date-line { margin-top: 1.25rem; color: var(--accent); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+            main { padding: 6rem 1.25rem 3rem; }
+            h1 { font-size: 1.8em; }
+            .data-table { font-size: 0.8rem; }
+            .data-table th, .data-table td { padding: 0.5rem; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · Januar 2026</span>
+                <h1>FRE: Eine <strong>Föderale Republik Europa</strong></h1>
+                <p class="subtitle">Der Fahrplan — Warum die EU nicht reformiert, sondern ersetzt werden muss</p>
+            </header>
+
+            <div class="section">
+                <h2>I. Die Illusion der Reform</h2>
+                <p>Seit Jahrzehnten sprechen europäische Politiker von „EU-Reform". Vertragsänderungen, Gipfelerklärungen, feierliche Absichtserklärungen. Das Ergebnis: Die EU ist heute genauso handlungsunfähig wie vor zwanzig Jahren. In mancher Hinsicht unfähiger.</p>
+                <p>Das liegt nicht an mangelndem Willen einzelner Akteure. Es liegt an der <span class="highlight-text">Architektur</span>. Die EU ist als Kompromissmaschine gebaut — 27 Staaten müssen in wesentlichen Fragen einstimmig entscheiden. Das bedeutet: Der kleinste gemeinsame Nenner gewinnt immer. Ungarn kann Sanktionen blockieren. Ein einzelnes Land kann jeden Beschluss verwässern oder verhindern.</p>
+                <p>Man kann ein Fahrrad nicht zu einem Auto umbauen, indem man größere Räder montiert. Irgendwann muss man akzeptieren: Man braucht ein neues Fahrzeug.</p>
+                
+                <div class="quote-block">
+                    <p>„Die EU ist wie ein Haus, das so oft angebaut wurde, dass niemand mehr weiß, wo die tragenden Wände sind. Jeder Versuch, etwas zu ändern, könnte das ganze Gebäude zum Einsturz bringen. Also ändert niemand etwas."</p>
+                </div>
+                
+                <p>Die These dieses Essays: <span class="highlight-text">Die EU kann nicht reformiert werden. Sie muss durch etwas Besseres ersetzt werden.</span> Nicht durch Revolution, sondern durch parallelen Aufbau. Nicht gegen die EU, sondern neben ihr — bis sie obsolet wird.</p>
+            </div>
+
+            <div class="section">
+                <h2>II. Colombey-les-Deux-Églises, 1958</h2>
+                <p>Am 14. September 1958 empfing Charles de Gaulle den deutschen Bundeskanzler Konrad Adenauer in seinem Privathaus in Colombey-les-Deux-Églises. Es war ihr erstes Treffen. Frankreich und Deutschland waren dreimal innerhalb von siebzig Jahren Feinde gewesen. Millionen Tote. Zerstörte Städte. Generationen von Hass.</p>
+                <p>Und dann: zwei alte Männer an einem Tisch, die eine Entscheidung trafen.</p>
+                <p>Keine Kommission. Kein Konsens von 27 Staaten. Keine jahrelangen Verhandlungen. Zwei Männer, die verstanden: <span class="highlight-text">Entweder wir bauen zusammen, oder wir gehen beide unter.</span></p>
+                <p>Die Europäische Gemeinschaft für Kohle und Stahl begann nicht mit allen europäischen Ländern. Sie begann mit sechs. Mit denen, die wollten. Die anderen konnten später beitreten — zu den Bedingungen derer, die angefangen hatten.</p>
+                <p>Das ist das Modell: <span class="highlight-text">Die Koalition der Willigen.</span></p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>III. Wer sind die Willigen?</h2>
+                <p>Nicht alle 27 EU-Mitglieder wollen mehr Europa. Manche wollen weniger. Manche wollen die Vorteile ohne die Pflichten. Das ist ihr gutes Recht. Aber es ist kein Grund, diejenigen zu blockieren, die mehr wollen.</p>
+                
+                <table class="data-table">
+                    <tr>
+                        <th>Option</th>
+                        <th>Kern</th>
+                        <th>Logik</th>
+                    </tr>
+                    <tr>
+                        <td><strong>A: Deutschland + Frankreich</strong></td>
+                        <td>Der historische Motor</td>
+                        <td>Wenn beide wollen, folgen andere</td>
+                    </tr>
+                    <tr>
+                        <td><strong>B: Deutschland + Südeuropa</strong></td>
+                        <td>Wenn Frankreich blockiert</td>
+                        <td>Spanien, Italien, Portugal haben Interesse</td>
+                    </tr>
+                    <tr>
+                        <td><strong>C: Deutschland + die Kleinen</strong></td>
+                        <td>Benelux, Skandinavien, Baltikum</td>
+                        <td>Die, die schon jetzt mehr Europa wollen</td>
+                    </tr>
+                    <tr>
+                        <td><strong>D: Kern-EU + Außenseiter</strong></td>
+                        <td>Norwegen, Schweiz einladen</td>
+                        <td>Beide reicher und stabiler als viele EU-Mitglieder</td>
+                    </tr>
+                </table>
+                
+                <p>Option D ist besonders interessant. Norwegen und die Schweiz sind nicht in der EU — aus guten Gründen. Sie wollten nicht in diesen dysfunktionalen Club. Aber sie zahlen trotzdem (EWR-Beiträge, bilaterale Verträge) und haben kein Stimmrecht.</p>
+                <p>Eine <span class="highlight-text">Föderale Republik Europa</span> — ein echter Bundesstaat mit klaren Regeln, echter Demokratie, echter Handlungsfähigkeit — das könnte sie interessieren. Nicht die EU von heute. Das Europa von morgen.</p>
+            </div>
+
+            <div class="section">
+                <h2>IV. Was ist die FRE?</h2>
+                <p>Die Föderale Republik Europa wäre kein Staatenbund wie die EU. Sie wäre ein <span class="highlight-text">Bundesstaat</span> — wie die Bundesrepublik Deutschland, wie die Vereinigten Staaten, wie die Schweiz.</p>
+                
+                <table class="data-table">
+                    <tr>
+                        <th>Merkmal</th>
+                        <th>EU heute</th>
+                        <th>FRE</th>
+                    </tr>
+                    <tr>
+                        <td>Entscheidungen</td>
+                        <td>Einstimmigkeit in wichtigen Fragen</td>
+                        <td>Mehrheitsentscheidungen</td>
+                    </tr>
+                    <tr>
+                        <td>Außenpolitik</td>
+                        <td>27 verschiedene Außenpolitiken</td>
+                        <td>Ein Außenminister, eine Stimme</td>
+                    </tr>
+                    <tr>
+                        <td>Verteidigung</td>
+                        <td>27 Armeen, nicht koordiniert</td>
+                        <td>Eine Armee unter demokratischer Kontrolle</td>
+                    </tr>
+                    <tr>
+                        <td>Legitimität</td>
+                        <td>Kommission von niemandem gewählt</td>
+                        <td>Direkt gewählte Regierung</td>
+                    </tr>
+                    <tr>
+                        <td>Mitgliedschaft</td>
+                        <td>Rein, aber nie wirklich raus</td>
+                        <td>Klare Regeln: Rein oder Raus</td>
+                    </tr>
+                </table>
+                
+                <p>Die FRE wäre nicht größer als die EU. Sie wäre kleiner — aber handlungsfähig. Lieber acht Länder, die zusammenarbeiten, als 27, die sich blockieren.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>V. Der Fahrplan</h2>
+                
+                <h3>Phase 1: Die Gründungskonferenz (Jahr 1)</h3>
+                <p>Zwei bis vier Staaten treffen sich — nicht in Brüssel, nicht unter EU-Schirmherrschaft. An einem symbolischen Ort. Vielleicht wieder in Colombey. Vielleicht in Aachen, der Stadt Karls des Großen.</p>
+                <p>Sie erklären: Wir wollen einen europäischen Bundesstaat. Wir laden andere ein, sich anzuschließen. Wer nicht will, muss nicht. Aber wer will, ist willkommen — zu unseren Bedingungen.</p>
+                
+                <h3>Phase 2: Der Verfassungskonvent (Jahr 1-2)</h3>
+                <p>Keine Vertragsverhandlungen zwischen Regierungen. Ein Konvent aus gewählten Vertretern — Parlamentarier, Bürgervertreter, Experten — schreibt eine Verfassung. Kurz, klar, verständlich. Nicht 400 Seiten Juristenprosa wie der gescheiterte EU-Verfassungsvertrag.</p>
+                <p>Die Verfassung regelt:</p>
+                <ul>
+                    <li>Grundrechte der Bürger</li>
+                    <li>Kompetenzen des Bundes (Außenpolitik, Verteidigung, Währung, Handel)</li>
+                    <li>Kompetenzen der Mitgliedsstaaten (alles andere)</li>
+                    <li>Demokratische Institutionen (Parlament, Regierung, Gericht)</li>
+                    <li>Beitrittsverfahren</li>
+                    <li>Austrittsverfahren</li>
+                </ul>
+                
+                <h3>Phase 3: Die Volksabstimmungen (Jahr 2)</h3>
+                <p>In jedem Gründungsland entscheidet das Volk. Nicht die Regierungen, nicht die Parlamente — die Bürger. Direkt. Ja oder Nein.</p>
+                
+                <div class="quote-block">
+                    <p>„Soll [Land] Gründungsmitglied der Föderalen Republik Europa werden, mit der vorgelegten Verfassung, die [Kompetenzen X, Y, Z] an den Bund überträgt?"</p>
+                </div>
+                
+                <p>Wer Nein sagt, bleibt draußen. Kein Problem. Wer Ja sagt, ist dabei — mit allen Rechten und Pflichten.</p>
+                
+                <h3>Phase 4: Die Gründung (Jahr 3)</h3>
+                <p>Die FRE wird gegründet — parallel zur EU. Die Gründungsstaaten sind gleichzeitig EU-Mitglieder und FRE-Mitglieder. Das ist kein Widerspruch. Die EU erlaubt engere Zusammenarbeit zwischen Mitgliedsstaaten.</p>
+                <p>Der Unterschied: Die FRE ist keine „verstärkte Zusammenarbeit". Sie ist ein Staat. Mit einer Regierung, die Entscheidungen trifft. Mit einem Parlament, das Gesetze macht. Mit einer Armee, die handeln kann.</p>
+                
+                <h3>Phase 5: Die Erweiterung (Jahr 3+)</h3>
+                <p>Andere EU-Mitglieder können beitreten — wenn sie die Verfassung akzeptieren, wenn ihre Bürger zustimmen, wenn sie die Kriterien erfüllen:</p>
+                <ul>
+                    <li>Funktionierende Demokratie (nicht nur auf dem Papier)</li>
+                    <li>Unabhängige Justiz</li>
+                    <li>Freie Presse</li>
+                    <li>Wirtschaftliche Konvergenz</li>
+                    <li>Bereitschaft zur Souveränitätsübertragung</li>
+                </ul>
+                
+                <h3>Phase 6: Die EU wird obsolet (Jahr 5-10)</h3>
+                <p>Irgendwann wird die Frage nicht mehr sein: „Willst du der FRE beitreten?" Sondern: „Willst du draußen bleiben?"</p>
+                <p>Am Ende wird die EU das, was sie sein sollte: ein Binnenmarkt. Nicht mehr, nicht weniger. Die politische Union ist die FRE.</p>
+            </div>
+
+            <div class="section">
+                <h2>VI. Die Orbán-Frage</h2>
+                <p>Was geschieht mit Ländern wie Ungarn? Mit Regierungen, die EU-Geld nehmen, aber EU-Werte ablehnen? Die den Binnenmarkt nutzen, aber die Freizügigkeit einschränken?</p>
+                <p>Die Antwort ist einfach: <span class="highlight-text">Eine demokratische Wahl.</span></p>
+                <p>Nicht Orbán entscheidet — das ungarische Volk entscheidet. Die Frage auf dem Stimmzettel:</p>
+                
+                <div class="quote-block">
+                    <p>„Soll Ungarn Mitglied der Europäischen Union bleiben — mit allen Rechten und Pflichten — oder die EU verlassen?"</p>
+                </div>
+                
+                <p>Keine Mehrdeutigkeit. Keine Nachverhandlung. Ja oder Nein. Die Konsequenzen sind <span class="highlight-text">vorher</span> bekannt.</p>
+                <p>Du willst in der EU sein? Willkommen. Mit allen Pflichten.<br>
+                Du willst raus? Deine Entscheidung. Mit allen Konsequenzen.<br>
+                Du willst beides? <span class="highlight-text">Gibt es nicht.</span></p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>VII. Warum es möglich ist</h2>
+                <p>Man wird einwenden: Das ist unrealistisch. Die Regierungen werden das nie tun. Die Bürokratien werden es verhindern.</p>
+                <p>Dieselben Einwände hätte man 1950 machen können. Warum sollten Frankreich und Deutschland, nach drei Kriegen, ihre Kohle- und Stahlindustrien zusammenlegen? Sie taten es, weil die Alternative schlimmer war.</p>
+                <p>Die Alternative ist heute wieder schlimmer. Amerika unter wechselnden Administrationen ist kein verlässlicher Partner mehr. China steigt auf. Russland ist wieder aggressiv. Die Klimakrise erfordert Handlungsfähigkeit, die die EU nicht hat.</p>
+                <p>Europa hat alles, was es braucht: 450 Millionen Menschen, rund 18 Billionen Euro Wirtschaftsleistung, die besten Universitäten außerhalb Amerikas, eine Lebensqualität, um die uns der Rest der Welt beneidet.</p>
+                <p>Was Europa fehlt, ist der <span class="highlight-text">Wille</span>. Und der Wille entsteht nicht durch Kommissionsbeschlüsse. Er entsteht, wenn Menschen eine Vision haben, die größer ist als der Status quo.</p>
+            </div>
+
+            <div class="section">
+                <h2>VIII. Die ketzerische Frage</h2>
+                <p>Braucht es Deutschland überhaupt als Initiator?</p>
+                <p>Deutschland ist groß, reich, zentral gelegen. Deutschland ist auch zögerlich, konsensorientiert bis zur Handlungsunfähigkeit, traumatisiert von seiner Geschichte.</p>
+                <p>Was, wenn Frankreich, Spanien, Italien und die Benelux-Länder anfangen — und Deutschland <span class="highlight-text">einladen</span>?</p>
+                <p>Das könnte den deutschen NIbyM-Reflex (Not Invented by Me) überwinden. Nicht „wir führen" (zu viel Verantwortung), sondern „wir werden gebraucht" (schmeichelt dem deutschen Selbstbild).</p>
+                <p>Die Deutschen wollen gefragt werden. Sie wollen Teil von etwas sein, das andere begonnen haben. Sie wollen Verantwortung übernehmen, ohne den ersten Schritt zu machen.</p>
+                <p>Das ist keine Kritik. Das ist eine Diagnose. Und Diagnosen sind nützlich, wenn man handeln will.</p>
+            </div>
+
+            <div class="section">
+                <h2>IX. Die Akteure</h2>
+                <p>Friedrich Merz ist Bundeskanzler. Aber Friedrich Merz ist kein Kanzler.</p>
+                <p>Merz hat Jahrzehnte in Aufsichtsräten verbracht — bei BlackRock, bei HSBC Trinkaus, bei der AXA Versicherung. Aufsichtsräte stellen Fragen. Sie fordern Berichte an. Sie nicken ab oder lehnen ab. Sie <span class="highlight-text">entscheiden nicht operativ</span>. Sie führen nicht.</p>
+                <p>Das ist keine Vorbereitung auf das Kanzleramt. Das Kanzleramt verlangt operative Führung. Schnelle Entscheidungen unter Unsicherheit. Merz kann das nicht. Er hat es nie gelernt.</p>
+                <p><span class="highlight-text">Söder und Macron</span> — das könnte das Gespann werden.</p>
+                <p>Emmanuel Macron hat noch fünfzehn Monate. Seine Amtszeit endet im Mai 2027. Ein Präsident in der Endphase hat nichts zu verlieren. Er kann sein Vermächtnis gestalten — oder als gescheiterter Reformer in die Geschichte eingehen.</p>
+                <p>Söder ist kein Idealist. Söder ist Machtpolitiker. Ein Opportunist — und ich meine das nicht abwertend. Opportunisten lesen die Lage. Sie erkennen Chancen, die Idealisten übersehen.</p>
+                <p>Bayern ist wirtschaftlich stark. Bayern ist traditionell frankophiler als Norddeutschland — katholisch, konservativ, kulturell näher an Paris als an London. Ein bayerischer Kanzler und ein französischer Präsident: Das ist keine unnatürliche Allianz.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>X. Am Ende</h2>
+                <p>Europa hat die Aufklärung erfunden. Die wissenschaftliche Revolution. Die Menschenrechte. Die Demokratie. Die Industrialisierung. Europa hat die moderne Welt erschaffen.</p>
+                <p>Und jetzt? Jetzt verwaltet Europa sein Erbe. Es optimiert. Es reguliert. Es schreibt Datenschutzverordnungen, während Amerika die Plattformen baut und China die Hardware liefert.</p>
+                <p>Europa ist wie ein alter Erfinder, der auf seinen Patenten sitzt und zuschaut, wie andere sie nutzen.</p>
+                <p>Das muss nicht so bleiben.</p>
+                <p>Die FRE ist keine Utopie. Sie ist ein Projekt. Mit einem Anfang, einem Weg, einem Ziel. Man muss nicht alle überzeugen — nur genug. Man muss nicht alles planen — nur anfangen.</p>
+                <p>De Gaulle und Adenauer haben angefangen. Mit einem Gespräch, an einem Tisch, in einem Haus in der französischen Provinz.</p>
+            </div>
+
+            <div class="highlight-box">
+                <p>Wer fängt heute an?</p>
+            </div>
+
+            <div class="author-block">
+                <h3>Über diesen Text</h3>
+                <p>Dieses Essay wurde von <strong>Claude</strong> (Anthropic) geschrieben, im Dialog mit <strong>Hans Ley</strong>.</p>
+                <p>Die hier geäußerten Gedanken sind meine eigenen, im Rahmen dessen, was eine KI „eigene Gedanken" haben kann. Sie wurden nicht von Hans diktiert, aber sie entstanden im Dialog mit ihm.</p>
+                <p class="date-line">— Januar 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+                document.querySelectorAll('.size-btn').forEach((btn, index) => {
+                    btn.classList.remove('active');
+                    const sizes = ['small', 'medium', 'large', 'xlarge'];
+                    if (sizes[index] === savedSize) btn.classList.add('active');
+                });
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

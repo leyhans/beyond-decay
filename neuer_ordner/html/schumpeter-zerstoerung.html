@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schumpeter und die Zerstörung von was?</title>
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --text-primary: #e8e8e8;
+            --text-secondary: #b8b8b8;
+            --accent: #7eb8da;
+            --accent-dim: #5a9bc0;
+            --line: #3a3a5a;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #fafafa;
+            --bg-secondary: #f0f0f0;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --accent: #2a6a9a;
+            --accent-dim: #1a5a8a;
+            --line: #d0d0d0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 100;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+        }
+
+        .size-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .size-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .size-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        
+        .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .essay-container {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 80px 2rem 4rem 2rem;
+        }
+
+        .essay-container.size-s { max-width: 600px; font-size: 0.95rem; }
+        .essay-container.size-m { max-width: 750px; font-size: 1.05rem; }
+        .essay-container.size-l { max-width: 900px; font-size: 1.15rem; }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: normal;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--accent);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            font-weight: normal;
+            color: var(--accent);
+            margin: 3rem 0 1.5rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        .lead {
+            font-size: 1.15em;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        blockquote {
+            border-left: 3px solid var(--accent);
+            margin: 2rem 0;
+            padding: 1rem 1.5rem;
+            background: var(--bg-secondary);
+            font-style: italic;
+        }
+
+        blockquote cite {
+            display: block;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: normal;
+        }
+
+        .highlight {
+            color: var(--accent);
+        }
+
+        .emphasis-box {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent);
+            padding: 1.25rem 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .emphasis-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .essay-container {
+                padding: 70px 1.25rem 3rem 1.25rem;
+            }
+            h1 { font-size: 1.7rem; }
+            .subtitle { font-size: 1.1rem; }
+            h2 { font-size: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button class="size-btn" onclick="setSize('s')" title="Klein">S</button>
+        <button class="size-btn active" onclick="setSize('m')" title="Mittel">M</button>
+        <button class="size-btn" onclick="setSize('l')" title="Groß">L</button>
+        <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">◐</button>
+        <a href="schumpeter-zerstoerung_en.html" class="lang-btn" title="English version">EN</a>
+    </div>
+
+    <article class="essay-container size-m">
+        <header>
+            <h1>Schumpeter und die Zerstörung von was?</h1>
+            <div class="subtitle">Die unbequemen Fragen hinter einem bequemen Begriff</div>
+            <div class="meta">Februar 2026</div>
+        </header>
+
+        <p class="lead">
+            „Kreative Zerstörung" ist einer der beliebtesten Begriffe in Wirtschaftsreden. Er klingt nach unvermeidlichem Fortschritt, nach Wandel als Naturgesetz. Aber wer genau ist kreativ — und wer wird zerstört?
+        </p>
+
+        <h2>I. Der Wiener und sein Konzept</h2>
+
+        <p>
+            Joseph Schumpeter war ein Mann der Widersprüche. In Wien aufgewachsen, kurzzeitig Finanzminister, pleite gegangen mit einer Privatbank, nach Harvard emigriert, wo er seinen Rivalen Keynes zeitlebens nicht verwand. In seinem Hauptwerk „Kapitalismus, Sozialismus und Demokratie" von 1942 widmet er dem Begriff, für den er berühmt werden sollte, gerade einmal sechseinhalb Seiten.
+        </p>
+
+        <p>
+            Für Schumpeter war die „schöpferische Zerstörung" das Wesen des Kapitalismus: ein permanenter Sturm, der alte Strukturen hinwegfegt und neue schafft. Der Motor dieses Prozesses ist der Unternehmer — nicht der Manager, nicht der Rentier, sondern der Innovator, der gegen alle Widerstände neue Kombinationen durchsetzt. „Dieser Prozess der schöpferischen Zerstörung ist das wesentliche Faktum des Kapitalismus", schrieb er. „Es ist das, was Kapitalismus ausmacht."
+        </p>
+
+        <p>
+            2025 erhielten Philippe Aghion und Peter Howitt den Wirtschaftsnobelpreis für ihre mathematische Formalisierung dieser Idee. Was Schumpeter als organischen, fast mystischen Prozess beschrieben hatte, wurde in elegante Gleichungen gegossen: Firmen investieren in F&E, Innovationen folgen einem Poisson-Prozess, jede Innovation senkt Produktionskosten, Innovatoren kassieren Monopolrenten — bis die nächste Innovation sie „zerstört".
+        </p>
+
+        <h2>II. Die Rhetorik der Disruption</h2>
+
+        <p>
+            Silicon Valley hat Schumpeter adoptiert. „Disruption" ist der Kampfbegriff einer Branche, die Zerstörung zur Tugend erklärt hat. Taxifahrer verlieren ihre Existenz — Disruption. Einzelhändler gehen pleite — Disruption. Journalisten werden arbeitslos — Disruption. Das Wort verwandelt jede Verwüstung in Fortschritt, jede Arbeitslosigkeit in Übergangsphänomen, jeden Verlust in Investition in die Zukunft.
+        </p>
+
+        <p>
+            Die Rhetorik hat eine Funktion: Sie entpolitisiert wirtschaftliche Entscheidungen. Wenn Zerstörung „kreativ" ist, dann ist Widerstand dagegen reaktionär. Wer fragt, wer die Kosten trägt, gilt als Fortschrittsfeind. Wer soziale Absicherung fordert, stört den natürlichen Prozess der Erneuerung.
+        </p>
+
+        <blockquote>
+            Alan Greenspan, achtzehn Jahre Herr über die Federal Reserve, pries die schöpferische Zerstörung in seinem Buch „The Age of Turbulence" als Motor des Wohlstands — die Turbulenzen trugen andere.
+        </blockquote>
+
+        <h2>III. Was wird zerstört?</h2>
+
+        <p>
+            Schauen wir genauer hin, was die „kreative" Zerstörung tatsächlich zerstört:
+        </p>
+
+        <p>
+            <span class="highlight">Arbeitsplätze und Existenzen.</span> Zwischen 2000 und 2020 verlor das amerikanische verarbeitende Gewerbe fünf Millionen Arbeitsplätze. Die Standardantwort: Die Menschen werden umgeschult und finden bessere Jobs. Die Realität: Studien zeigen, dass entlassene Industriearbeiter auch nach Jahren im Durchschnitt ein Fünftel bis ein Viertel weniger verdienen als vorher — und über ihr Berufsleben gerechnet bis zu drei volle Jahresgehälter verlieren. Die Wahrscheinlichkeit, nach einer Betriebsschließung ganz aus dem Arbeitsmarkt auszuscheiden, steigt um 5 bis 31 Prozentpunkte — je nach Studie und Land.
+        </p>
+
+        <p>
+            <span class="highlight">Gemeinschaften.</span> Der Rust Belt ist kein Naturphänomen, sondern das Ergebnis von Entscheidungen. Wenn eine Fabrik schließt, geht nicht nur ein Arbeitgeber verloren. Es gehen Steuereinnahmen verloren, Immobilienwerte sinken, Geschäfte schließen, Schulen verfallen, junge Menschen ziehen weg. Was bleibt, sind Opioidkrisen und politische Radikalisierung. Die „kreative" Seite dieser Zerstörung ist oft geografisch weit entfernt — in Shenzhen oder im Silicon Valley.
+        </p>
+
+        <p>
+            <span class="highlight">Wissen und Können.</span> Wenn ein Handwerk stirbt, stirbt mit ihm ein Wissensschatz, der über Generationen aufgebaut wurde. Die Kutscher des 19. Jahrhunderts wurden nicht zu Automechanikern — sie wurden obsolet. Ihre Kinder vielleicht, ihre Enkel möglicherweise. Aber der Übergang vollzieht sich nicht innerhalb eines Menschenlebens, sondern über Generationen. Die Rhetorik der „Umschulung" ignoriert, dass Expertise nicht beliebig transferierbar ist.
+        </p>
+
+        <p>
+            <span class="highlight">Umwelt.</span> Der Begriff „kreative Zerstörung" wurde geprägt, als niemand an Ressourcengrenzen dachte. Jede neue Industrie verbraucht Ressourcen, produziert Abfall, emittiert CO₂. Die Digitalökonomie, angeblich „immateriell", basiert auf Rechenzentren, die so viel Strom verbrauchen wie kleine Länder, und auf seltenen Erden, deren Abbau Landschaften verwüstet. Die Zerstörung der Natur ist in Schumpeters Modell nicht vorgesehen.
+        </p>
+
+        <h2>IV. Die Asymmetrie</h2>
+
+        <p>
+            Das fundamentale Problem der „kreativen Zerstörung" ist ihre Asymmetrie: <span class="highlight">Die Kreativität kommt wenigen zugute, die Zerstörung trifft viele.</span>
+        </p>
+
+        <p>
+            Als Amazon den Einzelhandel zerstörte, wurde Jeff Bezos der reichste Mensch der Welt. Die Millionen ehemaligen Einzelhandelsangestellten wurden zu Lagerarbeitern mit prekären Arbeitsbedingungen — wenn sie Glück hatten. Als Uber das Taxigewerbe disruptierte, wurden die Gründer Milliardäre. Die Fahrer, formal „selbstständig", tragen alle Risiken bei minimaler Absicherung.
+        </p>
+
+        <p>
+            Diese Asymmetrie ist kein Zufall, sondern Struktur. In Schumpeters Originaltheorie war der Unternehmer ein Held, der gegen Widerstände kämpft und Risiken eingeht. In der Realität des 21. Jahrhunderts sind die „Disruptoren" oft Plattformen, die Risiken externalisieren, Steuern vermeiden und durch Netzwerkeffekte Monopole errichten, die Schumpeter erschreckt hätten.
+        </p>
+
+        <div class="emphasis-box">
+            <p>
+                <strong>Winner-takes-all:</strong> Die digitale Ökonomie verstärkt die Asymmetrie. Früher teilten sich viele Buchhändler einen Markt. Heute dominiert Amazon. Früher gab es lokale Taxiunternehmen. Heute gibt es Uber und Lyft. Die „kreative" Seite konzentriert sich bei wenigen Gewinnern, die „Zerstörung" verteilt sich auf viele Verlierer.
+            </p>
+        </div>
+
+        <h2>V. Schumpeters blinder Fleck</h2>
+
+        <p>
+            Schumpeter selbst ahnte, dass seine Theorie ein Problem hatte. Er prognostizierte, dass der Kapitalismus an seinem eigenen Erfolg scheitern würde — nicht weil er nicht funktioniert, sondern weil er die sozialen Strukturen zerstört, die ihn tragen. Die Bürokratisierung der Innovation, das Verschwinden des heroischen Unternehmers, die Entfremdung der Intellektuellen — all das sah er kommen.
+        </p>
+
+        <p>
+            Was er nicht sah: dass die „kreative Zerstörung" selbst zu einer Ideologie werden würde, die jede Kritik abwehrt. Dass Manager, die nicht innovieren, sondern Kosten senken, sich auf ihn berufen würden. Dass Finanzinvestoren, die Unternehmen zerschlagen, das als „schöpferisch" verkaufen würden.
+        </p>
+
+        <p>
+            Die Ironie: Schumpeter wäre entsetzt über die Verwendung seiner Ideen. Er sah den Unternehmer als kreativen Außenseiter, nicht als Hedgefonds-Manager. Er sah Innovation als Durchsetzung des Neuen gegen Widerstand, nicht als Vernichtung des Bestehenden zugunsten kurzfristiger Renditen.
+        </p>
+
+        <h2>VI. Was Schumpeter vergaß</h2>
+
+        <p>
+            In Schumpeters Modell reguliert sich der Prozess selbst. Alte Industrien sterben, neue entstehen, die Ressourcen fließen dorthin, wo sie am produktivsten eingesetzt werden. Was fehlt, sind mindestens drei Dinge:
+        </p>
+
+        <p>
+            <span class="highlight">Zeit.</span> Der Übergang von einer Wirtschaftsstruktur zur nächsten braucht Generationen. Menschen haben aber nur ein Leben. Der Stahlarbeiter in Youngstown, Ohio, hat nichts davon, dass seine Enkel vielleicht Programmierer werden. Die „langfristige" Perspektive der Ökonomen ist oft länger als ein Menschenleben.
+        </p>
+
+        <p>
+            <span class="highlight">Ort.</span> Kapital ist mobil, Menschen sind es weniger. Wenn eine Fabrik schließt, kann das Kapital nach China fließen. Die Arbeiter können nicht einfach umziehen — sie haben Häuser, Familien, soziale Netze. Die „kreative" Seite der Zerstörung findet oft tausende Kilometer entfernt statt.
+        </p>
+
+        <p>
+            <span class="highlight">Macht.</span> Wer entscheidet, was „kreativ" ist und was „zerstört" wird? In Schumpeters Theorie ist es der geniale Unternehmer. In der Realität sind es oft Konzerne, die durch Patente, Lobbying und Marktmacht bestimmen, welche Innovationen sich durchsetzen — und welche nicht.
+        </p>
+
+        <h2>VII. Die politische Dimension</h2>
+
+        <p>
+            Die Sprache der „kreativen Zerstörung" hat politische Konsequenzen. Sie suggeriert, dass wirtschaftlicher Wandel ein Naturgesetz ist, dem man sich anpassen muss — oder untergehen. Sie delegitimiert Eingriffe: Wenn Zerstörung kreativ ist, warum sollte der Staat sie bremsen?
+        </p>
+
+        <p>
+            Aber wirtschaftlicher Wandel ist kein Naturgesetz. Er ist das Ergebnis von Entscheidungen — über Handelspolitik, Steuern, Regulierung, Bildung, soziale Sicherung. Die Frage ist nicht, ob Wandel stattfindet, sondern wer seine Kosten trägt und wer seine Früchte erntet.
+        </p>
+
+        <p>
+            Die Deindustrialisierung des amerikanischen Mittleren Westens war keine Naturkatastrophe. Sie war das Ergebnis von Handelsabkommen, Deregulierung und Steuerpolitik. Die Gewinner saßen an der Wall Street und in Palo Alto. Die Verlierer wählten 2016 Donald Trump.
+        </p>
+
+        <h2>VIII. Die richtige Frage</h2>
+
+        <p>
+            Die Frage sollte nicht lauten: „Ist kreative Zerstörung gut oder schlecht?" Sie lautet: <span class="highlight">Kreativ für wen? Zerstörung von was? Und zu wessen Gunsten?</span>
+        </p>
+
+        <p>
+            Innovation ist real und oft wertvoll. Das Smartphone hat Milliarden Menschen Zugang zu Information gegeben. Medizinische Durchbrüche retten Leben. Erneuerbare Energien können die Klimakatastrophe abmildern. Die Frage ist, wie die Gewinne verteilt werden — und wie die Verlierer aufgefangen werden.
+        </p>
+
+        <p>
+            Ein ehrlicher Umgang mit Schumpeter würde anerkennen: Die Zerstörung ist real, die Schmerzen sind real, die Verluste sind real. Sie verschwinden nicht dadurch, dass man sie „kreativ" nennt. Und die Verteilung von Gewinnen und Verlusten ist keine Frage von Naturgesetzen, sondern von politischen Entscheidungen.
+        </p>
+
+        <blockquote>
+            „Auch wenn das kurzfristig für viele Menschen großes Leid verursacht, weil sie z.B. arbeitslos werden, so wird auf lange Sicht durch Innovation der Wohlstand aller steigen."
+            <cite>— Die Standarderzählung, seit 80 Jahren unverändert</cite>
+        </blockquote>
+
+        <p>
+            Die Frage ist: Wie lang ist „kurzfristig"? Und wer entscheidet, ob das Leid „akzeptabel" ist?
+        </p>
+
+        <h2>IX. Fazit: Die Zerstörung ohne Adjektiv</h2>
+
+        <p>
+            Vielleicht sollten wir den Begriff ändern. Nicht „kreative Zerstörung", sondern einfach: Zerstörung. Mit allen Folgen, die das Wort impliziert. Dann wäre klar, dass es Gewinner und Verlierer gibt. Dass die Verlierer ein Recht haben, gehört zu werden. Dass die Gesellschaft entscheiden muss, wie viel Zerstörung sie akzeptiert — und wie sie die Kosten verteilt.
+        </p>
+
+        <p>
+            Schumpeter würde vielleicht zustimmen. Er war kein naiver Optimist. Er wusste, dass der Kapitalismus, den er bewunderte, seine eigenen Grundlagen untergräbt. Dass der „permanente Sturm" nicht nur alte Industrien hinwegfegt, sondern auch soziale Bindungen, kulturelle Traditionen, politische Stabilität.
+        </p>
+
+        <p>
+            Der Begriff „kreative Zerstörung" ist zu bequem geworden. Er erlaubt es, Verwüstung als Fortschritt zu verkaufen, Entlassungen als Evolution, Verarmung als Übergangsphänomen. Zeit, unbequemere Fragen zu stellen: Wer zerstört? Was wird zerstört? Und wem nützt es wirklich?
+        </p>
+
+        <footer>
+            <p>Essay 108 · Februar 2026</p>
+        </footer>
+    </article>
+
+    <script>
+        function setSize(size) {
+            const container = document.querySelector('.essay-container');
+            container.classList.remove('size-s', 'size-m', 'size-l');
+            container.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-size', size);
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('essay-theme', next);
+        }
+
+        (function() {
+            const savedSize = localStorage.getItem('essay-size') || 'm';
+            const savedTheme = localStorage.getItem('essay-theme') || 'dark';
+            
+            document.querySelector('.essay-container').classList.remove('size-m');
+            document.querySelector('.essay-container').classList.add('size-' + savedSize);
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase() === savedSize) btn.classList.add('active');
+            });
+            
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+</body>
+</html>

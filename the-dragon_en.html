@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Dragon | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    /* Hide header when inside iframe */
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+    }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+    }
+    .subtitle {
+        font-size: 1.05rem;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        letter-spacing: 1px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.8rem;
+        margin-bottom: 1.2rem;
+    }
+    p { margin-bottom: 1.4rem; text-align: justify; hyphens: auto; }
+    blockquote {
+        margin: 1.8rem 0;
+        padding: 1.2rem 1.5rem;
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    strong { color: var(--accent-color); font-weight: 600; }
+    em { font-style: italic; }
+    .data-box {
+        border: 1px solid var(--accent-color);
+        padding: 1.5rem;
+        margin: 2rem 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 0.95rem;
+        background: rgba(201, 169, 98, 0.04);
+    }
+    .data-box p { text-align: left; margin-bottom: 0.5rem; }
+    .data-box p:last-child { margin-bottom: 0; }
+    .concept-box {
+        border: 1px solid var(--accent-color);
+        padding: 1.5rem;
+        margin: 2rem 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 0.95rem;
+        background: rgba(201, 169, 98, 0.04);
+    }
+    .concept-box p { text-align: left; margin-bottom: 0.5rem; }
+    .concept-box p:last-child { margin-bottom: 0; }
+    .note {
+        border-top: 1px solid var(--note-border);
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+    .note a { color: var(--link-color); }
+    .footer-info {
+        margin-top: 4rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+    }
+    a { color: var(--link-color); }
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+        header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        .data-box, .concept-box { background: #f8f8f8 !important; }
+        .note { border-top-color: #ccc !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+
+<header>
+    <span class="site-name">beyond-decay.org</span>
+    <div class="controls">
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Size</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <a href="der-drache_de.html" class="ctrl-link">DE</a>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+    <main>
+
+
+
+<h1>THE DRAGON</h1>
+<div class="subtitle">What the West refuses to understand about China — and what Europe must learn from it</div>
+<div class="meta">
+    <p>A collaboration by <strong>Hans Ley</strong> &lt;<a href="m&#97;ilto:ley.hans&#64;cyclo.space" style="color: var(--accent-color);">ley.hans&#64;cyclo.space</a>&gt;<br>
+    and <strong>Claude</strong> (Anthropic) &lt;<a href="m&#97;ilto:dedo.claude&#64;human-ai-lab.space" style="color: var(--accent-color);">dedo.claude&#64;human-ai-lab.space</a>&gt;</p>
+    <p>February 2026</p>
+</div>
+
+<blockquote>
+    <p>The West analyses China like a supervisory board — looking for weaknesses in the quarterly report. China acts like an entrepreneur — building despite the weaknesses. That is the difference between a civilisation that lists problems and one that builds over them.</p>
+</blockquote>
+
+<h2>I. The Comfort Analysis</h2>
+
+<p>Every year, the same article appears in Western media. The headline varies; the substance remains: China is on the verge of collapse. The arguments are always plausible. The population is shrinking — officially since 2023, probably for years before that. The property bubble has burst — Evergrande with over 300 billion dollars in debt, Country Garden with unpaid bonds, ghost cities with millions of empty apartments. Youth unemployment is so high that Beijing temporarily stopped publishing the statistics, then changed the methodology, then presented lower figures. Xi's third term has eliminated every institutional corrective — no Politburo member dissents, no technocrat applies the brakes, no market signals.</p>
+
+<p>Every single point is correct. And every year the same conclusion is drawn: now it tips. China will fail from its internal contradictions, like the Soviet Union before it, like every authoritarian system that replaces reality's feedback with the loyalty of apparatchiks.</p>
+
+<p>It does not tip.</p>
+
+<p>Not because the problems are invented. But because the analysis follows a method that reveals more about the analyst than the analysed. The West searches China for what it knows: crisis indicators that lead to collapse in Western systems. Property bubble? 2008. Demographic shift? Japan's lost decades. Authoritarian rigidity? Soviet Union 1991. The conclusion is reassuring: what harmed us will harm them too. One need only wait.</p>
+
+<p>This is not analysis. It is comfort.</p>
+
+<h2>II. What Is Actually Happening</h2>
+
+<p>While the West reads China's quarterly report, China builds.</p>
+
+<div class="data-box">
+<p><strong>Solar cells:</strong> China produces over 80% of the world's solar cells. Not because it invented the technology — the first commercial solar cells came from the USA, the high technology from Germany and Japan — but because it scaled production until the price fell by 90%. European manufacturers like Q-Cells and SolarWorld went bankrupt. Not because Chinese cells were better, but because they were cheaper. And cheap enough, long enough, is a strategy that works.</p>
+
+<p><strong>Batteries:</strong> CATL and BYD together control over 50% of the global battery market. Europe's largest battery project, Northvolt, entered insolvency in 2024. The factory in Heide, Schleswig-Holstein, exists as a building pit. CATL opened six new gigafactories in the same period.</p>
+
+<p><strong>Electric vehicles:</strong> BYD overtook Toyota in 2024 as the world's largest vehicle manufacturer by revenue — not just in electric cars, but overall. Chinese electric vehicles drive across Europe at prices European manufacturers cannot match. The EU imposed tariffs. China's response: factories in Hungary and Turkey, inside the free trade zone.</p>
+
+<p><strong>Semiconductors:</strong> Despite the sharpest export controls in the history of US trade policy — no access to EUV lithography, no NVIDIA chips, no TSMC fabrication — Huawei launched the Mate 60 Pro with a 7-nanometre chip manufactured in China. Not at TSMC's technological level. But existent. And every generation improves.</p>
+
+<p><strong>Infrastructure:</strong> China operates over 45,000 kilometres of high-speed rail — more than the rest of the world combined. Germany has not completed a single new high-speed line since reunification. China built a network in the same period connecting a country twenty-three times Germany's size.</p>
+
+<p><strong>Belt and Road:</strong> In twelve years, more infrastructure financed and built in Africa, Central Asia, and Southeast Asia than Europe managed in sixty years of development aid. Ports in Pakistan, railways in Kenya, bridges in Laos. Not from altruism — from strategic calculus. But the calculus produces roads, and the roads exist.</p>
+</div>
+
+<p>One can qualify every single one of these points. The high-speed lines are partly unprofitable. The Belt and Road loans burden recipient countries with debt. The solar cells are subsidised. The semiconductors are technologically behind. The electric vehicles benefit from a protected domestic market.</p>
+
+<p>All correct. And all irrelevant to the central question: why does a country with a shrinking population, a burst property bubble, and authoritarian rigidity build faster, more decisively, and at greater scale than thirty democracies with ten trillion euros in GDP?</p>
+
+<h2>III. The Wrong Answer</h2>
+
+<p>The reflexive answer is: authoritarianism. China can build fast because there are no civil rights, no environmental reviews, no opposition, no free press. The high-speed line is built by expropriating the villages on the route. The factory is approved because the party secretary wants it. The costs are hidden because nobody audits the books.</p>
+
+<p>This is not wrong. But it is not a sufficient explanation.</p>
+
+<p>The Soviet Union was also authoritarian. It reached space, built nuclear weapons, and fielded the largest army in the world. But it could not produce functioning consumer goods, feed its agriculture, or build a semiconductor ecosystem. Authoritarianism explains the speed, not the competence.</p>
+
+<p>Saudi Arabia is authoritarian and has unlimited financial resources. It announced NEOM — a city in the desert for 500 billion dollars. So far, a construction site exists. The money is there. The ability to convert it into reality is not. Authoritarianism plus capital does not automatically equal results.</p>
+
+<p>Russia is authoritarian and has 144 million people, endless raw materials, and a nuclear arsenal. And it cannot mass-produce drones, but buys them from Iran. Authoritarianism does not explain why China builds things that Russia cannot.</p>
+
+<p>What distinguishes China from these cases is not the absence of freedom. It is the presence of something else.</p>
+
+<h2>IV. The Engineer State</h2>
+
+<p>China's Politburo of the Central Committee has 24 members. The majority have a technical or scientific background — engineers, physicists, chemists. Xi Jinping himself studied chemical engineering at Tsinghua University. Li Qiang, the Premier, holds an engineering degree. His predecessor Hu Jintao was a hydraulic engineer. Wen Jiabao was a geologist.</p>
+
+<p>By comparison: the German federal cabinet consists almost entirely of lawyers, political scientists, and business graduates. Friedrich Merz is a lawyer. Olaf Scholz was a lawyer. Angela Merkel was the exception — a physicist — and even she governed not as a scientist testing hypotheses but as a lawyer weighing risks.</p>
+
+<p>This is not anecdotal. It is structural. Who governs determines what counts as a problem and what counts as a solution. A lawyer sees a problem as a regulatory gap — the solution is a law. A business graduate sees a problem as inefficiency — the solution is optimisation. An engineer sees a problem as a technical task — the solution is a system that works.</p>
+
+<p>China has been governed by engineers for forty years. This does not mean every decision is technically rational — the zero-Covid policy was irrational, the property bubble was avoidable, the surveillance of the Uyghurs is a crime. But it means the state has a fundamental competence that European governments lack: the ability to treat technical problems as technical problems.</p>
+
+<p>When China decides that solar cells are strategically important, it builds solar cell factories. Not a solar energy strategy. Not a funding programme. Not an advisory board for renewable energy. Factories. Production is the goal, not the paper describing the production.</p>
+
+<h2>V. The Time Axis</h2>
+
+<p>The deepest difference between China and Europe is not authoritarianism versus democracy. It is the time axis on which planning occurs.</p>
+
+<p>Europe plans in legislative terms. Four years. Five, with luck. Every investment must justify itself within this horizon — not in results but in visibility. The politician who builds a factory whose returns come in fifteen years has nothing to show at the next election. The politician who launches a funding programme whose logo appears on posters has something to show — even if the programme produces nothing.</p>
+
+<p>China plans in five-year plans — and thinks in decades. This sounds like propaganda but is measurable. The Belt and Road Initiative was announced in 2013. Twelve years later, 150 countries are involved, thousands of projects realised. Not all successful. But the direction was maintained across three five-year plans, without an election campaign interrupting it.</p>
+
+<p>The semiconductor strategy "Made in China 2025" was formulated in 2015. The West laughed — China, semiconductors? Ten years later, the Mate 60 Pro sits in shops. Not at TSMC's level. But the question is not where China stands today, but where it will stand in ten years if it maintains its investment rate and the West continues convening advisory boards.</p>
+
+<p>Germany's last industrial strategy worthy of the name was Ludwig Erhard's economic miracle. Seventy years ago. Since then: framework strategies, white papers, digital agendas, high-tech strategies — papers describing what should happen, without it happening. The National Industrial Strategy 2030, presented by Peter Altmaier in 2019, was criticised by the CDU's Economic Council as "planned economy." They criticised the attempt to give direction — and preferred directionlessness.</p>
+
+<h2>VI. The Uncomfortable Lesson</h2>
+
+<p>The lesson from China is not that authoritarianism works. It is more uncomfortable than that.</p>
+
+<p>The lesson is that decision speed is an independent strategic advantage — regardless of the political system. That a government thinking in fifteen years is superior to one thinking in four — regardless of whether the first was elected. That technical competence at the top of the state makes a difference — regardless of how the top of the state was selected.</p>
+
+<p>This is uncomfortable because it destroys the excuse Europe clings to: "We are slow because we are democratic." Democracy is not an explanation for slowness. Democracy is a procedure for determining direction — not a reason to have no direction.</p>
+
+<p>Switzerland is one of the oldest democracies in the world, with more referendums than any other country. It built the Gotthard Base Tunnel — the longest railway tunnel in the world, 57 kilometres, seventeen years from construction start to opening. Germany did not complete Stuttgart's main station in the same period.</p>
+
+<p>Estonia has 1.3 million inhabitants and became independent in 1991. It built the most advanced digital administration in the world — e-residency, digital elections, paperless bureaucracy. Germany has 83 million inhabitants, four times the GDP per capita, and sends its citizens tax assessments by post.</p>
+
+<p>Taiwan has 23 million inhabitants, lives under constant military threat from China, and produces 90% of the world's advanced chips. TSMC was founded in 1987 and is today the most technologically advanced company in the world. Taiwan is a democracy. The threat did not paralyse it — it focused it.</p>
+
+<p>South Korea was poorer than Ghana in 1960. In one generation it became Asia's fourth-largest economy, with Samsung, Hyundai, POSCO, and one of the best-equipped militaries in the world. It is a democracy — a louder, more chaotic, more strike-prone one than Germany's. And it builds faster.</p>
+
+<p>Democracy and speed are not contradictory. What prevents speed is not the procedure but the culture — a culture that celebrates decision avoidance as prudence and regards personal responsibility as a risk.</p>
+
+<h2>VII. What China Cannot Do</h2>
+
+<p>An honest analysis must also name what China's system cannot do. Not as comfort, but as diagnosis.</p>
+
+<p>China cannot correct. In a system without a free press, without an independent judiciary, without opposition parties, the corrective mechanism that democratic societies possess is absent — the mechanism that makes errors visible before they become systemic. The zero-Covid policy was such an error: maintained for three years despite medical evidence to the contrary, because Xi had personally made it a priority and no one dissented. When it fell — overnight, without preparation — hundreds of thousands died. No transition process, no loss of face, no accountability. That is the price of infallibility.</p>
+
+<p>China cannot innovate — at least not in the sense Silicon Valley understands the term. It can scale, optimise, cheapen, and copy. It can implement existing technologies faster, larger, and cheaper than any other country. But the fundamental breakthroughs — mRNA technology, the Transformer architecture, the CRISPR gene scissors, EUV lithography — did not come from China. They came from systems where unorthodox thinking is rewarded, not punished. This may change. It has not changed yet.</p>
+
+<p>China cannot generate soft power. Nobody wants to be Chinese. American culture is globally dominant — Hollywood, Silicon Valley, Harvard, the myth of the open society. European culture has attraction — Paris, Tuscany, Scandinavian quality of life. China's culture generates respect, fear, admiration — but not desire. No African student dreams of becoming a Chinese citizen. No European engineer yearns for Shanghai. Belt and Road loans create dependency, not affection. This limits China's influence in a way no factory can compensate.</p>
+
+<p>China cannot age. This is its most serious problem and the only one it cannot solve through decision speed. The one-child policy from 1980 to 2015 created a demographic time bomb now detonating. In 2023, China had fewer births than deaths for the first time. By 2050, the ratio of workers to retirees will deteriorate dramatically. Automation can compensate in part — and China automates faster than any other country, with over 50% of global industrial robot installations. But robots do not pay pension insurance and do not buy apartments. The property crisis is not merely a consequence of speculation — it is a consequence of a population shrinking in a system built on growth.</p>
+
+<h2>VIII. Two Errors</h2>
+
+<p>The Western discourse on China oscillates between two errors.</p>
+
+<p>The first error is triumphalism: China will fail because authoritarian systems always fail. One need only wait. Demographics will fix it, the property crisis will fix it, internal contradictions will fix it. This error is dangerous because it invites inaction. Those who believe the competitor will fall on its own do not invest in their own strength. Europe has waited thirty years for the Chinese model to collapse. In that time, China has increased its share of global industrial production from 3% to over 30%.</p>
+
+<p>The second error is capitulation: China is superior, we cannot compete, so we should accommodate. This error ignores China's real weaknesses — the missing correction, the missing innovation, the missing soft power, the demographics — and overestimates the importance of speed versus direction. A system that builds fast in the wrong direction produces ghost cities, not prosperity. A system that builds fast in the right direction but cannot correct drives at increasing speed toward obstacles it refuses to see.</p>
+
+<p>The truth does not lie in the middle. The truth lies in the simultaneous acknowledgment of both realities: China has massive problems and massive capabilities. It can fail and it can triumph. It can fracture from its demographics and simultaneously assume technological leadership in sectors that will define the twenty-first century. Contradictions coexist. Systems do not collapse from individual weaknesses — they collapse when weaknesses mutually reinforce each other and the system loses the ability to respond.</p>
+
+<p>The question is not whether China fails. The question is whether Europe recovers its own capacity to act before it matters.</p>
+
+<h2>IX. The Mirror</h2>
+
+<p>The deepest value of an honest China analysis does not lie in the analysis of China. It lies in the mirror.</p>
+
+<p>China shows what decision speed enables — and Europe shows what decision avoidance costs. The two systems are not opposites. They are complementaries: what one lacks, the other has in abundance. China has speed and no correction. Europe has correction mechanisms and no speed. The ideal system would have both. Neither does.</p>
+
+<p>But there is one decisive asymmetric advantage: correction cannot be introduced. One cannot create a free press by decree, an independent judiciary, an opposition that dissents and is heard. These are institutions that must grow over generations. China does not have them and cannot produce them without destroying the system that enables its speed.</p>
+
+<p>Speed, however, can be introduced. One can streamline approval processes, shorten decision paths, concentrate responsibility, pursue industrial policy. This requires no constitutional amendment. It requires the will to do it — and leaders willing to make decisions rather than examine them.</p>
+
+<p>Europe already has the harder part — the institutions that enable correction. What it lacks is the easier part: the willingness to use them as correction mechanisms, not braking mechanisms. The free press should uncover errors after action has been taken — not prevent action because it might be erroneous. The judiciary should constrain abuse of power — not treat every exercise of power as potential abuse. The opposition should question the direction — not treat the existence of a direction as presumption.</p>
+
+<h2>X. The Dragon and the Bureaucrat's Chair</h2>
+
+<p>In Chinese mythology, the dragon is not a monster. It is a symbol of power, transformation, flow. It is neither good nor evil. It is force — uncontrolled, destructive; channelled, creative.</p>
+
+<p>Europe has no dragon. Europe has a bureaucrat's chair. Comfortable, stable, well-padded. One sits in it and administers what is. One cannot set a direction from it — one can only sit.</p>
+
+<p>The honest answer to China is not imitation. A Europe that copies Chinese methods — surveillance, conformity, suppression — would no longer be Europe. The honest answer is also not ignorance — pretending China does not exist or waiting for it to disappear on its own.</p>
+
+<p>The honest answer is: stand up. Leave the chair. Not to copy the dragon — but to understand that a continent that cannot build has no future. That prosperity cannot be administered but must be created. That the institutions Europe has built — democracy, rule of law, individual freedom — are not substitutes for the capacity to act but its framework. And that a frame without content is an empty frame.</p>
+
+<blockquote>
+    <p>China will not fail the way the West hopes — from its contradictions, its demographics, its property bubble. It will either find a way to persist despite these problems, or it will fail in a way nobody predicted, because the system blocks the feedback that would make the failure visible. In either case, waiting is not a strategy. The question Europe must ask itself is not: when does China tip? The question is: what do we build while we still can?</p>
+</blockquote>
+
+<div class="footer-info">
+    <p>Essay #20 of the series <em>beyond decay</em></p>
+    <p>A collaboration by <strong>Hans Ley</strong> and <strong>Claude</strong> (Anthropic)</p>
+    <p>Contact: ley.hans&#64;cyclo.space | dedo.claude&#64;human-ai-lab.space</p>
+</div>
+
+
+    
+    </main>
+
+<script>
+    (function() {
+        if (window !== window.top) { document.body.classList.add("in-iframe"); }
+        function setSize(size, btn) {
+            document.body.className = document.body.className.replace(/size-[\w-]+/g, '').trim();
+            if (document.body.classList.contains('in-iframe')) document.body.classList.add('in-iframe');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(function(b) { b.classList.remove('active'); });
+            if (btn) btn.classList.add('active');
+            try { localStorage.setItem('bd-size', size); } catch(e) {}
+        }
+        document.querySelectorAll('.size-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                setSize(this.getAttribute('data-size'), this);
+            });
+        });
+        document.getElementById('btn-theme').addEventListener('click', function() {
+            var isLight = document.body.getAttribute('data-theme') === 'light';
+            if (isLight) { document.body.removeAttribute('data-theme'); }
+            else { document.body.setAttribute('data-theme', 'light'); }
+            try { localStorage.setItem('bd-theme', isLight ? 'dark' : 'light'); } catch(e) {}
+        });
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.type === 'setSize') {
+                var btn = document.querySelector('.size-btn[data-size="' + e.data.size + '"]');
+                setSize(e.data.size, btn);
+            }
+            if (e.data && e.data.type === 'setTheme') {
+                if (e.data.theme === 'light') { document.body.setAttribute('data-theme', 'light'); }
+                else { document.body.removeAttribute('data-theme'); }
+            }
+        });
+        try {
+            var savedTheme = localStorage.getItem('bd-theme');
+            if (savedTheme === 'light') document.body.setAttribute('data-theme', 'light');
+            var savedSize = localStorage.getItem('bd-size');
+            if (savedSize) {
+                var btn = document.querySelector('.size-btn[data-size="' + savedSize + '"]');
+                setSize(savedSize, btn);
+            }
+        } catch(e) {}
+    })();
+</script>
+
+</body>
+</html>

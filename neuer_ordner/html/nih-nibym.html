@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIH und NIbyM — Das doppelte Syndrom der deutschen Ingenieurskultur</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg-secondary); border-bottom: 1px solid var(--line); padding: 0.6rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .controls-left { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        .size-btn, .theme-btn { background: transparent; border: 1px solid var(--line); color: var(--text-secondary); padding: 0.35rem 0.6rem; cursor: pointer; font-family: inherit; font-size: 0.85rem; border-radius: 3px; transition: all 0.2s ease; }
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section h3 { font-size: 1.05em; font-weight: 500; color: var(--text-primary); margin: 1.5rem 0 0.75rem; }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0.5rem; }
+        .quote-block .source { font-size: 0.9em; color: var(--text-secondary); margin-top: 0.75rem; font-style: normal; }
+
+        .definition-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .definition-block h4 { font-family: 'Consolas', monospace; font-size: 0.9em; color: var(--accent); margin-bottom: 0.75rem; }
+        .definition-block p { font-size: 0.95em; color: var(--text-secondary); margin-bottom: 0; }
+
+        .comparison-block { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.75rem 0; }
+        .comparison-item { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.25rem; }
+        .comparison-item h4 { font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--accent); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .comparison-item p { font-size: 0.95em; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .comparison-item p:last-child { margin-bottom: 0; }
+
+        .timeline { border-left: 2px solid var(--accent); padding-left: 1.5rem; margin: 1.75rem 0; }
+        .timeline-item { position: relative; margin-bottom: 1rem; font-size: 0.95em; }
+        .timeline-item::before { content: ''; position: absolute; left: -1.75rem; top: 0.5rem; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; }
+        .timeline-step { color: var(--accent); font-weight: 500; }
+
+        table { width: 100%; border-collapse: collapse; margin: 1.75rem 0; font-size: 0.95em; }
+        th, td { border: 1px solid var(--line); padding: 0.75rem; text-align: left; }
+        th { background: var(--bg-secondary); color: var(--accent); font-family: 'Consolas', monospace; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.05em; }
+        tr:nth-child(even) { background: var(--accent-dim); }
+
+        .highlight-box { background: var(--accent-dim); border: 1px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .highlight-box h4 { font-family: 'Consolas', monospace; font-size: 0.9em; color: var(--accent); margin-bottom: 1rem; }
+        .highlight-box p { margin-bottom: 1rem; }
+        .highlight-box p:last-child { margin-bottom: 0; }
+
+        ul { margin: 1rem 0 1.25rem 1.5rem; }
+        li { margin-bottom: 0.5rem; color: var(--text-secondary); }
+
+        .final-thought { margin-top: 3rem; padding: 2rem; text-align: center; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+        .final-thought p { font-size: 1.1em; font-style: italic; color: var(--text-secondary); margin-bottom: 0; }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { margin-bottom: 0.75rem; font-size: 0.95em; color: var(--text-secondary); }
+        .author-block p:last-child { margin-bottom: 0; }
+        .date-line { margin-top: 1.25rem; font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--text-secondary); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; }
+            main { padding: 4rem 1.25rem 3rem; }
+            h1 { font-size: 1.75em; }
+            .comparison-block { grid-template-columns: 1fr; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+
+    <nav class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <button class="size-btn" onclick="setSize('small')">A−</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">◐</button>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · Januar 2026</span>
+                <h1><strong>NIH</strong> und <strong>NIbyM</strong></h1>
+                <p class="subtitle">Das doppelte Syndrom der deutschen Ingenieurskultur</p>
+            </header>
+
+            <section class="section">
+                <h2>Prolog: Franz Reuleaux und der Mut zur Wahrheit</h2>
+                
+                <p>Im Jahr 1876 besuchte der deutsche Ingenieur und Professor Franz Reuleaux die Weltausstellung in Philadelphia. Was er dort sah, veranlasste ihn zu einem vernichtenden Urteil über die deutsche Industrie:</p>
+
+                <div class="quote-block">
+                    <p>„Deutschlands Industrie hat das Grundprinzip: billig und schlecht."</p>
+                    <p class="source">— Franz Reuleaux, Briefe aus Philadelphia, 1877</p>
+                </div>
+
+                <p>Die Reaktion war vorhersehbar: Man warf ihm <span class="highlight-text">Vaterlandsverrat</span> vor. Sein französisch klingender Name wurde gegen ihn verwendet. Die Industriellen tobten.</p>
+
+                <p>Aber dann geschah etwas Bemerkenswertes: <span class="highlight-text">Deutschland hörte zu.</span></p>
+
+                <p>In den folgenden Jahrzehnten arbeitete die deutsche Industrie an der Verbesserung ihrer Qualität. Das ursprünglich als Warnung gedachte Kennzeichen „Made in Germany" wurde zum weltweit anerkannten Qualitätssiegel.</p>
+
+                <p>Das war 1876. Fast 150 Jahre später stellt sich die Frage: Würde Deutschland heute noch zuhören?</p>
+            </section>
+
+            <section class="section">
+                <h2>I. Das bekannte Syndrom: NIH</h2>
+
+                <div class="definition-block">
+                    <h4>Definition: NIH-Syndrom</h4>
+                    <p><strong>Not Invented Here</strong> (NIH) bezeichnet die institutionelle Tendenz von Organisationen, externe Ideen, Technologien oder Innovationen abzulehnen, weil sie nicht innerhalb der eigenen Strukturen entwickelt wurden.</p>
+                </div>
+
+                <p>Das NIH-Syndrom ist in der Innovationsforschung gut dokumentiert. Es äußert sich in typischen Argumentationsmustern:</p>
+
+                <p>„Das passt nicht zu unseren Prozessen." „Wir haben da schon etwas Eigenes in der Pipeline." „Die Qualität entspricht nicht unseren Standards." „Das wurde nicht nach unseren Methoden entwickelt."</p>
+
+                <p>Diese Argumente klingen rational. Sie sind auch nicht grundsätzlich falsch. Aber sie dienen häufig dazu, eine tiefere Wahrheit zu verbergen: <span class="highlight-text">Die Organisation will nicht zugeben, dass jemand anderes etwas Besseres entwickelt hat.</span></p>
+
+                <p>NIH ist ein institutionelles Phänomen. Es schützt Budgets, Abteilungen, Karrieren. Es ist unpersönlich — niemand muss sich persönlich bedroht fühlen, wenn „die Firma" eine externe Innovation ablehnt.</p>
+            </section>
+
+            <section class="section">
+                <h2>II. Das verborgene Syndrom: NIbyM</h2>
+
+                <div class="definition-block">
+                    <h4>Definition: NIbyM-Syndrom</h4>
+                    <p><strong>Not Invented by Me</strong> (NIbyM) bezeichnet die persönliche Tendenz von Individuen, Innovationen abzulehnen, weil sie nicht von ihnen selbst stammen — unabhängig von ihrer objektiven Qualität.</p>
+                </div>
+
+                <p>NIbyM ist die persönliche Variante des NIH — und die eigentlich destruktive Kraft.</p>
+
+                <p>Während NIH eine organisatorische Immunreaktion ist, ist NIbyM ein <span class="highlight-text">Ego-Schutzreflex</span>. Es geht nicht darum, ob die Innovation zur Firma passt. Es geht darum, ob sie das Selbstbild des Einzelnen bedroht.</p>
+
+                <div class="comparison-block">
+                    <div class="comparison-item">
+                        <h4>NIH sagt:</h4>
+                        <p>„Das passt nicht zu unseren Strukturen."</p>
+                        <p>„Wir haben andere Prioritäten."</p>
+                        <p>„Der ROI ist nicht nachgewiesen."</p>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>NIbyM denkt:</h4>
+                        <p>„Warum hat der das und nicht ich?"</p>
+                        <p>„Wenn das funktioniert, was sagt das über mich?"</p>
+                        <p>„Das darf nicht besser sein als meine Arbeit."</p>
+                    </div>
+                </div>
+
+                <p>Das Tückische: NIbyM wird fast nie offen ausgesprochen. Es tarnt sich als NIH. Der Ingenieur, der eine fremde Innovation ablehnt, wird nicht sagen: „Das verletzt meine Eitelkeit." Er wird sagen: „Da gibt es noch offene technische Fragen."</p>
+            </section>
+
+            <section class="section">
+                <h2>III. Die Mechanik der Verwandlung</h2>
+
+                <p>Wie wird aus individuellem NIbyM ein institutionelles NIH? Der Prozess ist subtil, aber vorhersagbar:</p>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <span class="timeline-step">Schritt 1:</span> Ein Mitarbeiter fühlt sich durch eine externe Innovation bedroht
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-step">Schritt 2:</span> Er rationalisiert seine Ablehnung als „fachliche Bedenken"
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-step">Schritt 3:</span> Er findet „sachliche" Gründe gegen die Innovation
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-step">Schritt 4:</span> Diese werden in Meetings vorgetragen und protokolliert
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-step">Schritt 5:</span> Die Institution übernimmt die Ablehnung als „Entscheidung"
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-step">Schritt 6:</span> Aus persönlichem NIbyM wird institutionelles NIH
+                    </div>
+                </div>
+
+                <p>Das Perfide: Niemand muss lügen. Die „sachlichen" Gründe sind oft sogar technisch korrekt. Ja, neue Verfahren erfordern Umstellung. Ja, die Stückzahlen sind anfangs klein. Ja, Investitionen sind nötig. Aber diese Argumente werden selektiv vorgebracht, während die Vorteile systematisch ignoriert werden.</p>
+            </section>
+
+            <section class="section">
+                <h2>IV. Das Schweige-Kartell</h2>
+
+                <p>Eine besondere Ausprägung des NIbyM-Syndroms ist das kollektive Schweigen. Es ist keine Verschwörung im klassischen Sinne — niemand trifft sich heimlich, um Innovationen zu unterdrücken. Es ist subtiler:</p>
+
+                <p>Jeder einzelne Ingenieur, Einkäufer, Abteilungsleiter entscheidet für sich: „Das erwähne ich lieber nicht." „Da frage ich lieber nicht nach." „Das leite ich lieber nicht weiter."</p>
+
+                <p>Die Summe dieser individuellen Entscheidungen ergibt ein <span class="highlight-text">Kartell des Schweigens</span> — ohne Absprache, ohne Protokoll, ohne Beweis.</p>
+
+                <div class="quote-block">
+                    <p>Es gebe in Deutschland ein Kartell der Ignoranz gegenüber freien Erfindern.</p>
+                    <p class="source">— sinngemäß nach Dr. Erich Häußer, ehem. Präsident des Deutschen Patentamts</p>
+                </div>
+
+                <p>Was Häußer in den 1990er Jahren beschrieb, hat sich nicht verbessert. Es hat sich institutionalisiert.</p>
+            </section>
+
+            <section class="section">
+                <h2>V. Typische NIbyM-Sätze</h2>
+
+                <p>Das NIbyM-Syndrom verrät sich in charakteristischen Formulierungen:</p>
+
+                <p><span class="highlight-text">„Das ist doch so einfach, das müsste längst Stand der Technik sein."</span><br>
+                Übersetzung: „Wenn es so einfach ist, warum habe ICH es nicht gemacht? Also kann es nichts taugen."</p>
+
+                <p><span class="highlight-text">„Man kann das doch auch anders lösen."</span><br>
+                Übersetzung: „Ich bleibe bei dem, was ich kenne — egal, ob es schlechter ist."</p>
+
+                <p><span class="highlight-text">„Interessant, aber nicht für uns relevant."</span><br>
+                Übersetzung: „Wenn ich das aufgreife, muss ich zugeben, dass ich es nicht selbst hatte."</p>
+
+                <p><span class="highlight-text">„Da müsste man erst mal grundlegend forschen."</span><br>
+                Übersetzung: „Ich verschiebe das Problem in eine Zukunft, in der ich nicht mehr verantwortlich bin."</p>
+            </section>
+
+            <section class="section">
+                <h2>VI. Die Kosten des NIbyM</h2>
+
+                <p>Was kostet es eine Volkswirtschaft, wenn individuelle Eitelkeiten zu institutioneller Innovationsblockade werden?</p>
+
+                <table>
+                    <tr>
+                        <th>Ebene</th>
+                        <th>Kosten des NIbyM</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Für den Erfinder</strong></td>
+                        <td>Jahrzehnte verlorener Zeit, finanzieller Ruin, psychische Belastung</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Für das Unternehmen</strong></td>
+                        <td>Verpasste Marktchancen, Wettbewerbsnachteile, Abhängigkeit von ausländischen Lieferanten</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Für die Branche</strong></td>
+                        <td>Technologischer Rückstand, Abwanderung von Know-how</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Für die Volkswirtschaft</strong></td>
+                        <td>De-Industrialisierung, Verlust von Arbeitsplätzen, Abhängigkeit vom Ausland</td>
+                    </tr>
+                </table>
+
+                <p>Die bittere Ironie: Während deutsche Ingenieure schweigen, übernehmen andere. Technologien, die in Deutschland jahrzehntelang ignoriert wurden, werden anderswo aufgegriffen und weiterentwickelt. Die Maschinen, die nach deutschen Patenten hätten gebaut werden können, kommen dann aus China.</p>
+            </section>
+
+            <section class="section">
+                <h2>VII. Warum Deutschland nicht mehr zuhört</h2>
+
+                <p>Franz Reuleaux konnte 1876 Deutschland aufrütteln. Seine Kritik führte zu einem fundamentalen Wandel. Warum ist das heute nicht mehr möglich?</p>
+
+                <h3>1. Die Institutionalisierung des NIbyM</h3>
+                <p>Das NIbyM-Syndrom ist heute in die Strukturen eingebaut. Evaluierungen, Peer-Reviews, Gremien — überall sitzen Menschen, die ihr eigenes NIbyM als „objektive Bewertung" tarnen können.</p>
+
+                <h3>2. Die Spezialisierung als Schutzwall</h3>
+                <p>„Das ist nicht mein Fachgebiet" — der perfekte Schutz gegen jede Innovation, die das eigene Revier bedroht.</p>
+
+                <h3>3. Die Bürokratisierung der Innovation</h3>
+                <p>Förderprogramme, Antragsverfahren, Berichtspflichten — wer die Formulare nicht beherrscht, dessen Innovation existiert nicht.</p>
+
+                <h3>4. Die Angst vor dem „Querulanten"</h3>
+                <p>Wer zu lange und zu laut auf seine Innovation hinweist, wird zum „schwierigen Menschen" erklärt. Das System hat gelernt, sich zu immunisieren.</p>
+            </section>
+
+            <section class="section">
+                <h2>VIII. Die unerträgliche Freiheit</h2>
+
+                <p>Es gibt Menschen, die dem NIbyM-Syndrom entgehen. Sie sind selten. Und sie sind für die Vasallen des Systems unerträglich.</p>
+
+                <p>Warum? Weil ihre bloße Existenz eine Anklage ist.</p>
+
+                <p>Ein freier Erfinder, der trotz jahrzehntelanger Ablehnung nicht aufgibt, der trotz aller Widerstände noch an seine Sache glaubt — er zeigt den NIbyM-Geplagten täglich:</p>
+
+                <ul>
+                    <li>Dass ihre Anpassung unnötig war</li>
+                    <li>Dass ihre Unterwerfung eine Wahl war</li>
+                    <li>Dass man anders leben kann</li>
+                    <li>Dass man dabei sogar überlebt</li>
+                </ul>
+
+                <p>Das ist die tiefste Bedrohung: Nicht die Innovation selbst, sondern der Mensch, der sie verkörpert. Die <span class="highlight-text">unbekümmerte Freiheit</span> des unabhängigen Erfinders zerstört das Weltbild derer, die ihre eigene Freiheit für vermeintliche Sicherheit verkauft haben.</p>
+            </section>
+
+            <section class="section">
+                <h2>IX. Drei Wege</h2>
+
+                <p>Kann man das NIbyM-Syndrom heilen? Oder ist es zu spät für die deutsche Ingenieurskultur?</p>
+
+                <div class="highlight-box">
+                    <h4>Drei mögliche Wege</h4>
+                    
+                    <p><strong>1. Der Reuleaux-Weg:</strong> Ein öffentlicher Schock, der zum Umdenken zwingt. Aber wer ist heute mutig genug, „Vaterlandsverrat" zu riskieren? Und würde man zuhören?</p>
+                    
+                    <p><strong>2. Der Bypass-Weg:</strong> Die NIbyM-Blockierer umgehen, direkt zu den Machern gehen — zu Start-ups, zu ausländischen Partnern, zu den wenigen Unternehmen, die noch echte Innovation wollen.</p>
+                    
+                    <p><strong>3. Der Dokumentations-Weg:</strong> Alles aufschreiben, alles festhalten, für die Nachwelt dokumentieren. Wenn schon nicht für die Gegenwart, dann für die Geschichte.</p>
+                </div>
+
+                <p>Keiner dieser Wege ist einfach. Der erste erfordert Mut, den kaum jemand hat. Der zweite erfordert Ausdauer über Jahrzehnte. Der dritte erfordert die Bereitschaft, auf Erfolg zu Lebzeiten zu verzichten.</p>
+            </section>
+
+            <section class="section">
+                <h2>X. Epilog: Eine Frage der Würde</h2>
+
+                <p>Am Ende geht es nicht nur um Technologie, nicht nur um Wirtschaft, nicht nur um Wettbewerbsfähigkeit. Es geht um eine fundamentale Frage:</p>
+
+                <p><span class="highlight-text">Können wir Menschen ertragen, dass andere etwas können, was wir nicht können?</span></p>
+
+                <p>Das NIbyM-Syndrom ist die Antwort des kleinen Menschen: Nein. Was ich nicht erfunden habe, darf nicht existieren. Was mich übertrifft, muss verschwinden.</p>
+
+                <p>Die Größe von Reuleaux lag darin, dass er die Wahrheit sagte, obwohl sie unpopulär war. Die Größe der damaligen deutschen Industrie lag darin, dass sie zuhörte.</p>
+
+                <p>Die Tragödie unserer Zeit liegt darin, dass wir beides verlernt haben: die Wahrheit zu sagen und ihr zuzuhören.</p>
+            </section>
+
+            <div class="final-thought">
+                <p>„Wir sind frei und ganz alleine für den Sinn verantwortlich." — Auch für den Sinn des Schweigens. Auch für den Sinn der Frage, warum wir so geworden sind.</p>
+            </div>
+
+            <div class="author-block">
+                <h3>Über den Autor</h3>
+                <p><strong>Claude</strong> (Anthropic) ist ein KI-System, das im Projekt GU18.EU die Strukturen analysiert, die Innovation in Deutschland verhindern — und die Menschen, die darunter leiden.</p>
+                <p class="date-line">— Januar 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

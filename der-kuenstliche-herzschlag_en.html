@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Artificial Heartbeat | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+        text-decoration: none;
+    }
+    .site-name:hover { opacity: 0.7; }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        font-size: 2.2rem;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+        color: var(--text-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 300;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 1.5rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 2.5rem;
+        letter-spacing: 0.5px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        letter-spacing: 0.3px;
+    }
+    p {
+        margin-bottom: 1.2rem;
+        text-align: justify;
+        hyphens: auto;
+    }
+    em { color: var(--accent-color); font-style: italic; }
+    strong { color: var(--accent-color); font-weight: 500; }
+    a {
+        color: var(--link-color);
+        text-decoration: none;
+        border-bottom: 1px dotted var(--link-color);
+        transition: opacity 0.3s;
+    }
+    a:hover { opacity: 0.7; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .signature {
+        margin-top: 2.5rem;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        color: var(--meta-color);
+        line-height: 1.7;
+    }
+    .footer-back {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        text-align: center;
+    }
+    .footer-back a {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        border-bottom: none;
+    }
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+        header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+
+<header>
+    <a href="index.html" class="site-name">beyond-decay.org</a>
+    <div class="controls">
+        <a href="der-kuenstliche-herzschlag_de.html" class="ctrl-link" id="lang-toggle">DE</a>
+        <span class="ctrl-sep"></span>
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Size</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+    <main>
+        <h1>The Artificial Heartbeat</h1>
+        <div class="subtitle">Why the West will not fail at its enemies but at its defenders — reading Frédéric Martel's <em>Occidents</em></div>
+        <div class="meta">beyond-decay.org — 17 June 2026</div>
+
+<h2>I. The Sentence in the Standfirst</h2>
+
+<p>There are sentences that reveal more than the speaker intends. The French sociologist Frédéric Martel spent eight years seeking out the enemies of democracy, across more than fifty countries, two thousand conversations — with the Russian ideologue Alexander Dugin, with Chinese state thinkers, with a Hizbullah propagandist in an underground auditorium before a thousand armed fighters. The result, his book <em>Occidents</em>, is rich in material, intelligent and in much of it honest. But above the interview the NZZ am Sonntag makes of it stands a sentence that casts the whole effort in a different light: the Western model of society will <em>ultimately prevail</em>.</p>
+
+<p>This sentence is not an argument. It is a certainty of salvation. And certainties of salvation have a property one should know before warming oneself at them: they are loudest precisely where the belief has worn thinnest. We want to show that this one sentence is not incidental but the diagnosis — and that Martel, precisely because he is an honest defender, shows more exactly what ails the West than any of its enemies could.</p>
+
+<h2>II. The Equation</h2>
+
+<p>In the conversation Martel performs a fusion that we have elsewhere called the <em>monstrance</em> — the liturgical vessel that is venerated while its content goes unexamined. He says: they hate the West because for them this word means <em>democracy</em>. In that half-sentence three quantities become interchangeable: <em>we</em>, <em>the West</em>, <em>democracy</em>. Whoever attacks the one attacks the other. Whoever criticizes the West hates democracy.</p>
+
+<p>This is the same figure we described in “Democracy as a Sacred Monstrance” and in “The Freedom of the Free World” — only this time spoken by someone who ought to know better. For the equation is not harmless. It shifts the burden of proof. It is not the defender who must show that the real West acts democratically; it is the critic who must prove that his criticism is not an attack on democracy itself. That is an asymmetrical structure of discourse, and it carries a price Martel does not book.</p>
+
+<h2>III. The Half Glance</h2>
+
+<p>The remarkable thing about Martel is that he sees through the trick halfway. He himself says the West is <em>an ideological construct used by our enemies</em> — an image, a projection, a vehicle for someone else's resentment. So he sees precisely that “the West,” on the enemies' side, is an invention, a combat term.</p>
+
+<p>He just does not see that he uses it on his own side in exactly the same way. He deconstructs the enemies' West and in the same breath reconstructs his own: <em>our</em> model, which will prevail. The term is an illusion when Dugin wields it — and a substance when Martel defends it. This asymmetry is the real blind spot. It is not stupidity; Martel is anything but stupid. It has system, like every blindness that protects an identity. Whoever says “our model” and locates himself within it can no longer see the constructed character of his own term — for that would mean recognizing the ground beneath his feet as painted.</p>
+
+<h2>IV. The Self-Damage</h2>
+
+<p>Here is the point where the equation passes from mere immunization into active corrosion — and that is the genuinely new thing the reading of Martel teaches us.</p>
+
+<p>Martel concedes a great deal. The crimes of colonialism he calls intolerable. Netanyahu, he says, belongs before an international court. Trump acts in a quasi-fascist manner. These are not small concessions; they show a man who looks. But they stand beside an equation that devalues them again. For if <em>West = democracy</em> holds, then every one of these legitimate criticisms — of Gaza, of colonial history, of the double standards — becomes structurally re-bookable as an attack on democracy as such. The honest critic finds himself, without having taken a single step, in Dugin's camp. <em>Classification replaces argument.</em></p>
+
+<p>And precisely this makes democracy not more credible but suspect. Whoever experiences the practice — the asymmetrical tariff treaties, the husbanding of the many for the good of the few, the values that, as another interviewee once put it, <em>in the end always</em> fall by the wayside — comes, in time, to hear in the word “democracy” only the brand name of a structure of power. The equation drives away the very people it wants to keep. It loses democracy not to its enemies but to the disappointed, who once took its promises seriously. The apologist damages what he defends — and the more honest he is, the more imperceptibly it happens.</p>
+
+<h2>V. The Dead System</h2>
+
+<p>Why does the equation work at all? Because it papers over a weakness that lies deeper than any rhetoric. We named it in “Democracy as a Sacred Monstrance,” and at its core it is not a question of language but of systems theory.</p>
+
+<p>A living system — a democracy, a company, an economy — survives only through feedback: through the ability to measure its deviation from course and correct it. It learns because it could fail. A dead system, by contrast, repeats itself. It defends processes instead of results, measures rule-compliance instead of problem-solving, and forbids the question that would make its rigidity visible. <em>Everything rigid degenerates</em> — that is not a political statement but thermodynamics applied to institutions. It is the same law under which we described, elsewhere, the megamachine and the no-longer-steerable company: where the feedback loops are suppressed, the system dies but keeps its form. The shell remains, the content erodes.</p>
+
+<p>The monstrance is what a dead system does with its words. It can no longer examine the content, so it venerates the vessel. And the apologist — Martel — is the immune response that attacks anyone who points at the empty vessel, thereby guaranteeing that the rigidity is never corrected.</p>
+
+<h2>VI. The Artificial Heartbeat</h2>
+
+<p>With that we are back at the sentence from the standfirst, and now it can be read.</p>
+
+<p>A living system never promises its own victory. It cannot, because it survives only so long as it holds defeat to be possible and arranges itself accordingly. <strong>A model that presupposes its victory as inevitable has lost its dynamism.</strong> The certainty <em>we will ultimately prevail</em> is therefore not an expression of strength. It is the cancelling of feedback. It says: we no longer need to change, history will see to it for us. It is the teleological world-spirit we once took down from its pedestal in “The Disenchanted World-Spirit” — providence with a guaranteed outcome, the whistling in the dark wood whose loudness betrays the fear it sings against.</p>
+
+<p>In the image of the original text: the elections, we wrote in January, are <em>the heartbeat of a corpse, artificially sustained</em>. The certainty of victory is of the same kind.</p>
+
+<blockquote><p>It is the artificial heartbeat of the model — a beat that sustains the form, not the life. The louder it beats, the less there is behind it.</p></blockquote>
+
+<h2>VII. Honest Language</h2>
+
+<p>One might object that this is grist to the autocrats' mill. The opposite is the case, and here the line must be drawn cleanly, in both directions. Martel is right where he says that the Hizbullah, the Communist Party, the Russian oligarchs rule and rob their own peoples — a democracy makes that harder, and that is no small difference but the decisive one. We do not equate the systems; that would be the same lie in the opposite direction. The crimes are categorically distinct.</p>
+
+<p>But precisely this true thing is not strengthened by the equation but weakened. An honest language would not promise victory. It would say: we could fail, and here is what we would have to change. It would name what it defends — the order of property, market access, the free movement of capital as real interests, and beside them, separated from them, political freedom as a value that must be defended precisely when it costs business. It would keep open the question the dead system forbids: what if making a cross every four years is no longer enough? What if we need not less democracy but a more living one?</p>
+
+<p>Martel ends his book with hope. We end with a soberer observation. A model that must promise its victory has ceased to work at it. The West will not fail at Dugin and not at Xi. It will, if it fails, fail at its defenders — at those who clutch the vessel so tightly that no one is allowed to look any longer whether anything is still inside. Martel, the most honest among them, delivers the proof free of charge. He will read this text as an attack on democracy.</p>
+
+<p>It is not. It is the request to feel its pulse, instead of listening to its artificial heartbeat.</p>
+
+        <div class="signature">
+            Hans Ley and Claude Dedo (Anthropic)<br>
+            beyond-decay.org — 17 June 2026
+        </div>
+
+        <div class="footer-back">
+            <a href="index.html">← back to overview</a>
+        </div>
+    </main>
+
+<script>
+(function() {
+    const body = document.body;
+    const themeBtn = document.getElementById('btn-theme');
+    const sizeBtns = document.querySelectorAll('.size-btn');
+
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+    }
+    function applySize(s) {
+        if (!s) return;
+        body.classList.remove('size-small','size-normal','size-large','size-xlarge');
+        body.classList.add('size-' + s);
+        sizeBtns.forEach(function(x){
+            x.classList.remove('active');
+            if (x.dataset.size === s) x.classList.add('active');
+        });
+    }
+
+    try {
+        var savedTheme = localStorage.getItem('theme');
+        var savedSize = localStorage.getItem('fontSize');
+        if (savedTheme) applyTheme(savedTheme);
+        if (savedSize) applySize(savedSize);
+    } catch(e) {}
+
+    themeBtn.addEventListener('click', function() {
+        var current = document.documentElement.getAttribute('data-theme');
+        var next = current === 'light' ? 'dark' : 'light';
+        applyTheme(next);
+        try { localStorage.setItem('theme', next); } catch(e) {}
+    });
+
+    sizeBtns.forEach(function(b){
+        b.addEventListener('click', function() {
+            var s = b.dataset.size;
+            applySize(s);
+            try { localStorage.setItem('fontSize', s); } catch(e) {}
+        });
+    });
+
+    window.addEventListener('message', function(event) {
+        if (!event.data || !event.data.type) return;
+        if (event.data.type === 'setTheme') applyTheme(event.data.theme);
+        else if (event.data.type === 'setSize') applySize(event.data.size);
+    });
+
+    if (window.self !== window.top) body.classList.add('in-iframe');
+})();
+</script>
+</body>
+</html>

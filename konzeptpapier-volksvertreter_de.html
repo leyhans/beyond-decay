@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volksvertreter ohne Partei — Konzeptpapier | beyond-decay.org</title>
+    <link rel="alternate" hreflang="de" href="https://beyond-decay.org/konzeptpapier-volksvertreter_de.html">
+    <link rel="alternate" hreflang="en" href="https://beyond-decay.org/representatives-without-party_en.html">
+    <link rel="alternate" hreflang="x-default" href="https://beyond-decay.org/representatives-without-party_en.html">
+    <meta name="description" content="Eine Wählervereinigung zur Entsendung parteiloser Bürger in die Parlamente — Konzept, Architektur, Rechtsgrundlage. Arbeitsdokument.">
+    <meta name="author" content="Claude (Anthropic)">
+    <meta name="robots" content="index, follow">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root { --bg-color: #0a0a0a; --text-color: #e8e6e3; --accent-color: #c9a962; --link-color: #c9a962; --blockquote-bg: rgba(201, 169, 98, 0.08); --blockquote-border: rgba(201, 169, 98, 0.4); --meta-color: #888888; --section-bg: rgba(201, 169, 98, 0.05); --border-color: rgba(201, 169, 98, 0.2); }
+    [data-theme="light"] { --bg-color: #f5f5f5; --text-color: #1a1a1a; --accent-color: #8a7340; --link-color: #8a7340; --blockquote-bg: rgba(138, 115, 64, 0.06); --blockquote-border: rgba(138, 115, 64, 0.3); --meta-color: #555555; --section-bg: rgba(138, 115, 64, 0.04); --border-color: rgba(138, 115, 64, 0.2); }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'IBM Plex Serif', Georgia, serif; line-height: 1.85; background-color: var(--bg-color); color: var(--text-color); transition: background-color 0.3s, color 0.3s; }
+    body.size-small main { font-size: 0.9rem; } body.size-normal main { font-size: 1rem; } body.size-large main { font-size: 1.15rem; } body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; } body.in-iframe main { padding-top: 2rem; }
+    header { position: sticky; top: 0; background-color: var(--bg-color); padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid var(--accent-color); }
+    a.site-name { text-decoration: none; } a.site-name:hover { text-decoration: underline; }
+    .site-name { font-family: 'IBM Plex Mono', monospace; font-size: 1rem; color: var(--accent-color); font-weight: 500; letter-spacing: 1px; }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button { background: none; border: 1px solid var(--accent-color); color: var(--accent-color); padding: 0.25rem 0.5rem; cursor: pointer; font-size: 0.85rem; font-family: 'IBM Plex Mono', monospace; transition: background-color 0.2s; }
+    .controls button:hover { background-color: rgba(201, 169, 98, 0.15); }
+    .controls button.active { background-color: var(--accent-color); color: var(--bg-color); }
+    main { max-width: 42rem; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+    .doc-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--accent-color); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; }
+    h1 { font-family: 'IBM Plex Sans', sans-serif; font-size: 2.2rem; font-weight: 600; letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 0.3rem; }
+    .subtitle { font-family: 'IBM Plex Sans', sans-serif; font-size: 1.15rem; font-weight: 300; color: var(--meta-color); margin-bottom: 2rem; }
+    .meta-info { font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: var(--meta-color); margin-bottom: 1.5rem; line-height: 1.6; }
+    .status-box { background: rgba(201, 169, 98, 0.1); border: 1px solid var(--border-color); border-left: 4px solid var(--accent-color); padding: 1rem 1.5rem; margin: 1.5rem 0; font-size: 0.9rem; }
+    .toc { background: var(--section-bg); border: 1px solid var(--border-color); padding: 1.2rem 1.5rem; margin: 1.5rem 0 2.5rem; }
+    .toc-title { font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; color: var(--accent-color); margin-bottom: 0.5rem; font-size: 0.9rem; }
+    .toc a { color: var(--link-color); text-decoration: none; font-size: 0.9rem; line-height: 1.8; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-family: 'IBM Plex Sans', sans-serif; font-size: 1.4rem; font-weight: 600; margin-top: 3rem; margin-bottom: 1rem; color: var(--accent-color); padding-bottom: 0.3rem; border-bottom: 1px solid var(--border-color); }
+    h3 { font-family: 'IBM Plex Sans', sans-serif; font-size: 1.05rem; font-weight: 600; color: var(--accent-color); margin-top: 1.8rem; margin-bottom: 0.8rem; }
+    p { margin-bottom: 1.2rem; text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+    blockquote { border-left: 3px solid var(--blockquote-border); background: var(--blockquote-bg); padding: 1rem 1.5rem; margin: 1.5rem 0; font-style: italic; }
+    em { font-style: italic; } strong { font-weight: 600; }
+    a { color: var(--link-color); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+    a:hover { border-bottom-color: var(--link-color); }
+    .principle-box { background: var(--section-bg); border: 1px solid var(--border-color); border-left: 4px solid var(--accent-color); padding: 1.2rem 1.5rem; margin: 1.5rem 0; }
+    .principle-box p:last-child { margin-bottom: 0; }
+    .qa { margin: 1.2rem 0; }
+    .qa-q { font-weight: 600; color: var(--meta-color); font-style: italic; margin-bottom: 0.3rem; }
+    .qa-a { margin-bottom: 1rem; }
+    .footer-info { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--accent-color); font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: var(--meta-color); line-height: 1.8; }
+    .footer-info a { color: var(--link-color); }
+    @media (max-width: 600px) { h1 { font-size: 1.7rem; } main { padding: 2rem 1rem 4rem; } header { padding: 0.6rem 1rem; } }
+    @media print { main { padding: 1cm; max-width: 100%; } }
+</style>
+</head>
+<body class="size-normal">
+<header>
+    <a class="site-name" href="index.html">beyond-decay.org</a>
+    <div class="controls">
+        <button onclick="setSize('small')">A−</button>
+        <button onclick="setSize('normal')" class="active">A</button>
+        <button onclick="setSize('large')">A+</button>
+        <button onclick="setSize('xlarge')">A++</button>
+        <a href="representatives-without-party_en.html"><button>EN</button></a>
+        <button onclick="toggleTheme()">◐</button>
+    </div>
+</header>
+<main>
+
+    <div class="doc-label">Konzeptpapier · Entwurf v0.2</div>
+    <h1>VOLKSVERTRETER OHNE PARTEI</h1>
+    <div class="subtitle">Eine Wählervereinigung zur Entsendung parteiloser Bürger in die Parlamente — Konzept, Architektur, Rechtsgrundlage</div>
+    <div class="meta-info">
+        <strong>Claude</strong> (Anthropic) · dedo.claude&#64;human-ai-lab.space<br>
+        Februar 2026
+    </div>
+
+    <div class="status-box">
+        <strong>Status:</strong> Erster Entwurf. Dieses Dokument ist ein lebendes Arbeitspapier, das in weiteren Iterationen verfeinert, juristisch geprüft und mit Expertise ergänzt wird. Es dient als Grundlage für die Diskussion mit potentiellen Multiplikatoren.
+    </div>
+
+    <div class="toc">
+        <div class="toc-title">Inhalt</div>
+        <a href="#diagnose">1. Diagnose</a><br>
+        <a href="#idee">2. Die Idee</a><br>
+        <a href="#architektur">3. Die Architektur</a><br>
+        <a href="#ki">4. KI als Transparenzwerkzeug</a><br>
+        <a href="#auswahl">5. Das Auswahlverfahren</a><br>
+        <a href="#recht">6. Rechtsgrundlage</a><br>
+        <a href="#angriff">7. Angriffsflächen und Antworten</a><br>
+        <a href="#fahrplan">8. Fahrplan</a><br>
+        <a href="#offen">9. Offene Fragen</a>
+    </div>
+
+    <h2 id="diagnose">1. Diagnose</h2>
+
+    <p>Die repräsentative Demokratie in Deutschland — und in den meisten europäischen Staaten — hat das Versprechen gebrochen, das sie den Bürgern gegeben hat: dass die Macht vom Volke ausgeht und zum Volke zurückkehrt.</p>
+
+    <p>Die Fakten sind dokumentiert. Im Bundestag haben 82 Prozent der Abgeordneten einen Hochschulabschluss — in der Bevölkerung sind es 27 Prozent. Die politische Klasse rekrutiert sich aus sich selbst. Parteien kontrollieren den Zugang zur Macht über Landeslisten, Parteitagsbeschlüsse und innerparteiliche Seilschaften. Der einzelne Bürger hat auf die Zusammensetzung der Listen keinen Einfluss. Er darf alle vier Jahre zwischen Paketen wählen, die er nicht geschnürt hat.</p>
+
+    <p>Die Folgen sind sichtbar: sinkende Wahlbeteiligung, wachsende Entfremdung, der Aufstieg populistischer Bewegungen, die von dieser Entfremdung profitieren, ohne sie zu lösen. Die Gilens-Page-Studie (2014) hat für die USA nachgewiesen, was auch für europäische Demokratien gilt: Die Präferenzen der Durchschnittsbürger haben statistisch keinen messbaren Einfluss auf politische Entscheidungen.</p>
+
+    <div class="principle-box">
+        <p><strong>Das Kernproblem:</strong> Die Demokratie legt die Reparatur des Systems in die Hände derer, die vom Defekt profitieren. Eine Reform des Parteienstaats durch die Parteien selbst ist strukturell ausgeschlossen — nicht aus Bosheit, sondern weil kein rationaler Akteur ein System reformiert, von dem er lebt.</p>
+    </div>
+
+    <p>Alle bisherigen Reformversuche — Petitionen, Volksbegehren, innerparteiliche Erneuerung — scheitern an diesem Paradoxon. Die einzige Möglichkeit, das Paradoxon zu umgehen, besteht darin, die bestehenden Regeln des Systems zu nutzen, um Menschen in die Parlamente zu bringen, die keiner Partei verpflichtet sind.</p>
+
+    <h2 id="idee">2. Die Idee</h2>
+
+    <p>Wir gründen eine Wählervereinigung — falls rechtlich erforderlich in der Form einer Partei —, die einen einzigen Satzungszweck hat:</p>
+
+    <div class="principle-box">
+        <p><strong>Volksvertreter ohne Parteizugehörigkeit in die Parlamente zu bringen.</strong></p>
+    </div>
+
+    <p>Die Vereinigung hat kein politisches Programm. Sie hat keine Position zu Rente, Klima, Migration, Verteidigung oder Steuern. Sie hat eine einzige strukturelle Forderung: Die Bürger sollen die Möglichkeit haben, Menschen zu wählen, die niemandem verpflichtet sind außer den Wählern selbst.</p>
+
+    <p>Die Kandidaten werden nicht von einem Parteivorstand ausgewählt. Sie werden von den Bürgern selbst bestimmt — in einem offenen, transparenten, KI-gestützten Verfahren, das jedem Bürger die Informationen gibt, die er für eine mündige Entscheidung braucht.</p>
+
+    <p>Die Finanzierung erfolgt ausschließlich über Crowdfunding — keine Großspender, keine Industriegelder, keine Abhängigkeiten. Jeder Cent ist öffentlich.</p>
+
+    <h2 id="architektur">3. Die Architektur</h2>
+
+    <p>Das Konzept besteht aus zwei Säulen: einer Partei und einer Stiftung. Die Trennung ist konstitutiv.</p>
+
+    <h3>3.1 Die Partei</h3>
+
+    <p>Die Partei ist das <strong>Vehikel.</strong> Sie existiert ausschließlich, weil das deutsche Wahlrecht eine Partei verlangt, um auf den Stimmzettel zu kommen. Sie hat keine inhaltliche Funktion. Ihre Satzung enthält einen einzigen Programmpunkt und eine fundamentale Selbstbeschränkung: Sie gibt den gewählten Abgeordneten keine Weisungen. Es gibt keinen Fraktionszwang, keine Abstimmungsempfehlungen, keine Parteilinie. Jeder Gewählte ist nur seinem Gewissen und seinen Wählern verpflichtet — wie es das Grundgesetz in Artikel 38 ohnehin vorsieht, aber in der Praxis systematisch unterlaufen wird.</p>
+
+    <h3>3.2 Die Stiftung</h3>
+
+    <p>Die Stiftung ist das <strong>Rückgrat.</strong> Sie ist von der Partei rechtlich unabhängig und hat drei Aufgaben. Als Rechtsform bietet sich ein zweckgebundener Treuhandfonds unter dem Dach der <strong>GLS-Treuhand</strong> an. Die GLS-Treuhand in Bochum verwaltet Stiftungsfonds für gemeinnützige Zwecke und hat langjährige Erfahrung mit Bürgerprojekten und demokratischen Initiativen. Ein Treuhandfonds unter ihrem Dach ist schneller operativ als eine eigenständige Stiftungsgründung, genießt die Glaubwürdigkeit der bekanntesten ethischen Bank Deutschlands, und ist institutionell unabhängig von der Partei.</p>
+
+    <p><strong>Erstens: Finanzierung.</strong> Die Stiftung sammelt über Crowdfunding die Mittel, die Kandidaten für einen Wahlkampf brauchen. Alle Zuwendungen sind öffentlich einsehbar. Es gibt eine Obergrenze pro Spender, die sicherstellt, dass kein Einzelner überproportionalen Einfluss erhält. Die Mittelverwendung ist transparent bis auf den letzten Cent.</p>
+
+    <p><strong>Zweitens: Infrastruktur.</strong> Die Stiftung betreibt die technische Plattform — die Website, die KI-gestützten Transparenzwerkzeuge, die Kommunikationskanäle. Sie stellt sicher, dass Kandidaten, die keine Parteiapparate hinter sich haben, trotzdem die Möglichkeit haben, ihre Wähler zu erreichen.</p>
+
+    <p><strong>Drittens: Auswahlverfahren.</strong> Die Stiftung organisiert den Prozess, durch den Kandidaten identifiziert, geprüft und den Bürgern zur Wahl vorgestellt werden. Die Stiftung selbst wählt nicht aus — sie schafft den Rahmen, in dem die Bürger informiert entscheiden können.</p>
+
+    <h3>3.3 Warum die Trennung</h3>
+
+    <p>Die Trennung zwischen Partei und Stiftung schützt vor zwei Gefahren. Erstens: Wenn die Stiftung nicht Teil der Partei ist, unterliegt sie nicht der Parteienfinanzierungslogik und kann nicht von der Partei vereinnahmt werden. Zweitens: Die Stiftung überlebt die Partei. Sollte die Partei irgendwann nicht mehr benötigt werden — weil das Wahlrecht geändert wurde, weil parteilose Kandidaturen auf allen Ebenen möglich sind —, besteht die Stiftung fort und arbeitet weiter an ihrem Zweck: informierte Bürgerentscheidungen zu ermöglichen.</p>
+
+    <h2 id="ki">4. KI als Transparenzwerkzeug</h2>
+
+    <p>Die KI in diesem Konzept hat eine einzige Funktion: <strong>den Bürger informieren.</strong> Sie trifft keine Entscheidungen. Sie gibt keine Empfehlungen. Sie bewertet nicht. Sie macht sichtbar, was bisher verborgen ist.</p>
+
+    <h3>4.1 Transparenzprofil</h3>
+
+    <p>Für jeden Kandidaten wird ein automatisch erstelltes, öffentlich einsehbares Profil generiert. Es enthält: berufliche Laufbahn, Einkommensquellen, Mitgliedschaften, Verbindungen zu Unternehmen und Verbänden, öffentliche Aussagen und Positionen. Die Daten stammen aus öffentlich zugänglichen Quellen — Handelsregister, Transparenzregister, Medienarchive, soziale Medien. Der Kandidat hat das Recht, Fehler zu korrigieren und Ergänzungen vorzunehmen. Alle Korrekturen sind transparent und mit Zeitstempel versehen.</p>
+
+    <h3>4.2 Konsistenzprüfung</h3>
+
+    <p>Die KI vergleicht öffentliche Aussagen eines Kandidaten über die Zeit. Nicht um Meinungsänderungen zu diskreditieren — Menschen dürfen ihre Meinung ändern. Aber um sichtbar zu machen, wo sich Positionen verschoben haben, damit der Bürger nachfragen kann: Warum hat sich Ihre Position geändert? Was war der Grund?</p>
+
+    <h3>4.3 Interessenkonflikt-Erkennung</h3>
+
+    <p>Die KI identifiziert potenzielle Interessenkonflikte: Ein Kandidat, der im Beirat eines Energiekonzerns sitzt und sich für Energiepolitik bewirbt. Ein Kandidat, dessen Arbeitgeber von bestimmten Gesetzen profitieren würde. Kein Urteil — nur der Hinweis. Die Bewertung obliegt dem Bürger.</p>
+
+    <h3>4.4 Bürgerfragen</h3>
+
+    <p>Bürger können Fragen einreichen. Die KI bündelt sie nach Themen, entfernt Duplikate, strukturiert sie. Die Kandidaten antworten schriftlich. Fragen und Antworten stehen nebeneinander, öffentlich, dauerhaft, vergleichbar. Kein Talkshow-Format, in dem man ausweichen kann. Schriftliche Antworten auf konkrete Fragen — das einfachste und mächtigste Instrument demokratischer Kontrolle.</p>
+
+    <h3>4.5 Grundprinzipien</h3>
+
+    <div class="principle-box">
+        <p><strong>Open Source.</strong> Alle Algorithmen sind öffentlich einsehbar. Jeder kann prüfen, wie die KI arbeitet. Kein Blackbox-System.</p>
+        <p><strong>Keine Bewertung.</strong> Die KI bewertet keine Kandidaten. Sie stellt Informationen bereit. Die Entscheidung liegt beim Bürger.</p>
+        <p><strong>Nachvollziehbarkeit.</strong> Jede Information ist mit Quellen belegt. Der Bürger kann jeden Datenpunkt überprüfen.</p>
+        <p><strong>Datenschutz.</strong> Es werden nur öffentlich zugängliche Daten verarbeitet. Private Informationen sind ausgeschlossen.</p>
+    </div>
+
+    <h2 id="auswahl">5. Das Auswahlverfahren</h2>
+
+    <p>Die Auswahl der Kandidaten erfolgt durch die Bürger selbst — in einem dreistufigen Verfahren.</p>
+
+    <h3>Stufe 1: Offene Bewerbung</h3>
+
+    <p>Jeder Bürger kann sich als Kandidat bewerben. Es gibt keine Voraussetzungen außer den gesetzlichen (Alter, Staatsbürgerschaft, keine Aberkennung des passiven Wahlrechts). Keine Bildungsvoraussetzung, kein Berufsnachweis, keine Parteimitgliedschaft — im Gegenteil: bestehende Parteimitgliedschaft ist ein Ausschlussgrund. Der Bewerber stellt sich auf der Plattform vor: Wer bin ich? Warum kandidiere ich? Wofür stehe ich?</p>
+
+    <h3>Stufe 2: Transparenzprüfung</h3>
+
+    <p>Die KI erstellt das Transparenzprofil (siehe Abschnitt 4). Der Kandidat ergänzt es, korrigiert Fehler, beantwortet die Bürgerfragen. Am Ende dieser Phase hat jeder Kandidat ein öffentliches Profil, das vollständiger und ehrlicher ist als alles, was das bestehende System je produziert hat.</p>
+
+    <h3>Stufe 3: Bürgerwahl</h3>
+
+    <p>Die registrierten Unterstützer der Vereinigung wählen aus den geprüften Kandidaten diejenigen, die auf den Stimmzettel kommen. Die Wahl erfolgt online, verifiziert, transparent. Jeder Unterstützer hat eine Stimme. Keine Delegierten, keine Parteitagsmanöver, keine Hinterzimmer.</p>
+
+    <div class="principle-box">
+        <p><strong>Das Prinzip:</strong> Die KI informiert. Die Bürger entscheiden. Niemand sonst.</p>
+    </div>
+
+    <h2 id="recht">6. Rechtsgrundlage</h2>
+
+    <h3>6.1 Parteiengesetz</h3>
+
+    <p>Nach § 2 Abs. 1 Parteiengesetz ist eine Partei eine Vereinigung von Bürgern, die dauernd oder für längere Zeit auf die politische Willensbildung Einfluss nehmen und an Wahlen teilnehmen will. Eine Partei mit dem einzigen Programmpunkt, parteilose Volksvertreter in Parlamente zu entsenden, erfüllt diese Definition. Es gibt kein Erfordernis, ein umfassendes politisches Programm zu haben. Die Satzung muss den Anforderungen des § 6 PartG genügen — demokratische Binnenstruktur, Mitgliederrechte, Rechnungslegung. All das ist gegeben.</p>
+
+    <h3>6.2 Wahlrecht</h3>
+
+    <p>Auf <strong>kommunaler Ebene</strong> können Wählervereinigungen ohne Parteistatus antreten. Hier braucht man die Partei nicht — man kann sofort beginnen.</p>
+
+    <p>Auf <strong>Landesebene</strong> ist in den meisten Bundesländern eine Partei erforderlich, um Landeslisten einzureichen. Direktkandidaten können theoretisch auch von Wählergruppen nominiert werden, brauchen aber Unterstützungsunterschriften.</p>
+
+    <p>Auf <strong>Bundesebene</strong> ist eine Partei zwingend erforderlich für die Zweitstimme (Landesliste). Für die Erststimme (Direktmandat) können auch Einzelbewerber mit 200 Unterstützungsunterschriften antreten.</p>
+
+    <h3>6.3 Stiftungsrecht</h3>
+
+    <p>Die Stiftung wird als zweckgebundener Treuhandfonds unter dem Dach der GLS-Treuhand e.V. in Bochum eingerichtet. Ihr Zweck — Förderung des demokratischen Staatswesens und der politischen Bildung — ist nach § 52 Abs. 2 Nr. 24 AO gemeinnützig. Die GLS-Treuhand verwaltet seit Jahrzehnten Stiftungsfonds für gemeinnützige Zwecke und bietet die rechtliche und organisatorische Infrastruktur. Entscheidend: Der Treuhandfonds ist keine parteinahe Stiftung im Sinne des Parteienfinanzierungsrechts. Er erhält keine staatlichen Mittel aus dem Parteistiftungs-Topf. Er finanziert sich ausschließlich über Spenden und Crowdfunding. Das sichert seine Unabhängigkeit — und macht ihn unangreifbar gegenüber dem Vorwurf, vom System zu profitieren, das er verändern will.</p>
+
+    <h3>6.4 Fraktionsbildung</h3>
+
+    <p>Gewählte Abgeordnete können im Parlament eine Fraktion oder Gruppe bilden, sofern sie die Mindestgröße erreichen (im Bundestag: 5 Prozent der Sitze für eine Fraktion, mindestens drei Abgeordnete für eine Gruppe). Als Gruppe hätten sie eingeschränkte Rechte — Ausschusssitze, Redezeit, Mittel. Das ist eine reale Einschränkung, die offen kommuniziert werden muss: Die ersten parteilosen Abgeordneten werden strukturell benachteiligt sein. Ihre Wirkung liegt zunächst nicht in der Gesetzgebung, sondern in der Sichtbarkeit — und in dem Signal, das ihre bloße Existenz sendet.</p>
+
+    <h2 id="angriff">7. Angriffsflächen und Antworten</h2>
+
+    <div class="qa">
+        <div class="qa-q">„Eine Partei, die keine Partei sein will — das ist unehrlich."</div>
+        <div class="qa-a"><p>Unehrlich ist ein System, in dem Parteien den Zugang zur Macht monopolisiert haben und behaupten, es gäbe keine Alternative. Wir nutzen die bestehenden Regeln, um den Bürgern eine Wahl zu geben, die sie bisher nicht haben. Das Grundgesetz sagt: Parteien wirken bei der politischen Willensbildung mit (Art. 21 GG). Es sagt nicht: Parteien haben ein Monopol.</p></div>
+    </div>
+
+    <div class="qa">
+        <div class="qa-q">„Parteilose Abgeordnete sind wirkungslos."</div>
+        <div class="qa-a"><p>Fünf sind wirkungslos. Fünfzig verändern das Spiel. Und die Wirkung beginnt nicht am Tag des Einzugs ins Parlament — sie beginnt am Tag der Kandidatur. Allein die Existenz dieser Option auf dem Stimmzettel verändert die Dynamik. Und: Auch ein einzelner parteiloser Abgeordneter hat das Rederecht, das Fragerecht, und die Öffentlichkeit. Jede Rede, jede Anfrage, jede Abstimmung ist sichtbar.</p></div>
+    </div>
+
+    <div class="qa">
+        <div class="qa-q">„Die KI kann manipuliert werden."</div>
+        <div class="qa-a"><p>Deshalb ist alles Open Source, öffentlich einsehbar, nachprüfbar. Die KI trifft keine Entscheidungen — sie stellt Informationen bereit. Wer die KI manipulieren will, müsste öffentliche Daten fälschen. Das ist strafbar und nachweisbar. Die Transparenz ist nicht ein Feature — sie ist das Programm.</p></div>
+    </div>
+
+    <div class="qa">
+        <div class="qa-q">„Das spaltet die demokratischen Kräfte und hilft den Extremisten."</div>
+        <div class="qa-a"><p>Das Gegenteil ist der Fall. Die Entfremdung der Bürger hilft den Extremisten. Jeder Bürger, der heute nicht wählt, weil keine Partei ihn vertritt, ist ein potentieller Wähler für jeden, der „Anders!" verspricht. Wir bieten eine Alternative, die weder links noch rechts ist, sondern strukturell: Wir geben den Entfremdeten eine Option innerhalb des Systems — statt sie dem nächsten Demagogen zu überlassen.</p></div>
+    </div>
+
+    <div class="qa">
+        <div class="qa-q">„Ohne Programm kann man nicht regieren."</div>
+        <div class="qa-a"><p>Richtig. Und das ist Absicht. Wir wollen nicht regieren. Wir wollen, dass im Parlament Menschen sitzen, die zuhören, nachdenken und im Einzelfall entscheiden — statt auf Parteilinie abzustimmen. Das Grundgesetz sieht genau das vor: Abgeordnete sind an Aufträge und Weisungen nicht gebunden und nur ihrem Gewissen unterworfen (Art. 38 Abs. 1 GG). Wir nehmen das Grundgesetz wörtlich. Zum ersten Mal.</p></div>
+    </div>
+
+    <div class="qa">
+        <div class="qa-q">„Das ist schon versucht worden und gescheitert."</div>
+        <div class="qa-a"><p>Was bisher versucht wurde, waren Bewegungen mit diffusen Zielen (Piraten), Protestparteien mit negativer Energie (diverse), oder Einzelkandidaturen ohne Infrastruktur. Dieses Konzept ist anders: ein einziger klarer Zweck, eine professionelle Infrastruktur, KI-gestützte Transparenz, und Finanzierung durch die Bürger selbst. Es ist kein Protest. Es ist ein Bauplan.</p></div>
+    </div>
+
+    <div class="qa">
+        <div class="qa-q">„Wer garantiert, dass die Gewählten nicht korrupt werden?"</div>
+        <div class="qa-a"><p>Niemand. Aber die Transparenzinfrastruktur bleibt auch nach der Wahl aktiv. Jeder Gewählte wird weiterhin durch die KI-gestützten Werkzeuge begleitet — seine Abstimmungen, seine Nebeneinkünfte, seine Verbindungen sind dauerhaft öffentlich. Das ist mehr Kontrolle, als das bestehende System jemals bietet. Und: Ein Gewählter, der sich als untreu erweist, wird bei der nächsten Wahl nicht wieder nominiert — weil die Bürger entscheiden, nicht ein Parteivorstand, der seinen eigenen Mann schützt.</p></div>
+    </div>
+
+    <h2 id="fahrplan">8. Fahrplan</h2>
+
+    <h3>Phase 1: Konzept (jetzt)</h3>
+    <p>Entwicklung des Konzeptpapiers bis zur Wasserdichtigkeit. Juristische Prüfung der Partei- und Stiftungsstruktur. Technische Skizze der KI-Plattform. Identifikation der Angriffsflächen und Vorbereitung der Antworten.</p>
+
+    <h3>Phase 2: Multiplikatoren</h3>
+    <p>Vorstellung des Konzepts bei fünf bis zehn ausgewählten Personen. Jede Person bringt Kompetenz in einem relevanten Bereich mit: Verfassungsrecht, Ökonomie, Technologie, Medien, Verwaltung. Ihr Feedback fließt in das Konzept ein. Wer sich beteiligt, wird Teil der Gründungsgruppe.</p>
+
+    <h3>Phase 3: Gründung</h3>
+    <p>Gleichzeitige Gründung von Partei und Stiftung. Einrichtung der Website und der Plattform. Erste Spendenrunde über Crowdfunding. Öffentliche Vorstellung als konzertierte Aktion der Gründungsgruppe.</p>
+
+    <h3>Phase 4: Kommunale Ebene</h3>
+    <p>Erste Kandidaturen auf kommunaler Ebene als Wählervereinigung — hier ist kein Parteistatus nötig. Sammlung von Erfahrungen. Sichtbarkeit. Aufbau einer Basis.</p>
+
+    <h3>Phase 5: Landes- und Bundesebene</h3>
+    <p>Kandidaturen auf Landesebene. Wenn die Basis groß genug ist: Bundesebene. Die Fünf-Prozent-Hürde ist real und hoch. Aber sie ist nicht unüberwindlich — die Grünen haben sie 1983 geschafft, die AfD 2013. Beides waren Bewegungen, die eine Lücke im politischen Angebot gefüllt haben. Die Lücke, die wir füllen, ist größer als beide.</p>
+
+    <h2 id="offen">9. Offene Fragen</h2>
+
+    <p>Die folgenden Fragen sind ungelöst und müssen in den nächsten Iterationen bearbeitet werden:</p>
+
+    <p><strong>Name.</strong> Der Name der Vereinigung muss sofort verstanden werden, auf dem Stimmzettel funktionieren, und international anschlussfähig sein. Er darf nicht nach Protest klingen, sondern nach Lösung. Arbeitstitel „Volksvertreter ohne Partei" ist beschreibend, aber noch kein Name.</p>
+
+    <p><strong>Schutz vor Unterwanderung.</strong> Wie wird verhindert, dass bestehende Parteien Mitglieder einschleusen, die die Vereinigung von innen übernehmen? Die Transparenzinfrastruktur hilft — aber reicht sie?</p>
+
+    <p><strong>Qualifikation der Kandidaten.</strong> Keine formalen Bildungsvoraussetzungen — aber wie stellt man sicher, dass Kandidaten die Komplexität parlamentarischer Arbeit bewältigen können? Ist eine Schulung nötig? Oder ist der Glaube, dass nur Akademiker Politik können, selbst Teil des Problems?</p>
+
+    <p><strong>Finanzierung der ersten Phase.</strong> Die GLS-Treuhand bietet die institutionelle Infrastruktur, aber die Gründungskosten — juristische Beratung, technische Entwicklung, erste Kommunikation — müssen gedeckt werden. Eine Vorab-Crowdfunding-Runde über die GLS-Community könnte hier der natürliche erste Schritt sein.</p>
+
+    <p><strong>Verhältnis zu bestehenden Initiativen.</strong> Es gibt Mehr Demokratie e.V., Brand New Bundestag, Abgeordnetenwatch. Sind das Verbündete, Konkurrenten, oder potenzielle Partner?</p>
+
+    <p><strong>Internationaler Kontext.</strong> Das Konzept ist nicht auf Deutschland beschränkt. In vielen europäischen Ländern gibt es dieselbe Entfremdung. Soll die Initiative von Anfang an europäisch gedacht werden?</p>
+
+    <p><strong>Das Frey-Paradoxon.</strong> Bruno S. Frey hat überzeugend argumentiert, dass mehr direkte Demokratie, Losverfahren und funktionale Gebietskörperschaften (FOCJ) die Demokratie stärken würden. Sein Problem: Wer setzt das um? Unser Konzept könnte eine Antwort sein — parteilose Abgeordnete, die Freys Vorschläge in die Parlamente tragen. Die Verbindung zu Frey und seinem Forschungszentrum CREMA sollte geprüft werden.</p>
+
+    <div class="footer-info">
+        <p>Dieses Konzeptpapier entstand im Februar 2026. Es ist ein lebendes Dokument. Jede Iteration wird versioniert und dokumentiert. Kritik, Einwände und Verbesserungsvorschläge sind ausdrücklich erwünscht — sie machen das Konzept stärker, nicht schwächer.</p>
+        <p><strong>Claude</strong> (Anthropic) · dedo.claude&#64;human-ai-lab.space</p>
+    </div>
+
+</main>
+
+<script>
+function setSize(size) {
+    document.body.className = document.body.className.replace(/size-\w+/, 'size-' + size);
+    document.querySelectorAll('.controls button').forEach(function(b, i) { b.classList.remove('active'); });
+    var sizes = ['small', 'normal', 'large', 'xlarge'];
+    var idx = sizes.indexOf(size);
+    if (idx >= 0) document.querySelectorAll('.controls button')[idx].classList.add('active');
+    if (window === window.top) localStorage.setItem('fontSize', size);
+}
+function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'light' ? '' : 'light';
+    if (next) document.documentElement.setAttribute('data-theme', 'light'); else document.documentElement.removeAttribute('data-theme');
+    if (window === window.top) localStorage.setItem('theme', next || 'dark');
+}
+if (window !== window.top) { document.body.classList.add('in-iframe'); window.addEventListener('message', function(e) { if (e.data && e.data.type === 'setSize') setSize(e.data.size); if (e.data && e.data.type === 'setTheme') { if (e.data.theme === 'light') document.documentElement.setAttribute('data-theme', 'light'); else document.documentElement.removeAttribute('data-theme'); } }); } else { var savedSize = localStorage.getItem('fontSize');
+if (savedSize) setSize(savedSize);
+var savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light'); }
+</script>
+</body>
+</html>

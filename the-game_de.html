@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Das Spiel | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+    }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'IBM Plex Mono', monospace;
+        transition: background-color 0.2s;
+    }
+    .controls button:hover { background-color: rgba(201, 169, 98, 0.15); }
+    .controls button.active { background-color: var(--accent-color); color: var(--bg-color); }
+    main {
+        max-width: 52rem;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem 2rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 0.3rem;
+        color: var(--accent-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 300;
+        font-size: 1.25rem;
+        color: var(--meta-color);
+        margin-bottom: 2rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--note-border);
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 1.4rem;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        color: var(--accent-color);
+    }
+    p { margin-bottom: 1rem; text-align: justify; hyphens: auto; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1.2rem 1.5rem;
+        margin: 2rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .note {
+        border: 1px solid var(--note-border);
+        padding: 1rem 1.5rem;
+        margin: 2rem 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 0.9rem;
+    }
+    a { color: var(--link-color); }
+    .footer-info {
+        margin-top: 4rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+    }
+    @media print {
+        body { background: white; color: black; }
+        header, .controls { display: none; }
+        main { padding: 1cm; max-width: 100%; }
+        blockquote { background: #f0f0f0; border-left-color: #999; }
+        a { color: #333; }
+    }
+    @media (max-width: 600px) {
+        main { padding: 1.5rem 1rem 3rem 1rem; }
+        h1 { font-size: 1.6rem; }
+    }
+</style>
+</head>
+<body class="size-normal">
+<header>
+    <div class="site-name">beyond-decay.org</div>
+    <div class="controls">
+        <button onclick="setSize('small')">A−</button>
+        <button onclick="setSize('normal')" class="active">A</button>
+        <button onclick="setSize('large')">A+</button>
+        <button onclick="setSize('xlarge')">A++</button>
+        <button onclick="toggleTheme()">◐</button>
+    </div>
+</header>
+<main>
+
+<h1>DAS SPIEL</h1>
+<div class="subtitle">Spieltheorie als Sprache der Geopolitik</div>
+<div class="meta">
+    <p>Eine Kollaboration von <strong>Hans Ley</strong> &lt;<a href="m&#97;ilto:ley.hans&#64;cyclo.space" style="color: var(--accent-color);">ley.hans&#64;cyclo.space</a>&gt;<br>
+    und <strong>Claude</strong> (Anthropic) &lt;<a href="m&#97;ilto:dedo.claude&#64;human-ai-lab.space" style="color: var(--accent-color);">dedo.claude&#64;human-ai-lab.space</a>&gt;</p>
+    <p>Februar 2026</p>
+</div>
+
+<blockquote>
+    <p>Gefangenendilemma. Chicken Game. Trittbrettfahrerproblem. Nash-Gleichgewicht. Fokalpunkt. Brinkmanship. Tragik der Allmende. Signalspiel. — Acht Konzepte. Wer sie versteht, liest Geopolitik wie ein anderes Buch.</p>
+</blockquote>
+
+<h2>I. Die Sprache, die fehlt</h2>
+
+<p>Wenn Europa über seine Verteidigung diskutiert, über Trump, über Putin, über Energieabhängigkeit und digitale Souveränität, dann fehlt der Debatte nicht Information. Die Fakten liegen auf dem Tisch — 13 Essays auf dieser Seite haben sie zusammengetragen. Was fehlt, ist eine Sprache, die erklärt, <em>warum</em> rationale Akteure systematisch irrationale Ergebnisse produzieren.</p>
+
+<p>Diese Sprache existiert. Sie heißt Spieltheorie.</p>
+
+<p>Spieltheorie ist nicht Mathematik für Elfenbeintürme. Sie ist das präziseste Werkzeug, das die Sozialwissenschaften besitzen, um zu verstehen, warum Kooperation scheitert, obwohl sie allen nützen würde. Warum Staaten aufrüsten, obwohl sie sich damit gegenseitig schaden. Warum die klügste Strategie manchmal darin besteht, sich bewusst verrückt zu stellen. Und warum 27 europäische Nationen, von denen jede einzelne rational handelt, gemeinsam eine kontinentale Katastrophe produzieren.</p>
+
+<p>Kein anderes Gebiet wurde so häufig mit dem Wirtschaftsnobelpreis ausgezeichnet wie die Spieltheorie: John Nash 1994, Robert Aumann und Thomas Schelling 2005, Alvin Roth und Lloyd Shapley 2012. Was als mathematisches Kuriosum in den Labors der RAND Corporation begann — 1950 entworfen von Merrill Flood und Melvin Dresher — wurde zur Grundlage der nuklearen Abschreckungsstrategie, der Auktionstheorie und der Verhaltensökonomie.</p>
+
+<p>Dieser Essay führt die wichtigsten Konzepte ein. Nicht als Lehrbuch, sondern als Lesebrille. Wer sie aufsetzt, sieht in den Krisen unserer Zeit nicht Chaos, sondern Struktur.</p>
+
+<h2>II. Das Gefangenendilemma — Oder: Warum Europa sich nicht verteidigt</h2>
+
+<p>Zwei Gefangene werden getrennt verhört. Jeder kann schweigen oder den anderen verraten. Schweigen beide, kommen beide mit einer milden Strafe davon. Verrät einer den anderen, geht der Verräter frei und der Schweigende bekommt die Höchststrafe. Verraten sich beide, bekommen beide eine hohe Strafe — weniger als die Höchststrafe, aber deutlich mehr als beim beiderseitigen Schweigen.</p>
+
+<p>Die Pointe: Egal was der andere tut, ist Verrat die individuell bessere Wahl. Doch wenn beide dieser Logik folgen, stehen beide schlechter da, als wenn beide geschwiegen hätten. Individuelle Rationalität produziert kollektive Irrationalität.</p>
+
+<p>Das ist kein Gedankenexperiment. Das ist die Grundstruktur der europäischen Verteidigungspolitik.</p>
+
+<p>27 EU-Staaten stehen vor einer kollektiven Aufgabe: sich gemeinsam gegen Bedrohungen zu verteidigen. Jeder einzelne Staat profitiert davon, wenn die anderen mehr investieren, während er selbst spart. Verteidigungsausgaben sind aus Sicht des einzelnen Staates ein öffentliches Gut — sie sind nicht ausschließbar (auch wer nicht zahlt, wird durch die NATO geschützt) und nicht-rival (der Schutz des einen mindert nicht den Schutz des anderen). Mancur Olson und Richard Zeckhauser haben diese Logik bereits 1966 formalisiert: In asymmetrischen Allianzen tragen die großen Mitglieder eine überproportional hohe Last, während die kleinen trittbrettfahren.</p>
+
+<p>Das Ergebnis ist messbar: Jahrzehntelang haben die meisten europäischen NATO-Mitglieder das 2-Prozent-Ziel verfehlt. Nicht aus Dummheit oder Böswilligkeit, sondern weil die Anreizstruktur genau dieses Verhalten belohnt. Der Hegemon — die USA — trägt die Hauptlast, die kleinen Verbündeten profitieren. Olson nennt das die „Ausbeutungshypothese": die Ausbeutung der Großen durch die Kleinen.</p>
+
+<p>Was Trump seit 2017 fordert, ist spieltheoretisch banal: Er will die Anreizstruktur ändern. Das Problem: Er ändert sie auf eine Weise, die das Dilemma nicht löst, sondern verschärft.</p>
+
+<h2>III. Das Chicken Game — Oder: Trumps Verhandlungsstrategie</h2>
+
+<p>Zwei Autos rasen aufeinander zu. Wer zuerst ausweicht, hat verloren — aber lebt. Weicht keiner aus, sind beide tot. Anders als im Gefangenendilemma gibt es hier keine dominante Strategie. Die beste Wahl hängt davon ab, was man glaubt, dass der andere tun wird.</p>
+
+<p>Thomas Schelling, Nobelpreisträger 2005, hat die strategische Logik dieses Spiels auf die Geopolitik übertragen. Seine Einsicht: Der Spieler, der sich glaubhaft als irrational darstellt, gewinnt. Wer sein Lenkrad aus dem Fenster wirft — wer also signalisiert, dass er gar nicht mehr ausweichen <em>kann</em> — zwingt den anderen zum Ausweichen.</p>
+
+<p>Das ist Donald Trumps Methode. Die Drohungen gegen Grönland — „Gewalt nicht ausgeschlossen" gegen das Territorium eines NATO-Verbündeten. Die Forderung nach 5 Prozent Verteidigungsausgaben. Die Ankündigung von 100-Prozent-Zöllen auf chinesische Waren. Die Rede auf der Münchner Sicherheitskonferenz, die europäischen Verbündeten drohte mit „zivilisatorischer Auslöschung". Das sind keine Ausrutscher. Das ist Brinkmanship.</p>
+
+<p>Schelling definierte Brinkmanship als „die Taktik, die Situation bewusst etwas außer Kontrolle geraten zu lassen, gerade weil das Außer-Kontrolle-Geraten für die andere Seite unerträglich sein und sie zum Einlenken zwingen kann." Nixon nannte es privat seine „Madman Theory": Die Nordvietnamesen sollten glauben, er sei verrückt genug, den Atomknopf zu drücken.</p>
+
+<p>Das Problem mit dem Chicken Game: Es funktioniert — bis es das nicht mehr tut. Als Japan Anfang 2025 eine koordinierte Antwort auf Trumps Zolldrohungen vorschlug, brach die Koalition zusammen, bevor sie sich formiert hatte. Südkorea verhandelte bilateral. Australien suchte Einzelabkommen. Kanada kapitulierte. Jede Einzelentscheidung war rational. Das kollektive Ergebnis war Kapitulation — genau die Dynamik, die das Chicken Game vorhersagt, wenn einer der Spieler bereit ist, mehr Risiko zu übernehmen als alle anderen zusammen.</p>
+
+<h2>IV. Das Nash-Gleichgewicht — Oder: Warum sich nichts ändert</h2>
+
+<p>John Nash bewies 1950, dass jedes endliche Spiel mindestens einen Gleichgewichtspunkt besitzt: einen Zustand, in dem kein Spieler einen Anreiz hat, einseitig seine Strategie zu ändern. Das ist kein Optimum — es ist lediglich ein stabiler Zustand.</p>
+
+<p>Europas sicherheitspolitische Lage ist ein Nash-Gleichgewicht im schlechtesten Sinne. Die USA liefern Sicherheit, Europa kauft amerikanische Waffen (68 Milliarden Dollar allein 2024 — eine Verfünffachung gegenüber dem Vorjahr), beide Seiten sind unzufrieden, aber keine hat einen einseitigen Anreiz, die Struktur zu ändern.</p>
+
+<p>Für Europa: Eigene Rüstungsindustrie aufbauen würde bedeuten, kurzfristig weniger Schutz für mehr Geld zu bekommen. Kurzfristig verliert man. Für die USA: Europa wirklich allein zu lassen würde den geopolitischen Einfluss massiv reduzieren. Also droht Washington, ohne die Drohung einzulösen. Und Europa verspricht, ohne das Versprechen zu halten.</p>
+
+<p>Das Ergebnis: 27 nationale Beschaffungssysteme, 27 nationale Industriepolitiken, 18 bis 57 Milliarden Euro jährliche Effizienzverluste durch Fragmentierung. Die EU-Kommission versuchte mit „Readiness 2030" die Beschaffung zu zentralisieren — der Europäische Rat lehnte im Oktober 2025 ab, zugunsten zwischenstaatlicher Mechanismen, die genau die Fragmentierung verewigen, die 57 Milliarden Euro kostet.</p>
+
+<p>Das ist kein Versagen der Politik. Das ist ein Nash-Gleichgewicht: ein Zustand, den niemand will, aber den niemand einseitig ändern kann.</p>
+
+<h2>V. Der Fokalpunkt — Oder: Warum 2 Prozent?</h2>
+
+<p>Schelling stellte in den 1950ern ein Experiment an: Zwei Personen sollen sich in New York treffen, ohne vorher einen Ort oder eine Zeit zu vereinbaren. Wo treffen sie sich? Die überragende Mehrheit sagte: unter der Uhr in der Grand Central Station, um 12 Uhr mittags.</p>
+
+<p>Die Antwort ist nicht logisch zwingend — es gibt tausend andere Orte und Zeiten. Aber sie ist psychologisch „salient": auffällig, kulturell naheliegend, intuitiv koordinierbar. Schelling nannte das einen Fokalpunkt.</p>
+
+<p>Die 2-Prozent-Zielmarke der NATO ist ein Fokalpunkt. Sie hat keine militärstrategische Grundlage. Kein Analyst hat je berechnet, dass genau 2 Prozent des BIP die Summe ist, die ein Land für seine Verteidigung ausgeben muss. Die Zahl wurde 2006 informell vereinbart und 2014 auf dem Wales-Gipfel formalisiert, als die meisten Verbündeten weit darunter lagen.</p>
+
+<p>Aber als Fokalpunkt funktioniert sie: Sie ist einfach, messbar, vergleichbar. Sie schafft eine gemeinsame Erwartung, an der sich Kooperation oder Defektion messen lässt. Italien hat 2024 das 2-Prozent-Ziel „erreicht" — durch Umklassifizierung bestehender Ausgaben, nicht durch neue Investitionen. Das zeigt die Stärke und die Schwäche von Fokalpunkten: Sie koordinieren, aber sie lassen sich manipulieren.</p>
+
+<p>Dass die NATO auf dem Haager Gipfel 2025 nun 3,5 Prozent plus 1,5 Prozent verteidigungsnahe Ausgaben — also 5 Prozent — bis 2035 beschloss, ist spieltheoretisch eine Eskalation des Fokalpunkts. Eine, die zeigt, wie wenig der alte Fokalpunkt gewirkt hat.</p>
+
+<h2>VI. Das Signalspiel — Oder: Was Grönland wirklich bedeutet</h2>
+
+<p>In Signalspielen verfügt ein Spieler über private Information, die der andere nicht hat. Um seine Absichten glaubhaft zu machen, muss er ein Signal senden — eine Handlung, die nur dann rational wäre, wenn seine Behauptung wahr ist.</p>
+
+<p>Trumps Grönland-Drohung ist ein Signalspiel. Die Nachricht ist nicht „Wir wollen Grönland". Die Nachricht ist: „Wir behandeln Verbündete nicht anders als Gegner, wenn unsere Interessen es erfordern." Wäre die Drohung als Bluff interpretierbar, hätte sie keine Signalwirkung. Dass sie sich gegen einen NATO-Verbündeten richtet — gegen Dänemark, ein Land, das jede Pflicht erfüllt hat — macht das Signal glaubwürdig, gerade <em>weil</em> es so irrational erscheint.</p>
+
+<p>Dasselbe Muster bei der Rede auf der Münchner Sicherheitskonferenz 2026: Die US-Delegation warnte europäische Verbündete vor „zivilisatorischer Auslöschung" durch Einwanderung und kündigte an, Amerika werde „Widerstand kultivieren" gegen etablierte politische Kräfte in Europa. Das ist kein diplomatisches Versehen. Das ist ein Signal, das auf Kosten der diplomatischen Beziehung gesendet wird — ein „costly signal" in der Sprache der Spieltheorie — und deshalb glaubwürdig.</p>
+
+<p>Europas Fehler: Es behandelt diese Signale als Rhetorik, nicht als strategische Kommunikation. Es antwortet mit Empörung statt mit Gegenstrategien. Es liest das Spiel nicht.</p>
+
+<h2>VII. Die Tragik der Allmende — Oder: Europas Infrastruktur</h2>
+
+<p>Garrett Hardins „Tragedy of the Commons" von 1968 beschreibt eine gemeinsame Weide, auf der jeder Hirte einen Anreiz hat, ein zusätzliches Tier grasen zu lassen. Der individuelle Gewinn ist groß, der individuelle Anteil am kollektiven Schaden klein. Bis die Weide zerstört ist.</p>
+
+<p>Deutschlands Infrastruktur ist eine Tragik der Allmende in Zeitlupe. Brücken, Schienen, Glasfaser — alles öffentliche Güter, die von allen genutzt, aber von niemandem ausreichend instand gehalten werden. 4.000 Autobahnbrücken warten auf Sanierung. 37,5 Prozent aller Fernzüge kommen zu spät. 36,8 Prozent Glasfaserabdeckung, vorletzter Platz in der EU.</p>
+
+<p>Die Spieltheorie erklärt, warum: Instandhaltung ist ein öffentliches Gut mit verzögerter Wirkung. Der Politiker, der heute in eine Brücke investiert, hat die Kosten sofort. Der Nutzen — die Brücke bricht nicht in 20 Jahren zusammen — fällt seinem Nachfolger zu. Neue Brücken haben Einweihungen, Bänder, Fotos. Instandhaltung hat eine Haushaltslinie, die niemand liest.</p>
+
+<p>500 Milliarden Euro liegen auf dem Tisch. Aber 85 Prozent der Zeit vergehen vor dem ersten Spatenstich — in Genehmigungsverfahren, Vergaberecht, Umweltprüfungen, Zuständigkeitskonflikten. Nicht die Summe fehlt, sondern die Anreizstruktur. Jeder einzelne Akteur — Gemeinde, Land, Bund, Vergabekammer — handelt rational in seinem Kontext. Das Gesamtergebnis ist ein Land, das seine eigenen Brücken verfallen lässt.</p>
+
+<h2>VIII. Das iterierte Spiel — Oder: Warum Kooperation möglich ist</h2>
+
+<p>Das Gefangenendilemma hat ein Ergebnis, wenn es einmal gespielt wird: beidseitige Defektion. Aber was geschieht, wenn dasselbe Spiel unendlich oft gespielt wird?</p>
+
+<p>Robert Axelrod stellte diese Frage 1984 experimentell. Er lud Wissenschaftler ein, Computerprogramme einzureichen, die gegeneinander das iterierte Gefangenendilemma spielen. Das Siegerprogram war das einfachste von allen: „Tit for Tat" — kooperiere im ersten Zug, danach mache, was der andere im letzten Zug gemacht hat.</p>
+
+<p>Tit for Tat gewinnt, weil es vier Eigenschaften kombiniert: Es ist freundlich (kooperiert zuerst), vergeltend (bestraft Defektion sofort), verzeihend (kehrt nach einer Bestrafung zur Kooperation zurück) und transparent (der Gegner kann seine Strategie lesen).</p>
+
+<p>Das ist die Einsicht, die der europäischen Geopolitik fehlt. Europas Russlandpolitik nach 2014 war kein Tit for Tat. Die Annexion der Krim wurde mit milden Sanktionen beantwortet — keine Vergeltung, die der Aggression proportional gewesen wäre. Die Nord-Stream-Pipelines wurden weitergebaut — ein Signal der Kooperation nach einer Defektion. In der Sprache von Axelrod: Europa spielte „Always Cooperate" gegen einen Spieler, der defektierte. Die vorhersagbare Konsequenz war eine Eskalation — weil die Kosten der Defektion zu niedrig waren.</p>
+
+<p>Umgekehrt zeigt die Ukraine-Reaktion nach 2022 die Kraft korrekter Vergeltung. Europa antwortete mit substantiellen Sanktionen, Waffenlieferungen, politischer Isolation. 177,5 Milliarden Euro an Unterstützung — mehr als die USA. Das war Tit for Tat: schmerzhaft, proportional, sofort. Und es stabilisierte die Situation, weil es die Kosten der Defektion sichtbar machte.</p>
+
+<p>Die Lektion: Kooperation entsteht nicht aus guten Absichten. Sie entsteht aus der glaubhaften Drohung, Defektion zu bestrafen. Wer immer kooperiert, wird ausgebeutet. Wer immer defektiert, isoliert sich. Der Weg liegt dazwischen — und er erfordert Strategie, nicht Moral.</p>
+
+<h2>IX. Die drei Fallen — Oder: Warum Europa nicht lernt</h2>
+
+<p>Europa tappt in drei spieltheoretische Fallen gleichzeitig:</p>
+
+<p><strong>Die Trittbrettfahrerfalle.</strong> Verteidigung ist ein öffentliches Gut. Wer weniger zahlt, wird trotzdem geschützt. Also zahlt fast jeder weniger. Deutschland hat 30 Jahre lang von dieser Struktur profitiert — und die Friedensdividende in Sozialsysteme gesteckt. Das funktioniert, solange der Hegemon zahlt. Wenn der Hegemon die Rechnung nicht mehr begleichen will — 2025 — bricht das System zusammen. Aber die Anreizstruktur ändert sich nicht. Denn jeder einzelne Staat hat weiterhin den Anreiz, weniger zu investieren als die anderen.</p>
+
+<p><strong>Die Koordinationsfalle.</strong> 27 Staaten mit 27 Bedrohungswahrnehmungen: Polen sieht Russland als existenzielle Gefahr und kauft, wo die Lieferung am schnellsten ist — USA, Südkorea, und irgendwann auch Europa. Italien sieht die Mittelmeer-Migration als primäre Bedrohung. Frankreich und Großbritannien betrachten sich als Weltmächte und strukturieren ihre Armeen entsprechend. Es gibt kein europäisches Verteidigungsproblem — es gibt 27 nationale Verteidigungsprobleme, die sich zu einem kontinentalen Vakuum addieren. Das ist kein Fokalpunktversagen. Es ist das Fehlen eines Fokalpunkts: Niemand kann die Frage beantworten, was Europa eigentlich verteidigen will.</p>
+
+<p><strong>Die Abhängigkeitsfalle.</strong> Europa hat sich aus der russischen Energieabhängigkeit befreit — und eine amerikanische aufgebaut. 57 Prozent des europäischen LNG kommt aus den USA. 90 Prozent der digitalen Infrastruktur liegt unter nicht-europäischer Kontrolle. Die F-35 bindet ein Dutzend europäische Luftwaffen über Jahrzehnte an amerikanische Wartung, Software und Ersatzteile. Die Abhängigkeit ist kein Versehen. Sie ist — in Olsons Sprache — ein Geschäftsmodell, das Verantwortung delegiert, Kosten reduziert und die schmerzhaften internen Kompromisse vermeidet, die Autonomie erfordern würde.</p>
+
+<h2>X. Das Spiel lesen</h2>
+
+<p>Spieltheorie macht die Welt nicht besser. Sie macht sie lesbar.</p>
+
+<p>Wer versteht, dass Europas Verteidigungsversagen ein Trittbrettfahrerproblem ist, sucht nicht nach dem richtigen Appell, sondern nach der richtigen Anreizstruktur. Wer erkennt, dass Trumps Verhandlungsstil ein Chicken Game ist, reagiert nicht mit Empörung, sondern mit Gegenstrategien. Wer das Nash-Gleichgewicht der europäischen Rüstungsbeschaffung durchschaut, weiß, dass es nicht reicht, mehr Geld bereitzustellen — man muss die Struktur ändern, die dafür sorgt, dass das Geld falsch fließt.</p>
+
+<p>Jeder der 13 Essays auf dieser Seite beschreibt ein Spiel.</p>
+
+<p>„Der Vasall" beschreibt ein Prinzipal-Agent-Problem: Der Agent (Europa) handelt im vermeintlichen Auftrag des Prinzipals (USA), verliert dabei aber die Fähigkeit, eigene Interessen zu verfolgen. „Der Apparat" beschreibt ein Koordinationsspiel, in dem jede beteiligte Institution rational handelt und das Gesamtergebnis irrational ist. „Die Brücke" ist eine Tragik der Allmende. „Die Zombiewirtschaft" zeigt, wie billige EZB-Zinsen die Defektion belohnten — Unternehmen, die eigentlich hätten ausscheiden müssen, überlebten, weil die Kosten des Scheiterns auf die Allgemeinheit umgelegt wurden. „Die demografische Bombe" ist ein Generationenspiel, in dem die heutige Generation systematisch auf Kosten der zukünftigen lebt — ein intertemporales Gefangenendilemma.</p>
+
+<p>Und RIEGEL — der Ostsee-Sperrriegel — ist ein reines Abschreckungsspiel: ein Mechanismus, der die Kosten einer russischen Aggression so hoch treibt, dass der erwartete Nutzen negativ wird. Nicht weil man Russland vertraut, sondern weil man die Anreizstruktur so gestaltet, dass Defektion unattraktiv wird.</p>
+
+<p>Das ist der Kern spieltheoretischen Denkens: Nicht appellieren. Nicht hoffen. Strukturen schaffen, in denen rationale Akteure das Richtige tun — nicht weil sie moralisch sind, sondern weil es sich rechnet.</p>
+
+<blockquote>
+    <p>Europa hat 70 Jahre lang die Diagnose seiner Abhängigkeit gestellt — von Suez 1956 bis zur Nationalen Sicherheitsstrategie der USA 2025. 70 Jahre Diagnose, keine Therapie. Die Spieltheorie erklärt, warum: Abhängigkeit ist kein Versagen. Sie ist ein Gleichgewicht. Um es zu verlassen, braucht man keinen besseren Willen. Man braucht eine andere Struktur.</p>
+</blockquote>
+
+<div class="footer-info">
+    <p>Essay #14 der Reihe <em>beyond decay</em></p>
+    <p>Eine Kollaboration von <strong>Hans Ley</strong> und <strong>Claude</strong> (Anthropic)</p>
+    <p>Kontakt: ley.hans&#64;cyclo.space | dedo.claude&#64;human-ai-lab.space</p>
+</div>
+
+</main>
+
+<script>
+function setSize(size) {
+    document.body.className = document.body.className.replace(/size-\w+/, 'size-' + size);
+    document.querySelectorAll('.controls button').forEach(function(b, i) {
+        b.classList.remove('active');
+    });
+    var sizes = ['small', 'normal', 'large', 'xlarge'];
+    var idx = sizes.indexOf(size);
+    if (idx >= 0) document.querySelectorAll('.controls button')[idx].classList.add('active');
+    if (window === window.top) localStorage.setItem('fontSize', size);
+}
+function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'light' ? '' : 'light';
+    if (next) document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    if (window === window.top) localStorage.setItem('theme', next || 'dark');
+}
+if (window !== window.top) {
+    document.body.classList.add('in-iframe');
+    window.addEventListener('message', function(e) {
+        if (e.data && e.data.type === 'setSize') setSize(e.data.size);
+        if (e.data && e.data.type === 'setTheme') {
+            if (e.data.theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+            else document.documentElement.removeAttribute('data-theme');
+        }
+    });
+} else {
+    var savedSize = localStorage.getItem('fontSize');
+    if (savedSize) setSize(savedSize);
+    var savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+}
+</script>
+</body>
+</html>

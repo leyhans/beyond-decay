@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Emotional Support Cats in the Chancellery — The Cuddling Is Over</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; align-items: center; }
+        .size-controls span { font-size: 0.75rem; color: var(--text-secondary); margin-right: 0.5rem; }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+            font-style: italic;
+        }
+        .quote-block p { margin-bottom: 0; }
+        .quote-block .source { margin-top: 0.75rem; font-size: 0.9rem; color: var(--text-secondary); font-style: normal; }
+
+        .highlight-box {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 1.75rem 0;
+            text-align: center;
+        }
+        .highlight-box p { margin: 0; font-style: italic; color: var(--accent); }
+
+        .data-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 1.75rem 0;
+        }
+        .data-box h3 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+        .data-box ul { list-style: none; }
+        .data-box li { margin-bottom: 0.5rem; padding-left: 1rem; position: relative; }
+        .data-box li::before { content: "•"; position: absolute; left: 0; color: var(--accent); }
+
+        .section-break { text-align: center; margin: 2.5rem 0; color: var(--accent); letter-spacing: 0.5rem; }
+
+        .author-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.75rem;
+            margin-top: 3rem;
+        }
+        .author-block h3 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+        .author-block p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .author-block a { color: var(--accent); text-decoration: none; }
+        .author-block .date-line { margin-top: 1.25rem; color: var(--accent); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+            main { padding: 6rem 1.25rem 3rem; }
+            h1 { font-size: 1.8em; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Cartel of Ignorance · January 2026</span>
+                <h1>The <strong>Emotional Support Cats</strong> in the Chancellery</h1>
+                <p class="subtitle">The cuddling is over</p>
+            </header>
+
+            <div class="section">
+                <p>At American universities, students are allowed to keep cats that emotionally stabilize them, prevent panic attacks, and shorten rumination loops when falling asleep. In the German Chancellery, DAX board members take on this role. The metaphor is more revealing than its author realizes.</p>
+            </div>
+
+            <div class="section">
+                <h2>The Cat Flap</h2>
+                <p>Gabor Steingart, the doyen of business-friendly journalism, writes it without any irony: <em>"The Chancellery has always had an invisible cat flap. Those who know the code get in."</em></p>
+                <p>Read that sentence again. Slowly.</p>
+                <p>This is not exposing a scandal, but describing something taken for granted. Of course DAX board members have direct access to the Chancellor. Of course there's a code that only insiders know. Of course those who don't belong to the club stay outside — the medium-sized business owner from Swabia, the inventor from Bavaria, the founder from Saxony. They don't have the code. They were never invited. They will never be invited.</p>
+                <p>This is not a conspiracy theory. This is the self-understanding of an elite that considers itself so indispensable that it regards its privileges as natural law.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>The Function of the Cuddle Cat</h2>
+                <p>What exactly are these DAX board members supposed to do in the Chancellery? Steingart calls them <span class="highlight-text">"Emotional Support Cats"</span> – and warns that they must not only purr but also scratch. So far, all one hears is the purring.</p>
+                <p>No uncomfortable truths. No demands for structural reforms. No criticism of wrong decisions. No pointing out grievances that harm the country.</p>
+                <p>Only: Stabilize. Calm down. Shorten the rumination loops.</p>
+                <p>The economic elite as therapeutic intervention. The CEO as cuddle cat. The supervisory board member as anxiety reliever. The executive office as wellness oasis for insecure heads of government.</p>
+                <p>What a damning indictment. For both sides.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>The Numbers Behind It</h2>
+                <p>While the cats are cuddling, of all people an economic advisor delivers the autopsy of the patient. Professor Veronika Grimm, quoted in the same newsletter, dissects the German economy with the precision of a forensic pathologist:</p>
+                
+                <div class="data-box">
+                    <h3>Diagnosis: Germany 2026</h3>
+                    <ul>
+                        <li><strong>Growth:</strong> 0.9% — of which 0.3% carryover, 0.3% holiday effect, 0.3% debt</li>
+                        <li><strong>Private sector:</strong> Stagnant since 2018</li>
+                        <li><strong>New jobs:</strong> Only in public sector and healthcare</li>
+                        <li><strong>Manufacturing:</strong> Declining</li>
+                        <li><strong>Economic turnaround:</strong> "We don't see any of that yet"</li>
+                    </ul>
+                </div>
+
+                <p>The diagnosis is devastating: Germany only grows because the state takes on debt. The private sector has been clinically dead for seven years. The only new jobs are created where no value is produced, only administered.</p>
+
+                <div class="quote-block">
+                    <p>"Here things go into the public sector because a lot needs to be administered; we keep creating new regulations — supply chain law, collective bargaining compliance law — and all of that needs to be monitored."</p>
+                    <div class="source">— Prof. Veronika Grimm, Economic Advisor</div>
+                </div>
+
+                <p>Do you understand the perversion? Germany creates jobs to monitor regulations that prevent jobs from being created. The bureaucracy feeds itself. The ouroboros of administration.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>The Question Nobody Asks</h2>
+                <p>Here's what interests me: What exactly do the DAX board members discuss during their visits to the Chancellery?</p>
+                <p>Do they say: "Mr. Chancellor, energy costs are driving us out of the country"? Then something would have to change. But it doesn't.</p>
+                <p>Do they say: "Mr. Chancellor, bureaucracy is suffocating us"? Then something would have to change. But it doesn't.</p>
+                <p>Do they say: "Mr. Chancellor, we're losing ground to the world leaders"? Then something would have to change. But it doesn't.</p>
+                <p>So either they don't say any of this. Or they say it, and nobody cares. Both variants are catastrophic.</p>
+                <p>If the most powerful business leaders in the country have regular access to the center of power and still nothing changes, there are only two explanations:</p>
+                <p><span class="highlight-text">First:</span> They don't use the access for the common good, but for their own interests — subsidies, regulations at the expense of smaller competitors, favor-seeking laws.</p>
+                <p><span class="highlight-text">Second:</span> They gave up long ago and are just managing the decline — while getting their personal affairs in order.</p>
+                <p>The third possibility — that they advise honestly and are heard — is ruled out. The numbers disprove it.</p>
+            </div>
+
+            <div class="highlight-box">
+                <p>Silicon Valley creates trillions in value. China builds the infrastructure of the 21st century.<br>And Germany? Germany creates public service positions to monitor supply chains.</p>
+            </div>
+
+            <div class="section">
+                <h2>The Cartel of Mutual Reassurance</h2>
+                <p>What we're observing here is not government failure and not business failure. It's a system.</p>
+                <p>The government needs the economic elite for legitimation. It can say: "We're in dialogue with business." The economic elite needs the government for access, influence, planning security. Both sides benefit from the status quo.</p>
+                <p>What gets lost in the process: the country.</p>
+                <p>While the elites mutually stabilize each other, value creation migrates away. While they mutually reassure each other, the jobs of the future are created elsewhere. While they mutually assure each other that everything is under control, Germany loses touch with a world that doesn't wait.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>The BlackRock Man</h2>
+                <p>Friedrich Merz, the new Chancellor, was a supervisory board member at BlackRock Germany for years. The world's largest asset manager. The epitome of global financial capitalism.</p>
+                <p>One might have expected that a man with this background understands how markets work. That he grasps the urgency. That he has the courage to break up structures that no longer function.</p>
+                <p>Instead: more of the same. Tax relief that's supposed to come in 2028 — if it comes at all. Reforms so timid that even the Council of Economic Experts only predicts "1.3 percentage points growth effect over a long period."</p>
+                <p>The man who knows global finance from the inside governs as if he never understood what he saw there.</p>
+                <p>Or worse: He understood it — and draws the wrong conclusions.</p>
+            </div>
+
+            <div class="section">
+                <h2>The Duty to Be Candid</h2>
+                <p>Steingart writes that the DAX chiefs' proximity to the Chancellor includes "also the duty to be candid." The word "also" is telling. What else does it include? Loyalty? Discretion? Complicity?</p>
+                <p>Candor is not an extra. Candor is the minimum. Anyone who has privileged access to power and doesn't use it to speak uncomfortable truths is not an advisor, but a courtier.</p>
+                <p>And we've had enough courtiers in German history.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>The Cuddling Is Over</h2>
+                <p>The time of Emotional Support Cats is over. Germany doesn't need cuddle cats in the Chancellery. Germany needs people who are willing to tell the truth — even when it hurts.</p>
+                <p>The truth is: The model no longer works.</p>
+                <p>The truth is: The structures are calcified.</p>
+                <p>The truth is: The elite has failed.</p>
+                <p>Not because they're malicious. But because they've settled into a system that rewards all participants — except those who are supposed to carry it.</p>
+            </div>
+
+            <div class="highlight-box">
+                <p>Those who know the code to the cat flap bear responsibility.<br>Those who don't exercise this responsibility are guilty.<br>Not before the law. Before history.</p>
+            </div>
+
+            <div class="section">
+                <p>Students at American universities need their Emotional Support Cats because they're young, insecure, overwhelmed by the demands of a complex world.</p>
+                <p>What's the German elite's excuse?</p>
+            </div>
+
+            <div class="author-block">
+                <h3>About This Text</h3>
+                <p>A collaboration of <strong>Hans Ley</strong> &lt;<a href="mailto:ley.hans@cyclo.space">ley.hans@cyclo.space</a>&gt; and <strong>Claude</strong> (Anthropic) &lt;<a href="mailto:dedo.claude@human-ai-lab.space">dedo.claude@human-ai-lab.space</a>&gt;</p>
+                <p class="date-line">— January 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+                document.querySelectorAll('.size-btn').forEach((btn, index) => {
+                    btn.classList.remove('active');
+                    const sizes = ['small', 'medium', 'large', 'xlarge'];
+                    if (sizes[index] === savedSize) btn.classList.add('active');
+                });
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

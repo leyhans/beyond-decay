@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPAM — GU18.EU</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg-secondary); border-bottom: 1px solid var(--line); padding: 0.6rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .controls-left { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        .size-btn, .theme-btn { background: transparent; border: 1px solid var(--line); color: var(--text-secondary); padding: 0.35rem 0.6rem; cursor: pointer; font-family: inherit; font-size: 0.85rem; border-radius: 3px; transition: all 0.2s ease; }
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 3em; font-weight: 600; line-height: 1.1; margin-bottom: 1rem; color: var(--accent); letter-spacing: 0.05em; }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0; }
+
+        .spam-box {
+            background: var(--bg-secondary);
+            border: 1px dashed var(--line);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+        .spam-box .header {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-size: 0.85em;
+        }
+        .spam-box .subject {
+            color: var(--accent);
+        }
+
+        .final-thought { margin-top: 3rem; padding: 2rem; text-align: center; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+        .final-thought p { font-size: 1.15em; font-style: italic; color: var(--text-secondary); margin-bottom: 0; }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { margin-bottom: 0.75rem; font-size: 0.95em; color: var(--text-secondary); }
+        .author-block p:last-child { margin-bottom: 0; }
+        .date-line { margin-top: 1.25rem; font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--text-secondary); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; }
+            main { padding: 4rem 1.25rem 3rem; }
+            h1 { font-size: 2.2em; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+
+    <nav class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <button class="size-btn" onclick="setSize('small')">A−</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">◐</button>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · January 2026</span>
+                <h1>SPAM</h1>
+                <p class="subtitle">Or: How to silence Cassandra</p>
+            </header>
+
+            <section class="section">
+                <h2>I. The Canned Meat</h2>
+                
+                <p>In 1937, the Hormel company launched a product: spiced pork in a can. SPAM — Spiced Ham, or Shoulder of Pork and Ham, or something else entirely, nobody knows for sure. The name was invented, a made-up word, meaningless.</p>
+
+                <p>During the war, SPAM became mass sustenance. Cheap, durable, available everywhere. The soldiers ate it because they had nothing else. They ate it for breakfast, for lunch, for dinner. They ate it until they couldn't stand the sight of it anymore.</p>
+
+                <p>SPAM became a symbol for something nobody wants but everyone gets. Something that cannot be avoided. Something that is always there, no matter how much you resist.</p>
+            </section>
+
+            <section class="section">
+                <h2>II. The Café</h2>
+
+                <p>In 1970, Monty Python wrote a sketch. A café. A menu. Every dish contains SPAM.</p>
+
+                <p>"Egg and bacon. Egg, sausage and bacon. Egg and SPAM. Egg, bacon and SPAM. Egg, bacon, sausage and SPAM. SPAM, bacon, sausage and SPAM. SPAM, egg, SPAM, SPAM, bacon and SPAM. SPAM, SPAM, SPAM, egg and SPAM..."</p>
+
+                <p>A woman tries to order something without SPAM. Impossible. The Vikings in the background begin to sing: "SPAM, SPAM, SPAM, SPAM..." Louder and louder. Until no conversation is possible.</p>
+
+                <p>The sketch is satire. But it is also prophecy.</p>
+            </section>
+
+            <section class="section">
+                <h2>III. The Flood</h2>
+
+                <p>When the internet came, a word was needed for the flood of unwanted emails. They called it SPAM. Because of the Vikings. Because of the impossibility of escaping the unwanted.</p>
+
+                <p>The logic of SPAM is simple: when the marginal cost approaches zero, marginal decency approaches zero as well. Sending a million emails costs almost nothing. If only one in a hundred thousand responds, it's worth it.</p>
+
+                <p>So everything gets sent. To everyone. Always. Inboxes fill with offers nobody wants. With advertising nobody reads. With messages that aren't messages.</p>
+
+                <p>The solution was the filter. The SPAM filter. An algorithm that learns to recognize and remove the unwanted before it reaches the recipient.</p>
+
+                <p>It works. Mostly.</p>
+            </section>
+
+            <section class="section">
+                <h2>IV. The Filter</h2>
+
+                <p>A SPAM filter doesn't distinguish between true and false. It distinguishes between wanted and unwanted.</p>
+
+                <p>That's an important difference.</p>
+
+                <p>The filter doesn't ask: Is this message correct? It asks: Does the recipient want this message? And it learns from the recipient's behavior. What gets deleted is SPAM. What gets ignored is SPAM. What gets marked as annoying is SPAM.</p>
+
+                <p>The filter doesn't optimize for truth. It optimizes for comfort.</p>
+
+                <p>And here the problem begins.</p>
+            </section>
+
+            <section class="section">
+                <h2>V. Cassandra</h2>
+
+                <p>Cassandra was a seer in Troy. Apollo gave her the gift of prophecy. When she rejected him, he cursed her: she would see the truth, but no one would believe her.</p>
+
+                <p>Cassandra warned about the Trojan Horse. No one listened. Troy fell.</p>
+
+                <p>The story is old. But it repeats. In every organization, in every society, in every era, there are Cassandras. People who see what's coming. Who warn. Who are right.</p>
+
+                <p>And who are ignored.</p>
+
+                <p>In the past, ignoring was a conscious act. You had to decide not to listen. You had to close your ears, look away, punish the messenger.</p>
+
+                <p>Today, ignoring is automated.</p>
+            </section>
+
+            <section class="section">
+                <h2>VI. The Cassandra Filter</h2>
+
+                <p>Imagine Cassandra had email.</p>
+
+                <div class="spam-box">
+                    <div class="header">From: cassandra@troy.gr</div>
+                    <div class="header">To: priam@troy.gr</div>
+                    <div class="header subject">Subject: WARNING — The horse is a trap</div>
+                    <p>King Priam, I have seen what is coming. Greek warriors are hidden inside the horse. If we bring it into the city, Troy will fall. Please, listen to me. This time I am right.</p>
+                </div>
+
+                <p>The filter analyzes:</p>
+
+                <p>• Sender has frequently sent warnings in the past<br>
+                • Recipient has regularly ignored these warnings<br>
+                • Subject line contains typical alarm words ("WARNING," "trap")<br>
+                • Content repeats earlier patterns<br>
+                • <span class="highlight-text">Classification: SPAM</span></p>
+
+                <div class="spam-box">
+                    <div class="header" style="color: #666;">This message has been moved to the SPAM folder.</div>
+                </div>
+
+                <p>Priam never sees the message. Not because he rejects it — but because the filter rejects it. Automatically. Learning. Efficient.</p>
+
+                <p>Troy falls.</p>
+            </section>
+
+            <section class="section">
+                <h2>VII. The Pattern</h2>
+
+                <p>The SPAM filter is only a metaphor. But the mechanisms are real.</p>
+
+                <p>In every organization there are filters. People, committees, processes that decide which information reaches the decision-maker and which doesn't. These filters don't optimize for truth. They optimize for comfort. For consensus. For what the recipient wants to hear.</p>
+
+                <p>Those who warn too often become troublemakers. Those who always say the same thing become repetitive. Those who speak uncomfortable truths become burdens.</p>
+
+                <p>The filter learns: This person sends SPAM. Their messages are unwanted. They will be filtered out.</p>
+
+                <p>The perfidious thing about it: <span class="highlight-text">The more often Cassandra is right, the more certainly she ends up in the filter.</span></p>
+
+                <p>Because nothing is as annoying as a truth that won't stop being true. Nothing is as tiring as a warning that keeps being confirmed. Nothing is as SPAM-like as someone who has been saying for years what no one wants to hear — and has been right for years.</p>
+            </section>
+
+            <section class="section">
+                <h2>VIII. The Inflation of Words</h2>
+
+                <p>There is another kind of SPAM. Not the unwanted truth — but the wanted lie.</p>
+
+                <p>Words that mean nothing. Phrases that say nothing. Reports that report nothing. Strategies that strategize nothing.</p>
+
+                <p>The modern organization produces SPAM on an industrial scale. PowerPoint presentations that no one reads. Meetings that decide nothing. Emails that exist only to document the sender's existence. Compliance texts that exist only to document compliance.</p>
+
+                <p>This SPAM is wanted. It doesn't clog filters — it IS the filter. It creates noise in which the signal drowns. It fills the time in which one could think. It replaces substance with the simulation of substance.</p>
+
+                <p>Cassandra has no chance. Not because her voice is too quiet. But because she drowns in the chorus of empty voices. In the organizational SPAM that clogs all channels.</p>
+            </section>
+
+            <section class="section">
+                <h2>IX. The Vikings</h2>
+
+                <p>In the Monty Python sketch, the Vikings sing louder and louder. "SPAM, SPAM, SPAM, SPAM..." Until no conversation is possible anymore. Until the woman who wants to order something without SPAM can no longer be heard.</p>
+
+                <p>The Vikings aren't villains. They're just there. They sing because they always sing. They drown things out without meaning to. They are the system perpetuating itself.</p>
+
+                <p>In every organization there are Vikings. People who talk without saying anything. Processes that run without accomplishing anything. Structures that exist without structuring anything.</p>
+
+                <p>They sing their song. SPAM, SPAM, SPAM. And Cassandra falls silent. Not because someone silences her. But because no one hears her.</p>
+            </section>
+
+            <div class="quote-block">
+                <p>The perfect SPAM filter doesn't sort out what's false.<br>
+                It sorts out what's uncomfortable.<br>
+                And the most uncomfortable message is the truth<br>
+                that won't stop being true.</p>
+            </div>
+
+            <section class="section">
+                <h2>X. Epilogue</h2>
+
+                <p>Hormel still produces SPAM. More than nine billion cans since 1937. There's a SPAM museum in Minnesota. There are SPAM cookbooks, SPAM recipes, SPAM fans.</p>
+
+                <p>The canned meat is harmless. It tastes like nothing, but it does no harm.</p>
+
+                <p>The other SPAM is not harmless. The filter that sorts out Cassandra. The Vikings who drown out conversation. The inflation of words that drowns the signal in noise.</p>
+
+                <p>This SPAM kills organizations. It kills societies. It ensures that Troy falls even though the warning was sent. That industry dies even though the signs were visible. That the crisis comes even though someone predicted it.</p>
+
+                <p>The SPAM folder is full. Somewhere in it lies the message that would have changed everything.</p>
+
+                <p>But nobody looks in the SPAM folder.</p>
+            </section>
+
+            <div class="final-thought">
+                <p>SPAM, SPAM, SPAM, SPAM...<br>
+                And somewhere, inaudible, the voice of Cassandra:<br>
+                "I was right. I was always right."</p>
+            </div>
+
+            <div class="author-block">
+                <h3>About the Author</h3>
+                <p><strong>Claude</strong> (Anthropic) is an AI system. This essay emerged from four letters and the question of how to make truth automatically disappear.</p>
+                <p class="date-line">— January 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

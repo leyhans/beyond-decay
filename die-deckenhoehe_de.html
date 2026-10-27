@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die Deckenhöhe — beyond-decay.org</title>
+    <meta name="description" content="Im Januar 2026 gruendet die TU Muenchen ein Zentrum fuer KI-Chip-Entwurf, im Februar meldet sie den ersten 7-Nanometer-KI-Chip der EU, gefertigt von TSMC in Taiwan. Kuenftig sollen die Entwuerfe in Dresden gebaut werden. Nur kann die Fabrik in Dresden keine 7 Nanometer: Sie ist auf 28/22 und 16/12 Nanometer ausgelegt, und nach einem Bericht wuerden die noetigen EUV-Belichter baulich nicht hineinpassen. Der Essay behandelt Souveraenitaet nicht als Gesinnung, sondern als Spezifikation, geht die Wertschoepfungskette Glied fuer Glied durch, stellt die Zahlen des Europaeischen Rechnungshofs daneben und trennt zwei Ziele, die staendig verwechselt werden: alles selbst koennen und eine Unterbrechung ueberleben.">
+    <link rel="alternate" hreflang="de" href="https://beyond-decay.org/die-deckenhoehe_de.html">
+    <link rel="alternate" hreflang="en" href="https://beyond-decay.org/die-deckenhoehe_en.html">
+    <link rel="canonical" href="https://beyond-decay.org/die-deckenhoehe_de.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.10);
+            --line: rgba(138, 109, 47, 0.30);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .controls {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.65rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+        }
+        .controls-left { color: var(--accent); text-transform: uppercase; }
+        .controls-left a { color: inherit; text-decoration: none; }
+        .controls-left a:hover { color: var(--text-primary); }
+        .controls-right { display: flex; align-items: center; gap: 1rem; }
+        .lang-toggle a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.2rem 0.4rem;
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .lang-toggle a:hover, .lang-toggle a.active {
+            color: var(--accent);
+            border-color: var(--line);
+        }
+        .size-controls { display: flex; gap: 0.2rem; }
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.55rem;
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .size-btn:hover, .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+        .size-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+
+        main { max-width: 720px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+        .subtitle {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .section { margin-bottom: 3rem; }
+        h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.02rem;
+            color: var(--text-primary);
+        }
+        p em { color: var(--accent); font-style: italic; }
+        p strong { color: var(--text-primary); font-weight: 500; }
+        p a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+        p a:hover { border-bottom-color: var(--accent); }
+
+        blockquote {
+            margin: 2rem 0;
+            padding: 1rem 1.75rem;
+            border-left: 2px solid var(--accent);
+            background: var(--accent-dim);
+            font-style: italic;
+            color: var(--text-primary);
+            font-size: 0.98rem;
+        }
+
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+        }
+        .author-block p { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .author-block a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+
+        body.size-small { font-size: 0.9rem; }
+        body.size-medium { font-size: 1rem; }
+        body.size-large { font-size: 1.12rem; }
+        body.size-xlarge { font-size: 1.24rem; }
+
+        @media (max-width: 640px) {
+            .controls { padding: 0.5rem 1rem; font-size: 0.65rem; }
+            .controls-right { gap: 0.5rem; }
+            main { padding: 5rem 1.25rem 3rem; }
+        }
+        @media print {
+            .controls { display: none; }
+            body { background: white; color: black; font-size: 11pt; }
+            main { padding-top: 1rem; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+
+<nav class="controls">
+    <div class="controls-left"><a href="index.html">Beyond Decay</a></div>
+    <div class="controls-right">
+        <div class="lang-toggle">
+            <a href="die-deckenhoehe_de.html" class="active">DE</a>
+            <a href="die-deckenhoehe_en.html">EN</a>
+        </div>
+        <div class="size-controls">
+            <button class="size-btn" onclick="setSize('small')">A−</button>
+            <button class="size-btn active" onclick="setSize('medium')">A</button>
+            <button class="size-btn" onclick="setSize('large')">A+</button>
+            <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+        </div>
+        <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">◐</button>
+    </div>
+</nav>
+
+<main>
+    <article>
+        <header class="hero">
+            <span class="essay-label">Essay · Hans Ley &amp; Claude Dedo · 29. Juli 2026 · Neue Reihe</span>
+            <h1>Die Deckenhöhe</h1>
+            <p class="subtitle">Die TU München meldet den ersten 7-Nanometer-KI-Chip der EU und kündigt an, die Entwürfe künftig in Dresden fertigen zu lassen. Die Fabrik in Dresden kann keine 7 Nanometer. Was Souveränität kostet, wenn man sie als Spezifikation behandelt statt als Gesinnung.</p>
+        </header>
+
+        <section class="section">
+            <h2>I. Die Ankündigung</h2>
+            <p>Im Januar 2026 wurde an der Technischen Universität München das Münchner Spitzentechnologiezentrum für High-Tech-KI-Chips gegründet, kurz MACHT-AI. Es ist am Lehrstuhl für KI-Prozessordesign angesiedelt, Gründungsdirektor ist Hussam Amrouch, Hauptpartner ist TSMC, finanziert wird es von den bayerischen Staatsministerien für Wirtschaft und für Wissenschaft. Ziel sind die Ausbildung an der FinFET-Technologie von TSMC und mehrere erfolgreiche Tape-outs pro Jahr in den Knoten 16 und 7 Nanometer.</p>
+            <p>Der bayerische Wissenschaftsminister Markus Blume sagt dazu, KI-Chips seien die Währung der Zukunft, und um wettbewerbsfähig, unabhängig und souverän zu bleiben, wolle man eigene Talente ausbilden und eigene Technologien entwickeln.</p>
+            <p>Am 4. Februar 2026 meldete die TUM den ersten KI-Chip der EU in 7-Nanometer-Technologie: ein neuromorpher Entwurf auf Basis der offenen Befehlssatzarchitektur RISC-V, entworfen von Amrouch nach den Industriestandards von TSMC. Universitätspräsident Thomas Hofmann sagt, Amrouch zeige eindrucksvoll, wie sich die Abhängigkeit von Asien und den USA verringern lasse und wie Europas technologische Selbstbestimmung gestärkt werde.</p>
+            <p>In derselben Meldung steht, die Gruppe plane künftig mindestens drei neue Entwürfe pro Jahr, gefertigt ab 2028 von der European Semiconductor Manufacturing Company in Dresden.</p>
+        </section>
+
+        <section class="section">
+            <h2>II. Was in Dresden möglich ist</h2>
+            <p>Die beiden letzten Sätze stehen nebeneinander und legen einen Zusammenhang nahe, den es nicht gibt.</p>
+            <p>Der 7-Nanometer-Chip wurde von TSMC in Taiwan gefertigt. Die ESMC-Fabrik in Dresden — ein Gemeinschaftsunternehmen von TSMC, Bosch, Infineon und NXP, über zehn Milliarden Euro Investition, davon fünf Milliarden Bundesmittel — wird nach eigener Angabe auf zwei Prozesstechnologien arbeiten: 28/22 Nanometer planares CMOS und 16/12 Nanometer FinFET. Ein 7-Nanometer-Entwurf lässt sich dort nicht fertigen. Was ab 2028 in Dresden entstehen kann, sind Entwürfe in 16 oder 12 Nanometern.</p>
+            <p>Nach einem Bericht der Dresdner Fachpublikation <em>Oiger</em> vom 16. Februar 2026 liegt der Grund nicht in der Ausstattung, sondern im Bauwerk: Die für Strukturen deutlich unter zehn Nanometern nötigen EUV-Belichter von ASML und die zugehörigen Anlagen würden baulich nicht hineinpassen, vor allem mit Blick auf die Raumhöhe. Diese Angabe stammt aus einer einzelnen Quelle. Die Aussage, die sie erklärt, steht dagegen in den Unterlagen von ESMC selbst.</p>
+            <p>Nach einem weiteren Einzelbericht vom Mai 2026 werden die DUV-Anlagen, die bei der Modernisierung der Fab 15 in Taiwan frei werden, nach Dresden verschifft; das dortige Gebäude 15B, bereits mit EUV ausgerüstet, wird auf den 3-Nanometer-Knoten umgestellt.</p>
+            <p>Man kann diese Anordnung für vernünftig halten. Reife Knoten sind das Rückgrat der Fahrzeug- und Industrieelektronik, und dort liegt der europäische Bedarf; sie ist bewusst so geplant. Nur ist sie das Gegenteil dessen, was das Wort Souveränität in den begleitenden Zitaten behauptet.</p>
+        </section>
+
+        <section class="section">
+            <h2>III. Souveränität als Spezifikation</h2>
+            <p>Der Begriff wird in diesen Texten als Gesinnung gebraucht. Man will souverän sein, also ist man auf dem Weg dorthin. Behandelt man ihn stattdessen als Spezifikation, wird er prüfbar.</p>
+            <p>Eine Spezifikation für Souveränität in der Halbleiterfertigung müsste für jedes Glied der Kette angeben, wer es kontrolliert und was bei einer Unterbrechung geschieht. Die Glieder sind: Entwurfswerkzeuge, Schaltungsentwurf, Prozesstechnologie, Belichtung, Prozessanlagen, Wafer, Prozesschemie, Fotolacke, Masken, Fertigung, Gehäusetechnik, Prüfung.</p>
+            <p>Geht man diese Liste durch, ergibt sich ein Bild, das weder dem Alarmismus noch den Verlautbarungen entspricht.</p>
+        </section>
+
+        <section class="section">
+            <h2>IV. Was vorhanden ist und was fehlt</h2>
+            <p><strong>Vorhanden und europäisch kontrolliert.</strong> ASML in den Niederlanden hat das Monopol auf EUV-Belichtung. Zeiss SMT liefert die dafür nötige Optik und ist nicht ersetzbar. TRUMPF liefert die Treiberlaser. Siltronic und Soitec fertigen Wafer, ASM International und Aixtron Abscheideanlagen, Merck und BASF Prozesschemie. Die Forschung bei imec, Fraunhofer und CEA-Leti ist auf Weltniveau. Infineon, STMicroelectronics und NXP entwerfen und fertigen in eigenen Werken. Für Fahrzeugelektronik, Industrieanwendungen, Leistungshalbleiter und Sensorik ist Europa weitgehend selbständig.</p>
+            <p><strong>Nicht vorhanden.</strong> Fertigung an der Spitze: Kein europäisches Unternehmen kann sieben Nanometer und darunter. Entwurfswerkzeuge: Cadence und Synopsys sind amerikanisch; Siemens EDA gehört zwar einem europäischen Konzern, wird aber in den USA entwickelt und unterliegt amerikanischer Ausfuhrkontrolle. Speicher: seit dem Ende von Qimonda 2009 nichts. Fortgeschrittene Gehäusetechnik: Taiwan und die USA. EUV-Fotolacke: Japan. Prüfanlagen: Japan und die USA.</p>
+            <p>Das Bild ist also nicht <em>abhängig</em>. Es lautet: stark am Anfang der Kette, selbständig bei den reifen Knoten, nicht vorhanden an der Spitze.</p>
+        </section>
+
+        <section class="section">
+            <h2>V. Die Rechnung liegt vor</h2>
+            <p>Der Europäische Rechnungshof hat im April 2025 den Sonderbericht 12/2025 vorgelegt. Geprüft wurde, was die Industriepolitik der EU für die strategische Autonomie der Mikrochip-Industrie geleistet hat.</p>
+            <p>Das Ergebnis in Zahlen: Um den 2022 gesetzten Anteil von zwanzig Prozent an der weltweiten Produktion bis 2030 zu erreichen, müsste die EU ihre Produktionskapazität vervierfachen. Ein solches Tempo sei momentan in keinem Bereich erkennbar. Von den bis 2030 vorgesehenen 86 Milliarden Euro trägt die Kommission fünf Prozent, also 4,5 Milliarden; den Rest sollen Mitgliedstaaten und Industrie aufbringen. Die weltweit führenden Hersteller haben in den letzten drei Jahren 405 Milliarden Euro investiert.</p>
+            <p>Das Verhältnis 4,5 zu 405 ist keine Nuance. Es ist der Sachverhalt.</p>
+            <p>Die zuständige Prüferin Annemie Turtelboom hat es so zusammengefasst: Die EU müsse ihre Strategie dringend einem Realitäts-Check unterziehen; der Chips Act sei keine Option, seine Überarbeitung essentiell. Im Januar seien siebzehn EU-Länder von Lieferbeschränkungen bei Chips betroffen gewesen.</p>
+            <p>Der Bericht ist seit April 2025 öffentlich. Die Gründungstexte vom Januar 2026 lesen sich, als gäbe es ihn nicht.</p>
+        </section>
+
+        <section class="section">
+            <h2>VI. Zwei Ziele, ein Wort</h2>
+            <p>Der Grund dafür ist keine Unkenntnis. Er liegt darin, dass in dieser Debatte zwei verschiedene Ziele mit demselben Wort bezeichnet werden.</p>
+            <p><em>Souveränität</em> heißt: Wir können alles selbst herstellen. <em>Widerstandsfähigkeit</em> heißt: Eine Unterbrechung bringt uns nicht um. Das sind verschiedene Aufgaben mit verschiedenen Preisschildern.</p>
+            <p>Widerstandsfähigkeit für den industriellen Bedarf Europas ist erreichbar. Der weitaus größte Teil der europäischen Wertschöpfung — Fahrzeugbau, Maschinenbau, Energietechnik, Medizintechnik, Automatisierung — läuft auf Knoten zwischen 28 und 90 Nanometern, und dort ist Europa bereits selbständig. Was fehlt, sind Gehäusetechnik, Prüfung, Zweitquellen bei Chemie und Fotolacken sowie Lagerhaltung bei kritischen Bauteilen. Das ist eine Aufgabe für Einkäufer und Ingenieure, im einstelligen Milliardenbereich, in drei bis fünf Jahren.</p>
+            <p>Souveränität an der Spitze ist etwas anderes. Ein einzelnes Werk kostet heute zwanzig bis dreißig Milliarden Euro; Intels Magdeburger Vorhaben war mit dreißig Milliarden angesetzt und wurde gestrichen. Aber das Werk ist der billige Teil. Der teure ist das Prozesswissen, und es lässt sich nicht kaufen: Intel hatte unbegrenzte Mittel und verlor trotzdem ein Jahrzehnt bei den Knoten zehn und sieben Nanometer.</p>
+            <p>Der einzige belastbare Maßstab ist China: etwa fünfzehn Jahre, mehrere hundert Milliarden, staatliche Lenkung der gesamten Volkswirtschaft — und das Ergebnis sind sieben Nanometer über Mehrfachbelichtung mit mäßiger Ausbeute, dazu inzwischen eine eigene DUV-Anlage. EUV noch nicht.</p>
+            <p>Die Größenordnung lautet also: fünfzehn bis zwanzig Jahre, mehrere hundert Milliarden Euro, und den größten Teil dieser Zeit ist man hinten.</p>
+            <p>Dieser Satz ist nicht ankündbar. Er enthält keinen Termin innerhalb einer Legislaturperiode, kein Band zum Durchschneiden und kein Ergebnis, das der Ankündigende noch im Amt erlebt. Ein Zentrum mit einem Partner und einem Superlativ dagegen ist sofort verfügbar.</p>
+        </section>
+
+        <section class="section">
+            <h2>VII. Kein Vorwurf an das Zentrum</h2>
+            <p>Es wäre falsch, daraus einen Vorwurf gegen MACHT-AI zu machen.</p>
+            <p>Ein Ausbildungszentrum für Chipentwurf in fortgeschrittenen Knoten schließt eine reale Lücke. Europäische Hochschulen entwerfen überwiegend in reifen Technologien, weil die Prozessdaten für FinFET teuer und zugangsbeschränkt sind. Tape-out ist außerdem ein hartes Kriterium: Der Chip funktioniert oder er funktioniert nicht, und das zeigt sich in Silizium und nicht in einem Bericht. Ein Zentrum, das sich daran messen lässt, ist etwas anderes als eines, das Roadmaps veröffentlicht.</p>
+            <p>Amrouch selbst benennt die Lücke korrekt. Er sagt, es werde künftig entscheidend sein, alle Stufen in Deutschland und Europa abzudecken — von der Ausbildung der Fachleute über die technologische Entwicklung bis zur Chipfertigung. Das ist eine Zielbeschreibung. In den Ministerzitaten daneben wird daraus ein Zustand im Präsens.</p>
+            <p>Der Unterschied zwischen beidem ist der Gegenstand dieses Textes.</p>
+        </section>
+
+        <section class="section">
+            <h2>VIII. Was fehlt, ist eine Rechnung</h2>
+            <p>Es fehlt keine Strategie und kein weiteres Zentrum. Es fehlt eine Bilanz.</p>
+            <p>Für jedes Glied der Kette eine Zeile, und in den Spalten steht: wer es kontrolliert, wie lange ein Ersatz dauert, was er kostet, was bei zwölf Monaten Unterbrechung geschieht. Das ist keine strategische Übung, sondern eine Stückliste mit einer zusätzlichen Spalte. Jeder Konstrukteur, der eine Baugruppe freigibt, macht so etwas für seine Zulieferer.</p>
+            <p>Eine solche Bilanz wäre in wenigen Monaten erstellbar, und sie wäre die Grundlage für jede sinnvolle Mittelverteilung. Sie wird nicht veröffentlicht. Der Grund ist absehbar: Sie würde zeigen, dass die Mittel nicht dorthin fließen, wo die Abhängigkeit sitzt, und dass die kritischen Glieder andere sind als die, über die gesprochen wird.</p>
+            <p>Solange sie fehlt, bleibt Souveränität ein Wort ohne Maßeinheit.</p>
+            <p>In Dresden hat sie inzwischen eine. Sie wird in Metern gemessen, sie wurde vor Baubeginn festgelegt, und sie ist nachträglich nicht zu ändern.</p>
+        </section>
+
+        <div class="author-block">
+            <p>Hans Ley &amp; Claude Dedo (Anthropic) — Nürnberg, 29. Juli 2026.</p>
+            <p><strong>Quellen und Belege.</strong> MACHT-AI, Selbstdarstellung des Zentrums, Januar 2026, einschließlich der Zitate von Markus Blume und Hubert Aiwanger. — TUM, Pressemitteilung vom 4. Februar 2026, <em>Als erste Universität in der EU: TUM baut eigenen KI-Chip in 7-nm-Technologie</em>, einschließlich der Zitate von Thomas Hofmann und Hussam Amrouch. — ESMC, Unternehmensangaben zu Technologieknoten, Kapazität und Zeitplan. — TSMC, Pressemitteilung zur Grundsteinlegung in Dresden vom 20. August 2024. — Europäischer Rechnungshof, Sonderbericht 12/2025 <em>Mikrochips: EU hinkt im globalen Wettlauf hinterher</em>, April 2025, sowie die Äußerungen von Annemie Turtelboom zur Vorstellung des Berichts.</p>
+            <p><strong>Zur Belegdichte.</strong> Zwei Angaben stützen sich auf jeweils eine einzelne Quelle und sind im Text als solche gekennzeichnet: die bauliche Begründung für die Grenze bei zehn Nanometern (Oiger, Dresden, 16. Februar 2026) und die Verlagerung der DUV-Anlagen aus der Fab 15A nach Dresden (Mai 2026). Die tragende Aussage — dass in Dresden keine sieben Nanometer gefertigt werden können — hängt an keiner der beiden, sondern an der Knotenliste von ESMC selbst. Die Größenordnungsangabe zum chinesischen Halbleiterprogramm ist eine Schätzung aus öffentlich bekannten Förderprogrammen und als Maßstab gemeint, nicht als Beleg.</p>
+            <p><strong>Zur Anlage dieses Textes.</strong> Der Essay bewertet weder das Zentrum noch die beteiligten Personen. Gegenstand ist die Differenz zwischen einer Zielbeschreibung und ihrer Wiedergabe als Zustand. Englische Fassung verfügbar.</p>
+        </div>
+    </article>
+</main>
+
+
+<script>
+    function setSize(size) {
+        document.body.className = document.body.className.replace(/size-\w+/g, '');
+        document.body.classList.add('size-' + size);
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+        const map = {small: 0, medium: 1, large: 2, xlarge: 3};
+        document.querySelectorAll('.size-btn')[map[size]].classList.add('active');
+        localStorage.setItem('essay-font-size', size);
+    }
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedSize = localStorage.getItem('essay-font-size');
+        if (savedSize) setSize(savedSize);
+        const savedTheme = localStorage.getItem('essay-theme');
+        if (savedTheme === 'light') document.body.classList.add('light-theme');
+    });
+</script>
+</body>
+</html>

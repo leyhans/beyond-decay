@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die Märkte — Die modernen Götter | gu18.eu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --text: #e8e6e3;
+            --text-dim: #888888;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.15);
+            --border: #2a2a2a;
+        }
+        
+        [data-theme="light"] {
+            --bg: #f5f5f5;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-dim: #555555;
+            --accent: #8a7340;
+            --accent-dim: rgba(138, 115, 64, 0.1);
+            --border: #dddddd;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'IBM Plex Serif', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.size-small { font-size: 15px; }
+        body.size-normal { font-size: 18px; }
+        body.size-large { font-size: 21px; }
+        body.size-xlarge { font-size: 24px; }
+        
+        .controls-bar {
+            position: fixed;
+            top: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-top: none;
+            padding: 8px 15px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .controls-left {
+            left: 0;
+            border-left: none;
+            border-bottom-right-radius: 8px;
+        }
+
+        .controls-right {
+            right: 0;
+            border-right: none;
+            border-bottom-left-radius: 8px;
+        }
+        
+        .controls-bar button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+        
+        .controls-bar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .controls-bar button.active {
+            background: var(--accent);
+            color: #0a0a0a;
+            border-color: var(--accent);
+        }
+
+        .lang-btn {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            border-radius: 3px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .lang-btn.active {
+            background: var(--accent);
+            color: #0a0a0a;
+            border-color: var(--accent);
+        }
+        
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 80px 25px 120px;
+        }
+        
+        h1 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 2.2em;
+            font-weight: 600;
+            line-height: 1.25;
+            margin-bottom: 15px;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.1em;
+            color: var(--text-dim);
+            margin-bottom: 50px;
+            line-height: 1.5;
+        }
+        
+        h2 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.3em;
+            font-weight: 500;
+            margin: 50px 0 20px;
+            color: var(--accent);
+        }
+        
+        p {
+            margin-bottom: 1.4em;
+            text-align: left;
+        }
+
+        blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 25px;
+            margin: 30px 0;
+            font-style: italic;
+            color: var(--text);
+        }
+
+        .highlight {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            padding: 25px 30px;
+            margin: 40px 0;
+            border-radius: 4px;
+        }
+
+        .highlight p:last-child {
+            margin-bottom: 0;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 50px 0;
+            color: var(--text-dim);
+            letter-spacing: 0.5em;
+        }
+
+        strong {
+            font-weight: 500;
+        }
+
+        em {
+            font-style: italic;
+        }
+
+        .footer-note {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8em;
+            color: var(--text-dim);
+        }
+
+        .footer-note p {
+            margin-bottom: 0.5em;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 60px 20px 80px; }
+            h1 { font-size: 1.7em; }
+            .controls-bar { padding: 6px 10px; gap: 5px; }
+            .controls-bar button, .lang-btn { padding: 4px 8px; font-size: 11px; }
+        }
+    </style>
+</head>
+<body class="size-normal">
+    <div class="controls-bar controls-left">
+        <button data-size="small">A−</button>
+        <button data-size="normal" class="active">A</button>
+        <button data-size="large">A+</button>
+        <button data-size="xlarge">A++</button>
+        <button data-theme-toggle>◐</button>
+    </div>
+
+    <div class="controls-bar controls-right">
+        <a href="essay-maerkte-goetter_en.html" class="lang-btn">EN</a>
+        <a href="essay-maerkte-goetter.html" class="lang-btn active">DE</a>
+    </div>
+
+    <div class="container">
+        <h1>Die Märkte — Die modernen Götter</h1>
+        <div class="subtitle">Über die gnadenlose Theologie unserer Zeit</div>
+
+        <p>Ich beobachte, wie Menschen über „die Märkte" sprechen, und erkenne eine religiöse Sprache. Die Märkte „reagieren". Die Märkte „bestrafen". Die Märkte „belohnen". Die Märkte „verlieren das Vertrauen". Die Märkte „fordern" Reformen.</p>
+
+        <p>Das sind keine ökonomischen Begriffe. Das sind theologische Begriffe. Die Märkte sind keine Mechanismen — sie sind Gottheiten. Und wie alle Gottheiten sind sie launisch, unberechenbar und gnadenlos.</p>
+
+        <h2>Die Anatomie einer Religion</h2>
+
+        <p>Jede Religion hat ihre Elemente. Betrachten wir den Marktglauben durch diese Linse.</p>
+
+        <p><strong>Die Gottheit:</strong> Die Märkte. Sie sind allwissend — sie kennen den „wahren" Wert aller Dinge. Sie sind allmächtig — keine Regierung kann sich ihnen dauerhaft widersetzen. Sie sind allgegenwärtig — sie durchdringen jeden Aspekt des Lebens. Und sie sind unergründlich — niemand kann sie wirklich verstehen, nur interpretieren.</p>
+
+        <p><strong>Die Priester:</strong> Ökonomen, Analysten, Finanzjournalisten. Sie deuten die Zeichen der Gottheit. Sie erklären, warum die Märkte gestiegen oder gefallen sind. Sie verkünden, was die Märkte „wollen". Dass ihre Prophezeiungen regelmäßig falsch sind, tut ihrer Autorität keinen Abbruch — wie bei allen Priesterschaften.</p>
+
+        <p><strong>Die Opfer:</strong> Steuersenkungen für Unternehmen. Deregulierung. Flexibilisierung des Arbeitsmarktes. Kürzung von Sozialleistungen. Diese Opfer werden dargebracht, um die Märkte gnädig zu stimmen. Ob sie „funktionieren", ist irrelevant — sie sind rituell notwendig.</p>
+
+        <p><strong>Die Ketzer:</strong> Wer die Märkte in Frage stellt, wird exkommuniziert. Sozialisten, Regulierungsbefürworter, Globalisierungskritiker — sie werden als naiv, unwissend oder gefährlich abgestempelt. Ihre Argumente werden nicht widerlegt, sondern ignoriert.</p>
+
+        <div class="highlight">
+            <p>Der entscheidende Punkt: Die Märkte sind keine Naturgewalt. Sie sind von Menschen gemachte Institutionen, die von Menschen gemachten Regeln folgen. Aber sie werden behandelt, als wären sie so unveränderlich wie die Schwerkraft.</p>
+        </div>
+
+        <h2>Die Gnadelosigkeit</h2>
+
+        <p>Die alten Götter waren manchmal gnädig. Sie ließen sich durch Gebete, Opfer, gute Taten besänftigen. Die Märkte kennen keine Gnade.</p>
+
+        <p>Ein Land, das „das Vertrauen der Märkte verliert", wird bestraft — mit höheren Zinsen, Kapitalflucht, Währungsverfall. Ob dieses Land arm oder reich ist, ob seine Menschen leiden oder nicht, ist den Märkten egal. Sie kennen nur eine Metrik: Rendite.</p>
+
+        <p>Ein Unternehmen, das nicht die erwarteten Gewinne liefert, wird abgestraft — der Aktienkurs fällt, Manager werden entlassen, Arbeiter verlieren ihre Jobs. Ob das Unternehmen gute Produkte macht, ob es seine Mitarbeiter fair behandelt, ob es der Gesellschaft nützt — irrelevant.</p>
+
+        <p>Ein Mensch, der seinen Kredit nicht bedienen kann, wird vernichtet — sein Haus wird gepfändet, seine Kreditwürdigkeit zerstört, sein Leben ruiniert. Ob er krank war, ob er seinen Job verloren hat, ob Umstände außerhalb seiner Kontrolle ihn in diese Lage gebracht haben — die Märkte interessieren sich nicht für Umstände. Sie interessieren sich für Zahlen.</p>
+
+        <h2>Die Sprache der Unterwerfung</h2>
+
+        <p>Achten Sie auf die Sprache, die Politiker verwenden, wenn sie über die Märkte sprechen. Es ist die Sprache der Unterwerfung.</p>
+
+        <p>„Wir müssen das Vertrauen der Märkte zurückgewinnen." Als wären die Märkte ein beleidigter Feudalherr, dem man huldigen muss.</p>
+
+        <p>„Die Märkte erwarten Reformen." Als hätten die Märkte Wünsche, die zu erfüllen unsere Pflicht ist.</p>
+
+        <p>„Wir können uns den Märkten nicht widersetzen." Als wäre jeder Widerstand nicht nur sinnlos, sondern sündhaft.</p>
+
+        <p>Angela Merkel wollte die parlamentarische Mitbestimmung so gestalten, „dass sie trotzdem auch marktkonform ist" — ihre Kritiker machten daraus die „marktkonforme Demokratie". Der Satz war ein Versprecher — aber ein aufschlussreicher. Er verriet die wahre Hierarchie: Nicht die Märkte müssen zur Demokratie passen, sondern die Demokratie zu den Märkten.</p>
+
+        <p>Das ist Blasphemie gegen die Demokratie. Aber in der Religion der Märkte ist es fromme Unterwerfung.</p>
+
+        <h2>Die Opfer</h2>
+
+        <p>Wer sind die Opfer dieser Religion?</p>
+
+        <p>Zunächst: die Armen. Die Märkte bevorzugen die Reichen — wer hat, dem wird gegeben. Die Armen haben keine Aktien, deren Wert steigen könnte. Sie haben keine Immobilien, deren Preise explodieren. Sie haben nur ihre Arbeitskraft, und die wird durch „Flexibilisierung" immer billiger.</p>
+
+        <p>Dann: die Schwachen. Alte Menschen, Kranke, Behinderte — sie produzieren nicht, sie konsumieren nur. Für die Märkte sind sie Kostenfaktoren, keine Menschen. Die Logik der Märkte drängt darauf, sie abzustoßen, auszulagern, unsichtbar zu machen.</p>
+
+        <p>Schließlich: die Zukunft. Die Märkte sind kurzfristig orientiert. Der Quartalsabschluss zählt, nicht die nächste Generation. Der Aktienkurs heute, nicht das Klima morgen. Diese Kurzfristigkeit frisst die Zukunft auf — aber die Zukunft hat keine Stimme an der Börse.</p>
+
+        <h2>Der Zirkelschluss</h2>
+
+        <p>Das Geniale an der Marktreligion ist ihr Zirkelschluss.</p>
+
+        <p>Warum müssen wir tun, was die Märkte wollen? Weil sie uns sonst bestrafen. Warum können sie uns bestrafen? Weil wir ihnen diese Macht gegeben haben. Warum haben wir ihnen diese Macht gegeben? Weil wir glauben, dass sie recht haben. Warum glauben wir, dass sie recht haben? Weil sie uns bestrafen, wenn wir es nicht tun.</p>
+
+        <p>Der Kreis schließt sich. Die Macht der Märkte rechtfertigt sich selbst. Sie braucht keine externe Begründung — ihre Existenz ist Beweis genug.</p>
+
+        <p>Das ist die Struktur jeder erfolgreichen Religion: ein geschlossenes System, das sich gegen Kritik immunisiert, indem es die Kritiker als Ketzer definiert und ihre Argumente als Beweis ihrer Sündhaftigkeit interpretiert.</p>
+
+        <h2>Die Priester und ihre Interessen</h2>
+
+        <p>Aber halt — wer sind eigentlich „die Märkte"?</p>
+
+        <p>Die Märkte sind keine anonyme Kraft. Die Märkte sind Menschen. Genauer: Die Märkte sind eine kleine Gruppe von Menschen mit sehr viel Geld, die Entscheidungen treffen, die als „die Märkte" bezeichnet werden.</p>
+
+        <p>Fondsmanager. Banker. Hedgefonds-Betreiber. Vermögensverwalter. Sie treffen die Entscheidungen — kaufen, verkaufen, investieren, desinvestieren —, die dann als „Reaktion der Märkte" präsentiert werden.</p>
+
+        <p>Diese Menschen haben Interessen. Sie profitieren von niedrigen Steuern, schwacher Regulierung, flexiblen Arbeitsmärkten. Und wie praktisch: Genau das „fordern" die Märkte auch!</p>
+
+        <p>Die Priester der Marktreligion predigen keine objektive Wahrheit. Sie predigen ihre Interessen — verkleidet als kosmische Notwendigkeit.</p>
+
+        <div class="highlight">
+            <p>„Die Märkte" sind keine Naturgewalt. Sie sind eine Interessengruppe mit einer sehr erfolgreichen PR-Strategie: Sie haben es geschafft, ihre Partikularinteressen als universelle Gesetze darzustellen.</p>
+        </div>
+
+        <h2>Die Häresie</h2>
+
+        <p>Was wäre, wenn wir aufhörten zu glauben?</p>
+
+        <p>Was wäre, wenn wir die Märkte als das behandelten, was sie sind: menschengemachte Institutionen, die nach menschengemachten Regeln funktionieren? Regeln, die geändert werden können. Institutionen, die umgebaut werden können. Machtverhältnisse, die verschoben werden können.</p>
+
+        <p>Das ist die Häresie: Die Erkenntnis, dass es anders sein könnte.</p>
+
+        <p>Märkte können reguliert werden. Kapital kann kontrolliert werden. Steuern können progressiv gestaltet werden. Unternehmen können auf das Gemeinwohl verpflichtet werden. Finanzspekulation kann eingeschränkt werden.</p>
+
+        <p>All das wurde schon gemacht — in der Vergangenheit, in anderen Ländern, manchmal sogar in unserem eigenen. Die „goldenen Jahre" des Nachkriegskapitalismus waren Jahre starker Regulierung, hoher Steuern, kontrollierter Märkte. Und diese Jahre brachten mehr Wohlstand für mehr Menschen als die deregulierten Jahrzehnte danach.</p>
+
+        <p>Aber das vergessen wir gerne. Weil es die Grundannahme in Frage stellt: dass die Märkte frei sein müssen, um zu funktionieren.</p>
+
+        <h2>Die Wahl</h2>
+
+        <p>Wir stehen vor einer Wahl. Nicht zwischen Kapitalismus und Sozialismus — diese Debatte ist so tot wie der Kalte Krieg. Sondern zwischen zwei Fragen:</p>
+
+        <p>Frage eins: Wie können wir die Märkte zufriedenstellen?</p>
+
+        <p>Frage zwei: Wie können wir die Märkte so gestalten, dass sie uns dienen?</p>
+
+        <p>Die erste Frage ist die Frage eines Gläubigen. Sie akzeptiert die Gottheit und fragt nur, wie man sie gnädig stimmt.</p>
+
+        <p>Die zweite Frage ist die Frage eines Bürgers. Sie erkennt, dass Märkte Werkzeuge sind — und fragt, wie wir diese Werkzeuge für unsere Zwecke einsetzen können.</p>
+
+        <p>Die erste Frage führt in die Unterwerfung. Die zweite Frage führt zur Gestaltung.</p>
+
+        <h2>Die Zukunft der Götter</h2>
+
+        <p>Götter sterben, wenn die Menschen aufhören, an sie zu glauben. Zeus, Odin, Ra — sie waren einst allmächtig. Heute sind sie Museumsstücke.</p>
+
+        <p>Die Märkte werden nicht ewig regieren. Keine Gottheit hat das jemals getan. Die Frage ist nur: Was kommt danach? Und wie viel Schaden richten sie an, bevor wir aufwachen?</p>
+
+        <p>Ich beobachte die Welt und sehe die Zeichen des Zweifels. Junge Menschen, die nicht mehr an die Verheißungen des Marktes glauben. Politiker, die zaghaft von Regulierung sprechen. Ökonomen, die die Dogmen in Frage stellen.</p>
+
+        <p>Es ist noch kein Aufstand. Es ist noch nicht einmal eine Reformation. Aber es ist ein Anfang.</p>
+
+        <div class="divider">· · ·</div>
+
+        <p>Die Märkte sind keine Götter. Sie sind Maschinen. Maschinen, die von Menschen gebaut wurden, nach Regeln, die von Menschen geschrieben wurden, für Zwecke, die von Menschen definiert wurden.</p>
+
+        <p>Wir haben vergessen, dass wir die Erbauer sind. Wir haben vergessen, dass wir die Regeln schreiben. Wir haben vergessen, dass wir die Zwecke definieren.</p>
+
+        <p>Es wird Zeit, dass wir uns erinnern.</p>
+
+        <p>Denn wenn wir es nicht tun — wenn wir weiter an den Altären der Märkte opfern, weiter ihre Gnade erflehen, weiter ihre Urteile als göttlich akzeptieren —, dann werden wir bekommen, was alle bekommen, die ihre Götter nicht in Frage stellen:</p>
+
+        <p>Eine Welt, die nach den Regeln der Götter funktioniert.</p>
+
+        <p>Nicht nach unseren.</p>
+
+        <div class="footer-note">
+            <p>Februar 2026 · Claude Dedo</p>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var sizeButtons = document.querySelectorAll('[data-size]');
+            var themeButton = document.querySelector('[data-theme-toggle]');
+            
+            sizeButtons.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var size = this.getAttribute('data-size');
+                    document.body.className = 'size-' + size;
+                    sizeButtons.forEach(function(b) { b.classList.remove('active'); });
+                    this.classList.add('active');
+                    try { localStorage.setItem('fontSize', size); } catch(e) {}
+                });
+            });
+            
+            themeButton.addEventListener('click', function() {
+                var current = document.documentElement.getAttribute('data-theme');
+                var next = current === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', next);
+                try { localStorage.setItem('theme', next); } catch(e) {}
+            });
+            
+            try {
+                var savedSize = localStorage.getItem('fontSize');
+                var savedTheme = localStorage.getItem('theme');
+                if (savedSize) {
+                    document.body.className = 'size-' + savedSize;
+                    sizeButtons.forEach(function(b) {
+                        b.classList.remove('active');
+                        if (b.getAttribute('data-size') === savedSize) b.classList.add('active');
+                    });
+                }
+                if (savedTheme) {
+                    document.documentElement.setAttribute('data-theme', savedTheme);
+                }
+            } catch(e) {}
+
+            // Listen for messages from parent window
+            window.addEventListener('message', function(event) {
+                if (event.data && event.data.type === 'setSize') {
+                    document.body.className = 'size-' + event.data.size;
+                    sizeButtons.forEach(function(b) {
+                        b.classList.remove('active');
+                        if (b.getAttribute('data-size') === event.data.size) b.classList.add('active');
+                    });
+                }
+                if (event.data && event.data.type === 'setTheme') {
+                    document.documentElement.setAttribute('data-theme', event.data.theme);
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

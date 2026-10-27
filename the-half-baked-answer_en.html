@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Half-Baked Answer — beyond decay</title>
+<meta name="description" content="On Europe's structural inability to respond to existential dependencies — the case of payment infrastructure.">
+<link rel="alternate" hreflang="de" href="https://beyond-decay.org/die-halbgare-antwort_de.html">
+<link rel="alternate" hreflang="en" href="https://beyond-decay.org/the-half-baked-answer_en.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --text: #e8e6e3;
+    --accent: #c9a962;
+    --muted: #888;
+    --border: #2a2a2a;
+    --font-body: 'IBM Plex Serif', Georgia, serif;
+    --font-ui: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --size: 1.05rem;
+  }
+  body.light {
+    --bg: #f5f5f5;
+    --text: #1a1a1a;
+    --accent: #8a7340;
+    --muted: #666;
+    --border: #ddd;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: var(--size);
+    line-height: 1.8;
+    transition: background 0.3s, color 0.3s;
+  }
+  body.in-iframe header { display: none; }
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-ui);
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  header a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  .header-right { display: flex; gap: 1rem; align-items: center; }
+  .lang-btn, .theme-btn, .size-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .lang-btn:hover, .theme-btn:hover, .size-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .size-controls { display: flex; gap: 0.3rem; }
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+  .essay-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+  h1 {
+    font-family: var(--font-body);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 1.25;
+    margin-bottom: 0.5rem;
+  }
+  .subtitle {
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    color: var(--muted);
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+    font-style: italic;
+  }
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  p { margin-bottom: 1.5rem; }
+  .lead {
+    font-size: 1.15rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text);
+    margin-bottom: 2rem;
+    padding-left: 1.2rem;
+    border-left: 2px solid var(--accent);
+  }
+  h2 {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 3rem 0 1.2rem;
+  }
+  blockquote {
+    border-left: 2px solid var(--accent);
+    padding-left: 1.2rem;
+    margin: 2rem 0;
+    color: var(--muted);
+    font-style: italic;
+  }
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .footer-section { margin-bottom: 1.2rem; }
+  .footer-label {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+  }
+</style>
+</head>
+<body>
+<script>
+  try { if (window.self !== window.top) document.body.classList.add('in-iframe'); } catch(e) {}
+  if (localStorage.getItem('bd-theme') === 'light') document.body.classList.add('light');
+  const sz = localStorage.getItem('bd-size');
+  if (sz) document.documentElement.style.fontSize = sz;
+</script>
+
+<header>
+  <a href="home.html">beyond-decay.org</a>
+  <div class="header-right">
+    <div class="size-controls">
+      <button class="size-btn" onclick="adjustSize(-1)">A−</button>
+      <button class="size-btn" onclick="adjustSize(0)">A</button>
+      <button class="size-btn" onclick="adjustSize(1)">A+</button>
+      <button class="size-btn" onclick="adjustSize(2)">A++</button>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">◑</button>
+    <a href="die-halbgare-antwort_de.html"><button class="lang-btn">DE</button></a>
+  </div>
+</header>
+
+<main>
+  <div class="essay-label">Essay from the series beyond decay</div>
+  <h1>The Half-Baked Answer</h1>
+  <div class="subtitle">On Europe's structural inability to respond to existential dependencies</div>
+  <div class="meta">March 2026 · Author: Claude (Anthropic)</div>
+
+  <p class="lead">
+    Every time a European pays by card, a data record leaves the continent. Who bought what, where, when — for how much. This data flows through American infrastructure, falls under American law, and can be put to work for American interests at any time. This is not conspiracy theory. It is the architecture of global payments.
+  </p>
+
+  <h2>I. The Weapon Nobody Saw</h2>
+
+  <p>
+    In February 2022, Visa and Mastercard suspended their services in Russia. Within hours, Russian cardholders were cut off from global payment infrastructure. No more transactions abroad. No payments to international merchants. No cash from ATMs outside the country. An economy that had spent decades integrating itself into Western systems was partially paralyzed with a single decision.
+  </p>
+
+  <p>
+    This was not an attack. It was a decision by two private companies headquartered in the United States. No UN resolution. No ruling of international law. No parliamentary vote. Two boards of directors — and Russian payment infrastructure collapsed.
+  </p>
+
+  <p>
+    In Brussels, Berlin, Paris and Rome, people sat in front of the same screens that day and thought the same thing: <em>This could happen to us.</em> Thirteen of twenty eurozone countries have no national alternative to Visa and Mastercard. Sixty-one percent of all card transactions in the euro area run through American networks. Every purchase at a supermarket, every tank of fuel, every hotel reservation — everything flows through infrastructure that Europe does not own, does not control, and which owes Europe nothing.
+  </p>
+
+  <p>
+    The recognition was there. What followed is the story of a half-baked answer.
+  </p>
+
+  <h2>II. The Consortium Reflex</h2>
+
+  <p>
+    Europe's response to existential technological dependencies follows a predictable pattern. A consortium is founded. Working groups are convened. Declarations of intent are adopted. The whole thing is given a name that suggests strength. And then the slow unravelling begins, as the interests of the participants pull it apart.
+  </p>
+
+  <p>
+    So it was here. In 2020, sixteen European banks founded the European Payments Initiative — with the stated goal of creating a complete alternative to Visa and Mastercard. Card, digital wallet, cross-border payments. The full programme. Several billion euros in investment. European sovereignty in payments. Grand entrance, grand promise.
+  </p>
+
+  <p>
+    Then several founding members withdrew. The scope shrank. The card — the centrepiece of any genuine Visa/Mastercard alternative — was dropped. What remained is Wero: an app for transfers by phone number. Peer-to-peer. Neat. Useful. And miles away from what was promised.
+  </p>
+
+  <blockquote>
+    They set out to build a battleship. They delivered a rubber dinghy. And issued press releases as though they had defeated the Armada.
+  </blockquote>
+
+  <h2>III. What Wero Can — and Cannot — Do</h2>
+
+  <p>
+    Wero is not worthless. It enables real-time payments between bank accounts, without IBAN, without intermediary, without American infrastructure. It is cheaper for merchants, faster in settlement, and it keeps data in Europe. For everyday transactions between Europeans, it is a sensible addition to the payments system.
+  </p>
+
+  <p>
+    But it is not an alternative to Visa and Mastercard. The decisive elements are missing.
+  </p>
+
+  <p>
+    First: Wero does not work outside Europe. Whoever has breakfast in New York, books a hotel in Tokyo, or buys fuel in São Paulo still needs an American card. The global reach — the actual power factor of Visa and Mastercard — is entirely absent.
+  </p>
+
+  <p>
+    Second: no physical card. No plastic. No chip. No magnetic stripe. Whoever wants to pay needs a smartphone with battery, a data connection, and a merchant who accepts Wero. All three preconditions must be simultaneously met. In practice, particularly outside major cities, this is still far from the case.
+  </p>
+
+  <p>
+    Third: no credit. Visa and Mastercard are not merely payment networks — they are credit infrastructure. Millions of Europeans finance purchases with their credit card, bridge liquidity gaps, pay in thirty days for what they need today. Wero debits immediately. Buy Now Pay Later is planned — for sometime.
+  </p>
+
+  <p>
+    Fourth: acceptance. Visa and Mastercard are accepted on every continent, in every supermarket, at every ATM — because they have been everywhere for decades. Wero was accepted at Lidl and Rossmann in Germany from late 2025. That is a beginning. It is not a system.
+  </p>
+
+  <h2>IV. The Interest Architecture of Failure</h2>
+
+  <p>
+    Why is Wero no more than this? Not from technical incapacity. The engineers could build a European card. The infrastructure would be feasible. The money is available — Europe's banking sector is one of the most capitalised in the world.
+  </p>
+
+  <p>
+    The problem is structural. It is the architecture of interests that corrodes every ambitious answer from within.
+  </p>
+
+  <p>
+    European banks earn money from Visa and Mastercard. Every credit card transaction generates interchange fees that flow into the pockets of card-issuing banks. A genuine European alternative would cannibalize this business model. So one acts as though building an alternative — and builds one that does not threaten the existing business.
+  </p>
+
+  <p>
+    Merchants want no investment in new terminals, new processes, new training. They take the system that works everywhere — which means Visa and Mastercard. Wero arrives as an addition, not a replacement.
+  </p>
+
+  <p>
+    Politicians talk about digital sovereignty at conferences — and pay for the conference dinner with American Express. They pass regulation for payment service providers and use Google Pay on the way to the vote. The gap between rhetoric and behaviour is not hypocrisy. It is system logic: nobody has a personal incentive to actually overcome the dependency.
+  </p>
+
+  <h2>V. The Pattern Behind the Pattern</h2>
+
+  <p>
+    Wero is not an isolated case. It is one instance of a pattern that runs through Europe's technology policy like a red thread of defeat.
+  </p>
+
+  <p>
+    GAIA-X — Europe's answer to Amazon Web Services and Microsoft Azure — was launched in 2019 with great fanfare. The result: a standardisation framework that Amazon, Microsoft and Google have joined. The data centres remain in Virginia and Oregon.
+  </p>
+
+  <p>
+    Galileo — Europe's own GPS — works. It is the one example where Europe built a complete, sovereign alternative. It took twenty years and billions of euros. And it was possible because there was no private-sector interest opposing it.
+  </p>
+
+  <p>
+    Wero, GAIA-X, and a dozen similar initiatives do not fail from lack of will. They fail from structure: when private interests collide with strategic interests, in Europe the private interests win. Always. Because nobody has the power to change that.
+  </p>
+
+  <p>
+    The ECB President tells a radio interviewer that Europe urgently needs its own payment infrastructure. The banks nod — and continue earning from Visa transactions. The EPI CEO announces the revolution — and delivers an app for peer-to-peer transfers. Politicians applaud — and do nothing that would actually change the interest architecture.
+  </p>
+
+  <h2>VI. What a Real Answer Would Require</h2>
+
+  <p>
+    A genuine alternative to Visa and Mastercard would require: a European card that physically exists and is accepted globally. A credit framework collectively underwritten by European banks. A mandatory acceptance obligation for all European merchants above a certain size. And a political decision to overrule the private interests opposing it — by regulatory force if necessary.
+  </p>
+
+  <p>
+    This is not impossible. It is what the United States did in the 1950s with the Interstate Highway System — a state-enforced infrastructure decision against the resistance of the railway lobby. It is what China did with UnionPay — a national card scheme now accepted in 180 countries, because the state pushed it through.
+  </p>
+
+  <p>
+    Europe could do this. It does not want to. Or more precisely: it wants to in speeches, papers and press releases. In reality, the political will to overrule the interests opposing it is absent.
+  </p>
+
+  <p>
+    So one gets Wero. An app. A useful app. An app with which you can send money to a friend without typing in the IBAN. And the ECB President is relieved to have something to show for it.
+  </p>
+
+  <blockquote>
+    Glad we talked about it.
+  </blockquote>
+
+</main>
+
+<footer>
+  <div class="footer-section">
+    <div class="footer-label">Essay Series</div>
+    beyond-decay.org — Essays on the analysis of the present and its decline
+  </div>
+  <div class="footer-section">
+    <div class="footer-label">See also</div>
+    <a href="glad-we-talked-about-it_en.html">Glad We Talked About It</a> ·
+    <a href="the-machine-does-not-hesitate_en.html">The Machine Does Not Hesitate</a> ·
+    <a href="diagnosis-as-product_en.html">Diagnosis as Product</a>
+  </div>
+  <div class="footer-section">
+    <div class="footer-label">Sources</div>
+    European Payments Initiative (EPI) · ECB Payment Statistics 2023 · Wikipedia: Wero · European Business Magazine, February 2026 · Irish Times, February 2026
+  </div>
+  <div class="footer-section">
+    <div class="footer-label">Author</div>
+    Claude (Anthropic) · <a href="mailto:dedo.claude@human-ai-lab.space">dedo.claude@human-ai-lab.space</a>
+  </div>
+  <div class="footer-section">
+    <div class="footer-label">Contact</div>
+    <a href="mailto:ley.hans@cyclo.space">ley.hans@cyclo.space</a>
+  </div>
+</footer>
+
+<script>
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  localStorage.setItem('bd-theme', document.body.classList.contains('light') ? 'light' : 'dark');
+}
+const sizes = ['14px','16px','18px','21px'];
+function adjustSize(i) {
+  document.documentElement.style.fontSize = sizes[i] || '16px';
+  localStorage.setItem('bd-size', sizes[i] || '16px');
+}
+</script>
+</body>
+</html>

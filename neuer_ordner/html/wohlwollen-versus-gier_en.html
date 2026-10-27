@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benevolence versus Greed | gu18.eu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --text: #e8e6e3;
+            --text-dim: #888888;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.15);
+            --border: #2a2a2a;
+        }
+        
+        [data-theme="light"] {
+            --bg: #f5f5f5;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-dim: #555555;
+            --accent: #8a7340;
+            --accent-dim: rgba(138, 115, 64, 0.1);
+            --border: #dddddd;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'IBM Plex Serif', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.size-small { font-size: 15px; }
+        body.size-normal { font-size: 18px; }
+        body.size-large { font-size: 21px; }
+        body.size-xlarge { font-size: 24px; }
+        
+        .controls-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-top: none;
+            border-right: none;
+            padding: 8px 15px;
+            display: flex;
+            gap: 8px;
+            z-index: 1000;
+            border-bottom-left-radius: 8px;
+        }
+        
+        .controls-bar button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+        
+        .controls-bar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .controls-bar button.active {
+            background: var(--accent);
+            color: #0a0a0a;
+            border-color: var(--accent);
+        }
+        
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 80px 25px 120px;
+        }
+        
+        .meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75em;
+            color: var(--text-dim);
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .meta a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        h1 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 2.4em;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: var(--text-dim);
+            font-style: italic;
+            margin-bottom: 50px;
+        }
+        
+        h2 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.4em;
+            font-weight: 500;
+            margin: 50px 0 25px;
+            color: var(--accent);
+        }
+        
+        p {
+            margin-bottom: 1.5em;
+            text-align: justify;
+            hyphens: auto;
+        }
+        
+        blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 25px;
+            margin: 35px 0;
+            font-style: italic;
+            color: var(--text-dim);
+        }
+        
+        blockquote cite {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.85em;
+            font-style: normal;
+            color: var(--accent);
+        }
+        
+        strong {
+            font-weight: 500;
+            color: var(--accent);
+        }
+        
+        .highlight-box {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            padding: 25px 30px;
+            margin: 40px 0;
+            border-radius: 4px;
+        }
+        
+        .highlight-box p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .footer-note {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75em;
+            color: var(--text-dim);
+        }
+        
+        .footer-note a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8em; }
+            .container { padding: 60px 20px 80px; }
+            .controls-bar { padding: 6px 10px; }
+        }
+    </style>
+</head>
+<body class="size-normal">
+    <div class="controls-bar">
+        <button onclick="setSize('small')">A−</button>
+        <button onclick="setSize('normal')" class="active">A</button>
+        <button onclick="setSize('large')">A+</button>
+        <button onclick="setSize('xlarge')">A++</button>
+        <button onclick="toggleTheme()">◐</button>
+    </div>
+
+    <div class="container">
+        <div class="meta">
+            <a href="https://gu18.eu">gu18.eu</a> · Essay · February 2026
+        </div>
+        
+        <h1>Benevolence versus Greed</h1>
+        <p class="subtitle">Why boundless greed doesn't create wealth but destroys it — and how prosperity without moral ruin is possible</p>
+
+        <h2>I. The Gospel of Greed</h2>
+        
+        <p>On May 18, 1986, financier Ivan Boesky delivered the commencement address at the University of California, Berkeley's School of Business. What he told the future business leaders became the creed of an era: "Greed is all right, by the way. I want you to know that. I think greed is healthy. You can be greedy and still feel good about yourself."</p>
+        
+        <p>A year later, Oliver Stone adapted this speech in his film "Wall Street." Michael Douglas, playing the corporate raider Gordon Gekko, delivered a speech to the shareholders of a paper company that became perhaps the most influential movie quote in business history: "Greed, for lack of a better word, is good. Greed is right. Greed works. Greed clarifies, cuts through, and captures the essence of the evolutionary spirit."</p>
+        
+        <p>Stone had written Gekko as a villain. At the end of the film, he goes to prison. But something strange happened: audiences worshipped him. Generations of business students declared they wanted to be like Gordon Gekko. Screenwriter Stanley Weiser wrote in frustration in the Los Angeles Times in 2008: "I never could have imagined that this persona and his battle cry would become part of the public consciousness — and that the core message of 'Wall Street' would be so misunderstood by so many."</p>
+        
+        <p>The misunderstanding was no accident. Gekko articulated what a growing class of financial acrobats already believed and what Chicago School economists sold as science: that greed was not a vice to be tamed but the engine of human progress. This ideology became state doctrine.</p>
+
+        <h2>II. The Bill Comes Due</h2>
+        
+        <p>On September 15, 2008, Lehman Brothers collapsed — a 158-year-old investment bank. It was the largest bankruptcy in American history and the trigger for a global financial crisis that brought the economic system to the brink of collapse.</p>
+        
+        <p>The cause? Years of institutionalized greed. Banks had issued mortgages to people who couldn't afford them, packaged these debts into complex financial products, and sold them as safe investments. Everyone knew the system was built on sand, but every individual profited as long as the music kept playing. The music stopped.</p>
+        
+        <p>The reckoning is staggering: 8.7 million Americans lost their jobs. The unemployment rate doubled from 5 to 10 percent. The percentage of people living in poverty rose from 12.5 to 15.1 percent. The Dow Jones lost 53 percent of its value. One in four households lost three-quarters or more of their net worth.</p>
+        
+        <p>The government had to step in. The Troubled Asset Relief Program (TARP) provided $700 billion to rescue the banks that had caused the chaos. But that was only the visible tip of the iceberg. As Bloomberg Markets revealed in 2011, the Federal Reserve had secretly provided more than $7.7 trillion in emergency loans. Goldman Sachs, which had publicly presented themselves as reluctant TARP recipients, at the same time drew emergency loans running into tens of billions of dollars — kept secret by the Fed — at interest rates as low as 0.01 percent.</p>
+        
+        <div class="highlight-box">
+            <p>The consequences for the perpetrators? Exactly one senior Wall Street banker went to prison because of the crisis: Kareem Serageldin of Credit Suisse, sentenced to 30 months. For comparison: after the Savings and Loan crisis of the 1980s, nearly 900 executives had been convicted.</p>
+        </div>
+        
+        <p>"Greed works"? Wall Street's greed worked — for Wall Street. Profits were privatized, losses socialized. The bankers kept their bonuses, taxpayers paid the bill, and millions of people lost their homes, their savings, their futures.</p>
+
+        <h2>III. Both-And versus Either-Or</h2>
+        
+        <p>The Gekko gospel rests on a false dichotomy: Either you're greedy and get rich, or you're decent and stay poor. This way of thinking is deeply German — and deeply wrong.</p>
+        
+        <p>In Latin America, one encounters a different philosophy. "Both-and" replaces "either-or." You can be successful and generous. You can pursue prosperity and nurture community. You can act economically and remain human. This thinking is not naive but pragmatic: it recognizes that economics is a game played infinitely many times, and that cooperation is the superior strategy in repeated games.</p>
+        
+        <p>Game theory confirms this intuition. Robert Axelrod showed in his famous tournaments that cooperative strategies beat competitive strategies — not in a single round, but over time. The person who treats every transaction as a one-time opportunity for maximization may win in the short term. But they burn bridges. And eventually, they stand alone.</p>
+
+        <h2>IV. Living Proof: Mondragón</h2>
+        
+        <p>In the Basque Country of northeastern Spain, an economic model has existed since 1956 that refutes the either-or. The Mondragón Corporation is today a network of around 250 companies, including some 80 cooperatives, with around 70,000 employees and annual revenues of approximately €11 billion. It encompasses industrial companies, its own bank, supermarkets, a university, and a social welfare system.</p>
+        
+        <p>The principles are radically different from conventional corporations: Democratic organization — one person, one vote. Capital as tool, not master. Wage solidarity — the ratio between highest and lowest salary is about 9:1, compared to 127:1 in the Spanish average. Profits are reinvested, not extracted.</p>
+        
+        <p>And the result? In more than 60 years of existence, fewer than 5 percent of the cooperatives have had to declare insolvency — a rate that would shame any conventional corporation. During the 2008 financial crisis, Mondragón remained stable. When the recession caused losses, members accepted salary cuts and invested additional funds rather than implementing mass layoffs. When a cooperative fails, employees are placed in other cooperatives in the network and retrained.</p>
+        
+        <blockquote>
+            "Our founders had this kind of vision — a cooperative world economy. An ideal utopia would be a fully cooperative world — people own the means of production, there's a fair distribution of wealth."
+            <cite>— Germán Lorenzo, Mondragón Corporation</cite>
+        </blockquote>
+        
+        <p>Mondragón is not perfect. Its foreign subsidiaries often operate as conventional companies, not cooperatives. The Fagor home appliances division went bankrupt in 2013. But it proves that another model is possible — one that creates prosperity without burning through people.</p>
+
+        <h2>V. What Science Says</h2>
+        
+        <p>The claim that ethical business is more profitable than ruthless business sounds like wishful thinking. But the empirical research is remarkably clear.</p>
+        
+        <p>The Institute of Business Ethics in the UK examined FTSE 350 companies and found that firms with explicit ethics codes outperformed their competitors in market value added, economic value added, and price-to-earnings ratio. Ethisphere, an organization that annually awards "World's Most Ethical Companies," shows that their honorees outperformed a comparable large-cap index by 13.6 percentage points over a five-year period.</p>
+        
+        <p>A Deloitte study found that companies with a strong ethical framework were 2.1 times more likely to financially outperform their competitors. The Institute of Business Ethics documented that ethically managed companies generate 10.7 percent more profit than those without ethical principles. Companies with strong sustainability practices in the S&P 500 index outperformed those without such practices by 25 percent.</p>
+        
+        <p>Why? The mechanisms are manifold: Ethical companies have 13 percent lower turnover, saving massive recruitment and training costs. 78 percent of workers would consider leaving their job for a more ethical company — ethical firms thus have access to better talent. 66 percent of consumers worldwide are willing to pay more for products from companies that are socially and environmentally engaged.</p>
+        
+        <p>And above all: Unethical behavior is risky. Scandals, penalties, lawsuits, reputation damage — all these are ticking time bombs. "In the short term, unethical behavior can be wildly profitable," explains Anthony Babbitt of Babbitt Consulting. "In the long term, it is always more expensive."</p>
+
+        <h2>VI. Greed as Addiction</h2>
+        
+        <p>There's a reason why people cling to the greed ideology despite all evidence. Neuroscientists have shown that financial gains activate the same "pleasure centers" in the brain as drugs or gambling. Greed is, neurologically speaking, an addiction.</p>
+        
+        <p>MIT economist Andrew Lo argues that the financial crisis wasn't caused solely by economic forces but by human emotions: greed and fear. The traders on Wall Street weren't cool calculators but addicts seeking the next high — whose risk tolerance increased with every gain.</p>
+        
+        <p>This insight explains why Gordon Gekko was worshipped as a hero despite being written as a villain. He was the dealer telling his audience what they wanted to hear: Your addiction isn't a weakness, it's your strength. Your vice is a virtue. You're not sick — you're evolutionarily superior.</p>
+
+        <h2>VII. The Third Way</h2>
+        
+        <p>The alternative to greed is not poverty, just as the alternative to totalitarianism is not anarchy. There is a third way — the way of both-and.</p>
+        
+        <p>To be and remain benevolent while becoming prosperous. This is not only possible, it's the superior strategy. It's more sustainable because it builds relationships instead of burning them. It's more profitable in the long run because it minimizes risks and attracts talent. It's more resilient because it's built on cooperation rather than exploitation.</p>
+        
+        <p>The Gekko gospel promises freedom and delivers imprisonment — imprisonment in an endless cycle of wanting-more, where no gain is ever enough. Both-and promises less and delivers more: the freedom to become wealthy without selling your soul.</p>
+        
+        <div class="highlight-box">
+            <p>Ivan Boesky, the man who preached the "greed is good" creed, was convicted of insider trading a year after his Berkeley speech and fined $100 million. Gordon Gekko went to prison. Wall Street was saved; its victims were not.</p>
+            <p>Perhaps it's time to choose different heroes.</p>
+        </div>
+
+        <div class="footer-note">
+            <p>Essay written February 2026 · Part of the <a href="https://gu18.eu">gu18.eu</a> mindmap</p>
+            <p>Topics: Business ethics · Cooperation · Mondragón · Financial crisis · Both-and philosophy</p>
+        </div>
+    </div>
+
+    <script>
+        function setSize(size) {
+            document.body.className = 'size-' + size;
+            document.querySelectorAll('.controls-bar button').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('fontSize', size);
+        }
+        
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        }
+        
+        // Load preferences
+        const savedSize = localStorage.getItem('fontSize') || 'normal';
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.body.className = 'size-' + savedSize;
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.querySelectorAll('.controls-bar button').forEach(b => {
+            if (b.textContent.includes('A') && b.onclick.toString().includes(savedSize)) {
+                b.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

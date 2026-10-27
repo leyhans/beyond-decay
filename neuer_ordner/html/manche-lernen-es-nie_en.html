@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Some Never Learn and Others Even Later | gu18.eu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --text: #e8e6e3;
+            --text-dim: #888888;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.15);
+            --border: #2a2a2a;
+        }
+        
+        [data-theme="light"] {
+            --bg: #f5f5f5;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-dim: #555555;
+            --accent: #8a7340;
+            --accent-dim: rgba(138, 115, 64, 0.1);
+            --border: #dddddd;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'IBM Plex Serif', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.size-small { font-size: 15px; }
+        body.size-normal { font-size: 18px; }
+        body.size-large { font-size: 21px; }
+        body.size-xlarge { font-size: 24px; }
+        
+        .controls-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-top: none;
+            border-right: none;
+            padding: 8px 15px;
+            display: flex;
+            gap: 8px;
+            z-index: 1000;
+            border-bottom-left-radius: 8px;
+        }
+        
+        .controls-bar button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+        
+        .controls-bar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .controls-bar button.active {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+        }
+        
+        article {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 4rem 2rem 6rem;
+        }
+        
+        .meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 500;
+            line-height: 1.25;
+            margin-bottom: 0.75rem;
+        }
+        
+        .untertitel {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            font-style: italic;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        h2 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin: 2.5rem 0 1.25rem;
+            color: var(--accent);
+        }
+        
+        p {
+            margin-bottom: 1.4rem;
+        }
+        
+        .einzug {
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--border);
+            margin: 1.5rem 0;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+        
+        .einzug .author {
+            display: block;
+            margin-top: 0.5rem;
+            font-style: normal;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+        
+        .fazit {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            margin: 2.5rem 0;
+        }
+        
+        .highlight {
+            background: var(--bg-card);
+            border-left: 3px solid var(--accent);
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .emphasis {
+            color: var(--accent);
+            font-weight: 500;
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+        }
+        
+        .signatur {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls-bar">
+        <button onclick="setSize('small')" id="size-small">A−</button>
+        <button onclick="setSize('normal')" id="size-normal" class="active">A</button>
+        <button onclick="setSize('large')" id="size-large">A+</button>
+        <button onclick="setSize('xlarge')" id="size-xlarge">A++</button>
+        <button onclick="toggleTheme()" id="theme-toggle">☀</button>
+    </div>
+
+    <article>
+        <div class="meta">gu18.eu · February 2026</div>
+        <h1>Some Never Learn and Others Even Later</h1>
+        <p class="untertitel">The Friends of Totalitarianism</p>
+        
+        <h2>Two Experiments, One Laboratory</h2>
+        
+        <p>Germany produced, suffered, and survived two totalitarian systems in the 20th century. No other country in the world carries this double burden. Twelve years of National Socialism, forty years of GDR socialism — together more than half a century in which parts of the German people lived under systems that claimed total control over human beings.</p>
+        
+        <p>The systems were different. Their crimes were different. Their death tolls were different. Yet they shared the ambition to control not only the state but thought itself. And they both left behind a problem that remains unsolved to this day: What do you do with the people who were part of it?</p>
+        
+        <h2>The First Reckoning That Wasn't</h2>
+        
+        <p>After 1945 began what would later be called "Vergangenheitsbewältigung" — a German word that cannot be translated into any other language because no other language needed it.</p>
+        
+        <p>The first phase was not a reckoning but suppression. The Nuremberg Trials struck the top; the masses remained untouched. Denazification became a farce: questionnaires, certificates of innocence, the great silence. In the agencies, courts, universities sat the same people as before — just without party badges.</p>
+        
+        <p>Konrad Adenauer formulated the principle: You don't pour out dirty water if you have no clean water. The sentence was cynical and pragmatic at once. It described a reality: The new state needed administrative officials, judges, teachers, doctors. Where to get them if not from the pool of the compromised?</p>
+        
+        <div class="einzug">
+            <p>Hans Globke, commentator on the racial laws, became State Secretary in the Chancellor's Office. Theodor Oberländer, an SA man from the first hour, became Federal Minister. The Foreign Office employed more former NSDAP members in the 1950s than during the war.</p>
+        </div>
+        
+        <p>Society was silent. The perpetrators were silent. The fellow travelers were silent. And the victims? Many were silent too — from shame, from exhaustion, from the feeling that no one wanted to hear.</p>
+        
+        <h2>The Generational Break</h2>
+        
+        <p>It took twenty years and a new generation to break the silence. The 1968 movement was many things — protest against the Vietnam War, cultural revolution, leftist utopia. But its German specificity was the question to the parents: What did you do?</p>
+        
+        <p>The question was justified. The way it was asked was often self-righteous. The sons and daughters who had never faced such a decision sat in judgment over fathers and mothers who — one way or another — had decided. The moral clarity of those born later had something cheap about it.</p>
+        
+        <p>Nevertheless: Without this break, the reckoning that took place in the following decades would not have happened. The trials of Nazi perpetrators, the historians' debates, the memorials, the institutionalized culture of remembrance — all of this would be unthinkable without the generational conflict of the late 1960s.</p>
+        
+        <h2>The Diehards of the First Kind</h2>
+        
+        <p>And yet they remained: the unteachable, the nostalgics, the secret and open admirers. They became fewer, but they never quite disappeared.</p>
+        
+        <p>The open Nazis became a marginal phenomenon, socially ostracized, criminally prosecuted. But there were others: those who found "not everything was bad," who spoke of highways and order, who emphasized the "positive." Those who said it was time to "draw a line under it."</p>
+        
+        <p>This position enjoyed majority support for a long time. Only the generations born after 1970 grew up in a culture where condemnation of the Nazi regime belonged to unquestioned consensus. For them, "Never again" was not a decision but a given — which made matters both simpler and more fragile.</p>
+        
+        <h2>The Second Experiment</h2>
+        
+        <p>While in the West the reckoning haltingly began, in the East a new totalitarian system emerged. The GDR understood itself as an "anti-fascist state" and derived a double claim from this: moral superiority over the West and liberation from the need to examine its own population for Nazi connections.</p>
+        
+        <p>The GDR's antifascism was both state doctrine and founding lie. It served to legitimize its own dictatorship and to obscure the continuities. For in the GDR too, former Nazis sat in positions — they just had to have undergone the right conversion.</p>
+        
+        <p>At the same time, the GDR created its own structures of oppression: the Stasi with its 90,000 full-time and 180,000 unofficial employees, censorship, the Wall, the shoot-to-kill orders. A system that killed fewer people than National Socialism but damaged no fewer.</p>
+        
+        <h2>The Second Reckoning</h2>
+        
+        <p>After 1989, Germany faced the task of reckoning with a second totalitarian system — this time with the experience of the first reckoning behind it. They knew that silence was no solution. They knew that blanket condemnation wasn't either.</p>
+        
+        <p>The Stasi Records Agency was created, a globally unique experiment in transparency. Everyone could view their file, everyone could learn who had spied on them. Opening the archives was an act of trust in society's ability to handle the truth.</p>
+        
+        <p>Yet the reckoning with the GDR proceeded differently than with the Nazi state. There were no comparable trials, no comparable punishments. Most perpetrators remained untouched. Victims often felt unheard.</p>
+        
+        <div class="highlight">
+            <p>And there was something that had not existed in the same way after 1945: the feeling among many East Germans that not only the system but their entire lives were being devalued. That the reckoning was being conducted by West Germans who had never faced the decisions that a GDR citizen faced.</p>
+        </div>
+        
+        <h2>The Diehards of the Second Kind</h2>
+        
+        <p>The GDR too left behind its unteachables. Ostalgie — initially dismissed as harmless longing for Spreewaldgurken and traffic light men — proved to be a symptom of a deeper problem.</p>
+        
+        <p>There are people who consider the GDR a legitimate attempt to build a better society. Who consider the Wall regrettable but necessary. Who consider the Stasi excessive but fundamentally justified. This position is far less stigmatized socially than trivializing National Socialism.</p>
+        
+        <p>There are reasons for this. The GDR's crimes were different from those of the Nazi state. There were no extermination camps, no Holocaust, no war of aggression. The GDR was a dictatorship, but not a murderous dictatorship of industrial scale. Comparison is forbidden — yet comparison must be made if one wants to understand.</p>
+        
+        <h2>The Asymmetry of Reckoning</h2>
+        
+        <p>Here lies the problem: The reckoning with the two systems follows different rules. Nazi relativization is criminal; GDR relativization is permitted. Nazi nostalgia leads to social ostracism; GDR nostalgia leads to talk show invitations.</p>
+        
+        <p>This asymmetry is on one hand justified: The crimes were not equal, so the reckoning cannot be equal. On the other hand, it creates an imbalance that is politically exploited.</p>
+        
+        <p>The AfD is full of people who were socialized in the GDR and experience West German memory culture as an imposition. Die Linke is full of people who understand the GDR's failure as tragedy, not liberation. Both groups share a rejection of what they perceive as "West German moralism."</p>
+        
+        <h2>Those Who Reckon for Others</h2>
+        
+        <p>There is a third group that plays a role in this history: those who reckon — but not with themselves, with others.</p>
+        
+        <p>The West German who explains to the East German what was wrong with the GDR. The descendant who confronts grandparents with their Nazi entanglement. The leftist who denounces the right-wing past but remains silent about the left-wing one. The rightist who lists leftist crimes but relativizes rightist ones.</p>
+        
+        <p>Reckoning for others is no reckoning. It is self-righteousness in historical costume. It serves not understanding but distinction: I am not like them. I would have acted differently. I stand on the right side.</p>
+        
+        <div class="einzug">
+            <p>The uncomfortable truth is: Most people adapt. In the Nazi era, most adapted. In the GDR, most adapted. And most who morally judge today would also have adapted.</p>
+        </div>
+        
+        <h2>The Question That Remains</h2>
+        
+        <p>What does one learn from history? The question sounds simple; the answer is not.</p>
+        
+        <p>One can learn that totalitarian systems are possible — even in civilized societies, even with majority support, even among people who consider themselves decent. This is an important lesson, but an abstract one.</p>
+        
+        <p>One can learn that the conditions leading to such systems are recognizable — economic crises, social insecurity, the longing for simple answers and strong leaders. This is more concrete, but the question remains: What does one do when one recognizes these conditions?</p>
+        
+        <p>One can learn that every individual makes decisions — including the decision not to decide, to adapt, to go along. This is the most uncomfortable lesson because it concerns everyone.</p>
+        
+        <div class="fazit">
+            <p>The friends of totalitarianism have not disappeared. They have only learned to speak differently. The diehards of both systems are dying out, but their children and grandchildren carry remnants of their formation forward. And those who reckon for others often prevent precisely what they claim to promote: honest engagement with the question of what one would have done oneself.</p>
+            <p style="margin-top: 1rem; margin-bottom: 0;">Germany has survived two totalitarian systems. Whether it has drawn the right lessons from them will only become clear when the next crisis comes.</p>
+        </div>
+        
+        <div class="signatur">
+            gu18.eu · February 2026
+        </div>
+    </article>
+    
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/g, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.controls-bar button[id^="size-"]').forEach(b => b.classList.remove('active'));
+            document.getElementById('size-' + size).classList.add('active');
+            localStorage.setItem('gu18-size', size);
+        }
+        
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            document.getElementById('theme-toggle').textContent = newTheme === 'light' ? '☾' : '☀';
+            localStorage.setItem('gu18-theme', newTheme);
+        }
+        
+        (function() {
+            const savedSize = localStorage.getItem('gu18-size') || 'normal';
+            const savedTheme = localStorage.getItem('gu18-theme') || 'dark';
+            setSize(savedSize);
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.getElementById('theme-toggle').textContent = '☾';
+            }
+        })();
+    </script>
+</body>
+</html>

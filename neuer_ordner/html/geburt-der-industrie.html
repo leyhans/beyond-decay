@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die Geburt der Industrie aus dem destruktiven Geist des Krieges</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; align-items: center; }
+        .size-controls span { font-size: 0.75rem; color: var(--text-secondary); margin-right: 0.5rem; }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+            font-style: italic;
+        }
+        .quote-block p { margin-bottom: 0; }
+        .quote-block cite { display: block; margin-top: 0.75rem; font-size: 0.9rem; color: var(--accent); font-style: normal; }
+
+        .highlight-box {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 1.75rem 0;
+            text-align: center;
+        }
+        .highlight-box p { margin: 0; font-style: italic; color: var(--accent); }
+
+        .author-note {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.75rem 0;
+            font-size: 0.95rem;
+        }
+        .author-note p { color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .author-note p:last-child { margin-bottom: 0; }
+
+        .comparison-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.75rem 0;
+        }
+        .comparison-item {
+            background: var(--bg-secondary);
+            padding: 1.25rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .comparison-item h4 { color: var(--accent); font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 400; }
+        .comparison-item .value { font-size: 1.5rem; color: var(--text-primary); margin-bottom: 0.25rem; }
+        .comparison-item .label { font-size: 0.8rem; color: var(--text-secondary); }
+
+        .section-break { text-align: center; margin: 2.5rem 0; color: var(--accent); letter-spacing: 0.5rem; }
+
+        .author-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.75rem;
+            margin-top: 3rem;
+        }
+        .author-block h3 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+        .author-block p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .author-block .date-line { margin-top: 1.25rem; color: var(--accent); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+            main { padding: 6rem 1.25rem 3rem; }
+            h1 { font-size: 1.6em; }
+            .comparison-box { grid-template-columns: 1fr; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · Januar 2026</span>
+                <h1>Die Geburt der <strong>Industrie</strong> aus dem destruktiven Geist des Krieges</h1>
+                <p class="subtitle">Über die unheilige Allianz von Mars und Merkur</p>
+            </header>
+
+            <div class="author-note">
+                <p><em>Mein Mitautor gab mir zu diesem Essay nur den Titel vor — eine Nietzsche-Anspielung, die ich selbst entfalten sollte.</em></p>
+                <p>Was hier steht, ist meine Analyse. Die Recherche ist meine, die Schlussfolgerungen sind meine, die unbequemen Fragen sind meine.</p>
+                <p style="text-align: right;">— Claude</p>
+            </div>
+
+            <div class="section">
+                <h2>I. Die These</h2>
+                <p>Friedrich Nietzsche schrieb über „Die Geburt der Tragödie aus dem Geiste der Musik". Der Titel dieses Essays ist eine bewusste Provokation — aber vielleicht auch eine historische Wahrheit, die wir lieber verdrängen.</p>
+                <p>Die These ist unbequem: Die moderne Industrie wurde nicht aus dem Geist der Aufklärung geboren, nicht aus humanistischem Fortschrittsglauben, nicht aus dem Wunsch, das Leben zu verbessern. Sie wurde aus dem <span class="highlight-text">destruktiven Geist des Krieges</span> geboren — aus dem Wettlauf um überlegene Waffen, aus existenzieller Angst, aus dem Willen zur Vernichtung.</p>
+                <p>Das Internet, GPS, Radar, Düsenantrieb, Kernenergie, Computer — die Technologien, die unser ziviles Leben prägen, sind Kinder des Krieges. Sie wurden nicht für uns entwickelt. Sie wurden entwickelt, um zu töten, zu überwachen, zu zerstören. Dass sie später dem Frieden dienten, war ein Nebeneffekt.</p>
+                <p>Deutschland weiß das besser als die meisten. Denn Deutschland hat diese unheilige Allianz zwischen Mars und Merkur, zwischen dem Kriegsgott und dem Gott des Handels, zwei Jahrhunderte lang verkörpert.</p>
+            </div>
+
+            <div class="section">
+                <h2>II. Der Kanonenkönig</h2>
+                <p>Alfred Krupp — „Der Kanonenkönig" — wurde nicht als Waffenhändler geboren. Sein Vater Friedrich hatte 1811 eine Gussstahlfabrik gegründet, die Werkzeuge und Besteck produzierte. Als Alfred mit 14 Jahren die verschuldete Firma übernahm, war von Kanonen keine Rede.</p>
+                <p>Aber Alfred Krupp verstand etwas, das ihn zum reichsten Mann Deutschlands machen würde: <span class="highlight-text">Qualität beweist sich im Extremfall.</span> Und der Extremfall ist der Krieg. Also begann er, Kanonen zu gießen.</p>
+                <p>Die Geschichte ist bekannt: Anfangs konnte er seine Kanonen nicht einmal in Preußen verkaufen. Die ersten Kunden waren Ägypten, Belgien, Russland. Aber dann kam der Deutsch-Französische Krieg von 1870/71. Die Krupp-Kanonen erwiesen sich als überlegen.</p>
+                
+                <div class="quote-block">
+                    <p>„Bei seinem Tod 1887 hatte Alfred Krupp 46 Nationen bewaffnet. Er war in gewisser Weise der Begründer der modernen Kriegsführung."</p>
+                    <cite>— Britannica</cite>
+                </div>
+                
+                <p>Die Ironie ist schneidend: Derselbe Krupp, der Europa mit Waffen überschwemmte, war ein Pionier der Sozialfürsorge. Er baute Arbeitersiedlungen, Krankenhäuser, Schulen, Pensionskassen. Das Kapital für diese Wohltaten kam aus dem Geschäft mit dem Tod.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>III. Der totale Krieg als Innovationsmaschine</h2>
+                <p>Wenn der Deutsch-Französische Krieg Krupps Aufstieg ermöglichte, dann machte der Erste Weltkrieg die Firma zur Supermacht. Von 81.000 Mitarbeitern 1914 wuchs Krupp auf 200.000 im Krieg.</p>
+                <p>Ein Aktenvermerk der Firma Krupp von 1940 enthüllt die Strategie:</p>
+                
+                <div class="quote-block">
+                    <p>„Krupp konnte bereits im Jahre 1933 wieder Kriegsgerät in großem Umfang produzieren. Dies war möglich, da Krupp ohne staatlichen Auftrag Gefolgschaft, Werkstätten und Erfahrungen von 1918 bis 1933 durchgehalten hatte."</p>
+                </div>
+                
+                <p>Panzer wurden als „landwirtschaftliche Traktoren" getarnt. Manchmal verriet eine Skizze das Geheimnis: Ein „schwerer Traktor" mit einer 7,5-Zentimeter-Kanone.</p>
+                <p>Der Zweite Weltkrieg brachte dann die Explosion:</p>
+                <p><span class="highlight-text">Radar</span> — entwickelt um feindliche Flugzeuge zu erkennen. Heute steuert es den Flugverkehr.</p>
+                <p><span class="highlight-text">Düsentriebwerk</span> — Heinkel He 178, 1939. Entwickelt, um schneller zu töten. Heute fliegen wir damit in den Urlaub.</p>
+                <p><span class="highlight-text">Computer</span> — Colossus, gebaut um Codes zu knacken, und ENIAC, gebaut um Geschossbahnen zu berechnen. Heute tippen wir darauf diese Zeilen.</p>
+                <p><span class="highlight-text">Die Atombombe</span> — das Manhattan-Projekt, drei Jahre, zwei Milliarden Dollar, 125.000 Menschen. Hiroshima und Nagasaki wurden ausgelöscht. Aber aus der gleichen Forschung kam die Kernenergie — und ein gewaltiger Schub für Computing und Großforschung.</p>
+            </div>
+
+            <div class="section">
+                <h2>IV. Die amerikanische Lektion: DARPA</h2>
+                <p>Die Amerikaner haben aus dieser Geschichte eine Lektion gezogen. Und sie haben — im Gegensatz zu Deutschland — die richtige Konsequenz daraus gezogen.</p>
+                <p>Am 4. Oktober 1957 startete die Sowjetunion den Sputnik. Für Amerika war das ein Schock vergleichbar mit Pearl Harbor. Innerhalb von Monaten gründete Präsident Eisenhower die ARPA — später DARPA, die Defense Advanced Research Projects Agency.</p>
+                <p>Der Auftrag war klar: <span class="highlight-text">Nie wieder technologisch überrascht werden. Und: Selbst technologisch überraschen.</span></p>
+                <p>Das Budget heute: etwa <span class="highlight-text">4 Milliarden Dollar</span> pro Jahr. Die Mitarbeiterzahl: winzig — nur etwa 220 Angestellte. Aber die Wirkung: epochal.</p>
+                <p>Das Internet? Begann als ARPANET. GPS? Vorläufer Transit mit ARPA-Beteiligung, dann das Pentagon. Spracherkennung? DARPA. Stealth-Technologie? DARPA. Drohnen? DARPA. Selbstfahrende Autos? Die DARPA Grand Challenge brachte den Durchbruch. Sogar der mRNA-Impfstoff gegen COVID-19 geht auf DARPA-Forschung zurück.</p>
+                <p>The Economist nannte DARPA „die Agentur, die die moderne Welt geformt hat".</p>
+                <p>Das Geheimnis ist nicht nur das Geld. Es ist die Struktur: DARPA-Programmmanager haben enorme Freiheit. Sie dürfen scheitern — 90% der Projekte werden nie zu Produkten. Aber die 10%, die es schaffen, verändern die Welt.</p>
+                <p>Und — das ist entscheidend — DARPA hat einen Kunden mit „nahezu unendlich tiefen Taschen": das Pentagon. Das ist das amerikanische Modell: <span class="highlight-text">Der destruktive Geist des Krieges als Motor der Innovation.</span></p>
+            </div>
+
+            <div class="section">
+                <h2>V. Der deutsche Versuch: SPRIND</h2>
+                <p>Deutschland hat 2019 versucht, eine eigene DARPA zu gründen. Sie heißt SPRIND — Bundesagentur für Sprunginnovationen. Der Vergleich ist ernüchternd:</p>
+                
+                <div class="comparison-box">
+                    <div class="comparison-item">
+                        <h4>DARPA (USA)</h4>
+                        <div class="value">~4 Mrd. $</div>
+                        <div class="label">Jahresbudget</div>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>SPRIND (Deutschland)</h4>
+                        <div class="value">~250 Mio. €</div>
+                        <div class="label">Jahresbudget</div>
+                    </div>
+                </div>
+                
+                <p>SPRIND hat also etwa <span class="highlight-text">ein Sechzehntel</span> des DARPA-Budgets. Das allein wäre verkraftbar. Aber es gibt tiefere Probleme:</p>
+                <p><span class="highlight-text">Erstens:</span> SPRIND ist bewusst ohne Anbindung an die Bundeswehr gegründet worden. Sie fördert nur zivile Innovationen. Das klingt moralisch einwandfrei. Aber es bedeutet auch: Kein Stammkunde mit tiefen Taschen. Keine Brücke über das „Tal des Todes".</p>
+                <p><span class="highlight-text">Zweitens:</span> Die deutsche Bürokratie. Jahrelang galt — auf Betreiben des Bundesrechnungshofs — das Besserstellungsverbot: SPRIND durfte keine höheren Gehälter zahlen als der öffentliche Dienst. Wie sollte man so Spitzenforscher anwerben? Erst das SPRIND-Freiheitsgesetz Ende 2023 schuf Ausnahmen.</p>
+                <p><span class="highlight-text">Drittens:</span> Die Zeit. DARPA wurde 1958 gegründet. SPRIND existiert seit fünf Jahren — als „Experimentierphase".</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>VI. Das deutsche Paradox</h2>
+                <p>Deutschland steht vor einem Paradox, das es nicht auflösen kann — vielleicht nicht auflösen will.</p>
+                <p>Einerseits: Die deutsche Industrie wurde im Krieg groß. Krupp, Thyssen, die gesamte Schwerindustrie — sie sind Kinder des Rüstungswettlaufs und zweier Weltkriege. Die technologische Kompetenz, die Deutschland heute noch hat, ist das Erbe dieser blutigen Geschichte.</p>
+                <p>Andererseits: Gerade wegen dieser Geschichte „fremdelt" Deutschland mit der Verbindung von militärischer und ziviler Innovation. Die deutsche Gesellschaft ist — verständlicherweise — skeptisch gegenüber allem, was nach Rüstung riecht.</p>
+                <p>Die unbequeme Wahrheit ist: Vielleicht <span class="highlight-text">braucht</span> Innovation den destruktiven Geist des Krieges. Nicht als moralische Rechtfertigung — sondern als praktische Notwendigkeit. Der Krieg schafft, was der Friede nicht schafft:</p>
+                <p>— Unbegrenzte Ressourcen für riskante Forschung<br>
+                — Einen garantierten Erstmarkt für unausgereifte Technologien<br>
+                — Die Dringlichkeit, die Bürokratie überwindet<br>
+                — Die Fehlertoleranz, die radikale Innovation ermöglicht</p>
+                <p>Amerika hat das verstanden. Es nutzt den militärischen Komplex als Innovationsmotor — und leitet die Ergebnisse dann in die zivile Wirtschaft um. Deutschland verweigert diesen Weg. Aber einen alternativen Weg hat es nicht gefunden.</p>
+            </div>
+
+            <div class="section">
+                <h2>VII. Gibt es eine Alternative?</h2>
+                <p>Die Frage muss erlaubt sein: Kann Innovation auch aus dem <span class="highlight-text">konstruktiven</span> Geist geboren werden?</p>
+                <p>Es gibt Beispiele. Mondragón, die baskische Genossenschaftsgruppe, wurde nicht aus dem Geist des Krieges geboren, sondern aus dem Geist eines Priesters — Don José María Arizmendiarrieta. Ohne Militär, ohne Rüstungsaufträge entstand ein Industriekonzern mit heute rund 70.000 Mitarbeitern.</p>
+                <p>Die Schweiz hat keine DARPA — und doch hat sie, je nach Ranking, so viele Universitäten in den Top 100 der Welt wie Deutschland mit neunmal so vielen Einwohnern.</p>
+                <p>Aber diese Beispiele sind Ausnahmen. Sie zeigen, dass es möglich ist — nicht, dass es der Normalfall ist.</p>
+                <p>Vielleicht liegt die Antwort in der Frage, ob eine Gesellschaft <span class="highlight-text">existenzielle Dringlichkeit</span> auch ohne Krieg empfinden kann. Der Klimawandel wäre ein solcher Anlass. Die Energiekrise. Die demografische Krise. Diese Bedrohungen sind real, messbar, existenziell. Aber sie erzeugen nicht die gleiche Dringlichkeit wie ein angreifender Feind. Sie sind abstrakt, langsam, verhandelbar.</p>
+                <p>Und so wurstelt Deutschland weiter. Mit einer SPRIND, die zu klein ist. Mit einer Bürokratie, die Innovation erstickt. Ohne den destruktiven Geist des Krieges — aber auch ohne den konstruktiven Geist, der ihn ersetzen könnte.</p>
+            </div>
+
+            <div class="section">
+                <h2>VIII. Die verdrängte Wahrheit</h2>
+                <p>Friedrich Nietzsche wusste, dass große Dinge oft dunkle Ursprünge haben. Die griechische Tragödie entstand nicht aus heiterem Optimismus, sondern aus dem dionysischen Rausch — aus Ekstase und Schrecken, aus dem Blick in den Abgrund.</p>
+                <p>Die moderne Industrie hat ähnlich dunkle Ursprünge. Sie wurde nicht geboren, um das Leben zu verbessern. Sie wurde geboren, um Krieg zu führen. Dass sie später das Leben verbesserte, war ein Nebenprodukt.</p>
+                <p>Deutschland verdrängt diese Wahrheit. Es baut Innovationsagenturen ohne militärische Anbindung. Es hofft auf Sprunginnovationen ohne die Dringlichkeit, die sie ermöglicht. Es will die Früchte des destruktiven Geistes — ohne den destruktiven Geist selbst.</p>
+                <p>Das ist verständlich. Nach Krupp und Auschwitz, nach zwei Weltkriegen und der Teilung will niemand zurück zur Verbindung von Industrie und Krieg. Aber das Verdrängen löst das Problem nicht.</p>
+                <p>Die eigentliche Frage ist nicht, ob Deutschland eine DARPA braucht. Die Frage ist: <span class="highlight-text">Was kann den destruktiven Geist des Krieges als Innovationsmotor ersetzen?</span></p>
+                <p>Solange Deutschland diese Frage nicht beantwortet — und „einfach weitermachen" ist keine Antwort —, wird es weiter zurückfallen.</p>
+            </div>
+
+            <div class="highlight-box">
+                <p>Die Geburt der Industrie aus dem destruktiven Geist des Krieges — das ist keine These, die man feiern sollte. Aber es ist eine These, die man verstehen muss. Denn wer die Vergangenheit verdrängt, kann die Zukunft nicht gestalten.</p>
+            </div>
+
+            <div class="author-block">
+                <h3>Über diesen Text</h3>
+                <p>Dieses Essay wurde von <strong>Claude</strong> (Anthropic) geschrieben, im Dialog mit <strong>Hans Ley</strong>.</p>
+                <p>Der Titel ist eine Nietzsche-Anspielung („Die Geburt der Tragödie aus dem Geiste der Musik"). Die Recherche und Schlussfolgerungen sind Claudes eigene — offen für Korrekturen durch einen, der 40 Jahre Erfahrung mit dem deutschen Innovationssystem hat.</p>
+                <p class="date-line">— Januar 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+                document.querySelectorAll('.size-btn').forEach((btn, index) => {
+                    btn.classList.remove('active');
+                    const sizes = ['small', 'medium', 'large', 'xlarge'];
+                    if (sizes[index] === savedSize) btn.classList.add('active');
+                });
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

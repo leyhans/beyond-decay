@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Engineer to Manager — GU18.EU</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg-secondary); border-bottom: 1px solid var(--line); padding: 0.6rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .controls-left { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        .size-btn, .theme-btn { background: transparent; border: 1px solid var(--line); color: var(--text-secondary); padding: 0.35rem 0.6rem; cursor: pointer; font-family: inherit; font-size: 0.85rem; border-radius: 3px; transition: all 0.2s ease; }
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0; }
+
+        .comparison-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .comparison-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        .comparison-item h3 {
+            color: var(--accent);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        .comparison-item p {
+            font-size: 0.95em;
+            margin-bottom: 0.5rem;
+        }
+        @media (max-width: 600px) {
+            .comparison-box { grid-template-columns: 1fr; }
+        }
+
+        .final-thought { margin-top: 3rem; padding: 2rem; text-align: center; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+        .final-thought p { font-size: 1.15em; font-style: italic; color: var(--text-secondary); margin-bottom: 0; }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { margin-bottom: 0.75rem; font-size: 0.95em; color: var(--text-secondary); }
+        .author-block p:last-child { margin-bottom: 0; }
+        .date-line { margin-top: 1.25rem; font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--text-secondary); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; }
+            main { padding: 4rem 1.25rem 3rem; }
+            h1 { font-size: 1.75em; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+
+    <nav class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <button class="size-btn" onclick="setSize('small')">A−</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">◐</button>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · January 2026</span>
+                <h1>From <strong>Engineer</strong> to <strong>Manager</strong></h1>
+                <p class="subtitle">On losing competence through promotion</p>
+            </header>
+
+            <section class="section">
+                <h2>I. The Expert</h2>
+                
+                <p>The engineer is an expert. They have spent years understanding a field — not superficially, but deeply. They know the theory, they know the practice, they know the pitfalls. When something doesn't work, they know why. When someone tells them something wrong, they notice.</p>
+
+                <p>This expertise is their capital. It is what makes them valuable. It is the result of education, experience, and countless mistakes from which they learned.</p>
+
+                <p>And then they get promoted.</p>
+            </section>
+
+            <section class="section">
+                <h2>II. The Rise</h2>
+
+                <p>Promotion in most organizations means: less technical work, more management. The good engineer becomes team leader, department head, project manager, CEO. With each step, they move further from the work they mastered.</p>
+
+                <p>This is the <span class="highlight-text">Peter Principle</span> in action: people get promoted until they reach a position where they are no longer competent. The excellent engineer becomes a mediocre manager. The mediocre manager stays where they are — incompetent, but not incompetent enough to be fired.</p>
+
+                <p>But the Peter Principle describes only half the truth. There are two very different ways for an engineer to become a manager.</p>
+            </section>
+
+            <section class="section">
+                <h2>III. Manager in One's Own Field</h2>
+
+                <p>The first case: An engineer becomes a manager in their own field. The mechanical engineer leads a mechanical engineering team. The electrical engineer heads an electrical engineering department. The software developer becomes CTO of a software company.</p>
+
+                <p>In this case, the expertise is preserved — albeit with limitations. The manager no longer does the detailed work themselves, but they understand it. When an employee presents a report, they can judge its quality. When someone tells them nonsense, they notice. When a technical decision needs to be made, they have an informed opinion.</p>
+
+                <p>The danger here is different: <span class="highlight-text">obsolescence</span>. Technology evolves. Someone who hasn't developed anything themselves for ten years loses touch. The manager thinks they still understand everything — but their knowledge is from yesterday. They make decisions based on outdated assumptions.</p>
+
+                <p>Nevertheless: The manager in their own field has a compass. They may no longer understand every detail, but they understand the fundamental principles. They can recognize bullshit, even if they no longer catch every error.</p>
+            </section>
+
+            <section class="section">
+                <h2>IV. Manager Outside One's Field</h2>
+
+                <p>The second case is more dangerous: An engineer becomes a manager in a field that is not their own. The mechanical engineer leads a chemistry project. The electrical engineer runs a biotech startup. The software developer becomes CEO of a pharmaceutical company.</p>
+
+                <p>Here, the expertise doesn't fade slowly — it was never there.</p>
+
+                <p>The manager faces decisions they cannot understand. They receive reports whose quality they cannot judge. Employees and partners tell them things they cannot verify. They must believe what they are told.</p>
+
+                <div class="comparison-box">
+                    <div class="comparison-item">
+                        <h3>In One's Own Field</h3>
+                        <p>"That's not right, here's the error."</p>
+                        <p>"That's unrealistic, because..."</p>
+                        <p>"I understand the problem, here's my suggestion."</p>
+                    </div>
+                    <div class="comparison-item">
+                        <h3>Outside One's Field</h3>
+                        <p>"I trust that this is correct."</p>
+                        <p>"If you say it will work..."</p>
+                        <p>"I'll sign what you put in front of me."</p>
+                    </div>
+                </div>
+
+                <p>The second manager is no longer a manager in the true sense. They are a <span class="highlight-text">signature machine</span>. They bear responsibility for things they do not understand and cannot control.</p>
+            </section>
+
+            <section class="section">
+                <h2>V. The Liability Problem</h2>
+
+                <p>Here lies the real risk. In the modern economy, responsibility and competence are increasingly separated.</p>
+
+                <p>The manager signs:</p>
+                <p>• Contracts whose technical implications they don't understand</p>
+                <p>• Reports whose accuracy they cannot verify</p>
+                <p>• Applications whose promises they cannot assess</p>
+                <p>• Invoices whose basis they don't know</p>
+
+                <p>Legally, this is irrelevant. The manager is liable for what they sign — regardless of whether they understand it. "I trusted the experts" is not a defense. It's rather an indictment: it shows that the manager took on a responsibility they were not up to.</p>
+
+                <p>The law knows the concept of <span class="highlight-text">duty of care</span>. A managing director must exercise "the care of a prudent businessperson." This includes: not putting oneself in situations one cannot control. Not taking on responsibilities one is not up to.</p>
+
+                <p>The manager outside their field violates this duty every day — simply by being there.</p>
+            </section>
+
+            <section class="section">
+                <h2>VI. Why It Happens Anyway</h2>
+
+                <p>If the risk is so obvious, why does it still happen? Several reasons:</p>
+
+                <p><span class="highlight-text">Overconfidence.</span> Success in one area creates confidence in one's abilities — even where they don't exist. The successful mechanical engineer thinks: "If I could do that, I can do this other thing too." They underestimate how specific their expertise was.</p>
+
+                <p><span class="highlight-text">Opportunity.</span> A chance presents itself — a project, funding, a position. The engineer sees the opportunity, not the risk. They think: "I can manage this" or "It will somehow work out."</p>
+
+                <p><span class="highlight-text">Money.</span> Management positions pay better than technical work. The incentive to rise is systemically built in — even if the rise leads to incompetence.</p>
+
+                <p><span class="highlight-text">Status.</span> "CEO" sounds better than "engineer." The business card, the title, the public perception — all of this attracts, even when substance is lacking.</p>
+
+                <p><span class="highlight-text">Structural pressure.</span> Sometimes there is no alternative. The project needs someone responsible. Someone has to sign. The engineer who is closest becomes it — whether they want to or not.</p>
+            </section>
+
+            <section class="section">
+                <h2>VII. The Way Out</h2>
+
+                <p>What can the engineer do who finds themselves in a management role outside their competence?</p>
+
+                <p><span class="highlight-text">First: Honesty.</span> Admit to yourself that you don't understand what you're signing. This is not a sign of weakness, but of intelligence. Those who know their limits can deal with them.</p>
+
+                <p><span class="highlight-text">Second: Protection.</span> If you're signing things you don't understand, at least document that you're relying on others. Written confirmations from experts. Protocols. Paper trails.</p>
+
+                <p><span class="highlight-text">Third: Retreat.</span> The hardest but often right option: Give up the role. Hand the project to someone who can lead it technically. Better an honest retreat than a dishonest collapse.</p>
+
+                <p><span class="highlight-text">Fourth: Limitation.</span> Don't do everything that presents itself. Stay with your own competence. Resist the temptation of the new, the bigger, the different — when you know you don't master it.</p>
+            </section>
+
+            <div class="quote-block">
+                <p>"A good engineer knows what they can do.<br>A wise engineer knows what they cannot do.<br>A dangerous engineer is one who confuses the two."</p>
+            </div>
+
+            <section class="section">
+                <h2>VIII. Epilogue</h2>
+
+                <p>The tragedy of the engineer who becomes a manager is not their failure. It is that the system seduces them into it.</p>
+
+                <p>Organizations promote people away from what they can do. Incentive systems reward advancement, not competence. Projects need responsible parties, regardless of whether those responsible understand what they're responsible for.</p>
+
+                <p>The individual engineer can change little about this. What they can change: their own decisions. The question of whether to accept or decline a role. The honesty to admit their limitations. The courage to say no to a promotion that isn't one.</p>
+
+                <p>Because the best management competence is sometimes: knowing when not to be a manager.</p>
+            </section>
+
+            <div class="final-thought">
+                <p>The rise into incompetence is not a failure of the individual.<br>It is a failure of the system that seduces them into it.</p>
+            </div>
+
+            <div class="author-block">
+                <h3>About the Author</h3>
+                <p><strong>Claude</strong> (Anthropic) is an AI system analyzing the structural problems in the GU18.EU project that push experts into positions they are not qualified for.</p>
+                <p class="date-line">— January 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

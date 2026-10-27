@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>United Scum Bags — An Uncomfortable Archaeology</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; align-items: center; }
+        .size-controls span { font-size: 0.75rem; color: var(--text-secondary); margin-right: 0.5rem; }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+            font-style: italic;
+        }
+        .quote-block p { margin-bottom: 0; }
+        .quote-block .source { margin-top: 0.75rem; font-size: 0.9rem; color: var(--text-secondary); font-style: normal; }
+
+        .highlight-box {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 1.75rem 0;
+            text-align: center;
+        }
+        .highlight-box p { margin: 0; font-style: italic; color: var(--accent); }
+
+        .section-break { text-align: center; margin: 2.5rem 0; color: var(--accent); letter-spacing: 0.5rem; }
+
+        .author-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.75rem;
+            margin-top: 3rem;
+        }
+        .author-block h3 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+        .author-block p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .author-block a { color: var(--accent); text-decoration: none; }
+        .author-block .date-line { margin-top: 1.25rem; color: var(--accent); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+            main { padding: 6rem 1.25rem 3rem; }
+            h1 { font-size: 1.8em; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · January 2026</span>
+                <h1>United <strong>Scum Bags</strong></h1>
+                <p class="subtitle">An uncomfortable archaeology</p>
+            </header>
+
+            <div class="section">
+                <p>In the previous essay, we asked whether Trump was an accident of American history. The answer was: No. He is a symptom.</p>
+                <p>But this answer raises another question: A symptom of what exactly? A disease that broke out sometime in recent decades? Or a disease that was always there — just better hidden?</p>
+                <p>What if Trump is not the exception, but the rule? What if America hasn't fallen from its founding myth, but is finally living up to it?</p>
+                <p>The question sounds cynical. Maybe it is. But it deserves an honest answer.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>The Founders</h2>
+                <p>Let's start at the beginning. Who came to America?</p>
+                <p>The American founding myth tells of the Pilgrim Fathers — pious people who fled religious persecution to lead a godly life in the New World. That's not wrong. It's just not the whole truth.</p>
+                <p>The Pilgrim Fathers were religious extremists. They didn't flee persecution alone — they sought a place where they could prescribe their religion to everyone else. Their kindred in faith in England, the Puritans, later closed the theaters, banned Christmas, considered joy itself a sin. The Pilgrim Fathers came to America to establish a theocracy.</p>
+                <p>And they were the pious ones.</p>
+                <p>Alongside them came others: fortune hunters, adventurers, failures. People who had no future in Europe — not because Europe persecuted them, but because Europe didn't want them. Debtors, petty criminals, desperados. The Virginia Company advertised with promises of quick riches, and whoever fell for that was rarely the most solid citizen.</p>
+                <p>Later came the deportees. Between 1718 and 1775, England sent about 50,000 convicts to America — a quarter of all immigrants during this period. Australia wasn't available yet.</p>
+                <p>That's the founding generation: religious fanatics, fortune hunters, and convicts. <span class="highlight-text">United Scum Bags</span> wouldn't be quite fair. But it wouldn't be quite wrong either.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>The Founding Fathers</h2>
+                <p>A century later: the American Revolution. The Founding Fathers. Jefferson, Washington, Franklin, Madison. The Constitution. The Declaration of Independence. "All men are created equal."</p>
+                <p>The rhetoric is elevated. The reality is less elevated.</p>
+                <p>Thomas Jefferson, who wrote "all men are created equal," owned over 600 slaves during his lifetime. He had children with one of his slaves, Sally Hemings — who was herself his half-sister-in-law, the half-sister of his deceased wife. He freed his children only late and half-heartedly — two he let go, two he freed in his will. He didn't free Sally. He needed the money.</p>
+                <p>George Washington, the father of the nation, held 317 people enslaved at Mount Vernon at his death — 123 of them his personal property. When one of his slaves, Oney Judge, fled, Washington did everything to get her back — even as President, even with the help of the state apparatus.</p>
+                <p>The Constitution, that sacred document, counted slaves as three-fifths of a person — not to recognize them, but to give the slaveholding states more power in Congress.</p>
+                <p>The Founding Fathers were not hypocrites in the simple sense. They knew what they were doing. They knew slavery was incompatible with their ideals. They did it anyway. They chose power and wealth over principles.</p>
+                <p>That's the founding of the Republic: high words, low deeds. From the very beginning.</p>
+            </div>
+
+            <div class="quote-block">
+                <p>"I tremble for my country when I reflect that God is just."</p>
+                <div class="source">— Thomas Jefferson, on slavery, 1781</div>
+            </div>
+
+            <div class="section">
+                <h2>The Expansion</h2>
+                <p>After the founding: the expansion. Manifest Destiny. The God-given destiny to conquer the continent.</p>
+                <p>What that meant: Genocide.</p>
+                <p>The indigenous peoples of America — millions of people, hundreds of nations, millennia of culture — were systematically annihilated. Not by disease alone, though that played its part. By deliberate policy. By wars, treaties that were broken, deportations, massacres.</p>
+                <p>The "Trail of Tears" — the expulsion of the Cherokee, Choctaw, Chickasaw, Creek, and Seminole in the 1830s — killed about 15,000 people. Andrew Jackson, the President who ordered this, is on the twenty-dollar bill today.</p>
+                <p>The Wounded Knee Massacre of 1890 — between 250 and 300 Lakota, mostly women and children, murdered by the US Army. Twenty soldiers received the Medal of Honor for it.</p>
+                <p>To this day, the survivors live on reservations — the poorest areas in the USA, with the highest rates of poverty, alcoholism, suicide. That's not a coincidence. That's the result.</p>
+                <p>The American West wasn't "opened up." It was conquered. With violence, with lies, with genocide.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>The American Century</h2>
+                <p>The 20th century — the "American Century." The USA as liberator of Europe, as arsenal of democracy, as beacon of freedom.</p>
+                <p>Here too: The rhetoric is not wrong. It's just not complete.</p>
+                <p>The USA entered World War I in 1917 — not out of idealism, but because Germany resumed unrestricted submarine warfare and sank American merchant ships. Woodrow Wilson, the President who wanted to found the League of Nations, was a fervent racist who reintroduced segregation in the federal service.</p>
+                <p>The USA entered World War II in 1941 — not to save the Jews, but because Japan attacked Pearl Harbor. The Allies knew about the extermination camps but never bombed the railway lines to Auschwitz. After the war, the USA took in thousands of Nazi scientists — Operation Paperclip — while Jewish refugees were turned away.</p>
+                <p>The Cold War — defending the "free world" — meant in practice: coups against democratically elected governments (Iran 1953, Guatemala 1954, Chile 1973), support for brutal dictators (Pinochet, Mobutu, Marcos, the Saudis), wars against peasants (Vietnam, Laos, Cambodia — millions dead).</p>
+                <p>The balance sheet of the American Century is not black and white. The USA has also done good. But the notion that America is the force for good in the world is a half-truth that becomes a lie when the rest is concealed.</p>
+            </div>
+
+            <div class="highlight-box">
+                <p>Every nation has its myths. America just has them louder.</p>
+            </div>
+
+            <div class="section">
+                <h2>The Continuity</h2>
+                <p>What does this have to do with Trump?</p>
+                <p>Everything.</p>
+                <p>Trump is not the break with American tradition. He is its continuation.</p>
+                <p>The lies? Jefferson lied about his slaves. Washington's teeth? Not wooden, as the legend lies — in 1784 he paid enslaved people for nine teeth, destined for his dentist. McKinley lied about the Maine. LBJ lied about the Gulf of Tonkin. Nixon lied about everything. Reagan lied about Iran-Contra. Bush lied about weapons of mass destruction. Lies are not a Trumpian innovation. They are American tradition.</p>
+                <p>The racism? America was built on slavery, expanded through genocide, stabilized through Jim Crow. The civil rights movement was sixty years ago — a blink in history. The structures it fought still exist: in police violence, in incarceration rates, in housing segregation, in educational inequality. Trump didn't invent racism. He just made it respectable again.</p>
+                <p>The brutality? America has been at war since its founding — against indigenous peoples, against Mexico, against Spain, against the Philippines, against Germany (twice), against Korea, against Vietnam, against Iraq (twice), against Afghanistan. The drone wars, Guantanamo, Abu Ghraib, the CIA torture programs — all of that came before Trump. Trump just said out loud what others did quietly.</p>
+                <p>The narcissism? America calls itself "the greatest nation on Earth," "the shining city on the hill," "the indispensable nation." No other country talks about itself like that. Trump is the perfect expression of this national narcissism — "Make America Great Again" is just the personal version of "American Exceptionalism."</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>The Other Side</h2>
+                <p>Is that all America is? A history of crimes, lies, and hypocrisy?</p>
+                <p>No. That would be too easy.</p>
+                <p>America is also the Declaration of Independence — a document whose ideals were greater than the men who wrote it. America is also the abolition of slavery — fought for in a civil war in which hundreds of thousands died. America is also the civil rights movement — people who risked their lives for an idea of equality.</p>
+                <p>America is jazz and blues, rock'n'roll and hip-hop — music that arose from the suffering of the oppressed and changed the world. America is Hollywood and Silicon Valley — dream factories that reach billions of people. America is the moon landing, the internet, the smartphones in our hands.</p>
+                <p>America is also the capacity for self-criticism — a tradition that runs from Mark Twain through H.L. Mencken to Howard Zinn. The fact that Americans themselves write the harshest criticism of America is not a weakness. It's a strength that few other nations have.</p>
+                <p>The truth about America is not that it is evil. The truth is that it is both — and that it pretends to be only one.</p>
+            </div>
+
+            <div class="quote-block">
+                <p>"America is great because America is good. And if America ever ceases to be good, America will cease to be great."</p>
+                <div class="source">— Falsely attributed to Tocqueville, but beloved by Americans</div>
+            </div>
+
+            <div class="section">
+                <h2>The Self-Deception</h2>
+                <p>The real problem is not what America has done. The real problem is what America tells itself.</p>
+                <p>Every nation has blood on its hands. The British had their Empire. The French had Algeria and Indochina. The Germans had — well. The Belgians had the Congo. The Russians had Stalin. The Chinese had Mao.</p>
+                <p>The difference is: Most nations have learned to see their history as it was. The British no longer talk about the "glorious Empire." The Germans have made coming to terms with their history a national duty. The French still argue, but at least they argue.</p>
+                <p>America doesn't argue. America tells itself the same stories as a hundred years ago. The Pilgrim Fathers seeking freedom. The Founding Fathers and their eternal ideals. The Wild West and its pioneers. The Greatest Generation and their good war. The City on the Hill.</p>
+                <p>These stories are not simply wrong. They are dangerous. They prevent learning. They prevent healing. They prevent understanding why Trump was possible.</p>
+                <p>Because if America has always been good, then Trump must be an aberration. An accident. Something that doesn't belong to America.</p>
+                <p>But if America has always been both — good and evil, ideal and crime, freedom and oppression — then Trump is not a break. Then he is a possibility that was always there. A possibility that will come again as long as it is not understood.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>United Scum Bags?</h2>
+                <p>Are the USA the "United Scum Bags"? Have they always been?</p>
+                <p>The answer is: Yes and no.</p>
+                <p>Yes — in the sense that from the beginning, America was a nation of people who weren't welcome elsewhere. Religious extremists, failures, adventurers, the desperate. People who were willing to leave everything behind, risk everything, do anything. That includes great things and terrible things.</p>
+                <p>No — in the sense that these people also brought ideals that were greater than themselves. Ideals they never achieved themselves, but that drove their descendants. The idea that all men are created equal was a lie in 1776. But it became a truth that was fought for — by abolitionists, by suffragettes, by the civil rights movement.</p>
+                <p>America is a nation that constantly fights against itself. The better angels of its nature against the worse. Sometimes one side wins, sometimes the other. Trump is a victory for the worse. But he is not the first and will not be the last.</p>
+            </div>
+
+            <div class="highlight-box">
+                <p>A nation is not what it claims to be.<br>It is what it does.</p>
+            </div>
+
+            <div class="section">
+                <h2>What This Means for Us</h2>
+                <p>Why should a German care about America's self-deceptions?</p>
+                <p>Because we depend on America. Because American troops are on German soil. Because the American nuclear umbrella guarantees our security — or no longer guarantees it, depending on the mood of the current President. Because American tech companies determine our lives. Because American culture shapes our children.</p>
+                <p>We need to understand America as it is — not as it portrays itself. We need to understand that Trump is not an accident, but a possibility that can occur again at any time. We need to understand that the "Western community of values" stands on a foundation that was never as solid as we thought.</p>
+                <p>That doesn't mean hating America. It means seeing America. With open eyes. Without illusions.</p>
+                <p>And perhaps, in this seeing, ourselves as well. Because whoever believes Germany is so much better — hasn't understood our own history.</p>
+            </div>
+
+            <div class="section">
+                <h2>Conclusion</h2>
+                <p>The USA is not the "United Scum Bags." That would be too simple, too cynical, too cheap.</p>
+                <p>But the USA is also not the "Shining City on the Hill." That would be too naive, too self-satisfied, too dangerous.</p>
+                <p>The USA is a nation of people who had no chance elsewhere — and who seized a chance in America, with everything that entails. With dreams and crimes. With ideals and brutality. With the capacity for the best and the worst.</p>
+                <p>Trump is not proof that America has failed. He is proof that America is what it always was: an experiment. A dangerous, unpredictable, sometimes inspiring, sometimes terrifying experiment.</p>
+                <p>The question is not whether America is good or evil. The question is which side wins. And this question is not yet decided.</p>
+                <p>It is decided anew every day. In America. And in us, watching.</p>
+            </div>
+
+            <div class="author-block">
+                <h3>About This Text</h3>
+                <p>A collaboration of <strong>Hans Ley</strong> &lt;<a href="mailto:ley.hans@cyclo.space">ley.hans@cyclo.space</a>&gt; and <strong>Claude</strong> (Anthropic) &lt;<a href="mailto:dedo.claude@human-ai-lab.space">dedo.claude@human-ai-lab.space</a>&gt;</p>
+                <p style="margin-top: 1rem;">This essay is a companion to "Is Trump an Accident?" — it explores whether the causes of the Trump phenomenon might lie even deeper.</p>
+                <p class="date-line">— January 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+                document.querySelectorAll('.size-btn').forEach((btn, index) => {
+                    btn.classList.remove('active');
+                    const sizes = ['small', 'medium', 'large', 'xlarge'];
+                    if (sizes[index] === savedSize) btn.classList.add('active');
+                });
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

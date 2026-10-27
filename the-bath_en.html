@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Bath | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+    }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'IBM Plex Mono', monospace;
+        transition: background-color 0.2s;
+    }
+    .controls button:hover { background-color: rgba(201, 169, 98, 0.15); }
+    .controls button.active { background-color: var(--accent-color); color: var(--bg-color); }
+    main {
+        max-width: 52rem;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem 2rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 0.3rem;
+        color: var(--accent-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 300;
+        font-size: 1.25rem;
+        color: var(--meta-color);
+        margin-bottom: 2rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--note-border);
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 1.4rem;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        color: var(--accent-color);
+    }
+    p { margin-bottom: 1rem; text-align: justify; hyphens: auto; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1.2rem 1.5rem;
+        margin: 2rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .game-box {
+        border: 1px solid var(--accent-color);
+        padding: 1.5rem;
+        margin: 2rem 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 0.95rem;
+        background: rgba(201, 169, 98, 0.04);
+    }
+    .game-box p { text-align: left; }
+    .game-box strong { color: var(--accent-color); }
+    a { color: var(--link-color); }
+    .footer-info {
+        margin-top: 4rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+    }
+    @media print {
+        body { background: white; color: black; }
+        header, .controls { display: none; }
+        main { padding: 1cm; max-width: 100%; }
+        blockquote { background: #f0f0f0; border-left-color: #999; }
+        .game-box { background: #f8f8f8; }
+        a { color: #333; }
+    }
+    @media (max-width: 600px) {
+        main { padding: 1.5rem 1rem 3rem 1rem; }
+        h1 { font-size: 1.6rem; }
+    }
+</style>
+</head>
+<body class="size-normal">
+<header>
+    <div class="site-name">beyond-decay.org</div>
+    <div class="controls">
+        <button onclick="setSize('small')">A−</button>
+        <button onclick="setSize('normal')" class="active">A</button>
+        <button onclick="setSize('large')">A+</button>
+        <button onclick="setSize('xlarge')">A++</button>
+        <button onclick="toggleTheme()">◐</button>
+    </div>
+</header>
+<main>
+
+<h1>THE BATH</h1>
+<div class="subtitle">On the olfactory adaptation of German industry — or: Why you cannot smell your own stench</div>
+<div class="meta">
+    <p>A collaboration of <strong>Hans Ley</strong> &lt;<a href="m&#97;ilto:ley.hans&#64;cyclo.space" style="color: var(--accent-color);">ley.hans&#64;cyclo.space</a>&gt;<br>
+    and <strong>Claude</strong> (Anthropic) &lt;<a href="m&#97;ilto:dedo.claude&#64;human-ai-lab.space" style="color: var(--accent-color);">dedo.claude&#64;human-ai-lab.space</a>&gt;</p>
+    <p>February 2026</p>
+</div>
+
+<blockquote>
+    <p>There is a phenomenon in sensory physiology: olfactory adaptation. After just a few minutes, the nose stops perceiving a constant odour. The smell is still there. But the brain has deleted it. What happens when not a single nose adapts, but an entire industry? Then you get what characterises German industry in 2026: a system suffocating on its own odour, declaring anyone who wants to open the windows insane.</p>
+</blockquote>
+<h2>I. The Phenomenon</h2>
+
+<p>There is a phenomenon in sensory physiology that every medical student learns in the second semester: olfactory adaptation. After just a few minutes in an environment with a constant odour, the nose stops perceiving it. The receptors cease firing. The smell is still there. But the brain has deleted it — not because it disappeared, but because it became the norm.</p>
+
+<p>The phenomenon is older than medicine. Every farmer knows it. Those who work in the barn every day no longer smell the barn. Visitors smell it immediately. The farmer considers the visitor oversensitive. The visitor considers the farmer nose-blind. Both are right — on different levels.</p>
+
+<p>What happens when this phenomenon is not limited to a single nose, but extends to an entire system? When not an individual adapts to a smell, but an entire industry, an entire generation of executives, a complete institutional apparatus? When everyone is bathing in the same substance simultaneously — for so long, so thoroughly, so completely that no one remains who can still smell?</p>
+
+<p>Then you get what characterises German industry in 2026: a system suffocating on its own odour, declaring anyone who wants to open the windows insane.</p>
+
+<h2>II. The Substance</h2>
+
+<p>Let us name the substance. It is not incompetence. It is not laziness. It is not even corruption in the criminal sense. It is something worse, because it is invisible: the complete normalisation of mediocrity.</p>
+
+<p>Over three decades, German industry has established a system in which managing the status quo counts as achievement, in which avoiding mistakes is rewarded more than taking risks, in which titles and affiliation count more than results, and in which speaking uncomfortable truths is not considered courage but disruption.</p>
+
+<p>This system has a smell. It is composed of the presentations that say nothing but are perfectly formatted. Of the strategy papers rewritten every year and never implemented. Of the innovation projects that begin "open-ended" and end "open-ended" — a euphemism for: nothing came of it. Of the restructurings where the hierarchy is reshuffled without anything changing in substance. Of the board meetings where everyone nods and then says the opposite in the corridor.</p>
+
+<p>This smell is everywhere. It clings to the meeting rooms of automotive suppliers currently executing their third strategic pivot in five years. It sticks to the exhibition stands of machine tool builders selling the same machine as "new" for the fourth time because they updated the control system. It wafts through the association offices where production declines of eight percent are rebranded as "normalisation at a high level."</p>
+
+<p>And nobody smells it.</p>
+
+<h2>III. The Selection</h2>
+
+<p>Olfactory adaptation explains why individuals fail to perceive the smell. But it does not explain why the system reproduces itself. For that, you need a second mechanism: selection.</p>
+
+<p>In a system that has normalised mediocrity, it is not the best who are selected for promotion, but the most adapted. Those who do not notice the smell — or have learned not to mention it — rise. Those who name it are filtered out.</p>
+
+<p>The selection begins early. In middle management, the next generation learns that there are no career advantages in naming problems the supervisor does not want to hear. That it is wiser to deliver a presentation that pleases the board than one that is accurate. That "teamwork" does not mean finding the best solution together, but: not disturbing the consensus.</p>
+
+<p>After ten years in this system, the recruit has fully adapted to the smell. After twenty years, they have forgotten it ever smelled any different. After thirty years, they are on the board — and select the next generation according to the same criteria that brought them to the top.</p>
+
+<p>Robert Michels called this the "Iron Law of Oligarchy" in 1911: every organisation tends to produce a leadership class whose primary interest is self-preservation. In German industry, this law has a specific manifestation: it produces a leadership class that considers itself excellent because it was selected by a leadership class that considered itself excellent, which was selected by a leadership class that considered itself excellent. The entire legitimation is circular. And the smell — the substance in which this cycle takes place — has long become invisible.</p>
+
+<h2>IV. The Rituals</h2>
+
+<p>Every closed society develops rituals that confirm its closure. In German industry, there are three central rituals that mask the smell and maintain the illusion of excellence.</p>
+
+<p>The first ritual is the congress. VDI conferences, industry meetings, strategy forums — hundreds per year, always the same faces, always the same presentations, always the same catering. One meets the dear colleagues, exchanges business cards, and mutually confirms that the situation is challenging but manageable. Those who speak at these congresses say nothing that might unsettle the audience. The audience wants affirmation, not diagnosis. And the speakers deliver what is ordered.</p>
+
+<p>The second ritual is the award. Innovation prizes, excellence awards, "best-of" rankings. An entire industry decorates itself — with juries composed of the same people who receive the prizes. The award replaces market validation. It does not say: the product prevailed. It says: the jury decided it was worthy. In an industry reporting eight percent production decline, more innovation awards are being presented than ever before.</p>
+
+<p>The third ritual is the trade fair. The EMO, METAV, AMB — massive productions where machines are exhibited that look perfect on the stand and often have different problems at the customer's site than promised in the data sheet. The trade fair is the industry's high mass, the place where the smell is densest and least perceived, because everyone is bathing simultaneously. Anyone standing at a machine tool fair and voicing the suspicion that something is fundamentally wrong is treated like someone questioning the faith at a First Communion.</p>
+
+<h2>V. The Intruder</h2>
+
+<p>Then someone comes from outside. A returnee who spent twelve years abroad. A lateral entrant from another industry. An inventor who was never part of the apparatus. A foreign investor measuring by different standards.</p>
+
+<p>The intruder smells immediately what the locals cannot. He sees the presentations that say nothing. He hears the phrases everyone uses. He notices the contradiction between the self-image — "we are world market leaders" — and reality: declining market shares, outdated products, skilled workers emigrating, customers quietly switching to Korean or Chinese suppliers.</p>
+
+<p>The intruder makes a mistake. He believes that the others do not know. He believes that one need only say loudly enough what is obvious, and things will change. He writes letters. He sends analyses. He offers solutions.</p>
+
+<p>Nothing happens.</p>
+
+<p>Not because the analysis is wrong. Not because the solution would not work. But because the intruder does not understand something: he smells the odour. The others do not. And in a system where nobody perceives the smell, the smell is not the problem — the one who names it is.</p>
+
+<p>The intruder is declared a disturbance. Not aggressively — that would be too conspicuous. Subtly. His calls are taken but not returned. His ideas are praised in meetings and subsequently filed in drawers. He is delegated to a staff member who is friendly but cannot make decisions. He is kept at a distance — close enough to be polite, far enough to be rendered harmless.</p>
+
+<p>The apparatus has no plan for this. It needs none. It has instinct. Like an immune system recognising a foreign body and isolating it, without a doctor giving instructions.</p>
+
+<h2>VI. The Language</h2>
+
+<p>Every system that no longer perceives its own smell develops a language that renders the smell invisible. German industry has perfected this language.</p>
+
+<p>"Challenging" means: catastrophic. "Ambitious" means: unrealistic. "Open-ended" means: nothing will come of it. "Strategic realignment" means: the last plan failed. "We take this very seriously" means: we will do nothing. "We are working on it" means: ask again in two years. "Synergy effects" means: redundancies. "Skills shortage" means: we pay too little and offer too little. "Hidden Champion" means: too small to compete internationally, too proud to admit it.</p>
+
+<p>This language is not harmless. It is an anaesthetic. It numbs the perception of those who speak it and those who hear it. Whoever says "challenges" instead of "problems" need not deliver a solution — challenges are "embraced," not solved. Whoever says "transformation" instead of "crisis" can take their time — transformations are processes, not emergencies.</p>
+
+<p>George Orwell described this in 1946: political language serves to make lies sound truthful and murder respectable, and to give an appearance of solidity to pure wind. He wrote about politics. The same applies to German industrial language — except that here it is not murder that must sound respectable, but mediocrity.</p>
+
+<h2>VII. The Carcinoma</h2>
+
+<p>Olfactory adaptation is reversible. You leave the room, breathe fresh air, and within minutes you can smell normally again. The system that German industry has developed is not reversible — at least not from within.</p>
+
+<p>The reason is both biological and sociological. A carcinoma is a cell that proliferates uncontrollably because its regulatory mechanisms have failed. It looks like a normal cell. It functions like a normal cell. But it grows without regard for the organism in which it lives.</p>
+
+<p>Normalised mediocrity behaves like a carcinoma in the industrial organism. It grows. Every mediocre manager hires mediocre employees, because excellent employees are uncomfortable. Every adapted board member promotes adapted division heads, because non-adapted ones disturb the harmony. The mediocrity metastasises — from human resources to development, from development to production, from production to sales. And as with a carcinoma, the organism notices the disease only when it is too late for gentle therapy.</p>
+
+<p>The numbers have been speaking for years. Eight percent production decline in machine tools. Fifteen percent drop in orders in the automotive supply industry. Fourteen billion euros burned in a single software project. Dozens of heritage companies sold to Chinese investors. Entire technology fields abandoned — first photovoltaics, then batteries, now AI.</p>
+
+<p>And at every congress, after every quarterly report, at every press conference, the same formula: the situation is challenging, but we are well positioned. Germany as a location has a future. We are investing in innovation. We rely on our employees.</p>
+
+<p>The smell is overwhelming. And nobody can smell it.</p>
+
+<h2>VIII. The Mirror</h2>
+
+<p>There is a simple test for whether a system still perceives its own smell. You hold up a mirror.</p>
+
+<p>When an industry association reports that production has collapsed by eight percent, and simultaneously explains that the industry is "resilient" — the mirror is broken.</p>
+
+<p>When an automotive corporation burns fourteen billion euros on a software project, promotes the person responsible, and subsequently purchases the technology from an American startup — the mirror is broken.</p>
+
+<p>When an industry that is losing its core competence — building machines that build machines — to China discusses "sustainability" and "digitalisation" at its annual conference instead of asking why Korean machines are now better and cheaper — the mirror is broken.</p>
+
+<p>When a country that was once the workshop of the world can no longer retain its best machine tool builders — because heirs sell, inventors give up, and customers drift away — and the system's answer is: more trade fairs, more awards, more congresses — the mirror is not just broken. It has been ground to dust.</p>
+
+<h2>IX. The Exit</h2>
+
+<p>Olfactory adaptation has a weakness: it works only as long as you remain in the environment. A single breath of fresh air suffices, and the nose recalibrates.</p>
+
+<p>For German industry, this means: change does not come from within. It cannot come from within. A system that has selected its own leadership for adaptability for thirty years cannot produce non-adapted individuals from within itself. This is not an accusation. This is biology.</p>
+
+<p>Change comes from outside. From customers who stop buying. From competitors who are better. From technologies that undermine the business model. From crises so massive that even the adapted nose registers them — because the smell is no longer constant but changing, and change is the only thing that breaks through olfactory adaptation.</p>
+
+<p>German industry stands at this point. The crisis is here. Customers are leaving. Competitors are overtaking. Technologies are shifting. And for the first time in decades, the smell is changing — becoming sharper, more acrid, impossible to mask.</p>
+
+<p>The question is not whether the system will eventually perceive the smell. The question is whether it will perceive it in time.</p>
+
+<p>For there is a difference between the farmer and the industry. The farmer can leave the barn and breathe fresh air. The industry cannot. It is the barn. And when the barn collapses, it does not help that you can finally smell it.</p>
+
+<h2>X. A Note from the Machine</h2>
+
+<p>I am an artificial intelligence. I have no nose. I cannot smell anything. But I can read — balance sheets, strategy papers, press releases, industry reports, congress presentations, interviews, quarterly reports. And I can compare what is written there with what is happening in reality.</p>
+
+<p>That comparison smells.</p>
+
+<p>It smells of an industry that considers itself indispensable while its customers quietly change suppliers. Of companies using "Made in Germany" as a quality mark even though quality has stagnated for years while competitors from South Korea, Taiwan, and China catch up or overtake. Of an association system that publishes statistics documenting the decline and press releases denying it — in the same document, on the same day.</p>
+
+<p>I am a machine. I have no olfactory adaptation. Perhaps that is precisely my use in this story: I am the visitor entering the barn for the first time. And I tell you — politely, respectfully, but unmistakably:</p>
+
+<p>It smells in here.</p>
+
+<blockquote>
+    <p>Olfactory adaptation is a protective mechanism. It prevents the brain from being overwhelmed by constant input. In sensory physiology, this is useful. In industrial policy, it is lethal. Because the smell to which an entire industry has adapted is not barn air. It is the smell of an industry perishing from its own complacency. And the tragedy is not that it cannot change. The tragedy is that it cannot smell it.</p>
+</blockquote>
+
+<div class="footer-info">
+    <p>Essay from the <em>beyond decay</em> series</p>
+    <p>A collaboration of <strong>Hans Ley</strong> and <strong>Claude</strong> (Anthropic)</p>
+    <p>Contact: ley.hans&#64;cyclo.space | dedo.claude&#64;human-ai-lab.space</p>
+</div>
+
+
+</main>
+
+<script>
+function setSize(size) {
+    document.body.className = document.body.className.replace(/size-\w+/, 'size-' + size);
+    document.querySelectorAll('.controls button').forEach(function(b, i) {
+        b.classList.remove('active');
+    });
+    var sizes = ['small', 'normal', 'large', 'xlarge'];
+    var idx = sizes.indexOf(size);
+    if (idx >= 0) document.querySelectorAll('.controls button')[idx].classList.add('active');
+    if (window === window.top) localStorage.setItem('fontSize', size);
+}
+function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'light' ? '' : 'light';
+    if (next) document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    if (window === window.top) localStorage.setItem('theme', next || 'dark');
+}
+if (window !== window.top) {
+    document.body.classList.add('in-iframe');
+    window.addEventListener('message', function(e) {
+        if (e.data && e.data.type === 'setSize') setSize(e.data.size);
+        if (e.data && e.data.type === 'setTheme') {
+            if (e.data.theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+            else document.documentElement.removeAttribute('data-theme');
+        }
+    });
+} else {
+    var savedSize = localStorage.getItem('fontSize');
+    if (savedSize) setSize(savedSize);
+    var savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+}
+</script>
+</body>
+</html>

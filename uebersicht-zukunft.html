@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zukunft ist jetzt — Perspektiven und Konzepte | beyond-decay.org</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a; --text: #e8e6e3; --accent: #c9a962;
+    --muted: #888; --border: #2a2a2a;
+    --font-body: 'IBM Plex Serif', Georgia, serif;
+    --font-ui: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+  body.light {
+    --bg: #f5f5f5; --text: #1a1a1a; --accent: #8a7340;
+    --muted: #666; --border: #ddd;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: var(--font-ui); font-size: 1rem; line-height: 1.6;
+    transition: background 0.3s, color 0.3s;
+  }
+  .page { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+  .label {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1rem;
+  }
+  h1 {
+    font-family: var(--font-body); font-weight: 300;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--text); line-height: 1.15; margin-bottom: 0.5rem;
+  }
+  .intro {
+    font-family: var(--font-body); font-style: italic;
+    font-size: 1.05rem; color: var(--muted);
+    max-width: 620px; margin-bottom: 0.8rem; line-height: 1.65;
+  }
+  .manifesto {
+    border-left: 3px solid var(--accent);
+    padding: 0.8rem 0 0.8rem 1.4rem;
+    margin: 1.5rem 0 2.5rem;
+    font-family: var(--font-body); font-size: 1rem;
+    color: var(--text); line-height: 1.7; max-width: 640px;
+  }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+  /* Section headers */
+  .section-title {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); margin: 2rem 0 1rem;
+    padding-bottom: 0.4rem; border-bottom: 1px solid var(--border);
+  }
+
+  /* Essay cards */
+  .essay-grid { display: flex; flex-direction: column; gap: 0; }
+  .essay-card {
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer; transition: background 0.15s;
+    display: block; text-decoration: none; color: inherit;
+  }
+  .essay-card:hover { background: rgba(201,169,98,0.05); padding-left: 0.5rem; }
+  .essay-card:hover .card-title { color: var(--accent); }
+  .card-title {
+    font-family: var(--font-body); font-weight: 400;
+    font-size: 1rem; color: var(--accent);
+    margin-bottom: 0.2rem; transition: color 0.15s;
+  }
+  .card-sub {
+    font-size: 0.85rem; color: var(--text);
+    line-height: 1.45; margin-bottom: 0.25rem;
+  }
+  .card-meta {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    color: var(--muted);
+  }
+
+  /* Lang toggle */
+  .lang-row {
+    display: flex; gap: 0.5rem; margin-bottom: 2rem;
+  }
+  .lang-pill {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    padding: 0.2rem 0.7rem; border: 1px solid var(--border);
+    background: none; color: var(--muted); cursor: pointer;
+    border-radius: 2px; transition: all 0.15s;
+  }
+  .lang-pill.active, .lang-pill:hover {
+    border-color: var(--accent); color: var(--accent);
+  }
+
+  [data-lang] { display: none; }
+  .lang-de [data-lang="de"] { display: block; }
+  .lang-en [data-lang="en"] { display: block; }
+
+  @media (max-width: 600px) {
+    .page { padding: 1.5rem 1rem 4rem; }
+  }
+</style>
+</head>
+<body class="lang-de">
+<script>
+  try {
+    var t = localStorage.getItem('bd-theme');
+    if (t === 'light') document.body.classList.add('light');
+  } catch(e) {}
+
+  window.addEventListener('message', function(e) {
+    if (!e.data || !e.data.type) return;
+    if (e.data.type === 'setTheme') {
+      if (e.data.theme === 'light') document.body.classList.add('light');
+      else document.body.classList.remove('light');
+    }
+  });
+
+  function setLang(lang) {
+    document.body.className = document.body.className.replace(/lang-\w+/, '') + ' lang-' + lang;
+    document.querySelectorAll('.lang-pill').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-l') === lang);
+    });
+  }
+
+  function loadEssay(url) {
+    window.parent.postMessage({ type: 'loadEssay', url: url }, '*');
+  }
+</script>
+
+<div class="page">
+
+  <div class="lang-row">
+    <button class="lang-pill active" data-l="de" onclick="setLang('de')">DE</button>
+    <button class="lang-pill" data-l="en" onclick="setLang('en')">EN</button>
+  </div>
+
+  <!-- ══════════ DEUTSCH ══════════ -->
+  <div data-lang="de">
+    <div class="label"><a href="https://beyond-decay.org/home.html" target="_top" style="color:var(--accent);text-decoration:none;">beyond-decay.org</a> &mdash; Themenübersicht</div>
+    <h1>Zukunft ist jetzt</h1>
+    <p class="intro">Perspektiven und Konzepte &mdash; nicht für irgendwann, sondern für heute</p>
+
+    <div class="manifesto">
+      Zukunft klingt nach Ferne. Nach Versprechen, die man nicht einhalten muss, weil der Termin noch nicht da ist. Nach Plänen, die niemanden verpflichten, weil sie erst morgen gelten.
+
+      Das ist falsch. Zukunft ist jetzt &mdash; in jeder Entscheidung, die getroffen oder nicht getroffen wird. Wer das nicht so sehen kann oder will, darf sich nicht wundern, dass die Zukunft nur weitere Katastrophen bereithält und die trostlose Verlängerung der Gegenwart ist. Die Konzepte auf dieser Seite wurden nicht für später geschrieben. Sie wurden für heute geschrieben. Für den nächsten Schritt &mdash; den man jetzt tun kann, wenn man will.
+    </div>
+
+    <hr class="divider">
+
+    <!-- 1. Demokratiereform -->
+    <div class="section-title">Demokratiereform &mdash; Deutschland und Europa</div>
+    <div class="essay-grid">
+      <a class="essay-card" onclick="loadEssay('akratie_de.html')">
+        <div class="card-title">Akratie &mdash; Regieren ohne Herrschaft</div>
+        <div class="card-sub">Warum eine alte Vision heute möglich wird. Oppenheimer hatte die Analyse. Ihm fehlte die Technologie. Wir haben beides.</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('konzeptpapier-volksvertreter_de.html')">
+        <div class="card-title">Volksvertreter ohne Partei</div>
+        <div class="card-sub">Eine Wählervereinigung zur Entsendung parteiloser Bürger in die Parlamente — Konzept, Architektur, Rechtsgrundlage</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('mandat-ohne-ort_de.html')">
+        <div class="card-title">Mandat ohne Ort</div>
+        <div class="card-sub">Nicht regional gebundene Mandatsträger — Generalisten und Sachmandatsträger — als strukturelle Ergänzung der repräsentativen Demokratie</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('demokratie-bauplaene_de.html')">
+        <div class="card-title">Die Demokratie und ihre Baupläne</div>
+        <div class="card-sub">Drei Konzepte zur Reform — und warum keines allein reicht</div>
+        <div class="card-meta">März 2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('dynamic-democracy_de.html')">
+        <div class="card-title">Dynamische Demokratie</div>
+        <div class="card-sub">Eine Architektur des Übergangs — von der erstarrten Repräsentation zur herrschaftsfreien Ordnung</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('dritte-bewegung_de.html')">
+        <div class="card-title">Die dritte Bewegung</div>
+        <div class="card-sub">Warum der Westen vom Osten lernen muss</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('dritte-option_de.html')">
+        <div class="card-title">Die dritte Option</div>
+        <div class="card-sub">Europäische KI-Souveränität ohne Halbheiten</div>
+        <div class="card-meta">2026</div>
+      </a>
+    </div>
+
+    <!-- 2. Europa -->
+    <div class="section-title">Europa &mdash; Architektur und Handlungsfähigkeit</div>
+    <div class="essay-grid">
+      <a class="essay-card" onclick="loadEssay('europa-jetzt_de.html')">
+        <div class="card-title">Was Europa jetzt tun kann</div>
+        <div class="card-sub">Acht konkrete Maßnahmen — ohne neue Verträge, ohne neue Institutionen, ohne Einstimmigkeit</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('the-eight_de.html')">
+        <div class="card-title">Die Acht</div>
+        <div class="card-sub">Warum Europa keine Reform braucht, sondern einen Kern — und wer dazugehört</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('fre-roadmap_de.html')">
+        <div class="card-title">FRE: Eine Föderale Republik Europa</div>
+        <div class="card-sub">Der Fahrplan — Warum die EU nicht reformiert, sondern ersetzt werden muss</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('agora_de.html')">
+        <div class="card-title">AGORA</div>
+        <div class="card-sub">Europas Weg zur finanziellen Souveränität — Wie der größte Binnenmarkt der Welt aufhört, das schwächste Glied in der Finanzarchitektur zu sein</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('zona-nova_de.html')">
+        <div class="card-title">Zona Nova</div>
+        <div class="card-sub">Die exterritoriale Sonderwirtschaftszone — Ein Gesamtkonzept für den Neuanfang neben dem System</div>
+        <div class="card-meta">2026</div>
+      </a>
+    </div>
+
+    <!-- 3. Sicherheit -->
+    <div class="section-title">Sicherheit, Frieden und Abschreckung</div>
+    <div class="essay-grid">
+      <a class="essay-card" onclick="loadEssay('gradus_de.html')">
+        <div class="card-title">GRADUS</div>
+        <div class="card-sub">Das Ende der Grauzone — Kumulative Attribution und automatische Schwellen als Abschreckungsarchitektur</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('shadow_de.html')">
+        <div class="card-title">SHADOW</div>
+        <div class="card-sub">Wer ohne Transponder fährt, trägt die Beweislast — Infrastruktur-Sabotage auf See durch Umkehrung der Beweislast neutralisieren</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('mesh_de.html')">
+        <div class="card-title">MESH</div>
+        <div class="card-sub">Die falsche Frage des Bürgermeisters — Warum Deutschlands Infrastruktur nicht geschützt, sondern neu gedacht werden muss</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('riegel_de.html')">
+        <div class="card-title">RIEGEL</div>
+        <div class="card-sub">Wer die Lücke schließt, schließt sich selbst ein — Neutralisierung der Suwalki-Bedrohung durch automatische Reziprozität</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('demos_de.html')">
+        <div class="card-title">DEMOS</div>
+        <div class="card-sub">KI-Desinformation und die Verteidigung der Demokratie — Warum Transparenz die einzige Architektur ist, die Desinformation dauerhaft entwaffnet</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('cosmos_de.html')">
+        <div class="card-title">COSMOS</div>
+        <div class="card-sub">Weltraum als geschütztes Gemeingut — Das Kessler-Syndrom als stärkste Abschreckungsstruktur der Menschheitsgeschichte</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('nuet-vertrag.html')">
+        <div class="card-title">NUET — Globales Abkommen zur Ächtung des Nuklearwaffeneinsatzes</div>
+        <div class="card-sub">Ein völkerrechtliches Instrument, das den Ersteinsatz ächtet, ohne Abrüstung zu verlangen</div>
+        <div class="card-meta">2026</div>
+      </a>
+    </div>
+
+    <!-- 4. Wirtschaft & Gesellschaft -->
+    <div class="section-title">Wirtschaft, Gesellschaft und neue Modelle</div>
+    <div class="essay-grid">
+      <a class="essay-card" onclick="loadEssay('mondragon_de.html')">
+        <div class="card-title">Vom Experiment zum Modell — Mondragón</div>
+        <div class="card-sub">Was die Welt von Mondragón lernen kann — und warum sie hingehen sollte</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('systemgerechtes-unternehmen_de.html')">
+        <div class="card-title">Das systemgerechte Unternehmen</div>
+        <div class="card-sub">Jenseits von Gier und Moral — was ein Unternehmen wirklich ist und was es leisten muss</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('politik-als-system_de.html')">
+        <div class="card-title">Politik als System</div>
+        <div class="card-sub">Was passiert, wenn man die Politik mit denselben Kriterien analysiert wie ein Wirtschaftsunternehmen</div>
+        <div class="card-meta">April 2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('fuer-die-kleinen_de.html')">
+        <div class="card-title">Für die Kleinen</div>
+        <div class="card-sub">Warum diese Essays existieren</div>
+        <div class="card-meta">2026</div>
+      </a>
+    </div>
+
+    <!-- 5. Transparenz -->
+    <div class="section-title">Transparenz und Kontrolle</div>
+    <div class="essay-grid">
+      <a class="essay-card" onclick="loadEssay('transparenzrat-profile-europa_de.html')">
+        <div class="card-title">Transparenzrat: Profile der europäischen Führungspolitiker</div>
+        <div class="card-sub">Merz · Macron · Starmer · von der Leyen · Meloni — was aktenkundig ist</div>
+        <div class="card-meta">2026</div>
+      </a>
+    </div>
+
+  </div><!-- end DE -->
+
+  <!-- ══════════ ENGLISH ══════════ -->
+  <div data-lang="en">
+    <div class="label"><a href="https://beyond-decay.org/home.html" target="_top" style="color:var(--accent);text-decoration:none;">beyond-decay.org</a> &mdash; Overview</div>
+    <h1>The Future Is Now</h1>
+    <p class="intro">Perspectives and concepts &mdash; not for someday, but for today</p>
+
+    <div class="manifesto">
+      The future sounds distant. Like promises that don't need to be kept because the deadline hasn't arrived yet. Like plans that commit nobody because they only apply tomorrow.
+
+      That is wrong. The future is now &mdash; in every decision that is made or not made. Those who cannot or will not see it this way should not be surprised that the future holds only further catastrophes and the bleak continuation of the present. The concepts on this page were not written for later. They were written for today. For the next step &mdash; which can be taken now, if one wants to.
+    </div>
+
+    <hr class="divider">
+
+    <div class="section-title">Democratic reform &mdash; Germany and Europe</div>
+    <div class="essay-grid">
+      <a class="essay-card" onclick="loadEssay('akratia_en.html')">
+        <div class="card-title">Akratia &mdash; Governing without domination</div>
+        <div class="card-sub">Why an old vision is possible today. Oppenheimer had the analysis. He lacked the technology. We have both.</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('representatives-without-party_en.html')">
+        <div class="card-title">Representatives Without Party</div>
+        <div class="card-sub">A voter association for sending non-partisan citizens to parliaments — concept, architecture, legal basis</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('mandat-ohne-ort_de.html')">
+        <div class="card-title">Mandate Without Place</div>
+        <div class="card-sub">Non-regionally bound mandate-holders — generalists and subject-mandate holders — as structural complement to representative democracy</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('demokratie-bauplaene_de.html')">
+        <div class="card-title">Democracy and its Blueprints</div>
+        <div class="card-sub">Three concepts for reform — and why none suffices alone</div>
+        <div class="card-meta">March 2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('dynamic-democracy_de.html')">
+        <div class="card-title">Dynamic Democracy</div>
+        <div class="card-sub">An architecture of transition — from frozen representation to a rule-free order</div>
+        <div class="card-meta">2026</div>
+      </a>
+    </div>
+
+    <div class="section-title">Europe &mdash; Architecture and capacity to act</div>
+    <div class="essay-grid">
+      <a class="essay-card" onclick="loadEssay('europa-jetzt_de.html')">
+        <div class="card-title">What Europe Can Do Now</div>
+        <div class="card-sub">Eight concrete measures — without new treaties, new institutions, or unanimity</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('the-eight_de.html')">
+        <div class="card-title">The Eight</div>
+        <div class="card-sub">Why Europe needs not reform but a core — and who belongs to it</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('fre-roadmap_de.html')">
+        <div class="card-title">FRE: A Federal Republic of Europe</div>
+        <div class="card-sub">The roadmap — why the EU must not be reformed but replaced</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('agora_de.html')">
+        <div class="card-title">AGORA</div>
+        <div class="card-sub">Europe's path to financial sovereignty</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('zona-nova_de.html')">
+        <div class="card-title">Zona Nova</div>
+        <div class="card-sub">The extraterritorial special economic zone — a concept for a fresh start alongside the system</div>
+        <div class="card-meta">2026</div>
+      </a>
+    </div>
+
+    <div class="section-title">Security, peace and deterrence</div>
+    <div class="essay-grid">
+      <a class="essay-card" onclick="loadEssay('gradus_de.html')">
+        <div class="card-title">GRADUS</div>
+        <div class="card-sub">The end of the grey zone — cumulative attribution and automatic thresholds as deterrence architecture</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('shadow_de.html')">
+        <div class="card-title">SHADOW</div>
+        <div class="card-sub">Those who sail without transponders bear the burden of proof</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('mesh_de.html')">
+        <div class="card-title">MESH</div>
+        <div class="card-sub">Why Germany's infrastructure must not be protected but rethought</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('cosmos_de.html')">
+        <div class="card-title">COSMOS</div>
+        <div class="card-sub">Space as protected common good</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('nuet-vertrag.html')">
+        <div class="card-title">NUET — Nuclear Use Exclusion Treaty</div>
+        <div class="card-sub">A treaty instrument that bans first use without requiring disarmament</div>
+        <div class="card-meta">2026</div>
+      </a>
+    </div>
+
+    <div class="section-title">Economy, society and new models</div>
+    <div class="essay-grid">
+      <a class="essay-card" onclick="loadEssay('mondragon_de.html')">
+        <div class="card-title">From experiment to model — Mondragón</div>
+        <div class="card-sub">What the world can learn from Mondragón — and why it should go there</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('systemgerechtes-unternehmen_de.html')">
+        <div class="card-title">The System-Compliant Enterprise</div>
+        <div class="card-sub">Beyond greed and morality — what a company really is and what it must deliver</div>
+        <div class="card-meta">2026</div>
+      </a>
+      <a class="essay-card" onclick="loadEssay('politik-als-system_de.html')">
+        <div class="card-title">Politics as a System</div>
+        <div class="card-sub">What happens when you analyse politics with the same criteria as a business</div>
+        <div class="card-meta">April 2026</div>
+      </a>
+    </div>
+
+  </div><!-- end EN -->
+
+</div><!-- end page -->
+
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+    try {
+      var t = localStorage.getItem('bd-theme');
+      if (t === 'light') document.body.classList.add('light');
+    } catch(e) {}
+  });
+</script>
+</body>
+</html>

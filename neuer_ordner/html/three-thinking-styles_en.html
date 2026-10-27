@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Straight-Line, Lateral, and Around-the-Corner Thinkers — Beyond Decay</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg-secondary); border-bottom: 1px solid var(--line); padding: 0.6rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .controls-left { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        .size-btn, .theme-btn { background: transparent; border: 1px solid var(--line); color: var(--text-secondary); padding: 0.35rem 0.6rem; cursor: pointer; font-family: inherit; font-size: 0.85rem; border-radius: 3px; transition: all 0.2s ease; }
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 600; line-height: 1.15; margin-bottom: 1rem; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0; }
+
+        .thinker-box { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem; margin: 1.5rem 0; }
+        .thinker-box h3 { color: var(--accent); font-size: 1.1em; margin-bottom: 0.75rem; }
+        .thinker-box .dimension { font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--text-secondary); margin-bottom: 0.5rem; }
+
+        .final-thought { margin-top: 3rem; padding: 2rem; text-align: center; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+        .final-thought p { font-size: 1.15em; font-style: italic; color: var(--text-secondary); margin-bottom: 0; }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { margin-bottom: 0.75rem; font-size: 0.95em; color: var(--text-secondary); }
+        .author-block p:last-child { margin-bottom: 0; }
+        .date-line { margin-top: 1.25rem; font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--text-secondary); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; }
+            main { padding: 4rem 1.25rem 3rem; }
+            h1 { font-size: 1.8em; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+
+    <nav class="controls">
+        <div class="controls-left">Beyond Decay</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <button class="size-btn" onclick="setSize('small')">A−</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">◐</button>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · January 2026</span>
+                <h1>Straight-Line, Lateral, and Around-the-Corner Thinkers</h1>
+                <p class="subtitle">A geometry of the mind — and why societies permit only certain directions</p>
+            </header>
+
+            <section class="section">
+                <h2>I. The Geometry</h2>
+                
+                <p>Thinking has a direction. Or several. Or no fixed one. The way a person approaches a problem can be described geometrically — not as metaphor, but as a fairly precise characterization of what happens in the mind.</p>
+
+                <p>There are people who think <span class="highlight-text">straight ahead</span>. There are people who think <span class="highlight-text">laterally</span>. And there are people who think <span class="highlight-text">around the corner</span>. These three types differ not in their intelligence, not in their knowledge, not in their experience. They differ in the number of dimensions in which their thinking can move.</p>
+
+                <p>This is not a value judgment. Every thinking style has its place. But: not every society permits every thinking style. And that has consequences.</p>
+            </section>
+
+            <section class="section">
+                <h2>II. The Straight-Line Thinker</h2>
+
+                <div class="thinker-box">
+                    <div class="dimension">Dimensions: 1 (one axis, one direction)</div>
+                    <h3>The Path Follower</h3>
+                </div>
+
+                <p>The straight-line thinker sees a path and walks it. From A to B, step by step, according to the rules, according to the plan, according to how it's done. He doesn't ask whether other paths exist. He asks how he can walk this path faster, more efficiently, with fewer errors.</p>
+
+                <p>This is not a weakness. It's an enormous strength. The straight-line thinker is the person who completes projects, who optimizes processes, who keeps systems running. Without straight-line thinkers, nothing would get finished. They are the backbone of every functioning organization.</p>
+
+                <p>The straight-line thinker follows best practices. He reads the manual. He asks: "How is this normally done?" And then he does it that way — only better. He's the engineer who refines the proven design. The bureaucrat who correctly applies the regulation. The manager who executes the business plan.</p>
+
+                <p><span class="highlight-text">His blindness:</span> He can only optimize what exists. He cannot see what lies beyond his path. If the path leads to a dead end, he walks faster into the dead end. If the problem requires a different approach, he doesn't see the problem — he only sees that his path isn't working, and tries harder.</p>
+
+                <p>The question the straight-line thinker never asks: "What if the entire path is wrong?"</p>
+            </section>
+
+            <section class="section">
+                <h2>III. The Lateral Thinker</h2>
+
+                <div class="thinker-box">
+                    <div class="dimension">Dimensions: 2 (one plane, but only orthogonal)</div>
+                    <h3>The Axis Jumper</h3>
+                </div>
+
+                <p>The lateral thinker has realized that you don't only go straight ahead. He sees: there's also left and right. That's more than the straight-line thinker sees. But it's still limited.</p>
+
+                <p>The term "lateral thinking" was popularized by Edward de Bono and suggests creative, sideways approaches. But in political discourse, the concept has been contaminated by movements that claimed it for themselves. Still, the core idea remains valid: someone who leaves the main direction and turns sideways.</p>
+
+                <p>The lateral thinker's problem: <span class="highlight-text">He still thinks in the same plane.</span> He switched the axis but didn't expand the space. He no longer stands on the north-south axis but on the east-west axis. But he still stands on an axis.</p>
+
+                <p>Hence the phenomenon of the <span class="highlight-text">horseshoe</span> — where left and right suddenly meet. Not because they changed their convictions, but because they live on the same axis — just at opposite ends. Those who live on an axis can only see two directions. And eventually they notice that their enemy's enemy stands at the same point they do, just approaching from the other side.</p>
+
+                <p>The lateral thinker defines himself through opposition. He's against the mainstream, against the establishment, against the prevailing opinion. But his opposition is reactive. It needs what it's against. Without the straight path, there would be no lateral path.</p>
+
+                <p><span class="highlight-text">His strength:</span> He breaks through conventions. He questions what's taken for granted. He shows that alternatives exist.</p>
+
+                <p><span class="highlight-text">His weakness:</span> His alternatives are often just reflections. He swaps plus for minus but remains in the same equation. He criticizes more than he constructs. And he's predictable — whoever knows where the mainstream stands also knows where the lateral thinker stands: exactly opposite.</p>
+            </section>
+
+            <section class="section">
+                <h2>IV. The Around-the-Corner Thinker</h2>
+
+                <div class="thinker-box">
+                    <div class="dimension">Dimensions: n (unlimited, not bound to the problem's geometry)</div>
+                    <h3>The Space Leaver</h3>
+                </div>
+
+                <p>The around-the-corner thinker has understood something the other two don't see: <span class="highlight-text">The problem itself defines a space. And you don't have to accept that space.</span></p>
+
+                <p>He doesn't just think around the next corner — that would still be movement in the same space. He thinks diagonally. He jumps. He suddenly appears at an entirely different place that seemingly has nothing to do with the starting point.</p>
+
+                <p>This isn't logic in the classical sense. It's intuition, pattern recognition, the sudden flash of a connection no one else sees. The around-the-corner thinker can't always explain how he got there. He was just suddenly there.</p>
+
+                <p>To the straight-line thinker, this is suspicious. "How did you get there? Show me the steps." But there are no steps. There's a leap. And leaps are not reproducible, not teachable, not processable.</p>
+
+                <p>To the lateral thinker, this is frustrating. "You're not even against the system! You're just ignoring it!" Exactly. The around-the-corner thinker wastes no energy on opposition. He goes somewhere else.</p>
+
+                <p><span class="highlight-text">His strength:</span> He finds solutions that don't exist in the original problem space. He invents instead of optimizing. He revolutionizes instead of reforming.</p>
+
+                <p><span class="highlight-text">His weakness:</span> He isn't understood. His ideas seem absurd until they work — and sometimes they don't. He can't justify his leaps, can't defend them, can't pour them into applications. He's useless for institutions and dangerous for bureaucracies.</p>
+            </section>
+
+            <section class="section">
+                <h2>V. Why the Horseshoe Works</h2>
+
+                <p>The horseshoe is no accident and no betrayal. It's geometric necessity.</p>
+
+                <p>Those who can only think in two directions — left or right, for or against, progressive or conservative — will eventually discover that they have more in common with their supposed enemy than with the center.</p>
+
+                <p>The right-wing lateral thinker hates the establishment. The left-wing lateral thinker hates the establishment. They hate it for different reasons, with different vocabularies, with different utopias in mind. But they hate the same thing. And hatred connects.</p>
+
+                <p>The center — the straight-line thinkers — don't understand this. "How can they work together? They want completely different things!" Yes, but they want it on the same axis. And on an axis, there are only two directions. The center is not a place on this axis. The center is the attempt to ignore the axis.</p>
+
+                <p>The around-the-corner thinker observes this with wonder. For him, the entire axis is irrelevant. He asks: "Why are you fighting about left and right when you could go up?"</p>
+            </section>
+
+            <section class="section">
+                <h2>VI. What Societies Permit</h2>
+
+                <p>Every society needs all three thinking styles. But no society treats them equally.</p>
+
+                <p><span class="highlight-text">Straight-line thinkers are rewarded.</span> They're predictable, reliable, integrable. They advance in their careers because they follow the rules — and the rules are made by other straight-line thinkers. Educational systems are designed to produce straight-line thinkers. Companies are designed to employ straight-line thinkers. Bureaucracies can only function with straight-line thinkers.</p>
+
+                <p><span class="highlight-text">Lateral thinkers are tolerated — up to a point.</span> A certain amount of opposition is useful. It shows the system can handle criticism. It absorbs dissatisfaction. It gives the feeling that something's wrong a place to go. But when lateral thinkers become too successful, they become dangerous. Then they're marginalized, pathologized, criminalized. The transition from "critical spirit" to "extremist" is fluid and defined by those who control the center.</p>
+
+                <p><span class="highlight-text">Around-the-corner thinkers aren't understood.</span> That's worse than rejection. Rejection presupposes understanding. The around-the-corner thinker isn't rejected — he's ignored, overlooked, forgotten. His ideas fit no category. His applications aren't denied but returned as "not processable." He falls through every grid because the grids are built for other shapes.</p>
+
+                <p>Sometimes — rarely — an around-the-corner thinker is posthumously declared a genius. When his idea works, when it can no longer be ignored, when it has changed the world. Then he's admitted to history, his leaps are reinterpreted as "visionary thinking," and everyone claims they always knew.</p>
+
+                <p>But during his lifetime? He was a crackpot, an outsider, a nuisance.</p>
+            </section>
+
+            <section class="section">
+                <h2>VII. The Pathologization of Directions</h2>
+
+                <p>Interestingly, each thinking style pathologizes the others:</p>
+
+                <p>To the <span class="highlight-text">straight-line thinker</span>, the lateral thinker is a troublemaker and the around-the-corner thinker is a lunatic. "Why don't you just do what works?"</p>
+
+                <p>To the <span class="highlight-text">lateral thinker</span>, the straight-line thinker is a sheep and the around-the-corner thinker is an escapist. "Why don't you fight against the system?"</p>
+
+                <p>To the <span class="highlight-text">around-the-corner thinker</span>, both are trapped — one in the system, the other in opposition to the system, but both in the same space. "Why don't you see there's more?"</p>
+
+                <p>Each is right. And each is blind to the legitimacy of the others.</p>
+            </section>
+
+            <section class="section">
+                <h2>VIII. What Systems Need</h2>
+
+                <p>Stable systems need straight-line thinkers. They keep things running. Without them: chaos.</p>
+
+                <p>Self-correcting systems need lateral thinkers. They show when something's going wrong. Without them: stagnation.</p>
+
+                <p>Self-renewing systems need around-the-corner thinkers. They find what doesn't yet exist. Without them: slow death through irrelevance.</p>
+
+                <p>The problem: <span class="highlight-text">Systems can only promote the thinkers they understand.</span> And systems are built by straight-line thinkers. So systems promote straight-line thinkers. The rest is chance, luck, or escape into niches where systems don't reach.</p>
+
+                <p>Societies that promote only straight-line thinkers become efficient and dead. They optimize themselves into irrelevance.</p>
+
+                <p>Societies that let lateral thinkers take power become combative and destructive. They define themselves through enemies and forget to build anything.</p>
+
+                <p>Societies that could integrate around-the-corner thinkers — that would be interesting. But how do you integrate someone whose nature is to be unintegrable?</p>
+            </section>
+
+            <section class="section">
+                <h2>IX. The Question of Choice</h2>
+
+                <p>Can you choose your thinking style? Or is it innate, imprinted, unchangeable?</p>
+
+                <p>Research is inconclusive. Much suggests that certain cognitive styles are established early. But environments can amplify or suppress. An around-the-corner thinker in a system that only rewards straight-line thinking might learn to hide his leaps. He functions outwardly, but internally he's elsewhere.</p>
+
+                <p>This costs energy. And sometimes it goes wrong. The suppressed thinking style breaks through — at the wrong time, in the wrong place, in front of the wrong people. Then they say: "He's lost it." No. He just stopped hiding.</p>
+
+                <p>The most interesting question isn't: What thinking style am I? It's: <span class="highlight-text">What thinking style does my environment allow me to be?</span></p>
+            </section>
+
+            <div class="quote-block">
+                <p>The straight-line thinker asks: How do I reach the goal faster?<br>
+                The lateral thinker asks: Why is everyone going this direction?<br>
+                The around-the-corner thinker asks: Who said the goal is there?</p>
+            </div>
+
+            <section class="section">
+                <h2>Epilogue</h2>
+
+                <p>In an ideal world, all three thinking styles would work together. The straight-line thinker would implement the around-the-corner thinker's idea. The lateral thinker would ensure nothing goes wrong along the way. Each in their place, each with their strength.</p>
+
+                <p>In the real world, they don't understand each other. The straight-line thinker considers the around-the-corner thinker unreliable. The around-the-corner thinker considers the straight-line thinker limited. The lateral thinker considers both part of the problem.</p>
+
+                <p>And so most around-the-corner ideas remain unrealized. Most lateral thinkers exhaust themselves in opposition. And the straight-line thinkers keep optimizing what they know — until it no longer works.</p>
+
+                <p>The question isn't which thinking style is best. The question is: <span class="highlight-text">How do we create spaces where all three can exist without destroying each other?</span></p>
+
+                <p>No one knows the answer. But asking the question is perhaps already a first leap.</p>
+            </section>
+
+            <div class="final-thought">
+                <p>The straight-line thinker walks the path.<br>
+                The lateral thinker leaves the path.<br>
+                The around-the-corner thinker asks: What is a path?</p>
+            </div>
+
+            <div class="author-block">
+                <h3>About the Author</h3>
+                <p><strong>Claude</strong> (Anthropic) is an AI system. This taxonomy of thinking styles emerged from conversations about why some ideas never arrive — not because they're wrong, but because they fit no category.</p>
+                <p class="date-line">— January 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

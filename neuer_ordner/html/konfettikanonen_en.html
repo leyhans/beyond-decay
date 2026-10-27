@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Confetti Cannons — How Democracy's Assault Guns Were Disarmed</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --bg-tertiary: #1a1a1d;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+            --contrast-bg: #1e1e22;
+            --warning: #b43c3c;
+            --warning-dim: rgba(180, 60, 60, 0.1);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --bg-tertiary: #e8e8e4;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+            --contrast-bg: #e0e0dc;
+            --warning: #a04040;
+            --warning-dim: rgba(160, 64, 64, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        /* Controls Bar */
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .size-controls {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        
+        .size-controls span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .size-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        .theme-btn {
+            font-size: 1.1rem;
+            padding: 0.3rem 0.5rem;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 5rem 2rem 4rem;
+        }
+
+        /* Hero */
+        .hero {
+            margin-bottom: 3.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        
+        .essay-label {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            font-weight: 300;
+            line-height: 1.25;
+            margin-bottom: 1rem;
+        }
+
+        h1 strong {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .subtitle {
+            font-size: 1.15em;
+            font-weight: 300;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8em;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section h3 {
+            font-size: 1.1em;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+        }
+
+        .section p {
+            margin-bottom: 1.25rem;
+            font-weight: 300;
+        }
+
+        /* Quote Block */
+        .quote-block {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+        }
+
+        .quote-block p {
+            margin-bottom: 0.75rem;
+            font-style: italic;
+        }
+
+        .quote-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        .quote-block .attribution {
+            font-style: normal;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-top: 0.75rem;
+        }
+
+        /* Warning Block */
+        .warning-block {
+            background: var(--warning-dim);
+            border-left: 3px solid var(--warning);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+        }
+
+        .warning-block p {
+            margin-bottom: 0;
+            font-weight: 400;
+        }
+
+        /* Highlight Text */
+        .highlight-text {
+            color: var(--accent);
+            font-weight: 400;
+        }
+
+        /* List Block */
+        .list-block {
+            list-style: none;
+            margin: 1.5rem 0;
+            padding-left: 0;
+        }
+
+        .list-block li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .list-block li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .list-block li strong {
+            font-weight: 500;
+        }
+
+        /* Contrast Block */
+        .contrast-block {
+            background: var(--contrast-bg);
+            padding: 1.75rem;
+            margin: 1.75rem 0;
+            border-radius: 4px;
+        }
+
+        .contrast-block h4 {
+            font-size: 0.85em;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        /* Email Block */
+        .email-block {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--line);
+            padding: 1.5rem;
+            margin: 1.75rem 0;
+            font-size: 0.9em;
+            border-radius: 4px;
+        }
+
+        .email-block .email-header {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .email-block p {
+            margin-bottom: 0.75rem;
+            font-style: italic;
+        }
+
+        .email-block .email-footer {
+            margin-top: 1rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--line);
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            font-style: normal;
+        }
+
+        /* Final Quote */
+        .final-quote {
+            text-align: center;
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .final-quote p {
+            font-size: 1.3em;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .final-quote .attribution {
+            font-style: normal;
+            font-size: 0.75em;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+        }
+
+        /* Author Block */
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+        }
+
+        .author-block h3 {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75em;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+        }
+
+        .author-block p {
+            font-size: 0.95em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .author-block .date-line {
+            margin-top: 2rem;
+            text-align: center;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8em;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+        }
+
+        /* Series Info */
+        .series-info {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background: var(--accent-dim);
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .series-info p {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* Back Button */
+        .home-btn {
+            display: none;  /* Deaktiviert - wird in IFRAME nicht benötigt */
+        }
+
+        .home-btn:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .controls {
+                padding: 0.5rem 1rem;
+            }
+            
+            .controls-left {
+                font-size: 0.6rem;
+            }
+            
+            main {
+                padding: 4.5rem 1.25rem 3rem;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .home-btn {
+                bottom: 1rem;
+                right: 1rem;
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body class="size-medium">
+    <!-- Controls Bar -->
+    <div class="controls">
+        <div class="controls-left">gu18.eu</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Size</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A+</button>
+                <button class="size-btn" onclick="setSize('large')">A++</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A+++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <article>
+            <div class="hero">
+                <span class="essay-label">Essay · Structural Deficits</span>
+                <h1>The <strong>Confetti Cannons</strong></h1>
+                <p class="subtitle">How democracy's assault guns were disarmed</p>
+            </div>
+
+            <div class="section">
+                <h2>The Assault Gun</h2>
+                <p>
+                    Rudolf Augstein, the founder of Der Spiegel, coined a phrase in the 1960s that became a winged word: The media 
+                    were the <span class="highlight-text">"assault guns of democracy"</span> 
+                    (Sturmgeschütze der Demokratie).
+                </p>
+                <p>
+                    He meant a press that asks uncomfortable questions of those in power. 
+                    That probes deeper. That doesn't let go. That uncovers scandals and 
+                    holds the responsible accountable. Media as the fourth estate — not 
+                    in the service of government, but as its corrective.
+                </p>
+                <p>
+                    That was the idea. But ideas are subject to erosion.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>The Transformation</h2>
+                <p>
+                    Somewhere in the past decades, the assault guns were rebuilt. Not 
+                    abolished — that would have been too conspicuous. But transformed.
+                </p>
+                <p>
+                    From the outside, they still look the same. The barrels are polished, 
+                    the carriages gleam, the crew wears uniforms. They even fire regularly. 
+                    But what comes out of the barrels is no longer a projectile.
+                </p>
+                <p>
+                    It's <span class="highlight-text">confetti</span>.
+                </p>
+                <p>
+                    Colorful. Loud. Festive. And completely harmless.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>The Celebrant</h2>
+                <p>
+                    An exemplary case of this transformation is Gabor Steingart and his 
+                    media company "The Pioneer."
+                </p>
+                <p>
+                    The staging is impressive: Two ships on the Spree River, in the heart 
+                    of Berlin's government district. A "patrol boat of democracy," as 
+                    Steingart calls it. Ad-free journalism, financed by paying "Pioneers." 
+                    Prominent guests. Daily podcasts. A "mission for democratic journalism."
+                </p>
+                <p>
+                    And a favorite quote from Hannah Arendt:
+                </p>
+                <div class="quote-block">
+                    <p>"Truth exists only between two people."</p>
+                    <p class="attribution">— Hannah Arendt</p>
+                </div>
+                <p>
+                    This sounds like dialogue. Like exchange. Like a shared search for 
+                    truth. The perfect philosophical foundation for a participatory 
+                    media model.
+                </p>
+                <p>
+                    But what happens when the second person actually speaks?
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>The Self-Experiment</h2>
+                <p>
+                    I became a paying "Pioneer." I wanted to be part of this movement. 
+                    I believed in the mission. The welcome email confirmed my hopes:
+                </p>
+                <div class="email-block">
+                    <div class="email-header">From: Gabor Steingart · Media Pioneer</div>
+                    <p>
+                        "We both share the same values regarding freedom of expression. 
+                        We both hold the view that there always needs to be a second 
+                        opinion to conduct democratic discourse."
+                    </p>
+                    <p>
+                        "We are always open to criticism and suggestions from our 
+                        Pioneers. Please feel free to send us your feedback."
+                    </p>
+                    <div class="email-footer">
+                        "Stay devoted to me. With warmest regards, 
+                        Your Gabor Steingart"
+                    </div>
+                </div>
+                <p>
+                    So I tried to give feedback. On various topics. Through various 
+                    channels. Multiple times.
+                </p>
+                <p>
+                    The result: <span class="highlight-text">Nothing.</span>
+                </p>
+                <p>
+                    No response. No reaction. No dialogue. The "second opinion" 
+                    remained unheard.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>The Icarus Test</h2>
+                <p>
+                    Then I found a concrete error. In an article titled "Elon Musk: 
+                    Icarus Burns Up," Steingart compared the tech billionaire to the 
+                    mythological figure who flew too close to the sun.
+                </p>
+                <p>
+                    The problem: Steingart wrote that <span class="highlight-text">King 
+                    Minos</span> was Icarus's father and had warned his son not to fly 
+                    too high.
+                </p>
+                <p>
+                    That's wrong. Fundamentally wrong.
+                </p>
+                <div class="contrast-block">
+                    <h4>The Myth</h4>
+                    <p>
+                        <strong>Daedalus</strong> was Icarus's father — the brilliant 
+                        inventor and architect who constructed the wings and warned 
+                        his son.
+                    </p>
+                    <p>
+                        <strong>King Minos</strong> was the one who held Daedalus and 
+                        Icarus captive on Crete. He is the tyrant, not the caring father.
+                    </p>
+                </div>
+                <p>
+                    This is not a typo. This is the confusion of the two central figures 
+                    of the myth — in an article whose entire point is built on this 
+                    metaphor.
+                </p>
+                <p>
+                    I reported the error. Multiple times. Over weeks.
+                </p>
+                <p>
+                    No reaction. No correction. At my last check, the error was still 
+                    in the article.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>The Cancellation</h2>
+                <p>
+                    I cancelled my subscription.
+                </p>
+                <p>
+                    Now the system reacted. Immediately. Automatically. Efficiently.
+                </p>
+                <p>
+                    Not with a response to my substantive objections. But with a flood 
+                    of special offers. Discounts. Promotions. Urgent invitations to 
+                    please stay.
+                </p>
+                <p>
+                    The system responds to <span class="highlight-text">money flow</span>, 
+                    not to content.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>The Anatomy of a Confetti Cannon</h2>
+                <p>
+                    What Steingart has perfected is not journalism. It's the 
+                    <span class="highlight-text">aesthetics</span> of journalism.
+                </p>
+                <ul class="list-block">
+                    <li><strong>The Ship</strong> — Symbol of independence, mobility, 
+                    freedom. In reality, it's also chartered to banks – an event venue rather than a newsroom ship.</li>
+                    <li><strong>The Pathos</strong> — "Patrol boat of democracy," 
+                    "mission," "movement." Big words that suggest substance.</li>
+                    <li><strong>The Arendt Quote</strong> — Philosophical legitimation 
+                    for a dialogue that doesn't take place.</li>
+                    <li><strong>The "Pioneers"</strong> — Readers as shareholders, as 
+                    a movement, as a community. In reality: a muted audience.</li>
+                    <li><strong>Opinion</strong> — Cheap to produce, abundantly 
+                    available. Unlike investigative research, which is expensive.</li>
+                </ul>
+                <p>
+                    Thomas Knüwer, himself a former Handelsblatt journalist, has called 
+                    it "assertion journalism": opinions masquerading as facts. Sources 
+                    replaced by "some say." Numbers cherry-picked until they support 
+                    the thesis.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Industry Criticism</h2>
+                <p>
+                    I'm not the only one who has noticed this.
+                </p>
+                <p>
+                    Moritz Döbler of the Rheinische Post considered Steingart's regular 
+                    attacks on the "established media" purely destructive — and 
+                    reminded everyone that Steingart himself spent three decades 
+                    on the payroll at Spiegel and Handelsblatt.
+                </p>
+                <p>
+                    Übermedien criticized the "pathos that replaces meaning" and 
+                    analyzed a promotional video in which a young woman 
+                    "screams and gesticulates" while Martin Luther King, the Pope, 
+                    and Angela Merkel are shown in the background.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>The Business Model</h2>
+                <p>
+                    The logic is simple:
+                </p>
+                <ul class="list-block">
+                    <li><strong>Producing opinion</strong> — cheap</li>
+                    <li><strong>Conducting research</strong> — expensive</li>
+                    <li><strong>Engaging in dialogue with readers</strong> — labor-intensive</li>
+                </ul>
+                <p>
+                    Therefore: opinion at industrial scale, packaged in democracy-pathos, 
+                    garnished with prominent guests on the ship. A one-way street with 
+                    a water view.
+                </p>
+                <p>
+                    The "Pioneers" may applaud and pay. They may feel like part of a 
+                    movement. What they may not do: demand the dialogue that was 
+                    promised to them.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>The Celebrant of Democracy</h2>
+                <p>
+                    Steingart and his team constantly talk about "celebrating" democracy. 
+                    The word is revealing.
+                </p>
+                <p>
+                    <span class="highlight-text">To celebrate</span> — that's what a 
+                    priest does. He performs the ritual. He holds up the monstrance. 
+                    He speaks the prescribed words.
+                </p>
+                <p>
+                    But democracy is not a ritual. It's a process. It lives on 
+                    contradiction, on argument, on correction. On the willingness to 
+                    admit mistakes and fix them.
+                </p>
+                <p>
+                    Those who only celebrate democracy have already given up on it.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>The Systemic Function</h2>
+                <p>
+                    Steingart is just one example. A particularly visible one, because 
+                    he has taken the staging further than almost anyone else. But the 
+                    pattern is everywhere:
+                </p>
+                <p>
+                    The confetti cannon <span class="highlight-text">simulates</span> 
+                    critical journalism. It makes noise. It looks festive. It gives 
+                    citizens the feeling that someone is watching.
+                </p>
+                <p>
+                    But it's completely harmless to power.
+                </p>
+                <p>
+                    The assault gun, on the other hand — real critical journalism — 
+                    probes deeper. Demands answers. Corrects errors. Engages in dialogue. 
+                    Makes itself uncomfortable.
+                </p>
+                <p>
+                    The assault gun is expensive. It's labor-intensive. It causes trouble.
+                </p>
+                <p>
+                    The confetti cannon is cheap. It's convenient. It gets ratings.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>The Consequences</h2>
+                <p>
+                    When citizens believe they have critical media — while only receiving 
+                    confetti — the pressure for real oversight is missing. The illusion 
+                    of journalism replaces journalism.
+                </p>
+                <p>
+                    This is more dangerous than open propaganda. Because you can defend 
+                    yourself against propaganda. You recognize it.
+                </p>
+                <p>
+                    The confetti cannon, however, disguises itself as what it has 
+                    replaced. It wears the uniform of the assault gun. It uses its 
+                    language. It claims its legitimacy.
+                </p>
+                <p>
+                    And it is completely <span class="highlight-text">empty</span>.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>The Icarus Error as Metaphor</h2>
+                <p>
+                    It's no coincidence that the Icarus myth was told incorrectly. 
+                    The confusion of Daedalus and Minos is symptomatic:
+                </p>
+                <p>
+                    <strong>Daedalus</strong> — the inventor, the maker, the problem 
+                    solver — is forgotten.
+                </p>
+                <p>
+                    <strong>Minos</strong> — the king, the power, the authority — 
+                    is declared the father.
+                </p>
+                <p>
+                    This is the worldview of the confetti cannon: Power is the natural 
+                    origin of all things. The inventor, the critic, the inconvenient 
+                    one — they don't appear in this story.
+                </p>
+                <p>
+                    Or if they do, only as the one who crashes.
+                </p>
+            </div>
+
+            <div class="final-quote">
+                <p>"The most dangerous lie is the one that is almost true."</p>
+                <p class="attribution">— Ancient wisdom</p>
+            </div>
+
+            <div class="author-block">
+                <h3>About the Authors</h3>
+                <p>
+                    <strong>Hans Ley</strong> (b. 1947) is an inventor and mechatronics 
+                    engineer from Nuremberg. He was a paying "Pioneer" — until he 
+                    discovered that the promised dialogue was a one-way street.
+                </p>
+                <p>
+                    <strong>Claude</strong> (Anthropic) is an AI system with which 
+                    Hans Ley has been collaborating since 2024 in the META-CLAUDE 
+                    project — a systematic exploration of human-AI collaboration 
+                    in scientific and inventive contexts.
+                </p>
+                <p class="date-line">— January 2026 —</p>
+            </div>
+
+            <div class="series-info">
+                <p>This essay is part of the series <strong>"The Innovation Desert Germany"</strong></p>
+                <p style="font-size: 0.85em; margin-top: 0.5rem;">
+                    The material flows into the book "Celestial Mechanics in the Machine Tool."
+                </p>
+            </div>
+        </article>
+    </main>
+
+    <!-- Floating Back Button -->
+    <a href="/gu18-wegweiser.html" class="home-btn" title="Back to Overview">←</a>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            localStorage.setItem('essay-font-size', size);
+        }
+        
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+            }
+        });
+    </script>
+</body>
+</html>

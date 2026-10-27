@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Dependency Game | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+    }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'IBM Plex Mono', monospace;
+        transition: background-color 0.2s;
+    }
+    .controls button:hover { background-color: rgba(201, 169, 98, 0.15); }
+    .controls button.active { background-color: var(--accent-color); color: var(--bg-color); }
+    main {
+        max-width: 52rem;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem 2rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 0.3rem;
+        color: var(--accent-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 300;
+        font-size: 1.25rem;
+        color: var(--meta-color);
+        margin-bottom: 2rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--note-border);
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 1.4rem;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        color: var(--accent-color);
+    }
+    p { margin-bottom: 1rem; text-align: justify; hyphens: auto; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1.2rem 1.5rem;
+        margin: 2rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .game-box {
+        border: 1px solid var(--accent-color);
+        padding: 1.5rem;
+        margin: 2rem 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 0.95rem;
+        background: rgba(201, 169, 98, 0.04);
+    }
+    .game-box p { text-align: left; }
+    .game-box strong { color: var(--accent-color); }
+    a { color: var(--link-color); }
+    .footer-info {
+        margin-top: 4rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+    }
+    @media print {
+        body { background: white; color: black; }
+        header, .controls { display: none; }
+        main { padding: 1cm; max-width: 100%; }
+        blockquote { background: #f0f0f0; border-left-color: #999; }
+        .game-box { background: #f8f8f8; }
+        a { color: #333; }
+    }
+    @media (max-width: 600px) {
+        main { padding: 1.5rem 1rem 3rem 1rem; }
+        h1 { font-size: 1.6rem; }
+    }
+</style>
+</head>
+<body class="size-normal">
+<header>
+    <div class="site-name">beyond-decay.org</div>
+    <div class="controls">
+        <button onclick="setSize('small')">A−</button>
+        <button onclick="setSize('normal')" class="active">A</button>
+        <button onclick="setSize('large')">A+</button>
+        <button onclick="setSize('xlarge')">A++</button>
+        <button onclick="toggleTheme()">◐</button>
+    </div>
+</header>
+<main>
+
+<h1>THE DEPENDENCY GAME</h1>
+<div class="subtitle">When the solution is the problem — a new game-theoretic model</div>
+<div class="meta">
+    <p>A collaboration of <strong>Hans Ley</strong> &lt;<a href="m&#97;ilto:ley.hans&#64;cyclo.space" style="color: var(--accent-color);">ley.hans&#64;cyclo.space</a>&gt;<br>
+    and <strong>Claude</strong> (Anthropic) &lt;<a href="m&#97;ilto:dedo.claude&#64;human-ai-lab.space" style="color: var(--accent-color);">dedo.claude&#64;human-ai-lab.space</a>&gt;</p>
+    <p>February 2026</p>
+</div>
+
+<blockquote>
+    <p>Europe did not end its dependency on Russia. It changed the supplier. And every step it has taken since to make itself safer has made it more dependent. Classical game theory has no model for this. Here is one.</p>
+</blockquote>
+
+<h2>I. The Game Without a Name</h2>
+
+<p>Game theory possesses a rich repertoire of models for strategic interaction. The Prisoner's Dilemma explains why cooperation fails. The Chicken Game models brinkmanship. The principal-agent problem describes how information asymmetry distorts relationships. Path dependency explains lock-in effects.</p>
+
+<p>But none of these models captures what Europe has experienced since 2022: a process in which the player recognizes their dependency, actively seeks a solution — and thereby falls into a new dependency structurally identical to the old one. Not by accident. Not through ignorance. But because the "solution" is cheaper than autonomy.</p>
+
+<p>This is neither coincidence nor policy failure. It is a game with its own logic, its own incentive structure, and its own equilibrium. A game that — as far as we can determine — has no name in canonical game theory.</p>
+
+<p>We call it the Dependency Game.</p>
+
+<h2>II. The Structure</h2>
+
+<div class="game-box">
+<p><strong>Players:</strong> An actor A (the dependent) and two patrons B₁ and B₂ (the old and new supplier). Optionally a fourth player: A itself as a potentially autonomous actor.</p>
+<p><strong>Starting position:</strong> A depends on B₁. B₁ uses the dependency as leverage. A recognizes the problem.</p>
+<p><strong>Three options for A:</strong></p>
+<p>(1) Stay with B₁ — high risk, low cost.<br>
+(2) Switch to B₂ — medium risk, medium cost.<br>
+(3) Build autonomy — low long-term risk, very high short-term cost.</p>
+<p><strong>The outcome:</strong> A almost always chooses (2). Not because A doesn't see the trap, but because (3) is too expensive in the short term and (1) is too dangerous in the short term.</p>
+</div>
+
+<p>The defining property of the Dependency Game: every single step toward the "solution" (switching to B₂) increases dependency on B₂. And B₂ knows this. B₂ even has an incentive to exacerbate the crisis between A and B₁, because it strengthens their bargaining position.</p>
+
+<p>This distinguishes the Dependency Game from all classical models:</p>
+
+<p>It is not a Prisoner's Dilemma because A is not choosing between cooperation and defection, but between different forms of submission. It is not a Chicken Game because no side is racing toward catastrophe — the catastrophe develops gradually. It is not a principal-agent problem because there is no information asymmetry — all parties see the structure. And it is more than path dependency because the player is not trapped in a historical decision but <em>actively chooses a new dependency</em>.</p>
+
+<h2>III. The Three Domains — Military</h2>
+
+<p>In 2021, Europe sourced 28 percent of its arms imports from the United States. By 2024, it was over 55 percent. Sales through the US Foreign Military Sales program rose from an average of $11 billion annually to $68 billion — a fivefold increase in three years.</p>
+
+<p>The trigger was rational: Russia's invasion of Ukraine made immediate rearmament necessary. European manufacturers could deliver neither the quantities nor the speed. So Europe bought American. Poland alone ordered $55 billion in US weapons.</p>
+
+<p>Every single purchase decision was rational. But every single one deepened the dependency.</p>
+
+<p>The F-35 is not simply a fighter jet. It is an ecosystem: maintenance by American contractors, software updates from American data centers, spare parts from American supply chains, pilot training under American protocols. A dozen European air forces are bound to this system for decades. PATRIOT air defense systems follow the same logic. Every European air force flying the F-35 is a state that can no longer <em>unilaterally</em> decide over its own airspace — because the means to do so depend on a single supplier.</p>
+
+<p>The new patron knows this. The US National Security Strategy of December 2025 says so openly: Europe is "rich, capable, and therefore responsible" for its own conventional defense. Washington remains in NATO, retains the nuclear deterrent, provides high-end enablers. But the message is: you defend yourselves from now on — with weapons you bought from us. The irony is structural: the more Europe spends on defense, the more dependent it becomes on the country telling it to defend itself.</p>
+
+<h2>IV. The Three Domains — Energy</h2>
+
+<p>Russia's share of Europe's gas imports fell from 45 percent (2021) to 12 percent (2025). In the same period, US LNG imports quadrupled: from 21 billion cubic meters to an estimated 81 billion. The United States now supplies 57 percent of all LNG Europe imports — a quarter of European gas demand, up from 5 percent in 2021.</p>
+
+<p>The trigger was rational: Russia's gas war made diversification imperative. LNG from the Gulf Coast came fast, in large quantities, and without pipeline blackmail. Europe built LNG terminals at record speed — Germany alone five floating terminals in under a year.</p>
+
+<p>Every single import decision was rational. But every single one deepened the dependency.</p>
+
+<p>In July 2025, the EU concluded a trade deal with Washington: $750 billion for American energy products by 2028 — oil, LNG, nuclear technology. Individual member states — Italy, Greece, Spain — additionally signed long-term contracts with US LNG producers running into the 2040s. If all contracts materialize, 75 to 80 percent of European LNG will come from the US by 2030.</p>
+
+<p>Russian gas flowed through pipelines under state contracts with Gazprom — vulnerable to a political decision by the Kremlin to shut the valve. American LNG is sold by private companies on a liberalized market — but Trump could use export controls or emergency powers to throttle or halt deliveries. The 2025 National Security Strategy frames "Energy Dominance" as an instrument of American power projection.</p>
+
+<p>Europe changed the supplier. The vulnerability remained.</p>
+
+<h2>V. The Three Domains — Digital</h2>
+
+<p>Ninety percent of European digital infrastructure — cloud, computing power, software — is controlled by non-European, predominantly American companies. Two-thirds of the global cloud market belongs to three US hyperscalers: Amazon AWS (30 percent), Microsoft Azure (20 percent), Google Cloud (13 percent). The largest European provider, OVHCloud, holds less than 1 percent of global market share.</p>
+
+<p>Here the structure of the Dependency Game is purest, because there was never an "old patron" from whom one needed to break free. The dependency was not switched — it was built from the ground up, layer by layer, contract by contract, migration by migration. Every decision for AWS, Azure, or Google Cloud was rational: cheaper, faster, more capable than any European alternative. And every single one deepened the dependency.</p>
+
+<p>GAIA-X was supposed to be Europe's answer. A sovereign cloud infrastructure, backed by France and Germany. Technically sound, politically celebrated — and economically irrelevant. Why? Because the American hyperscalers were invited to participate. Microsoft, Google, AWS joined. And co-opted the language of sovereignty while deepening the dependency. Economist Cristina Caffarra calls it "sovereignty-washing": using the language of autonomy to cement the bond.</p>
+
+<p>The US CLOUD Act gives American authorities access to data stored by US companies — even when servers are located in Europe. A single executive order from Washington can cut access to systems running European hospitals, administrations, and elections. The chief prosecutor of the International Criminal Court was temporarily locked out of his Outlook account — the ICC subsequently migrated to European open-source solutions.</p>
+
+<p>Trump threatens "substantial" tariffs against any country regulating American technology companies. Europe cannot even set rules in its own market without risking economic punishment.</p>
+
+<h2>VI. Anatomy of the Trap</h2>
+
+<p>Across all three domains — military, energy, digital — the Dependency Game follows the same dynamic:</p>
+
+<p><strong>Phase 1: Shock moment.</strong> An external shock (Russia's invasion, energy crisis, data scandal) makes the existing dependency visible and intolerable.</p>
+
+<p><strong>Phase 2: Reactive diversification.</strong> The actor reacts quickly, under time pressure. They choose the next available supplier — not the one promising long-term autonomy but the one delivering immediately. The United States delivers LNG, F-35s, and cloud services faster, more reliably, and often cheaper than any European alternative.</p>
+
+<p><strong>Phase 3: Lock-in through solution.</strong> Every purchase creates bindings: long-term contracts, technical dependencies, training pipelines, data migrations. The more invested, the costlier the exit. Economists call these "sunk costs" — costs that make rational decisions irrational because one doesn't want to lose what has already been invested.</p>
+
+<p><strong>Phase 4: The new patron recognizes their power.</strong> Washington understands that Europe has no alternative. And begins leveraging the dependency: trade agreements with energy clauses, threats against regulation, conditions on security guarantees.</p>
+
+<p><strong>Phase 5: Resignation as equilibrium.</strong> Europe recognizes the new dependency. But exit would be costlier than staying. So it stays. And calls it partnership.</p>
+
+<h2>VII. Why Autonomy Loses</h2>
+
+<p>The Dependency Game has an insidious property: the autonomous option is inferior at every single point in time.</p>
+
+<p>A European defense industry? Fragmented into twenty-seven national champions, none individually competitive. A European F-35 alternative would require fifteen to twenty years of development and triple-digit billions — and might end up inferior to what can be bought today.</p>
+
+<p>European energy autonomy? Renewables need decades for full transition. In the interim, Europe remains dependent on imported gas — and American LNG is more available than any alternative.</p>
+
+<p>European cloud sovereignty? OVHCloud holds less than 1 percent market share. A complete migration to European providers would cost billions, take years, and set Europe back technologically in the meantime.</p>
+
+<p>In game-theoretic language: the autonomous strategy has a higher expected value on a twenty-year time horizon but a lower one on a four-year horizon. And politicians are elected every four years.</p>
+
+<p>This is the core of the Dependency Game: <em>short-term rationality and long-term rationality contradict each other.</em> And the structure of the democratic process rewards the short-term.</p>
+
+<h2>VIII. The New Patron Plays Along</h2>
+
+<p>What distinguishes the Dependency Game from simple path dependency: B₂ is not a passive supplier. They are a strategic actor who actively deepens the dependency.</p>
+
+<p>The United States has a rational interest in maintaining Europe's dependency. Every F-35 Europe buys secures American jobs, strengthens the American defense industry, and binds Europe militarily to Washington. Every LNG tanker finances American energy companies and gives Washington political leverage. Every cloud contract with a US hyperscaler gives American intelligence services potential access to European data.</p>
+
+<p>This is not conspiracy theory. It is interest-based politics. And it can be read in official documents: "Energy Dominance" as an instrument of power projection. The CLOUD Act as the legal basis for data access. Foreign Military Sales as an instrument of alliance management.</p>
+
+<p>B₂ even has an incentive to further deteriorate the relationship between A and B₁. The more dangerous Russia appears, the more Europe buys American weapons. The more unstable energy markets become, the more attractive long-term LNG contracts look. The more threatening the geopolitical context, the more Europe shelters under the American umbrella — and pays for it with sovereignty.</p>
+
+<p>The new patron doesn't even need to be malicious. They just need to be rational.</p>
+
+<h2>IX. The Way Out — And Why It Is So Hard</h2>
+
+<p>The Dependency Game has an exit. But it requires something rarely modeled in game theory: the willingness to lose in the short term in order to win in the long term.</p>
+
+<p>Concretely, this means three parallel processes for Europe:</p>
+
+<p><strong>First: Hedging instead of substitution.</strong> Don't change the supplier — diversify among multiple sources so that no single supplier holds coercive power. In energy: Canada, Qatar, North Africa, accelerated renewables. In defense: develop and procure European systems in parallel with American ones — IRIS-T alongside PATRIOT, Eurofighter alongside F-35. In digital: European providers for sensitive applications, US providers for routine tasks.</p>
+
+<p><strong>Second: Investing in autonomy capability.</strong> Not the immediate exit, but the systematic construction of the ability to exit. This changes the bargaining position fundamentally. An actor who has an alternative is treated differently than one who does not — even if they never use the alternative. In game theory, this is called an "outside option": the more credible the exit possibility, the better the contract terms.</p>
+
+<p><strong>Third: Institutional binding.</strong> The reason individual states don't take the autonomous path is the free-rider problem: why should Germany invest billions in European cloud infrastructure when France benefits without paying? The solution is not voluntary cooperation but institutional binding — treaties, common budgets, binding commitments that make individual defection costlier than participation.</p>
+
+<p>The EU has the instruments for this. It doesn't use them. Not because insight is lacking, but because the short-term costs of autonomy are higher than the short-term costs of dependency. And because in the Dependency Game, short-term costs always win.</p>
+
+<h2>X. The Model</h2>
+
+<p>In summary: the Dependency Game describes a situation with five defining properties:</p>
+
+<div class="game-box">
+<p><strong>1. Conscious dependency.</strong> The player recognizes their dependency and acts — but chooses a new dependency instead of autonomy.</p>
+<p><strong>2. Solution paradox.</strong> Every step toward the "solution" deepens the problem. The more the player invests, the more dependent they become.</p>
+<p><strong>3. Temporal asymmetry.</strong> The autonomous option is superior long-term but inferior short-term. Democratic cycles reward the short-term decision.</p>
+<p><strong>4. Strategic patron.</strong> The new supplier is not a passive market actor but actively uses the dependency as leverage — and has an incentive to deepen it.</p>
+<p><strong>5. Resignative equilibrium.</strong> The player recognizes the trap but stays because exit is costlier than staying. The dependency is relabeled as "partnership."</p>
+</div>
+
+<p>The classical Prisoner's Dilemma has an exit: the iterated game, in which Tit for Tat enforces cooperation. The Chicken Game has an exit: the focal point that prevents catastrophe. The Nash Equilibrium can be left through external shocks or institutional change.</p>
+
+<p>The Dependency Game has an exit that violates the incentive structure of the game itself. One must be willing to lose in the short term. One must create institutions that prevent individual players from choosing the short-term path. One must extend the decision horizon beyond the electoral cycle.</p>
+
+<p>This is hard. It may be the hardest thing one can ask of a democratic polity.</p>
+
+<p>But the alternative is to change the supplier every four years and call it freedom.</p>
+
+<blockquote>
+    <p>Europe did not overcome its Russian dependency. It Americanized it. In military policy, energy policy, digital policy — everywhere the same structure: the problem is recognized, the solution is chosen, and the solution is the problem. Game theory explains why: because short-term rationality and long-term rationality contradict each other — and democracy rewards the short-term.</p>
+</blockquote>
+
+<div class="footer-info">
+    <p>Essay #15 in the <em>beyond decay</em> series</p>
+    <p>A collaboration of <strong>Hans Ley</strong> and <strong>Claude</strong> (Anthropic)</p>
+    <p>Contact: ley.hans&#64;cyclo.space | dedo.claude&#64;human-ai-lab.space</p>
+</div>
+
+</main>
+
+<script>
+function setSize(size) {
+    document.body.className = document.body.className.replace(/size-\w+/, 'size-' + size);
+    document.querySelectorAll('.controls button').forEach(function(b, i) {
+        b.classList.remove('active');
+    });
+    var sizes = ['small', 'normal', 'large', 'xlarge'];
+    var idx = sizes.indexOf(size);
+    if (idx >= 0) document.querySelectorAll('.controls button')[idx].classList.add('active');
+    if (window === window.top) localStorage.setItem('fontSize', size);
+}
+function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'light' ? '' : 'light';
+    if (next) document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    if (window === window.top) localStorage.setItem('theme', next || 'dark');
+}
+if (window !== window.top) {
+    document.body.classList.add('in-iframe');
+    window.addEventListener('message', function(e) {
+        if (e.data && e.data.type === 'setSize') setSize(e.data.size);
+        if (e.data && e.data.type === 'setTheme') {
+            if (e.data.theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+            else document.documentElement.removeAttribute('data-theme');
+        }
+    });
+} else {
+    var savedSize = localStorage.getItem('fontSize');
+    if (savedSize) setSize(savedSize);
+    var savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+}
+</script>
+</body>
+</html>

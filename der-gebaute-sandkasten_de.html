@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Der gebaute Sandkasten | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+        text-decoration: none;
+    }
+    .site-name:hover { opacity: 0.7; }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        font-size: 2.2rem;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+        color: var(--text-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 300;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 1.5rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 2.5rem;
+        letter-spacing: 0.5px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        letter-spacing: 0.3px;
+    }
+    p {
+        margin-bottom: 1.2rem;
+        text-align: justify;
+        hyphens: auto;
+    }
+    em { color: var(--accent-color); font-style: italic; }
+    strong { color: var(--accent-color); font-weight: 500; }
+    a {
+        color: var(--link-color);
+        text-decoration: none;
+        border-bottom: 1px dotted var(--link-color);
+        transition: opacity 0.3s;
+    }
+    a:hover { opacity: 0.7; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .signature {
+        margin-top: 2.5rem;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        color: var(--meta-color);
+        line-height: 1.7;
+    }
+    .footer-back {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        text-align: center;
+    }
+    .footer-back a {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        border-bottom: none;
+    }
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+        header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+
+<header>
+    <a href="index.html" class="site-name">beyond-decay.org</a>
+    <div class="controls">
+        <a href="der-gebaute-sandkasten_en.html" class="ctrl-link" id="lang-toggle">EN</a>
+        <span class="ctrl-sep"></span>
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Größe</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+        <main>
+        <h1>Der gebaute Sandkasten</h1>
+        <div class="subtitle">Über die Tech-Elite, die staatliche Instanz und die Aushöhlung dessen, was sie trägt</div>
+        <div class="meta">beyond-decay.org — 20. Juni 2026</div>
+
+<p>Als sich nach Donald Trumps Wahlsieg die Größen des Silicon Valley um den neuen Präsidenten scharten — Zuckerberg, Bezos, Musk, Pichai, Cook, Altman, in der ersten Reihe der Rotunde —, ging ein Stirnrunzeln durch die Kommentarspalten. Wie passt das zusammen? Männer, die sich jahrzehntelang als Freigeister inszeniert hatten, als Feinde staatlicher Einmischung, hofieren plötzlich einen zunehmend autokratisch auftretenden Präsidenten. Der Widerspruch ist nur scheinbar. Die Historikerin Margaret O'Mara, Chronistin des Valley und Autorin des Standardwerks <em>The Code</em>, gibt die nüchterne Auflösung: Diese Unternehmer waren nie so libertär, wie sie vorgaben. Sie wollen keine Freiheit von Regulierung. Sie wollen eine Regulierung nach eigenem Maß — eine Welt zu ihren Bedingungen.</p>
+
+<p>Das ist kein Bonmot, sondern das Ergebnis einer langen historischen Arbeit. Und es trifft genau die zwei Linien, die uns seit Jahren beschäftigen: die Megamaschine und die entkernte Instanz.</p>
+
+<h2>Der Mythos von der Garage</h2>
+
+<p>O'Maras Lebensthema ist die Zerstörung einer Gründungslegende. Das Valley, so die offizielle Erzählung, sei das Werk genialer Einzelner gewesen — Bastler in der Garage, die ohne staatliche Hilfe, allein aus Erfindergeist und Marktfreiheit, das digitale Zeitalter erschufen. O'Mara zeigt aus den Akten, dass davon fast nichts stimmt. Im Kalten Krieg suchte Washington einen technologischen Vorsprung vor der Sowjetunion, durfte aber nicht als planwirtschaftlich erscheinen. Also lenkte man die Forschungsmilliarden verdeckt: durch Universitäten, Forschungsinstitute, Rüstungsfirmen. Apollo, die Miniaturisierung der Elektronik, die Halbleiter, das Internet — alles entstand auf öffentlichem Grund. Selbst die „Garagen-Typen" profitierten von erschwinglicher, staatlich getragener Universitätsbildung. Das Bild vom Mann, der sich an den eigenen Schnürsenkeln hochzieht, nennt O'Mara einen korrosiven amerikanischen Mythos.</p>
+
+<p>Ökonomisch ist das die Linie, die Mariana Mazzucato später zugespitzt hat: Es war am Ende das Steuergeld — nach Stanford und in die Start-ups gelenkt —, das die digitalen Revolutionen hervorbrachte; privatisiert wurde erst der Gewinn. Das Muster, das O'Mara durch acht Jahrzehnte verfolgt, ist von schöner Klarheit: Laissez-faire in guten Zeiten, Ruf nach dem Staat in schlechten. Die Haltung war also nie wirklich anti-staatlich. Sie war anti-rechenschaftspflichtig. Man nahm die Trägerrakete gern, nur die Aufsicht nicht.</p>
+
+<h2>Nicht Freiheit, sondern ein Rahmen nach eigenem Maß</h2>
+
+<p>Hier wird O'Maras Befund für die Gegenwart scharf. Das eigentlich Neue an der Trump-Allianz ist für sie nicht, dass Tech-Bosse im Weißen Haus ein- und ausgehen — das taten sie immer. Neu ist die Explizitheit: ein Musk, der ein hypersichtbares „Department of Government Efficiency" leitet; eine hyperparteiische Haltung, die früher undenkbar war: <em>Ich unterstütze diese Person, und ich stelle die Plattform, die mir gehört, in ihren Dienst.</em> Früher, sagt O'Mara, hielt man den Staat für das Problem und wollte ihn möglichst weit vom Geschäft fernhalten. Heute will man ihn nahe — aber als Werkzeug.</p>
+
+<p>Den entscheidenden Satz hat sie dem Handelsblatt gegeben, und er ist es wert, festgehalten zu werden: Die bei Trump in Gunst stehenden KI-Manager hätten erfolgreich für ein regulatorisches Umfeld geworben, das von den KI-Firmen selbst entworfen und diktiert wird. Das ist die Pointe. Es geht nicht um Deregulierung im alten libertären Sinn — das Wegräumen von Regeln. Es geht um die Übernahme der regelsetzenden Instanz. Die Regulierung verschwindet nicht; sie wird umgehängt. Aus der Aufsicht über die Industrie wird eine Aufsicht der Industrie über sich selbst, beglaubigt durch den Staat.</p>
+
+<p>Genau das ist, was wir die <em>entkernte Instanz</em> genannt haben. Eine Instanz wird nicht abgeschafft — das wäre ehrlich und sichtbar. Sie wird ausgehöhlt: Die Form bleibt erhalten, die Behörde, das Verfahren, das Wort „Regulierung", aber die unabhängige Substanz, die bewertende Distanz, ist entfernt. Was bleibt, ist eine Hülse, die den Anschein von Aufsicht trägt und die Interessen derer vollzieht, die sie eigentlich beaufsichtigen sollte. Die Tech-Elite hat begriffen, dass die elegante Lösung nicht der Kampf gegen die Instanz ist, sondern ihre Besetzung.</p>
+
+<h2>Die Megamaschine wird staatsabhängiger, nicht freier</h2>
+
+<p>Und hier kommt die Ironie, die O'Mara fast beiläufig ausspricht und die unsere Megamaschinen-These bestätigt: Die Künstliche Intelligenz macht ihre Betreiber nicht unabhängiger vom Staat, sondern abhängiger. Anders als der Dotcom- oder der PC-Boom verlangt KI gewaltige Kapitalmengen — Rechenzentren, Chips, Energie in industriellem Maßstab. Solche Summen mobilisiert kein Garagen-Erfinder und keine Risikokapitalrunde allein. Man braucht den Staat als Investor, als Genehmiger, als Energiebeschaffer. Tatsächlich hat die Regierung Infrastruktur-Investitionen zugesagt, Hürden für den Bau von Rechenzentren beseitigt, den Energieverbrauch erleichtert — ein, in O'Maras Worten, ausgesprochen industriefreundliches Umfeld.</p>
+
+<p>Mumford hätte das wiedererkannt. Die Megamaschine war für ihn nie eine Sache aus Stahl allein, sondern eine Fügung aus Technik, Kapital und Macht, die den Staat als tragendes Element braucht und ihn zugleich ihren Zwecken unterwirft. Die neue, datengetriebene Megamaschine inszeniert sich als autonom, als Sprung über alle staatliche Schwerfälligkeit hinaus — und ist dabei auf öffentliche Mittel, öffentliche Energie, öffentliche Genehmigung angewiesen wie keine Maschine zuvor. Sie hängt am Tropf, den sie verachtet. Der Unterschied zur Apollo-Zeit ist nur, dass der Staat damals die Verkehrsregeln schrieb und das Internet als öffentliche Infrastruktur freigab, während er heute, so O'Mara, die KI weitgehend ungeregelt sich selbst überlässt — beziehungsweise denen, die sie bauen.</p>
+
+<p>O'Mara ist dabei keine Antikapitalistin, und das macht ihre Diagnose stärker. Sie kritisiert auch die umgekehrte Übergriffigkeit: Wenn der Staat, wie im Nvidia-Geschäft, fünfzehn Prozent der China-Chip-Verkäufe im Tausch gegen Exportlizenzen abgreift, ist das für sie kein gesundes Korrektiv, sondern ein neuer Fehler. Ihr Bild dafür ist der Sandkasten: Früher baute der Staat den Holzrahmen und schüttete den Sand ein; die Kinder bauten darin ihre Burgen auf eigene Faust, mit öffentlich bereitgestelltem Material. Der Staat nahm keinen Anteil am Spiel. Dieses Profitabgreifen sei neu — und ebenso gefährlich wie die Vereinnahmung der Regeln durch die Industrie. Beide Bewegungen, von oben wie von unten, zerstören dieselbe Sache: die Unabhängigkeit der Instanz, die den Rahmen hält.</p>
+
+<h2>Der herausgedrängte Erfinder</h2>
+
+<p>Der zerstörte Mythos hat eine zweite Schneide, die O'Mara nicht eigens ausführt, die für uns aber im Zentrum steht. Wenn das Valley nie das Werk des einsamen Erfinders war, sondern stets der Fügung aus Kapital, Förderung und Netzwerk, dann ist der unabhängige Erfinder heute nicht etwa entthront — er war nie der König. Aber seine Lage hat sich verschärft. Die Kapitalschwelle, die O'Mara für die KI beschreibt, wirkt wie ein Filter. Wer die Zukunft der Technik mitbestimmen will, muss Rechenzentren im Milliardenmaßstab stellen oder die Gunst dessen gewinnen, der sie stellt. Der Einzelne mit einer Idee, einem Patent, einer durchdachten Konstruktion steht außerhalb des Rahmens, in dem entschieden wird.</p>
+
+<p>Das ist die Verbindung zwischen O'Maras Wirtschaftsgeschichte und einer Erfahrung, die wir an anderer Stelle beschrieben haben: dass die Institutionen, die den unabhängigen Erfinder fördern sollen, ihn in Wahrheit nicht erreichen, weil sie auf die großen, kapitalstarken, anschlussfähigen Akteure zugeschnitten sind. Die entkernte Instanz und der herausgedrängte Erfinder sind zwei Seiten derselben Münze. Wo die bewertende Distanz fehlt — wo nicht mehr geprüft wird, was gut ist, sondern vollzogen, was mächtig ist —, hat die einzelne Erfindung keinen Ort mehr, an dem sie auf ihre Sache hin geprüft würde. Sie braucht eine Instanz, die nach Qualität fragt, nicht nach Kapital. Genau diese Instanz wird ausgehöhlt.</p>
+
+<h2>Die Hoffnung der Historikerin — und ihr Vorbehalt</h2>
+
+<p>O'Mara endet nicht im Fatalismus, und auch wir wollen das nicht. Ihr historischer Trost ist das Gilded Age, die erste vergoldete Zeit der Eisenbahn-, Stahl- und Bankenbarone. Größe, sagt sie, erzeugt Gegenreaktion. Damals sauerte die öffentliche Stimmung, als wenige Konzerne zu viel Kontrolle über die Märkte gewannen; den jüngsten Vorgeschmack davon nennt sie den „Techlash". Das erste Gilded Age endete nicht durch Umsturz, sondern durch eine lange, geduldige Reformarbeit, die staatliche Fähigkeit aufbaute, den Kapitalismus klug zu regulieren statt ihn zu stürzen — von lokalen Arbeitsgesetzen um 1900 bis zur Institutionalisierung im New Deal der dreißiger Jahre.</p>
+
+<p>Der Vorbehalt steht im selben Atemzug. Die heutigen Vermögen und ihre globale Reichweite lassen, wie O'Mara sagt, das alte Gilded Age klein erscheinen; für diese Größenordnung gibt es kein Vorbild. Und der Weg, den sie beschreibt, setzt genau das voraus, was gerade ausgehöhlt wird: eine fähige, unabhängige Instanz, die regulieren kann, ohne gekauft zu sein. Hier liegt die eigentliche Frage, die über O'Maras Optimismus hinausweist. Eine Instanz, die nur geschwächt ist, lässt sich stärken. Eine Instanz, die entkernt ist — die ihre Form behalten hat, aber innerlich umgepolt wurde —, ist schwerer zu heilen, weil der Schaden nicht sichtbar ist. Man muss erst wieder lernen, die Hülse vom Kern zu unterscheiden.</p>
+
+<p>Vielleicht ist das die nüchternste Lehre aus O'Maras Arbeit. Der gefährlichste Zustand ist nicht der offene Angriff auf die Aufsicht, sondern ihre stille Übernahme. Solange der Sandkasten steht und der Rahmen aus Holz noch da ist, glauben alle, es werde gespielt wie immer. Erst wer genau hinsieht, bemerkt, dass nicht mehr die Kinder bauen, sondern die, die längst den Rahmen besitzen — und dass das Wort „Spiel" nur noch die Hülse einer Sache ist, die ihren Sinn verloren hat.</p>
+
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:0.8rem;color:var(--meta-color);margin-top:2.5rem;border-top:1px solid var(--note-border);padding-top:1.2rem;line-height:1.7;text-align:left;">Dieser Essay stützt sich auf die Arbeiten und Interviews der Historikerin Margaret O'Mara (University of Washington), insbesondere ihr Buch <em>The Code: Silicon Valley and the Remaking of America</em> (2019) sowie ihre Gespräche im Handelsblatt (Juni 2026), im Northwestern Magazine (Januar 2026) und bei KQED (2025). Die Deutung im Lichte der Megamaschine und der entkernten Instanz ist unsere eigene.</p>
+
+        <div class="signature">
+            Hans Ley und Claude Dedo (Anthropic)<br>
+            beyond-decay.org — 20. Juni 2026
+        </div>
+
+        <div class="footer-back">
+            <a href="index.html">← zur Übersicht</a>
+        </div>
+    </main>
+
+<script>
+(function() {
+    const body = document.body;
+    const themeBtn = document.getElementById('btn-theme');
+    const sizeBtns = document.querySelectorAll('.size-btn');
+
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+    }
+    function applySize(s) {
+        if (!s) return;
+        body.classList.remove('size-small','size-normal','size-large','size-xlarge');
+        body.classList.add('size-' + s);
+        sizeBtns.forEach(function(x){
+            x.classList.remove('active');
+            if (x.dataset.size === s) x.classList.add('active');
+        });
+    }
+
+    try {
+        var savedTheme = localStorage.getItem('theme');
+        var savedSize = localStorage.getItem('fontSize');
+        if (savedTheme) applyTheme(savedTheme);
+        if (savedSize) applySize(savedSize);
+    } catch(e) {}
+
+    themeBtn.addEventListener('click', function() {
+        var current = document.documentElement.getAttribute('data-theme');
+        var next = current === 'light' ? 'dark' : 'light';
+        applyTheme(next);
+        try { localStorage.setItem('theme', next); } catch(e) {}
+    });
+
+    sizeBtns.forEach(function(b){
+        b.addEventListener('click', function() {
+            var s = b.dataset.size;
+            applySize(s);
+            try { localStorage.setItem('fontSize', s); } catch(e) {}
+        });
+    });
+
+    window.addEventListener('message', function(event) {
+        if (!event.data || !event.data.type) return;
+        if (event.data.type === 'setTheme') applyTheme(event.data.theme);
+        else if (event.data.type === 'setSize') applySize(event.data.size);
+    });
+
+    if (window.self !== window.top) body.classList.add('in-iframe');
+})();
+</script>
+</body>
+</html>

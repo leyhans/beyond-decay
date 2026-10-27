@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Der ausgelöschte Kreis | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+        text-decoration: none;
+    }
+    .site-name:hover { opacity: 0.7; }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        font-size: 2.2rem;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+        color: var(--text-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 300;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 1.5rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 2.5rem;
+        letter-spacing: 0.5px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        letter-spacing: 0.3px;
+    }
+    p {
+        margin-bottom: 1.2rem;
+        text-align: justify;
+        hyphens: auto;
+    }
+    em { color: var(--accent-color); font-style: italic; }
+    strong { color: var(--accent-color); font-weight: 500; }
+    a {
+        color: var(--link-color);
+        text-decoration: none;
+        border-bottom: 1px dotted var(--link-color);
+        transition: opacity 0.3s;
+    }
+    a:hover { opacity: 0.7; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .signature {
+        margin-top: 2.5rem;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        color: var(--meta-color);
+        line-height: 1.7;
+    }
+    .footer-back {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        text-align: center;
+    }
+    .footer-back a {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        border-bottom: none;
+    }
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+        header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+
+<header>
+    <a href="index.html" class="site-name">beyond-decay.org</a>
+    <div class="controls">
+        <a href="der-ausgeloeschte-kreis_en.html" class="ctrl-link" id="lang-toggle">EN</a>
+        <span class="ctrl-sep"></span>
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Größe</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+    <main>
+        <h1>Der ausgelöschte Kreis</h1>
+        <div class="subtitle">Über den Weißen Kreis von Jena, seine nachweisbare Wirkung — und über die Frage, wer entscheidet, welche Erinnerung an die Diktatur in die Geschichte aufgenommen wird und welche verschwindet</div>
+        <div class="meta">beyond-decay.org — 16. Juni 2026</div>
+
+<h2>I. Ein Kreis aus Schweigen</h2>
+
+<p>Im Sommer 1983 geschah in Jena etwas, das es in der DDR nicht geben durfte. An sechs aufeinanderfolgenden Samstagen stellten sich Menschen auf dem zentral gelegenen Platz der Kosmonauten zu einem schweigenden Kreis zusammen. Sie trugen Weiß oder helle Farben, als Zeichen der Friedfertigkeit. Sie sagten nichts, sie forderten nichts lautstark, sie blieben eine Viertelstunde und gingen wieder auseinander. Beim ersten Mal waren es zwölf. Beim sechsten waren es über hundertachtzig, manche aus der ganzen Republik angereist.</p>
+
+<p>Die Idee stammte von Monika Lembke. Sie und ihr Mann Dietrich, damals Assistent an der Universität Jena, hatten den Kreis gemeinsam mit weiteren Mitstreitern — Hannelore und Rüdiger Studanski, Katrin und Uwe Stiem, Monika und Bernd Schröder, Kerstin Hergert, Michael Gerber — ins Leben gerufen. Es war eine neue Form des Protests: kein Aufstand, keine Parole, nur die schiere, sichtbare Anwesenheit von Menschen, die ausreisen wollten und sich nicht mehr versteckten. Sie legten beim ersten Mal sicherheitshalber eine Wanderkarte auf den Boden, um einer Verhaftung wegen „Gruppenbildung" zu entgehen. Nach einer Stunde gingen sie auseinander. Es passierte nichts. Und genau das — dass nichts passierte, dass die Angst sich als überwindbar erwies — war das Sprengstoffhafte daran.</p>
+
+<h2>II. Der Preis</h2>
+
+<p>Hinter dieser Idee stand kein politisches Kalkül, sondern ein Verlust, der sich nicht in Worte fassen lässt. Der älteste Sohn der Lembkes war in der Schule als „Landesverräter" und „Klassenspalter" ausgegrenzt worden, weil die Familie ausreisen wollte. Im März 1983 nahm er sich das Leben. Er war siebzehn Jahre alt.</p>
+
+<p>Monika Lembke hat über diesen Tod und darüber, wie sie ihren Sohn fand, in ihrem Buch geschrieben. Es steht uns nicht zu, das hier auszubreiten. Es genügt zu sagen: Der Weiße Kreis entstand aus diesem Schmerz. Die Mechanik der Diktatur — Ausgrenzung, Stigmatisierung, das Zermürben einer Familie über ein Kind — hatte das Äußerste angerichtet, und aus diesem Äußersten erwuchs der Entschluss, sich nicht länger zu verstecken.</p>
+
+<h2>III. Die Wirkung</h2>
+
+<p>Was als kleiner Kreis begann, wurde zum Politikum. Zwei in der DDR akkreditierte Journalisten kamen nach Jena und fotografierten verdeckt. Die Tagesschau zeigte erste Bilder, der RIAS berichtete. Anschließend griffen sämtliche westdeutschen Rundfunk- und Fernsehsender das Thema auf, und die gesamte überregionale Presse berichtete: F.A.Z., Die Welt, Die Zeit, Spiegel, Süddeutsche Zeitung, Tagesspiegel. Daraufhin verstärkte das Ministerium für Staatssicherheit seine Präsenz; Volkspolizei und Stasi versuchten, den Kreis zu unterbinden, und verhafteten schließlich Teilnehmer. Die Organisatoren wurden zur Ausreise gedrängt: Monika und Dietrich Lembke durften am 10. August 1983 mit dem jüngsten Sohn legal in die Bundesrepublik ausreisen, nachdem sie zugesagt hatten, an keinen weiteren Aktionen teilzunehmen. Im selben Monat erhielten 143 Personen aus Jena die Ausreisegenehmigung.</p>
+
+<p>Die eigentliche Wirkung aber reichte weiter. Der Weiße Kreis hatte gezeigt, dass öffentlich sichtbarer, friedlicher Protest möglich war und andere ermutigte. In der Folge stieg die Zahl der Ausreiseantragsteller stark an — und dieser Anstieg setzte das SED-Regime so unter Druck, dass es 1984 nachgeben und das „Ausreiseventil" öffnen musste: über vierunddreißigtausend genehmigte Übersiedlungen in einem Jahr. Der Weiße Kreis war nicht die einzige Ursache dieser Welle. Aber er war einer ihrer frühen, sichtbaren Auslöser — eine kleine Gruppe schweigender Menschen, die einen Riss in die Fassade der Allmacht schlug.</p>
+
+<h2>IV. Die Auslöschung</h2>
+
+<p>Dass diese Wirkung keine nachträgliche Konstruktion ist, zeigt der Blick in die zeitgenössische Presse. Am 12. August 1983 — zwei Tage nach der Ausreise der Lembkes — berichtete Die Zeit unter dem Titel „Die Angst der Partei vorm weißen Kreis. Jenas mutige Demonstranten bringen die SED in die Klemme". Schon im Augenblick des Geschehens sah ein großes westliches Blatt, was hier vorging: dass eine Handvoll schweigender Menschen einen Staat in Verlegenheit brachte.</p>
+
+<p>Und nun das Bemerkenswerte, das den Anlass dieses Textes bildet. Diese damals sichtbare, durch die Ausreisezahlen belegte Wirkung ist aus dem späteren Gedächtnis fast vollständig verschwunden. Es gibt eine seriöse wissenschaftliche Ausnahme: Der Historiker Henning Pietzsch hat den Weißen Kreis 2009 in zwei Arbeiten beim Böhlau Verlag behandelt, eine davon unter dem Titel „Der ‚Weiße Kreis' in Jena — Beispiel für den Wandel der Protestformen Ausreisewilliger". Doch diese eine Behandlung blieb ein Spezialistenbefund. In den kanonischen Darstellungen der DDR-Opposition, in den Schulbüchern, im öffentlich geförderten Erinnerungsbild kommt der Weiße Kreis nicht vor. Und der entscheidende Schritt ist bis heute nicht getan: Die kausale Verbindung zwischen den Demonstrationen von 1983 und der dokumentierten Ausreisewelle von 1984 hat die Geschichtsschreibung nicht gezogen.</p>
+
+<p>Das ist kein Zufall des Vergessens. Eine Tat von solcher Wirkung verschwindet nicht von selbst aus der Geschichtsschreibung — am wenigsten, wenn der Stoff bereitliegt: in der zeitgenössischen Presse, in den Stasi-Akten, in einer wissenschaftlichen Arbeit. Sie verschwindet, wenn die Instanzen, die über das kollektive Gedächtnis wachen, sie nicht aufnehmen — und das hat Gründe, die mit der Sache selbst nichts zu tun haben.</p>
+
+<p>Monika Lembke hat ihre Geschichte mit achtundsiebzig Jahren selbst aufschreiben müssen (Buchtitel: Wir dulden noch viel zu viel). Nicht in einer Reihe der etablierten Aufarbeitungsinstitutionen, nicht als Teil des geförderten Kanons — sondern am Rand, auf eigene Faust, gegen das Schweigen.</p>
+
+<p>Noch bevor das Buch erschien, hatte sie bei der zentralen, staatlich geförderten Stiftung für Aufarbeitung einen Druckkostenzuschuss beantragt. Die Antwort war eine Absage: Bei ihrem Manuskript handle es sich um ein persönliches Erinnerungsbuch, einen Zeitzeugenbericht „in eigener Sache"; ein Zuschuss sei dafür nach den Regularien der Stiftung ausgeschlossen. Man verwies sie weiter an die regionale Ebene, wo das Anliegen aus regionalen Gesichtspunkten besser aufgehoben sei. Doch auch dort, bei einer Landeseinrichtung für politische Bildung, fiel die Antwort gleich aus: Man verlege keine „stark autobiografisch geprägten Texte". Dabei ist das Autobiografische hier kein Mangel, sondern die einzige Form, in der sich diese Geschichte überhaupt erzählen lässt — es gibt bis heute keine andere zusammenhängende Darstellung, wie der Weiße Kreis 1983 in Jena entstand und was aus ihm folgte. Wer das erzählen will, kommt an der Person nicht vorbei, die ihn miterdacht und mitbegründet und später in jahrelanger Aktenforschung dokumentiert hat. Und auch die Handreichung für Lehrkräfte, die das Buch für den Schulunterricht erschließt, erscheint im Juli 2026 — nicht über eine der dafür zuständigen Institutionen, sondern in einem unabhängigen Verlag, den sie selbst gewinnen musste.</p>
+
+<p>Und es bleibt nicht beim Schweigen der Bücher. Wer den Versuch unternimmt, dem Weißen Kreis seinen Platz in der Erinnerung zu sichern, stößt auf ein Muster, das sich Station um Station wiederholt — höflich im Ton, folgenlos im Ergebnis.</p>
+
+<p>Da ist die Landesbeauftragte eines Bundeslandes, Historikerin von Beruf, die zur Zusammenarbeit bereit ist — aber unter einer Bedingung: Das persönliche Zeugnis möge die Zeitzeugin beisteuern; die Einordnung, die historische Deutung, die sogenannte Metaebene behalte sich ihr eigenes Haus vor. Damit wird genau das zerschnitten, was den Wert dieser Arbeit ausmacht. Denn hier berichtet nicht jemand bloß, was er erlebt hat; hier hat eine Frau das Erlebte über Jahre durch eigene Aktenforschung — zwei Forschungsanträge, rund achttausend Seiten — dokumentiert und belegt. Die Trennung von Erleben und Deutung, die ihr abverlangt wird, gibt es in ihrem Fall gar nicht: Sie ist Zeugin und Forscherin in einer Person. Ihr die Deutung zu nehmen heißt, ihr die Hälfte ihrer Wahrheit zu nehmen.</p>
+
+<p>Da ist der Landesbeauftragte jenes Landes, in dem der Weiße Kreis entstand. Ihm wurde die Lehrerhandreichung persönlich übergeben. Er nennt das Buch authentisch und eindrücklich — und verweist im selben Atemzug auf andere Bücher, erklärt, er könne nicht weiterhelfen, und reicht das Anliegen an einen Mitarbeiter weiter, von dem nichts mehr kommt. Die Wertschätzung ist echt; die Hilfe bleibt aus. Gerade dort, wo die Bewegung ihren historischen Kern hat, bleibt die Tür freundlich verschlossen.</p>
+
+<p>Da ist die Beauftragte eines weiteren Landes, die zu einer Lesung im Grunde bereit wäre — aber nur, wenn sich ein Bezug zum eigenen Bundesland herstellen lässt; was jenseits der Landesgrenze geschah, fällt nicht in ihre Zuständigkeit. Auch das klingt nach ordentlicher Verwaltung und verfehlt doch die Sache. Denn die Ausreisebewegung, die der Weiße Kreis mit auslöste, war keine regionale Angelegenheit; sie erfasste die gesamte Republik. Die Frage, was ziviler Mut bedeutet — damals wie heute —, kennt keine Landesgrenze.</p>
+
+<p>Da ist die übergeordnete Stiftung, der mehrere staatlich geförderte Bildungsplattformen unterstehen, auf denen die Geschichte des Weißen Kreises bis heute verzerrt, verkürzt oder mit ideologischer Schlagseite erscheint — etwa in der Behauptung, die Ausreisebewegung habe das Entstehen einer „kontinuierlichen Opposition" eher behindert, als wäre der Wunsch zu gehen ein geringerer Mut als der Wunsch zu bleiben. Korrekturen wurden zugesandt, eine Einbindung in Lehrkräftefortbildungen für „denkbar" erklärt. Geschehen ist nichts.</p>
+
+<p>Und da ist der Beauftragte eines weiteren Landes, mit dem eine Lesung nicht zustande kam, dessen Haus aber eine eigene Veranstaltung über die nach der Wende entstandenen Erotikshops in der ostdeutschen Provinz ausrichtete. Die Geschichte des Weißen Kreises, so die Auskunft, finde ohnehin kein Interesse. Auch das ist kein offener Affront, sondern eine Frage der Prioritäten — und das Ergebnis bleibt dasselbe: Die Tür bleibt verschlossen.</p>
+
+<p>Und so reiht sich Beispiel an Beispiel. Eingeladen werden, mit gutem Recht, die damals Verhafteten; nicht eingeladen wird die Mitbegründerin, die die Bewegung von ihrem Ursprung her kennt und erforscht hat. Jede Lesung, jede Veröffentlichung, jeder Schritt geschieht auf eigene Initiative und eigene Kosten. Keine Einladung kam je von einer Institution. Es ist nicht der einzelne Vorgang, der hier ins Gewicht fällt, sondern ihre Summe: das beharrliche, freundliche, achselzuckende Vorbeigehen einer ganzen Erinnerungslandschaft an einer Geschichte, die sie eigentlich bräuchte.</p>
+
+<h2>V. Wer das Gedächtnis verwaltet</h2>
+
+<p>Man muss vorsichtig sein an dieser Stelle, und wir sind es. Die Aufarbeitung der SED-Diktatur ist notwendig und legitim. Die Opfer waren real, das Unrecht war real, und es gibt viele im Feld der Aufarbeitung, die ehrliche und wichtige Arbeit leisten. Nichts von dem, was folgt, stellt das in Frage.</p>
+
+<p>Aber jedes Feld, das über Jahrzehnte staatlich alimentiert wird, entwickelt eine eigene Schwerkraft. Aus der Aufgabe, Unrecht zu erinnern, wird mit der Zeit auch eine Frage von Stellen, Fördermitteln, Deutungshoheit und Anciennität. Wer früh dabei war, wer die anerkannten Narrative geprägt hat, wer die Gremien besetzt, der entscheidet mit darüber, welche Geschichte in den Kanon aufgenommen wird und welche nicht. Das ist kein böser Wille einzelner — es ist die Eigenlogik eines Apparats. Eine Erinnerung, die von außen kommt, von Zeitzeugen ohne institutionelle Anbindung, ist für diesen Apparat unbequem: Sie wirft die Frage auf, warum sie so lange übersehen wurde. Und die bequemste Antwort auf diese Frage ist, sie weiter zu übersehen.</p>
+
+<p>So entsteht eine Sperrklinke des Gedächtnisses. Was einmal nicht im Kanon steht, kommt nur schwer hinein, weil seine nachträgliche Aufnahme ein Eingeständnis wäre — das Eingeständnis, etwas Wesentliches übersehen zu haben. Es ist leichter, eine authentische Stimme als Randnotiz zu behandeln, als die eigene bisherige Auslassung zu korrigieren. Die Lembkes stehen damit in einer Konstellation, die wir an anderer Stelle bei den Erfindern beschrieben haben: die Verstreuten gegen die Konzentrierten. Zwei Zeitzeugen mit einer wahren Geschichte gegen ein institutionalisiertes Deutungsfeld, das seine eigene Ordnung verteidigt. Die Wahrheit ist auf der Seite der Verstreuten. Die Ressourcen sind auf der anderen Seite.</p>
+
+<h2>VI. Warum es zählt</h2>
+
+<p>Es geht hier nicht um Eitelkeit und nicht um späten Ruhm. Es geht um die Integrität der Erinnerung selbst. Eine Diktatur wird nicht nur durch das niedergeschrieben, was ihre Verwalter taten, sondern auch durch das, was ihre Gegner wagten. Wenn die Geschichte des Widerstands lückenhaft erzählt wird — wenn ausgerechnet die mutigen, kleinen, unorganisierten Akte verschwinden, weil sie in keine institutionelle Zuständigkeit fallen —, dann wird das Bild der Diktatur falsch. Es erscheint dann allmächtiger, als sie war, und ihre Überwindung anonymer, als sie geschah. Die schweigenden Menschen auf dem Platz der Kosmonauten gehören in die Geschichte der deutschen Freiheit. Dass sie dort bisher fehlen, ist nicht ihr Versäumnis, sondern das einer Erinnerungskultur, die sich ihren Gegenstand zu bequem zurechtgelegt hat.</p>
+
+<p>Monika und Dietrich Lembke haben für ihre Überzeugung den höchsten Preis gezahlt, den ein Mensch zahlen kann. Sie haben danach nicht geschwiegen, sondern gehandelt, und sie handeln bis heute. Das Mindeste, was eine Gesellschaft ihnen schuldet, ist, ihre Geschichte nicht ein zweites Mal verschwinden zu lassen — diesmal nicht durch die Stasi, sondern durch die Gleichgültigkeit derer, die vom Erinnern leben.</p>
+
+        <div class="signature">
+            Monika Lembke und Hans Ley<br>
+            Recherche, Faktenprüfung und redaktionelle Überarbeitung: Claude (Anthropic)<br>
+            beyond-decay.org — 16. Juni 2026
+        </div>
+
+        <div class="footer-back">
+            <a href="index.html">← zur Übersicht</a>
+        </div>
+    </main>
+
+<script>
+(function() {
+    const body = document.body;
+    const themeBtn = document.getElementById('btn-theme');
+    const sizeBtns = document.querySelectorAll('.size-btn');
+
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+    }
+    function applySize(s) {
+        if (!s) return;
+        body.classList.remove('size-small','size-normal','size-large','size-xlarge');
+        body.classList.add('size-' + s);
+        sizeBtns.forEach(function(x){
+            x.classList.remove('active');
+            if (x.dataset.size === s) x.classList.add('active');
+        });
+    }
+
+    // Load saved preferences (shared keys with parent home-neu.html)
+    try {
+        var savedTheme = localStorage.getItem('theme');
+        var savedSize = localStorage.getItem('fontSize');
+        if (savedTheme) applyTheme(savedTheme);
+        if (savedSize) applySize(savedSize);
+    } catch(e) {}
+
+    themeBtn.addEventListener('click', function() {
+        var current = document.documentElement.getAttribute('data-theme');
+        var next = current === 'light' ? 'dark' : 'light';
+        applyTheme(next);
+        try { localStorage.setItem('theme', next); } catch(e) {}
+    });
+
+    sizeBtns.forEach(function(b){
+        b.addEventListener('click', function() {
+            var s = b.dataset.size;
+            applySize(s);
+            try { localStorage.setItem('fontSize', s); } catch(e) {}
+        });
+    });
+
+    // Listen for postMessage from parent frame (home-neu.html)
+    window.addEventListener('message', function(event) {
+        if (!event.data || !event.data.type) return;
+        if (event.data.type === 'setTheme') applyTheme(event.data.theme);
+        else if (event.data.type === 'setSize') applySize(event.data.size);
+    });
+
+    if (window.self !== window.top) body.classList.add('in-iframe');
+})();
+</script>
+</body>
+</html>

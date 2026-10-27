@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Was wir lernen können — Erfolgreiche Megaprojekte in anderen Ländern</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+            --success: #4a9c5d;
+            --warning: #c9a227;
+            --danger: #c75050;
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; align-items: center; }
+        .size-controls span { font-size: 0.75rem; color: var(--text-secondary); margin-right: 0.5rem; }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section h3 { font-size: 1.1em; font-weight: 500; color: var(--accent); margin: 1.5rem 0 0.75rem; }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+
+        .key-insight {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 1.75rem 0;
+            text-align: center;
+        }
+        .key-insight p { margin: 0; font-size: 1.05em; }
+
+        .country-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 1.75rem;
+            margin: 1.75rem 0;
+        }
+        .country-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+        .country-flag { font-size: 2rem; }
+        .country-name { font-size: 1.3rem; color: var(--accent); margin: 0; font-weight: 500; }
+        .country-project { font-size: 0.9rem; color: var(--text-secondary); margin: 0; }
+        
+        .country-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem 0;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+        .stat { text-align: center; }
+        .stat-value { font-size: 1.2rem; color: var(--accent); font-weight: 600; }
+        .stat-label { font-size: 0.8rem; color: var(--text-secondary); }
+
+        .success-factors { list-style: none; margin: 1rem 0; }
+        .success-factors li { padding: 0.5rem 0 0.5rem 1.75rem; position: relative; }
+        .success-factors li::before { content: "✓"; position: absolute; left: 0; color: var(--success); font-weight: bold; }
+
+        blockquote {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+        }
+        blockquote cite { display: block; margin-top: 0.75rem; font-style: normal; font-size: 0.9rem; color: var(--text-secondary); }
+
+        .recommendation-box {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent);
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .recommendation-box h4 { color: var(--accent); margin-bottom: 0.5rem; font-size: 1rem; }
+        .recommendation-box p { margin: 0; font-size: 0.95rem; }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.75rem 0;
+            font-size: 0.9rem;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 0.6rem 0.4rem;
+            border: 1px solid var(--line);
+            text-align: center;
+        }
+        .comparison-table th { background: var(--bg-secondary); color: var(--accent); font-size: 0.85rem; }
+        .comparison-table td:first-child { text-align: left; font-weight: 500; }
+        .check { color: var(--success); }
+        .cross { color: var(--danger); }
+        .partial { color: var(--warning); }
+
+        .author-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.75rem;
+            margin-top: 3rem;
+        }
+        .author-block h3 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+        .author-block p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .author-block a { color: var(--accent); text-decoration: none; }
+        .author-block .date-line { margin-top: 1.25rem; color: var(--accent); text-align: center; }
+
+        .series-info { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--line); text-align: center; color: var(--text-secondary); font-size: 0.9rem; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+            main { padding: 6rem 1.2rem 3rem; }
+            h1 { font-size: 1.75rem; }
+            .comparison-table { font-size: 0.75rem; }
+            .comparison-table th, .comparison-table td { padding: 0.4rem 0.2rem; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <div class="hero">
+            <div class="essay-label">Essay · Januar 2026</div>
+            <h1>Was wir <strong>lernen</strong> können</h1>
+            <p class="subtitle">Wie die Schweiz, Norwegen und Südkorea Großprojekte erfolgreich managen – und was Deutschland daraus lernen kann</p>
+        </div>
+
+        <article>
+            <div class="section">
+                <p>Die Litanei der gescheiterten deutschen Großprojekte ist bekannt: BER, Stuttgart 21, Elbphilharmonie, Gorch Fock. Das "Iron Law of Megaprojects" – über Budget, über Zeit, immer wieder – scheint unausweichlich. Doch ein Blick über die Grenzen zeigt: Es geht auch anders. Einige Länder haben systematisch bessere Ergebnisse bei Großprojekten erzielt. Was machen sie anders?</p>
+                
+                <div class="key-insight">
+                    <p><strong>Die zentrale Erkenntnis:</strong> Erfolgreiche Megaprojekte sind keine Frage des Glücks oder nationaler Mentalität, sondern das Ergebnis kluger institutioneller Arrangements.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Die Erfolgsmodelle</h2>
+                
+                <div class="country-card">
+                    <div class="country-header">
+                        <span class="country-flag">🇨🇭</span>
+                        <div>
+                            <h3 class="country-name">Schweiz</h3>
+                            <p class="country-project">Gotthard-Basistunnel (NEAT)</p>
+                        </div>
+                    </div>
+                    
+                    <p>Der längste Eisenbahntunnel der Welt – 57 Kilometer durch die Alpen – wurde 2016 pünktlich und innerhalb des (mehrfach angepassten) Gesamtkredits fertiggestellt. 17 Jahre Bauzeit für ein Projekt dieser Komplexität sind bemerkenswert kurz.</p>
+                    
+                    <div class="country-stats">
+                        <div class="stat">
+                            <div class="stat-value">57 km</div>
+                            <div class="stat-label">Länge</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">CHF 12,2 Mrd.</div>
+                            <div class="stat-label">Kosten</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Pünktlich</div>
+                            <div class="stat-label">Fertigstellung</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Im Gesamtkredit</div>
+                            <div class="stat-label">Kosten</div>
+                        </div>
+                    </div>
+                    
+                    <h4 style="color: var(--accent); margin: 1rem 0 0.5rem;">Erfolgsfaktoren:</h4>
+                    <ul class="success-factors">
+                        <li><strong>Volksabstimmung 1992</strong> mit 64% Zustimmung – demokratische Legitimation von Anfang an</li>
+                        <li><strong>Sichere Finanzierung</strong> unabhängig vom jährlichen Staatshaushalt</li>
+                        <li><strong>Parlamentarische Dauerüberwachung</strong> durch ständige Kontrollkommission</li>
+                        <li><strong>Fachleute an der Spitze</strong> – Projektleiter war Bauingenieur, kein Verwaltungsbeamter</li>
+                        <li><strong>Realistische Puffer</strong> für geologische Risiken einkalkuliert</li>
+                        <li><strong>100+ Jahre Tunnelbau-Expertise</strong> – institutionelles Gedächtnis</li>
+                    </ul>
+                    
+                    <blockquote>
+                        „Die direkte Demokratie kann Ungeheures leisten."
+                        <cite>— Moritz Leuenberger, früherer Verkehrsminister, zur Eröffnung des Gotthard-Basistunnels 2016</cite>
+                    </blockquote>
+                </div>
+
+                <div class="country-card">
+                    <div class="country-header">
+                        <span class="country-flag">🇳🇴</span>
+                        <div>
+                            <h3 class="country-name">Norwegen</h3>
+                            <p class="country-project">KS1/KS2-Qualitätssicherungssystem</p>
+                        </div>
+                    </div>
+                    
+                    <p>Nach einer Serie teurer Fehlschläge führte Norwegen im Jahr 2000 ein systematisches Qualitätssicherungssystem für öffentliche Großprojekte ein. Das Ergebnis: messbar bessere Kostenprognosen.</p>
+                    
+                    <div class="country-stats">
+                        <div class="stat">
+                            <div class="stat-value">>350</div>
+                            <div class="stat-label">Projekte geprüft</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Seit 2000</div>
+                            <div class="stat-label">In Betrieb</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">>€65 Mio.</div>
+                            <div class="stat-label">Schwellenwert</div>
+                        </div>
+                    </div>
+                    
+                    <h4 style="color: var(--accent); margin: 1rem 0 0.5rem;">Das Zwei-Stufen-System:</h4>
+                    <ul class="success-factors">
+                        <li><strong>KS1:</strong> Konzeptprüfung – „Ist es das richtige Projekt?"</li>
+                        <li><strong>KS2:</strong> Kostenprüfung nach Vorplanung – „Stimmen Budget und Risikobewertung?"</li>
+                        <li><strong>Unabhängige externe Prüfer</strong> beim Finanzministerium</li>
+                        <li><strong>Finanzministerium als Gatekeeper</strong> – keine Finanzierung ohne QA-Freigabe</li>
+                        <li><strong>Reference Class Forecasting</strong> – Vergleich mit ähnlichen Projekten</li>
+                        <li><strong>Veröffentlichung der Ergebnisse</strong> – Transparenz schafft Disziplin</li>
+                    </ul>
+                </div>
+
+                <div class="country-card">
+                    <div class="country-header">
+                        <span class="country-flag">🇰🇷</span>
+                        <div>
+                            <h3 class="country-name">Südkorea</h3>
+                            <p class="country-project">PFS – Preliminary Feasibility Study</p>
+                        </div>
+                    </div>
+                    
+                    <p>Als Reaktion auf ineffiziente Investitionen führte Südkorea 1999 ein strenges Prüfsystem ein. Das Besondere: Es wird tatsächlich abgelehnt – über ein Drittel der Projekte besteht die Prüfung nicht.</p>
+                    
+                    <div class="country-stats">
+                        <div class="stat">
+                            <div class="stat-value">767</div>
+                            <div class="stat-label">Projekte (1999-2017)</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">36,7%</div>
+                            <div class="stat-label">Ablehnungsquote</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">$101 Mrd.</div>
+                            <div class="stat-label">Geschätzte Einsparung</div>
+                        </div>
+                    </div>
+                    
+                    <h4 style="color: var(--accent); margin: 1rem 0 0.5rem;">Erfolgsfaktoren:</h4>
+                    <ul class="success-factors">
+                        <li><strong>Unabhängige Institution (KDI/PIMAC)</strong> – nicht bei den antragstellenden Ministerien</li>
+                        <li><strong>6 Prüfungsrunden pro Projekt</strong> – mehrstufiger Review</li>
+                        <li><strong>Echte Selektion</strong> – 36,7% Ablehnung schafft Disziplin</li>
+                        <li><strong>Ergebnisse werden veröffentlicht</strong> – politischer Druck auf Ehrlichkeit</li>
+                        <li><strong>Finanzministerium überwacht</strong> – Budget Authority</li>
+                    </ul>
+                    
+                    <div class="recommendation-box">
+                        <h4>Der entscheidende Punkt</h4>
+                        <p>Das koreanische System funktioniert, weil es <em>echte Konsequenzen</em> hat. Die 36,7% Ablehnungsquote ist kein Zeichen von Bürokratie, sondern von Disziplin.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Der systematische Vergleich</h2>
+                
+                <p>Was unterscheidet die erfolgreichen Länder von Deutschland?</p>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Erfolgsfaktor</th>
+                            <th>🇨🇭</th>
+                            <th>🇳🇴</th>
+                            <th>🇰🇷</th>
+                            <th>🇬🇧</th>
+                            <th>🇩🇪</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Unabhängige Prüfinstanz</td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Finanzministerium als Gatekeeper</td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Echte Ablehnungsquote (>20%)</td>
+                            <td><span class="partial">⚠</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="partial">⚠</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Volksabstimmung/Legitimation</td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Fachleute in Führung</td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="partial">⚠</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Transparenz/Veröffentlichung</td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Reference Class Forecasting</td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="partial">⚠</span></td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Sichere Langfrist-Finanzierung</td>
+                            <td><span class="check">✓</span></td>
+                            <td><span class="partial">⚠</span></td>
+                            <td><span class="partial">⚠</span></td>
+                            <td><span class="cross">✗</span></td>
+                            <td><span class="cross">✗</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p><small>✓ = vorhanden, ⚠ = teilweise, ✗ = fehlt</small></p>
+            </div>
+
+            <div class="section">
+                <h2>Die Kernlektionen</h2>
+                
+                <h3>1. Institutionelle Unabhängigkeit</h3>
+                <p>Die antragstellende Behörde darf nicht gleichzeitig die Prüfung durchführen. In Korea lehnt KDI/PIMAC über ein Drittel der Projekte ab – in Deutschland gibt es keine vergleichbare unabhängige Prüfinstanz.</p>
+                
+                <h3>2. Finanzministerium als Gatekeeper</h3>
+                <p>In Norwegen, Großbritannien und Korea muss das Finanzministerium Großprojekte freigeben. In Deutschland haben Fachministerien zu viel Autonomie – und zu wenig Gegengewicht.</p>
+                
+                <h3>3. Echte Selektion</h3>
+                <p>Wenn praktisch nie ein Projekt abgelehnt wird, fehlt der Anreiz für ehrliche Kostenschätzungen. Das koreanische System funktioniert, weil die 36,7% Ablehnungsquote real ist.</p>
+                
+                <h3>4. Fachkompetenz an der Spitze</h3>
+                <p>Der Gotthard-Basistunnel wurde von einem Bauingenieur geleitet. Der BER wurde von Politikern ohne Baukompetenz überwacht. Das ist kein Zufall, sondern System.</p>
+                
+                <h3>5. Langfristige Finanzierungssicherheit</h3>
+                <p>Die Schweiz hat den Gotthard vom normalen Staatshaushalt entkoppelt. In Deutschland kann jede neue Regierung Haushaltsprioritäten ändern – was zu Stop-and-Go-Finanzierung führt.</p>
+                
+                <h3>6. Demokratische Legitimation</h3>
+                <p>64% der Schweizer stimmten 1992 für den Gotthard – danach gab es keine fundamentale Opposition mehr. In Deutschland werden Großprojekte oft ohne echte Bürgerbeteiligung beschlossen.</p>
+            </div>
+
+            <div class="section">
+                <h2>Was Deutschland konkret tun könnte</h2>
+                
+                <div class="recommendation-box">
+                    <h4>1. Bundesagentur für Großprojekte</h4>
+                    <p>Eine unabhängige Prüfinstanz nach norwegischem/koreanischem Vorbild, angesiedelt beim Finanzministerium, mit echten Ablehnungsbefugnissen. Schwellenwert: alle Projekte >€500 Mio.</p>
+                </div>
+                
+                <div class="recommendation-box">
+                    <h4>2. Echte Ablehnungsquote</h4>
+                    <p>Die Agentur muss mindestens 20-30% der Anträge ablehnen können. Nur wenn unrealistische Projekte tatsächlich scheitern, wird ehrlich kalkuliert.</p>
+                </div>
+                
+                <div class="recommendation-box">
+                    <h4>3. Fachkompetenz in Führungspositionen</h4>
+                    <p>Projektleiter von Großprojekten müssen einschlägige technische Erfahrung haben. Juristen und Verwaltungsbeamte können unterstützen, aber nicht führen.</p>
+                </div>
+                
+                <div class="recommendation-box">
+                    <h4>4. Sonderfonds für Megaprojekte</h4>
+                    <p>Langfristige Finanzierung unabhängig vom Jahreshaushalt, um Stop-and-Go-Finanzierung zu verhindern.</p>
+                </div>
+                
+                <div class="recommendation-box">
+                    <h4>5. Transparenzpflicht</h4>
+                    <p>Alle Kostenprognosen, Risikoanalysen und Prüfberichte müssen veröffentlicht werden.</p>
+                </div>
+                
+                <div class="recommendation-box">
+                    <h4>6. Verbindliche Bürgerbeteiligung</h4>
+                    <p>Für Projekte >€1 Mrd. sollten verbindliche Referenden oder erweiterte Beteiligungsverfahren vorgeschrieben sein.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Fazit</h2>
+                
+                <p>Das deutsche Großprojekt-Problem ist kein Naturgesetz. Es ist das Ergebnis institutioneller Fehlanreize, die korrigiert werden können. Die Schweiz, Norwegen und Südkorea zeigen, dass es möglich ist, komplexe Infrastrukturprojekte im Zeit- und Kostenrahmen zu realisieren.</p>
+                
+                <p>Die notwendigen Reformen sind weder geheimnisvoll noch besonders schwierig. Sie erfordern allerdings, dass die Politik Kontrolle abgibt – an unabhängige Prüfinstanzen, an Fachleute, an die Bürger.</p>
+                
+                <div class="key-insight">
+                    <p><strong>Die Methoden sind bekannt. Die Daten sind da. Was fehlt, ist der politische Wille zur institutionellen Reform.</strong></p>
+                </div>
+                
+                <p>Die Frage ist nicht, ob Deutschland besser werden kann. Die Frage ist, ob es will.</p>
+            </div>
+
+            <div class="author-block">
+                <h3>Über diesen Text</h3>
+                <p>Eine Kollaboration von <strong>Hans Ley</strong> &lt;<a href="mailto:ley.hans@cyclo.space">ley.hans@cyclo.space</a>&gt; und <strong>Claude</strong> (Anthropic) &lt;<a href="mailto:dedo.claude@human-ai-lab.space">dedo.claude@human-ai-lab.space</a>&gt;</p>
+                <p class="date-line">— Januar 2026 —</p>
+            </div>
+
+            <div class="series-info">
+                <p>Dieses Essay ist Teil der Serie <strong>„Die Innovationswüste Deutschland"</strong></p>
+                <p style="font-size: 0.85em; margin-top: 0.5rem;">Hexagramm 18: 蠱 (Gǔ) – Arbeit am Verdorbenen</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+                document.querySelectorAll('.size-btn').forEach((btn, index) => {
+                    btn.classList.remove('active');
+                    const sizes = ['small', 'medium', 'large', 'xlarge'];
+                    if (sizes[index] === savedSize) btn.classList.add('active');
+                });
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

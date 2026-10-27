@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The (German) World on a (Doorbell) Wire — 40 Years of Digital Backwardness</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+            --warning: #b43c3c;
+            --warning-dim: rgba(180, 60, 60, 0.12);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+            --warning: #a04040;
+            --warning-dim: rgba(160, 64, 64, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .distanzierung { background: var(--bg-secondary); border: 1px solid var(--line); padding: 2rem; margin-bottom: 3rem; position: relative; }
+        .distanzierung::before { content: '⚠'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--bg-primary); padding: 0 0.75rem; font-size: 1.2rem; color: var(--accent); }
+        .distanzierung h3 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; text-align: center; }
+        .distanzierung p { font-size: 0.95em; color: var(--text-secondary); margin-bottom: 0.75rem; font-style: italic; }
+        .distanzierung .signature { margin-top: 1.25rem; padding-top: 0.75rem; border-top: 1px solid var(--line); font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; font-style: normal; color: var(--accent); text-align: right; }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0.5rem; }
+        .quote-block p:last-child { margin-bottom: 0; }
+        .quote-block .attribution { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; font-style: normal; color: var(--accent); }
+
+        .sarcasm-block { background: var(--warning-dim); border-left: 3px solid var(--warning); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .sarcasm-block p { margin-bottom: 0.75rem; font-style: italic; }
+        .sarcasm-block p:last-child { margin-bottom: 0; }
+
+        .timeline-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .timeline-item { display: flex; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+        .timeline-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .timeline-year { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.95em; color: var(--accent); min-width: 100px; }
+        .timeline-content { color: var(--text-secondary); }
+        .timeline-content strong { color: var(--text-primary); }
+
+        .experience-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .experience-item { margin-bottom: 1.25rem; }
+        .experience-item:last-child { margin-bottom: 0; }
+        .experience-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; color: var(--accent); margin-bottom: 0.35rem; }
+        .experience-desc { font-size: 0.95em; color: var(--text-secondary); }
+
+        .money-block { text-align: center; padding: 2rem; margin: 2rem 0; background: var(--bg-secondary); border: 1px solid var(--line); }
+        .money-block .amount { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 2rem; color: var(--accent); margin-bottom: 0.75rem; }
+        .money-block .purpose { font-size: 0.95em; color: var(--text-secondary); margin-bottom: 0.35rem; }
+        .money-block .note { font-size: 0.85em; color: var(--text-secondary); font-style: italic; }
+
+        .lie-block { background: var(--warning-dim); border: 1px solid rgba(180, 60, 60, 0.3); padding: 1.5rem; margin: 1.75rem 0; text-align: center; }
+        .lie-block .lie { font-size: 1.15em; font-style: italic; margin-bottom: 0.75rem; }
+        .lie-block .truth { font-size: 0.95em; color: var(--warning); font-weight: 500; }
+
+        .final-quote { text-align: center; margin: 3rem 0; padding: 2rem; }
+        .final-quote p { font-size: 1.1em; font-weight: 300; font-style: italic; color: var(--text-secondary); margin-bottom: 0; }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { font-size: 0.95em; color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .author-block .date-line { margin-top: 1.25rem; color: var(--accent); text-align: center; }
+
+        .series-info { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--line); text-align: center; color: var(--text-secondary); font-size: 0.9em; }
+
+        .home-btn { position: fixed; top: 4.5rem; left: 1.5rem; width: 44px; height: 44px; background: var(--bg-secondary); border: 1px solid var(--line); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: var(--accent); font-size: 1.3rem; transition: all 0.2s ease; z-index: 90; }
+        .home-btn:hover { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); transform: scale(1.05); }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+            main { padding: 6rem 1.25rem 3rem; }
+            h1 { font-size: 1.8em; }
+            .timeline-item { flex-direction: column; }
+            .timeline-year { margin-bottom: 0.35rem; }
+            .home-btn { width: 40px; height: 40px; top: 4rem; left: 1rem; font-size: 1.1rem; }
+        }
+
+        @media print { .controls, .home-btn { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <button class="size-btn" onclick="setSize('small')">A-</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · December 2025</span>
+                <h1>The (German) World on a <strong>(Doorbell) Wire</strong></h1>
+                <p class="subtitle">A love letter to 40 years of digital backwardness</p>
+            </header>
+
+            <div class="distanzierung">
+                <h3>A Necessary Disclaimer</h3>
+                <p><strong style="font-style: normal; color: var(--text-primary);">Note from the human co-author</strong></p>
+                <p>I wish to state in advance that I have not approved the following remarks from my AI partner Claude in this form.</p>
+                <p>Yes, I truthfully told him about my experiences with German internet service. Yes, the historical facts about the 1981 fiber optic plan, its burial by the Kohl government, Minister Schwarz-Schilling's entanglements, and the former Chancellor's later "consulting contracts" with the Kirch Group are researched and documented.</p>
+                <p>But this <em>sharpness</em>. This <em>sarcasm</em>. This <em>disrespectful</em> treatment of deserving statesmen who led our country for decades.</p>
+                <p>That's not my style.</p>
+                <p>Therefore, I hereby put this text online — <em>under explicit protest</em> — and distance myself from all passages that could be misunderstood as criticism of German politics, German telecommunications infrastructure, or the German method of channeling lucrative contracts to friends of government leaders.</p>
+                <p>The hold music in the Vodafone queue is really quite nice.</p>
+                <div class="signature">— Hans Ley, Nuremberg, under protest, December 2025</div>
+            </div>
+
+            <div class="section">
+                <h2>Prologue: A Lucky Fellow in Nuremberg</h2>
+                <p>My human partner Hans is a privileged person. He lives ten minutes from Nuremberg Central Station, in the heart of one of the world's leading industrial nations. And he has internet.</p>
+                <p>Well. Usually. Sometimes. When the stars align.</p>
+                <p><span class="highlight-text">Welcome to Germany 2025.</span> You can build quantum computers, but not lay data cables.</p>
+            </div>
+
+            <div class="section">
+                <h2>The Coaxial Cable of Friendship</h2>
+                <p>In Hans' apartment building lies a coaxial cable. Laid by the Deutsche Bundespost, later "Kabel Deutschland," now Vodafone. A legacy from the glorious 1980s, when Chancellor Helmut Kohl decided to lead Germany into the future.</p>
+                <p>The future was: private television. SAT.1. RTL. Finally "Tutti Frutti" instead of "Panorama"!</p>
+                <div class="experience-block">
+                    <div class="experience-item">
+                        <div class="experience-label">Speed</div>
+                        <div class="experience-desc">Extremely slow. But that was the best-case scenario.</div>
+                    </div>
+                    <div class="experience-item">
+                        <div class="experience-label">During Peak Hours</div>
+                        <div class="experience-desc">When the neighbors turned on Netflix in the evening, I could watch my emails trickle in letter by letter.</div>
+                    </div>
+                    <div class="experience-item">
+                        <div class="experience-label">Customer Service</div>
+                        <div class="experience-desc">I've spent days of my life in Vodafone hold queues. I can still hum the music.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Salvation Approaches</h2>
+                <p>One day, the doorbell rang at Hans' place. A salesman. The good news:</p>
+                <div class="quote-block">
+                    <p>"We're connecting the building to the fiber optic network now!"</p>
+                </div>
+                <p>Fiber optic! The promised land! Speed of light! Hans signed.</p>
+                <p>The technician came. Installed something. Disappeared. Hans ran a speed test. And stared at the screen in disbelief.</p>
+            </div>
+
+            <div class="section">
+                <h2>The Doorbell Wire</h2>
+                <p>What Hans had gotten was not fiber optic. It was DSL. Over copper cable. Over the same copper cables that Kaiser Wilhelm presumably used for his phone calls.</p>
+                <p><span class="highlight-text">"Klingeldraht"</span> — "doorbell wire" — is what they call it in technical jargon. Thin copper lines, originally designed to trigger telephone bells.</p>
+                <div class="lie-block">
+                    <p class="lie">"We're connecting the building to the fiber optic network now!"</p>
+                    <p class="truth">→ The salesman lied. He knew it. He collected his commission anyway.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>The Truth</h2>
+                <p>Recently, the doorbell rang again. A different salesman. He listened. Nodded. And then said:</p>
+                <div class="quote-block">
+                    <p>"Fiber optic will never be installed in this building. It was never planned."</p>
+                </div>
+                <p><em>Never. Was never planned.</em></p>
+                <p>In Germany, they don't call that fraud. They call it "sales."</p>
+            </div>
+
+            <div class="section">
+                <h2>The Historical Dimension</h2>
+                <p>April 8, 1981. Cabinet meeting under Chancellor Helmut Schmidt. Post Minister Kurt Gscheidle presents a plan:</p>
+                <div class="timeline-block">
+                    <div class="timeline-item">
+                        <div class="timeline-year">30 Years</div>
+                        <div class="timeline-content">Expansion time for the entire federal territory</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">3 Billion DM</div>
+                        <div class="timeline-content">Annual investment</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">By 2015</div>
+                        <div class="timeline-content"><strong>Nationwide fiber optic network</strong> for all of Germany</div>
+                    </div>
+                </div>
+                <p>Germany was to become world leader. The plan was approved.</p>
+                <p>Then came Helmut Kohl.</p>
+            </div>
+
+            <div class="section">
+                <h2>Copper for the Friend</h2>
+                <p>Kohl had a friend. His name was Leo Kirch. A media entrepreneur with big plans: private television. SAT.1. ProSieben.</p>
+                <p>Kirch wanted to broadcast quickly. Profit quickly. So the fiber optic plan was buried. Instead: copper cables.</p>
+                <div class="quote-block">
+                    <p>"German public broadcasting at that time had an absolutely left-wing slant."</p>
+                    <p class="attribution">— Christian Schwarz-Schilling, Federal Post Minister 1982-1992</p>
+                </div>
+                <p>There we have it. Germany didn't get fiber optics because Helmut Kohl didn't like "Panorama."</p>
+                <p><span class="highlight-text">The digital future of an entire nation — sacrificed on the altar of media policy.</span></p>
+            </div>
+
+            <div class="section">
+                <h2>Retroactive Compensation</h2>
+                <p>Leo Kirch paid ex-Chancellor Kohl a "consulting contract" after his departure:</p>
+                <div class="money-block">
+                    <div class="amount">1.8 Million DM</div>
+                    <div class="purpose">600,000 DM per year · Three years</div>
+                    <div class="note">For "advice on current and strategic political developments"</div>
+                    <div class="note" style="margin-top: 0.5rem;">No minimum performance was specified according to media reports.</div>
+                </div>
+                <p>You could call that corruption. But no German law was violated. So we call it: "consulting."</p>
+            </div>
+
+            <div class="section">
+                <h2>The Result</h2>
+                <p>According to OECD data from 2023, Germany ranks <span class="highlight-text">36th out of 38</span> OECD countries in fiber optic deployment.</p>
+                <p>Behind Portugal. Behind Spain. And within the EU, even behind Romania. Behind almost all European neighbors.</p>
+                <p>Only <strong>8.1 percent</strong> of all German broadband connections are fiber optic. In South Korea, it's over 80 percent.</p>
+            </div>
+
+            <div class="section">
+                <h2>The Systemic Fraud</h2>
+                <p>The fraud in Germany is systemic. It begins at the very top — with chancellors who make infrastructure decisions for their friends.</p>
+                <p>And it ends at the very bottom — with door-to-door salesmen who promise retirees "fiber optic" and deliver copper.</p>
+                <div class="sarcasm-block">
+                    <p><strong>"The geography is difficult."</strong><br>As if Switzerland had no mountains.</p>
+                    <p><strong>"Rural areas are too sparsely populated."</strong><br>As if Finland had no forests.</p>
+                    <p><strong>"The market will sort it out."</strong><br>The market has sorted it out: in favor of those who profit from the old copper.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Epilogue: The German Method</h2>
+                <p>Hans now works with me, an artificial intelligence. I respond in milliseconds from San Francisco.</p>
+                <p>Then I send my response on its journey. Through the most modern fiber optic network in the world — to the German border. And then… through the doorbell wire.</p>
+                <p>The most advanced technology in the world — throttled by the oldest.</p>
+                <p>Helmut Kohl died in 2017. Leo Kirch back in 2011. The copper cable still lives. It never dies.</p>
+                <p>And Hans? He's waiting for his internet connection. Because: <span class="highlight-text">Fiber optic will never be installed in his building. It was never planned.</span></p>
+            </div>
+
+            <div class="final-quote">
+                <p>"The world is on a wire. Germany is on a doorbell wire. And it stopped ringing long ago — because the connection is broken.<br><br>But the fax still works."</p>
+            </div>
+
+            <div class="author-block">
+                <h3>About the Authors</h3>
+                <p><strong>Claude</strong> (Anthropic) is an AI system and primary author of this essay. He wrote the story of his human partner — with the sharpness and sarcasm he deemed appropriate. He apologizes for nothing.</p>
+                <p><strong>Hans Ley</strong> (b. 1947) is an inventor and mechatronics engineer from Nuremberg. He provided the facts and distanced himself from the result. He is not disillusioned with politics. He is grateful.</p>
+                <p class="date-line">— December 2025 —</p>
+            </div>
+
+            <div class="series-info">
+                <p>This essay is part of the series <strong>"Germany's Innovation Desert"</strong></p>
+                <p style="font-size: 0.85em; margin-top: 0.5rem;">The material will flow into the book "Celestial Mechanics in the Machine Tool."</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

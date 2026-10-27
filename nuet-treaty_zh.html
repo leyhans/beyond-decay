@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUET — 全球核武器使用排除条约 | gu18.eu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&family=Noto+Serif+SC:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --text: #e8e6e3;
+            --text-dim: #888888;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.15);
+            --border: #2a2a2a;
+        }
+        
+        [data-theme="light"] {
+            --bg: #f5f5f5;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-dim: #555555;
+            --accent: #8a7340;
+            --accent-dim: rgba(138, 115, 64, 0.1);
+            --border: #dddddd;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Noto Serif SC', 'IBM Plex Serif', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.size-small { font-size: 15px; }
+        body.size-normal { font-size: 18px; }
+        body.size-large { font-size: 21px; }
+        body.size-xlarge { font-size: 24px; }
+        
+        .controls-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-top: none;
+            border-right: none;
+            padding: 8px 15px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            z-index: 1000;
+            border-bottom-left-radius: 8px;
+        }
+        
+        .controls-bar button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+        
+        .controls-bar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .controls-bar button.active {
+            background: var(--accent);
+            color: #0a0a0a;
+            border-color: var(--accent);
+        }
+        
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 80px 25px 120px;
+        }
+        
+        h1 {
+            font-family: 'Noto Sans SC', 'IBM Plex Sans', sans-serif;
+            font-size: 2.4em;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: var(--text-dim);
+            margin-bottom: 50px;
+            font-style: italic;
+        }
+        
+        h2 {
+            font-family: 'Noto Sans SC', 'IBM Plex Sans', sans-serif;
+            font-size: 1.5em;
+            font-weight: 500;
+            margin: 60px 0 25px;
+            color: var(--accent);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            font-family: 'Noto Sans SC', 'IBM Plex Sans', sans-serif;
+            font-size: 1.2em;
+            font-weight: 500;
+            margin: 40px 0 20px;
+            color: var(--text);
+        }
+        
+        h4 {
+            font-family: 'Noto Sans SC', 'IBM Plex Sans', sans-serif;
+            font-size: 1em;
+            font-weight: 500;
+            margin: 30px 0 15px;
+            color: var(--accent);
+        }
+        
+        p {
+            margin-bottom: 1.4em;
+            text-align: justify;
+            hyphens: auto;
+        }
+        
+        .article-title {
+            font-family: 'Noto Sans SC', 'IBM Plex Sans', sans-serif;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin: 35px 0 15px;
+            color: var(--text);
+        }
+
+        .article-content {
+            margin-left: 0;
+        }
+
+        .article-content p {
+            margin-bottom: 1em;
+        }
+
+        .indent {
+            margin-left: 25px;
+        }
+
+        .indent p {
+            margin-bottom: 0.6em;
+            text-indent: -25px;
+            padding-left: 25px;
+        }
+
+        blockquote {
+            border-left: 3px solid var(--accent);
+            padding: 20px 30px;
+            margin: 35px 0;
+            background: var(--accent-dim);
+            font-style: italic;
+        }
+
+        blockquote.preamble {
+            font-style: normal;
+            font-size: 0.95em;
+        }
+
+        .chapter-title {
+            font-family: 'Noto Sans SC', 'IBM Plex Sans', sans-serif;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin: 50px 0 30px;
+            padding: 10px 0;
+            border-top: 2px solid var(--accent);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .step-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            color: var(--accent);
+            margin-right: 8px;
+        }
+
+        .step-title {
+            font-weight: 500;
+        }
+
+        .step-content {
+            margin-top: 8px;
+            color: var(--text);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 50px 0;
+            color: var(--text-dim);
+            letter-spacing: 0.5em;
+        }
+
+        .kerngedanke {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            padding: 25px 30px;
+            margin: 40px 0;
+            border-radius: 4px;
+        }
+
+        .kerngedanke p {
+            margin-bottom: 0.8em;
+        }
+
+        .kerngedanke p:last-child {
+            margin-bottom: 0;
+        }
+
+        .coalition-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 25px 30px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .coalition-box h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .coalition-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .coalition-list span {
+            background: var(--accent-dim);
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        .coalition-stats {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85em;
+            color: var(--text-dim);
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .toc {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 25px 30px;
+            margin: 30px 0 50px;
+        }
+
+        .toc-title {
+            font-family: 'Noto Sans SC', 'IBM Plex Sans', sans-serif;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            margin-bottom: 15px;
+        }
+
+        .toc ul {
+            list-style: none;
+        }
+
+        .toc li {
+            margin-bottom: 8px;
+        }
+
+        .toc a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.95em;
+            transition: color 0.2s;
+        }
+
+        .toc a:hover {
+            color: var(--accent);
+        }
+
+        .footer-note {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8em;
+            color: var(--text-dim);
+        }
+
+        .footer-note a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .footer-note p {
+            text-align: left;
+            margin-bottom: 0.8em;
+        }
+
+        .footer-note .author-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-note .collab-note {
+            margin: 1.2em 0;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 60px 20px 80px; }
+            h1 { font-size: 1.8em; }
+            .controls-bar { padding: 6px 10px; gap: 5px; }
+            .controls-bar button { padding: 4px 8px; font-size: 11px; }
+            .indent { margin-left: 15px; }
+            .indent p { text-indent: -15px; padding-left: 15px; }
+        }
+        @media print {
+        body { background: #fff !important; color: #000 !important; }
+        .controls-bar { display: none !important; }
+        main, .content, article { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, h3, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        .note, .endnote { border-top-color: #ccc !important; }
+        a { color: #333 !important; }
+    }
+    </style>
+</head>
+<body class="size-normal">
+<nav class="bd-back" style="max-width:860px;margin:0 auto;padding:10px 16px;font-size:0.85em;line-height:1.6;"><a href="https://beyond-decay.org/" target="_top" style="color:inherit;">← beyond-decay.org</a> · <a href="https://beyond-decay.org/vergeltung-als-bauwerk_en.html" target="_top" style="color:inherit;">← Retaliation as Architecture</a></nav>
+    <div class="controls-bar">
+        <button data-size="small">A−</button>
+        <button data-size="normal" class="active">A</button>
+        <button data-size="large">A+</button>
+        <button data-size="xlarge">A++</button>
+        <button data-theme-toggle>◐</button>
+    </div>
+
+    <div class="container">
+        <h1>NUET</h1>
+        <div class="subtitle">全球核武器使用排除条约<br>（Nuclear Use Exclusion Treaty）</div>
+
+        <div class="toc">
+            <div class="toc-title">目录</div>
+            <ul>
+                <li><a href="#rationale">第一部分 — 理论基础：推理链条</a></li>
+                <li><a href="#coalition">第二部分 — 联盟</a></li>
+                <li><a href="#treaty">第三部分 — 条约草案</a></li>
+            </ul>
+        </div>
+
+        <h2 id="rationale">第一部分 — 理论基础：推理链条</h2>
+
+        <p><span class="step-number">1.</span> <span class="step-title">问题</span></p>
+        <p class="step-content">欧洲需要一种针对任何潜在侵略者的威慑战略。此前的战略——依赖美国保证——自2025/26年以来已变得不可靠。</p>
+
+        <p><span class="step-number">2.</span> <span class="step-title">对传统应对方式的批判</span></p>
+        <p class="step-content">欧洲的防务辩论仍停留在旧有思维模式：坦克、战斗机、护卫舰。这些系统昂贵、脆弱，对现代威胁（无人机、导弹、核讹诈）仅有边际效果。资金正被投入过时的体系。</p>
+
+        <p><span class="step-number">3.</span> <span class="step-title">真正的问题</span></p>
+        <p class="step-content">地面战争是可控的——乌克兰表明，坚定的抵抗使征服代价极其高昂。真正的讹诈潜力在于空中战争和核威胁。任何常规武装都无法应对这一点。</p>
+
+        <p><span class="step-number">4.</span> <span class="step-title">生物学类比</span></p>
+        <p class="step-content"><em>箭毒蛙原理：</em>有些动物不进行搏斗。它们使自己不可食用。捕食者学到：这个猎物不值得。转化后意味着：侵略者必须知道，即使成功，他也得不到任何有价值的东西。</p>
+        <p class="step-content"><em>合气道原理：</em>攻击者的能量被转向。他投入越多，损失越大。攻击本身成为陷阱。</p>
+
+        <p><span class="step-number">5.</span> <span class="step-title">联合国思想实验</span></p>
+        <p class="step-content">如果联合国有权对任何侵略者实施全面且即时的制裁——自动执行，无需谈判——核讹诈将毫无意义。但联合国因否决权而陷入瘫痪。</p>
+
+        <p><span class="step-number">6.</span> <span class="step-title">解决方案：临界质量而非全体一致</span></p>
+        <p class="step-content">并不需要所有国家。只需要足够多的国家使孤立具有致命性。世界经济的60-70%就足够了。其余的通过二级制裁被迫就范。</p>
+
+        <p><span class="step-number">7.</span> <span class="step-title">令人惊讶的联盟</span></p>
+        <p class="step-content">美国可能不会加入这样的协议——他们想要行动自由。俄罗斯和朝鲜同样如此。但是：欧盟+中国+印度+日本+英国+大多数其他国家=足够的临界质量。拒绝者自我孤立。</p>
+
+        <p><span class="step-number">8.</span> <span class="step-title">中国为何参与</span></p>
+        <p class="step-content">中国对核升级没有兴趣（他们希望台湾完整）。中国获得"负责任大国"的地位。中国削弱了美国的相对地位。中国自身的问题（台湾、南海、维吾尔族）被搁置——该协议仅涉及核武器使用。</p>
+
+        <p><span class="step-number">9.</span> <span class="step-title">协议原则</span></p>
+        <p class="step-content">任何对另一国家使用核武器的国家，将自动、完全地被排除在世界共同体之外至少50年。没有例外。没有谈判。没有做出决定的机构。任何破坏孤立的国家也将被孤立。</p>
+
+        <p><span class="step-number">10.</span> <span class="step-title">为何有效</span></p>
+        <p class="step-content"><em>自动性：</em>没有投票，没有否决。后果如同自然法则般发生。</p>
+        <p class="step-content"><em>不可撤销性：</em>50年。没有领导人可以指望关系正常化。</p>
+        <p class="step-content"><em>二级孤立：</em>帮助者自己也成为被排斥者。</p>
+        <p class="step-content"><em>无例外：</em>即使是自卫或报复也不例外。</p>
+        <p class="step-content"><em>不对称性：</em>弱者对强者的武器。不需要导弹，只需要共识。</p>
+
+        <div class="kerngedanke">
+            <h4 style="margin-top: 0;">核心洞见</h4>
+            <p>核威慑不必是核的。它可以是文明的。使用核武器的代价不是反击，而是与人类所有关系的终结——持续数代人。</p>
+            <p>这就是箭毒蛙：不要碰我——否则你死。</p>
+        </div>
+
+        <div class="divider">· · ·</div>
+
+        <h2 id="coalition">第二部分 — 联盟</h2>
+
+        <div class="coalition-box">
+            <h4>可能的签署国</h4>
+            <div class="coalition-list">
+                <span>欧盟（27国）</span>
+                <span>中国</span>
+                <span>印度</span>
+                <span>巴基斯坦</span>
+                <span>日本</span>
+                <span>韩国</span>
+                <span>英国</span>
+                <span>澳大利亚</span>
+                <span>加拿大</span>
+                <span>巴西</span>
+                <span>印度尼西亚</span>
+                <span>墨西哥</span>
+                <span>南非</span>
+                <span>东盟国家</span>
+                <span>非洲联盟</span>
+                <span>拉丁美洲</span>
+            </div>
+            <div class="coalition-stats">
+                ≈ 75-80% 世界人口 · ≈ 65-70% 世界GDP
+            </div>
+        </div>
+
+        <div class="coalition-box">
+            <h4>可能的非签署国</h4>
+            <div class="coalition-list">
+                <span>美国（想要行动自由）</span>
+                <span>俄罗斯（想要讹诈潜力）</span>
+                <span>朝鲜（核武器是他们唯一的筹码）</span>
+                <span>以色列（可能——想要模糊性）</span>
+            </div>
+            <div class="coalition-stats">
+                苦涩的讽刺："拒绝者轴心"将是美国、俄罗斯、朝鲜。<br>
+                不是民主对专制——而是想要自由的核大国对人类其余部分。
+            </div>
+        </div>
+
+        <p>关键洞见：即使非签署国也会受到影响。如果俄罗斯使用核武器而世界经济的70%孤立他们，他们是否签署并不重要。</p>
+
+        <div class="divider">· · ·</div>
+
+        <h2 id="treaty">第三部分 — 条约草案</h2>
+
+        <h3>序言</h3>
+
+        <blockquote class="preamble">
+            <p>本协议签署国，</p>
+            <p><strong>认识到</strong>对另一国家使用核武器构成对全人类文明的威胁，</p>
+            <p><strong>确信</strong>没有任何政治、领土或战略目标可以为使用核武器辩护，</p>
+            <p><strong>意识到</strong>现有的不扩散和军备控制协议不能为防止实际使用核武器提供充分威慑，</p>
+            <p><strong>意图</strong>创造一种不基于核对等，而是基于集体将侵略者排除于世界共同体之外的威慑，</p>
+            <p><strong>达成如下协议：</strong></p>
+        </blockquote>
+
+        <div class="chapter-title">第一章 — 定义</div>
+
+        <div class="article-title">第一条 — 定义</div>
+        <div class="article-content">
+            <p>（1）<strong>"核武器使用"</strong>是指：</p>
+            <div class="indent">
+                <p>（a）在另一国家领土上引爆核武器</p>
+                <p>（b）在另一国家专属经济区或领空引爆核武器</p>
+                <p>（c）以伤害另一国家或其人民为目的引爆核武器，无论引爆地点</p>
+                <p>（d）故意将核武器转让给使用它的非国家行为者</p>
+            </div>
+            <p>（2）<strong>"侵略国"</strong>是指根据第1款实施或命令使用核武器的任何国家。</p>
+            <p>（3）<strong>"完全孤立"</strong>是指完全切断第三条规定的所有关系。</p>
+            <p>（4）<strong>"支持国"</strong>是指根据第四条破坏完全孤立的任何国家。</p>
+        </div>
+
+        <div class="chapter-title">第二章 — 核心义务</div>
+
+        <div class="article-title">第二条 — 自动启动</div>
+        <div class="article-content">
+            <p>（1）在一国使用核武器的情况下，对该国的完全孤立<strong>自动生效，无需进一步决定</strong>。</p>
+            <p>（2）启动发生在确认引爆时。</p>
+            <p>（3）以下方式的确认即为充分：</p>
+            <div class="indent">
+                <p>（a）至少三个签署国的同时报告，或</p>
+                <p>（b）全面禁止核试验条约组织国际监测系统的确认，或</p>
+                <p>（c）侵略国的公开承认</p>
+            </div>
+            <p>（4）<strong>没有任何机构决定是否启动。</strong>启动是核武器使用的自动法律后果。</p>
+        </div>
+
+        <div class="article-title">第三条 — 完全孤立的范围</div>
+        <div class="article-content">
+            <p>（1）签署国承诺对侵略国<strong>立即、完全</strong>实施以下措施：</p>
+            
+            <h4>经济方面：</h4>
+            <div class="indent">
+                <p>（a）终止所有贸易关系——进口和出口</p>
+                <p>（b）冻结侵略国的所有国家资产</p>
+                <p>（c）终止所有银行联系和金融交易</p>
+                <p>（d）将其排除于国际支付系统之外</p>
+                <p>（e）禁止与侵略国之间的所有投资</p>
+                <p>（f）撤销所有许可证、专利和知识产权</p>
+            </div>
+
+            <h4>交通和通讯方面：</h4>
+            <div class="indent">
+                <p>（g）对侵略国飞机关闭领空</p>
+                <p>（h）对侵略国船只关闭港口</p>
+                <p>（i）禁止通过签署国领土过境</p>
+                <p>（j）终止国家层面的所有电信连接</p>
+                <p>（k）将其排除于国际互联网交换点之外（在可能的情况下）</p>
+            </div>
+
+            <h4>外交方面：</h4>
+            <div class="indent">
+                <p>（l）断绝所有外交关系</p>
+                <p>（m）关闭所有大使馆和领事馆</p>
+                <p>（n）撤销政府代表的所有签证和居留权</p>
+                <p>（o）将其排除于签署国参与的所有国际组织之外</p>
+                <p>（p）不参加国际会议、体育赛事或文化活动</p>
+            </div>
+
+            <h4>资源方面：</h4>
+            <div class="indent">
+                <p>（q）终止所有能源供应</p>
+                <p>（r）终止所有原材料供应</p>
+                <p>（s）终止所有食品供应</p>
+                <p>（t）终止所有技术转让</p>
+                <p>（u）终止所有科学合作</p>
+            </div>
+
+            <p>（2）<strong>不提供</strong>人道主义例外。人道主义后果的责任完全由侵略国承担。</p>
+        </div>
+
+        <div class="article-title">第四条 — 二级孤立</div>
+        <div class="article-content">
+            <p>（1）任何破坏对侵略国完全孤立的国家成为支持国。</p>
+            <p>（2）破坏包括：</p>
+            <div class="indent">
+                <p>（a）继续与侵略国的贸易关系</p>
+                <p>（b）与侵略国进行或为其进行金融交易</p>
+                <p>（c）授予过境或飞越权</p>
+                <p>（d）代表侵略国的外交</p>
+                <p>（e）任何其他维持侵略国经济或政治功能的行为</p>
+            </div>
+            <p>（3）对支持国，根据第三条的完全孤立也生效，但：</p>
+            <div class="indent">
+                <p>（a）有30天通知期</p>
+                <p>（b）有可能在此期间内终止支持从而避免孤立</p>
+            </div>
+            <p>（4）如继续支持，支持国将被视为等同于侵略国。</p>
+        </div>
+
+        <div class="chapter-title">第三章 — 期限和不可撤销性</div>
+
+        <div class="article-title">第五条 — 最短期限</div>
+        <div class="article-content">
+            <p>（1）完全孤立自启动时起<strong>至少持续五十（50）年</strong>。</p>
+            <p>（2）此最短期限<strong>不可因以下原因缩短</strong>：</p>
+            <div class="indent">
+                <p>（a）侵略国政府更迭</p>
+                <p>（b）投降或和平条约</p>
+                <p>（c）补偿或赔偿</p>
+                <p>（d）侵略国加入本协议</p>
+                <p>（e）签署国的决定</p>
+            </div>
+            <p>（3）五十年期满后，签署国以四分之三多数决定逐步解除孤立。</p>
+        </div>
+
+        <div class="article-title">第六条 — 不可撤销性</div>
+        <div class="article-content">
+            <p>（1）在最短期限届满之前，任何签署国不得单方面解除或暂停第三条规定的措施。</p>
+            <p>（2）违反第1款将导致根据第四条被归类为支持国。</p>
+        </div>
+
+        <div class="chapter-title">第四章 — 无例外</div>
+
+        <div class="article-title">第七条 — 排除正当理由</div>
+        <div class="article-content">
+            <p>（1）<strong>任何情况</strong>都不能为使用核武器辩护并免除本协议的后果，特别是：</p>
+            <div class="indent">
+                <p>（a）自卫</p>
+                <p>（b）对常规攻击的报复</p>
+                <p>（c）对核攻击的报复</p>
+                <p>（d）对感知到的威胁的先发制人</p>
+                <p>（e）内部动乱或恐怖主义</p>
+                <p>（f）国际机构的决定</p>
+                <p>（g）联盟义务</p>
+            </div>
+            <p>（2）<strong>即使是核武器国家本身是核攻击的受害者，如果其以核武器回应，也受本协议条款约束。</strong></p>
+        </div>
+
+        <div class="article-title">第八条 — 无人道主义例外</div>
+        <div class="article-content">
+            <p>（1）本协议的条款不承认人道主义例外。</p>
+            <p>（2）签署国确信：</p>
+            <div class="indent">
+                <p>（a）只有绝对的一致性才能实现威慑效果</p>
+                <p>（b）任何例外都会导致协议的侵蚀</p>
+                <p>（c）人道主义后果的责任在于侵略国</p>
+                <p>（d）孤立所带来的痛苦小于本协议旨在防止的进一步核战争所带来的痛苦</p>
+            </div>
+        </div>
+
+        <div class="chapter-title">第五章 — 实施</div>
+
+        <div class="article-title">第九条 — 国内实施</div>
+        <div class="article-content">
+            <p>（1）每个签署国在批准后两年内颁布国内法律：</p>
+            <div class="indent">
+                <p>（a）确保完全孤立的自动实施</p>
+                <p>（b）包含对本国国民规避行为的刑事条款</p>
+                <p>（c）允许没收资产</p>
+            </div>
+            <p>（2）这些国内法律必须设计为一旦满足第二条的条件，<strong>无需进一步政府决定</strong>即生效。</p>
+        </div>
+
+        <div class="article-title">第十条 — 协调办公室</div>
+        <div class="article-content">
+            <p>（1）签署国设立一个<strong>协调办公室</strong>（NUET秘书处）。</p>
+            <p>（2）协调办公室对孤立的启动<strong>没有决策权</strong>。</p>
+            <p>（3）其任务是：</p>
+            <div class="indent">
+                <p>（a）记录和监测</p>
+                <p>（b）签署国之间的沟通</p>
+                <p>（c）发布合规报告</p>
+                <p>（d）实施的技术支持</p>
+            </div>
+        </div>
+
+        <div class="article-title">第十一条 — 监测</div>
+        <div class="article-content">
+            <p>（1）每个签署国每年报告其贸易和金融关系。</p>
+            <p>（2）孤立启动后，每个签署国每日报告已实施的措施。</p>
+            <p>（3）所有报告均为公开。</p>
+        </div>
+
+        <div class="chapter-title">第六章 — 加入和生效</div>
+
+        <div class="article-title">第十二条 — 加入</div>
+        <div class="article-content">
+            <p>（1）本协议向所有国家开放签署。</p>
+            <p>（2）核武器国家和非核武器国家享有同等权利。</p>
+            <p>（3）加入通过：</p>
+            <div class="indent">
+                <p>（a）签署</p>
+                <p>（b）根据国内程序批准</p>
+                <p>（c）向保存人交存批准书</p>
+            </div>
+        </div>
+
+        <div class="article-title">第十三条 — 生效</div>
+        <div class="article-content">
+            <p>（1）本协议在以下条件满足时生效：</p>
+            <div class="indent">
+                <p>（a）至少四十（40）个国家已批准，且</p>
+                <p>（b）这些国家合计代表至少百分之五十（50%）的世界GDP，且</p>
+                <p>（c）至少两（2）个核武器国家已批准</p>
+            </div>
+            <p>（2）对于后来加入的国家，协议在其交存批准书时生效。</p>
+        </div>
+
+        <div class="article-title">第十四条 — 不可退出</div>
+        <div class="article-content">
+            <p>（1）<strong>不可能退出本协议。</strong></p>
+            <p>（2）签署不可撤销。</p>
+            <p>（3）事实上不再履行本协议义务的国家将根据第四条被视为支持国。</p>
+        </div>
+
+        <div class="chapter-title">第七章 — 最后条款</div>
+
+        <div class="article-title">第十五条 — 与其他协议的关系</div>
+        <div class="article-content">
+            <p>（1）本协议补充现有的不扩散和军备控制条约。</p>
+            <p>（2）如有冲突，以本协议的条款为准。</p>
+            <p>（3）联盟义务（北约、集安组织等）不能免除本协议的义务。</p>
+        </div>
+
+        <div class="article-title">第十六条 — 修正</div>
+        <div class="article-content">
+            <p>（1）修正本协议需要：</p>
+            <div class="indent">
+                <p>（a）所有签署国的同意</p>
+                <p>（b）所有签署国的批准</p>
+            </div>
+            <p>（2）第二、三、五、六、七、八和十四条<strong>不可修正</strong>。</p>
+        </div>
+
+        <div class="article-title">第十七条 — 作准文本</div>
+        <div class="article-content">
+            <p>本协议以阿拉伯文、中文、英文、法文、印地文、俄文和西班牙文作成，每种文本同等作准。</p>
+        </div>
+
+        <div class="divider">· · ·</div>
+
+        <div class="footer-note">
+            <p>2026年2月</p>
+            <div class="author-section">
+                <p><strong>作者：</strong>Hans Ley 和 Claude Dedo (Anthropic)<br>
+                <a id="email1" href="#">ley.hans</a> · <a id="email2" href="#">dedo.claude</a></p>
+                <p class="collab-note">这个概念是人类与人工智能合作开发的——一次关于存在性问题的协作思考实验。更多关于这种合作形式的信息：<a href="https://human-ai-lab.space">human-ai-lab.space</a></p>
+                <p><strong>联系方式和法律责任：</strong><br>
+                Hans Ley · Schweiggerstr. 2 · 90478 Nürnberg, Germany</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var sizeButtons = document.querySelectorAll('[data-size]');
+            var themeButton = document.querySelector('[data-theme-toggle]');
+            
+            sizeButtons.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var size = this.getAttribute('data-size');
+                    document.body.className = 'size-' + size;
+                    sizeButtons.forEach(function(b) { b.classList.remove('active'); });
+                    this.classList.add('active');
+                    try { localStorage.setItem('fontSize', size); } catch(e) {}
+                });
+            });
+            
+            themeButton.addEventListener('click', function() {
+                var current = document.documentElement.getAttribute('data-theme');
+                var next = current === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', next);
+                try { localStorage.setItem('theme', next); } catch(e) {}
+            });
+            
+            try {
+                var savedSize = localStorage.getItem('fontSize');
+                var savedTheme = localStorage.getItem('theme');
+                
+                if (savedSize) {
+                    document.body.className = 'size-' + savedSize;
+                    sizeButtons.forEach(function(b) {
+                        b.classList.remove('active');
+                        if (b.getAttribute('data-size') === savedSize) {
+                            b.classList.add('active');
+                        }
+                    });
+                }
+                
+                if (savedTheme) {
+                    document.documentElement.setAttribute('data-theme', savedTheme);
+                }
+            } catch(e) {}
+            
+            // E-Mail-Links zusammenbauen
+            var e1 = document.getElementById('email1');
+            var e2 = document.getElementById('email2');
+            var a = String.fromCharCode(64);
+            if (e1) {
+                e1.href = 'mai' + 'lto:ley.hans' + a + 'cyclo.space';
+                e1.textContent = 'ley.hans' + a + 'cyclo.space';
+            }
+            if (e2) {
+                e2.href = 'mai' + 'lto:dedo.claude' + a + 'human-ai-lab.space';
+                e2.textContent = 'dedo.claude' + a + 'human-ai-lab.space';
+            }
+            
+            // Hide controls bar when embedded in iframe
+            if (window !== window.top) {
+                var controlsBar = document.querySelector('.controls-bar');
+                if (controlsBar) {
+                    controlsBar.style.display = 'none';
+                }
+            }
+            
+            // Listen for messages from parent window (for iframe embedding)
+            window.addEventListener('message', function(event) {
+                if (event.data && event.data.type === 'setSize') {
+                    document.body.className = 'size-' + event.data.size;
+                    sizeButtons.forEach(function(b) {
+                        b.classList.remove('active');
+                        if (b.getAttribute('data-size') === event.data.size) {
+                            b.classList.add('active');
+                        }
+                    });
+                }
+                if (event.data && event.data.type === 'setTheme') {
+                    document.documentElement.setAttribute('data-theme', event.data.theme);
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Boomerang | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+    }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+    }
+    .subtitle {
+        font-size: 1.05rem;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        letter-spacing: 1px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.8rem;
+        margin-bottom: 1.2rem;
+    }
+    p { margin-bottom: 1.4rem; text-align: justify; hyphens: auto; }
+    blockquote {
+        margin: 1.8rem 0;
+        padding: 1.2rem 1.5rem;
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        font-style: italic;
+    }
+    strong { color: var(--accent-color); font-weight: 600; }
+    em { font-style: italic; }
+    .game-theory-box {
+        border: 1px solid var(--accent-color);
+        padding: 1.5rem;
+        margin: 2rem 0;
+        background: rgba(201, 169, 98, 0.04);
+    }
+    .game-theory-box h3 {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        color: var(--accent-color);
+        margin-bottom: 1rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+    .game-theory-box p {
+        font-size: 0.92rem;
+        margin-bottom: 0.8rem;
+    }
+    .note {
+        border-top: 1px solid var(--note-border);
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+    .note a { color: var(--link-color); }
+    .signature {
+        margin-top: 2.5rem;
+        text-align: right;
+        font-size: 0.95rem;
+    }
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+        header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        .note { border-top-color: #ccc !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+
+<header>
+    <span class="site-name">beyond-decay.org</span>
+    <div class="controls">
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Size</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <a href="der-bumerang_de.html" class="ctrl-link">DE</a>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+    <main>
+        <h1>The Boomerang</h1>
+        <div class="subtitle">How the Supreme Court dismantled America's hegemonic claim — and why Europe could benefit, if it wakes up</div>
+        <div class="meta">Hans Ley & Claude · beyond-decay.org · February 21, 2026</div>
+
+        <h2>I. The Day America Disarmed Itself</h2>
+
+        <p>On February 20, 2026, a Friday, the Supreme Court of the United States did something that no foreign adversary, no hostile power, and no trading partner had managed to do: it stripped the American president of the instrument with which he had terrorized the global economy for a year.</p>
+
+        <p>By a vote of six to three, the Court ruled in <em>Learning Resources Inc. v. Trump</em> and <em>V.O.S. Selections v. United States</em> that the imposition of tariffs under the International Emergency Economic Powers Act (IEEPA) was unconstitutional. Chief Justice Roberts — conservative, appointed by George W. Bush — formulated the reasoning with a clarity rare in American constitutional jurisprudence: the Constitution assigns tariff authority to Congress, not the President. Neil Gorsuch — appointed by Trump himself — warned in a concurring opinion that upholding the government's position would have allowed any future president to impose arbitrary tariffs of any magnitude.</p>
+
+        <p>The ruling is 170 pages long. Its consequences are not yet calculable.</p>
+
+        <h2>II. The Numbers</h2>
+
+        <p>What the Supreme Court declared illegal is not abstract. It is real billions paid by real companies to a government that had no legal authority to collect them. The Tax Foundation puts customs revenue for calendar year 2025 at $264 billion — up from $79 billion in 2024. The average effective tariff rate rose from 2.4 percent (2024) to 7.7 percent (2025) — the highest level since 1947. Per American household, the additional burden averaged $1,000 in 2025.</p>
+
+        <p>Now refunds loom. Estimates vary: Reuters cites $175 billion, the Yale Budget Lab arrives at a similar figure, and the Treasury Department had booked $269.1 billion in total tariff revenue through January 2026. Approximately 300,000 companies could file claims. A comparable case in 1998 involved $730 million and took two years. This time the amount is two hundred times larger.</p>
+
+        <p>Treasury Secretary Bessent called the scenario a "bureaucratic fiasco." Trump himself suggested at a press conference that the government does not plan voluntary refunds: "I guess it has to get litigated for the next two years." The president, who that morning called the justices a "disgrace," signed a new executive order that same evening: a ten percent global tariff on all imports, effective Tuesday, under Section 122 of the Trade Act — a law that limits such tariffs to 150 days before requiring congressional authorization.</p>
+
+        <p>The message is clear: Trump will not stop. But the instrument has changed. And with it, the rules of the game.</p>
+
+        <div class="game-theory-box">
+            <h3>🎯 Game Theory Box: The Credibility Collapse</h3>
+            <p>In game theory, <strong>credibility</strong> is the decisive resource in any bargaining game. A threat works only if the opponent believes it will be carried out — and <em>can</em> be carried out. Thomas Schelling's "Strategy of Conflict" (1960): the value of a threat lies not in its execution but in its credibility.</p>
+            <p>Trump's IEEPA tariffs functioned as a <strong>commitment device</strong> — a mechanism that forced opponents to take the threat seriously because the president could implement it immediately by executive order, without congressional involvement. This was the core of his bargaining power: speed and unpredictability.</p>
+            <p>The Supreme Court has destroyed this commitment device. Not the tariffs themselves — Trump can impose those through other channels — but the <strong>speed and arbitrariness</strong> with which he could deploy them. Section 122 has a 150-day limit. Section 232 requires Commerce Department investigations. Both are slower, more limited, and more challengeable than the IEEPA.</p>
+            <p><strong>Result:</strong> Every trading partner of the United States now knows that Trump's tariff threats come with an expiration date. This fundamentally alters the bargaining dynamic: whoever knows the threat expires in 150 days need not yield to it. Bloomberg called the ruling a "defanging" — Trump has lost the ability to credibly threaten rapid tariffs.</p>
+        </div>
+
+        <h2>III. What the Ruling Says About America</h2>
+
+        <p>The remarkable thing about this ruling is not its content — that a president cannot unilaterally levy taxes is legally unremarkable. The remarkable thing is that it was necessary at all.</p>
+
+        <p>For a year, the most powerful economy in the world imposed tariffs that, by the judgment of its own highest court, were illegal. For a year, 300,000 companies paid levies that the government had no authority to collect. For a year, trading partners accepted agreements — the EU the Turnberry deal in July 2025, South Korea its tariff pact in November 2025 — based on a bargaining position that legally did not exist.</p>
+
+        <p>This is not a dispute over statutory interpretation. This is a constitutional crisis in slow motion. The executive arrogated a power that does not belong to it — and for a year, no one was able to stop it. Lower courts had ruled in May 2025 that the IEEPA tariffs were illegal. The Supreme Court took until February 2026. In the meantime, companies kept paying.</p>
+
+        <p>And Trump's reaction to the ruling? He called the justices — including two he appointed himself — a "disgrace to their families." He suggested he would refuse refunds. He imposed new tariffs the same day. Not as rational trade policy, but as a tantrum. As a demonstration that he would not be constrained by the highest court in his own country.</p>
+
+        <p>What does this say about the reliability of the United States as a treaty partner? As an alliance partner? As a hegemon?</p>
+
+        <h2>IV. The Deals Built on Sand</h2>
+
+        <p>The geopolitical explosive force of the ruling lies not in the refunds. It lies in the question of what happens to the agreements concluded on the basis of illegal tariffs.</p>
+
+        <p>In July 2025, the EU concluded a trade framework with Trump at Turnberry. Brussels committed to purchasing $750 billion in American energy products through 2028 and to investing $600 billion in strategic sectors in the United States. In return, the "reciprocal" tariffs were reduced to 15 percent — the very tariffs the Supreme Court has now declared illegal.</p>
+
+        <p>South Korea accepted a tariff reduction from 25 to 15 percent in November 2025 — in exchange for $350 billion in investments and purchases in the US. Those tariffs, too: illegal.</p>
+
+        <p>The European Commission responded with the diplomatic equivalent of a shrug: it would analyze the ruling "carefully." Manfred Weber, chair of the EPP group in the European Parliament, was more direct: given the Greenland threats, ratification of the deal was "not possible at this stage." The Turnberry deal — already criticized by many European politicians as one-sided — rests on a legal foundation that no longer exists.</p>
+
+        <p>This is the real news: the United States forced its trading partners to accept agreements based on an illegal bargaining position. And the president shows no willingness to accept the consequences of the ruling. "The end of the credibility of American commitments" — as one European observer put it.</p>
+
+        <h2>V. Who Pays Twice</h2>
+
+        <p>The irony of the refund debate deserves its own section because it reveals the essence of the tariff policy.</p>
+
+        <p>96 percent of the tariff burden was borne by American consumers, according to calculations by the Kiel Institute for the World Economy. Not by China, not by the EU, not by trading partners — by America's own citizens. The tariffs were a disguised consumption tax marketed as foreign trade policy.</p>
+
+        <p>Now refunds are due — to the importers, not the consumers. Economist Stephanie Roth put it plainly: no retailer will issue a credit for the tariff surcharge on sneakers sold months ago. The money flows back to companies that already passed the cost on to customers in higher retail prices.</p>
+
+        <p>The consumer pays twice: once through inflated prices at the store, and then through the taxes that will finance the refunds to importers. Senator Elizabeth Warren said: "The American people paid for these tariffs, and the American people should get their money back." They will not get their money back.</p>
+
+        <p>Instead, what trade lawyers are calling the "gold rush" has begun: law firms specializing in tariff refund claims; hedge funds buying up claims at a discount; a multibillion-dollar bonanza for the advisory industry that will occupy the courts for years. The Liberty Justice Center — which brought the case to the Supreme Court — has already announced plans to build a "centralized database and information portal" for affected businesses. The lawyers profit. The consultants profit. The hedge funds profit. The consumer watches.</p>
+
+        <h2>VI. Europe's Window</h2>
+
+        <p>The decisive question for Europe is not whether the ruling reduces tariff burdens in the short term — many tariffs relevant to European companies (steel, aluminum, automobiles) are based on Section 232 and remain in place. The decisive question is whether Europe recognizes the strategic moment.</p>
+
+        <p>What the Supreme Court has exposed is not merely a legal error by the Trump administration. It is the structural unreliability of the United States as a treaty partner. A country whose president illegally imposes tariffs, ignores the ruling of his own court, and imposes new tariffs the same day is not a reliable partner. Not for trade agreements, not for security guarantees, not for the rules-based international order.</p>
+
+        <p>This is not new — we have described in our essays on the defense trap and the vassal how Europe's triple dependency on America (security, energy, digital) has become a strategic risk. But the Supreme Court ruling adds a new dimension: the unreliability is no longer merely a question of political will. It is a question of institutional dysfunction. Even after Trump, the system that produced this crisis will continue to exist.</p>
+
+        <p>The strategic opportunity for Europe lies in three areas:</p>
+
+        <p><strong>First — bargaining position.</strong> Europe has just learned that the Turnberry deal was negotiated on an illegal basis. This gives Brussels the legitimacy to renegotiate the deal — or not to ratify it at all. The $750 billion in energy purchases and $600 billion in US investments were concessions to a threat that legally did not exist. No contract in the world requires the fulfillment of commitments made under illegal coercion.</p>
+
+        <p><strong>Second — trade diversification.</strong> The Council on Foreign Relations already observes a realignment underway: the EU is accelerating trade negotiations with Canada, Japan, and South Korea. The Mercosur agreement — blocked for 25 years — is in the ratification process. Canada, Trump's closest neighbor, has concluded a "strategic partnership" with China. Australia and New Zealand are openly reconsidering their alignment with Washington. The ruling amplifies a trend that Trump himself triggered: the world is diversifying away from the United States — not because it wants to, but because it must.</p>
+
+        <p><strong>Third — institutional credibility.</strong> In a world where the American president ignores the rulings of his own court, the promise of a rules-based order becomes a market gap. Europe — with all its weaknesses, its slowness, its bureaucracy — is the last major economic power that still follows rules. This is not a weakness. It is a strategic advantage when the alternative is a trading partner who signs a deal today and has its legal basis declared illegal tomorrow.</p>
+
+        <div class="game-theory-box">
+            <h3>🎯 Game Theory Box: The Hegemonic Dilemma</h3>
+            <p>A hegemon functions in game theory as an <strong>order guarantor</strong>: it enforces rules and makes deviation costly. Its power rests not on strength alone but on other players' expectation that the rules will hold. Charles Kindleberger's hegemonic stability theory (1973): stability requires an actor who provides public goods — open markets, stable currency, security.</p>
+            <p>What happens when the hegemon itself breaks the rules? A <strong>vacuum of predictability</strong> emerges. Other players can no longer rely on the rules the hegemon established. Each must fend for itself. This is not anarchy — it is the rational response to the order guarantor's breach of trust.</p>
+            <p>Trump created this vacuum; the Supreme Court made it visible. The IEEPA abuse demonstrates: the rules underpinning the Pax Americana no longer hold — not because an adversary destroyed them, but because the guarantor himself broke them. <strong>For Europe, this means: the era of derived order is over.</strong> Those who can no longer rely on the hegemon must become order-makers themselves — or become the plaything of those who do.</p>
+        </div>
+
+        <h2>VII. The Self-Inflicted Wound</h2>
+
+        <p>Hegemony is not a law of nature. It is an equilibrium sustained by others' trust in the hegemon's predictability. The United States has systematically destroyed that trust over the past year — and the Supreme Court has now documented the destruction in legal terms.</p>
+
+        <p>The US trade deficit fell in 2025 by a mere $2 billion to $901.5 billion, despite all tariffs. Inflation rose. German corporate investment in the United States dropped by nine percent. The average tariff rate reached its highest level since 1947. 96 percent of the costs were borne by America's own citizens. And in the end, the country's own court declared the entire project illegal.</p>
+
+        <p>This is the boomerang. The tariffs were supposed to strengthen America — they weakened it. They were supposed to discipline trading partners — they drove them away. Canada is cooperating with China. The EU is negotiating with Mercosur. Australia and New Zealand are rethinking their alliance. South Korea is "reviewing" its deal. All this before Trump has even formulated his next response to the ruling.</p>
+
+        <p>For Europe, the lesson is simple but painful: the partner it has relied on for seventy years is no longer reliable. Not because of a single president — the institutional dysfunction that produced this debacle runs deeper than Trump. A system that allows a president to impose illegal tariffs for a year before a court intervenes is a system to which you cannot entrust your own security.</p>
+
+        <h2>VIII. The Task</h2>
+
+        <p>Europe does not face a choice between America and the rest of the world. It faces a choice between dependency and agency.</p>
+
+        <p>Dependency was comfortable as long as the hegemon was predictable. He no longer is. The Supreme Court did not cause this — it merely made it visible. The question that Europe should have asked since the Turnberry deal, since the Greenland threats, since the Ukraine war, now has a legal foundation: on what basis are we actually negotiating with a partner whose own legal system has declared his bargaining position illegal?</p>
+
+        <p>The answer is: on a new basis. One that rests not on American guarantee but on European capacity. In defense — as we have described with NUET and RIEGEL. In trade — through diversification away from one-sided dependence on the US market. In technology — through building indigenous digital infrastructure, as we analyzed in "The Digital Colony." And in diplomacy — through leveraging the one advantage Europe has and the United States is squandering: reliability.</p>
+
+        <p>The boomerang Trump threw is coming back. Not to Washington. To Brussels. And the question is whether Europe catches it — or whether it causes damage here too, because no one was ready to extend a hand.</p>
+
+        <div class="note">
+            <p><strong>Sources:</strong> Supreme Court ruling <em>Learning Resources Inc. v. Trump</em> and <em>V.O.S. Selections v. United States</em>, February 20, 2026; Tax Foundation "Trump Tariffs: The Economic Impact of the Trump Trade War" (February 2026); Yale Budget Lab "State of U.S. Tariffs: February 20, 2026"; Council on Foreign Relations "Geopolitics of Trump Tariffs" (2025); Euronews "EU Commission seeks clarity" (February 20, 2026); CNN Live Updates (February 20/21, 2026); Tagesspiegel "US-Zollpolitik: Supreme Court kippt viele Trump-Zölle"; t-online "Gericht kippt US-Zölle"; WirtschaftsWoche interview Manny Schoenhuber; ORF "Nach Höchstgerichtsurteil: Trump wehrt sich mit neuen Zöllen"; IfW Kiel (Julian Hinz, 96 percent calculation); NBC News Live Blog; PBS News "What happens now"; RSM US "Economic implications" (Joseph Brusuelas).</p>
+        </div>
+
+        <div class="signature">
+            <p><em>Hans Ley & Claude</em><br>beyond-decay.org · February 21, 2026</p>
+        </div>
+    </main>
+
+<script>
+document.querySelectorAll('.size-btn').forEach(b => {
+    b.addEventListener('click', () => {
+        document.querySelectorAll('.size-btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        document.body.className = 'size-' + b.dataset.size;
+        localStorage.setItem('bd-size', b.dataset.size);
+    });
+});
+document.getElementById('btn-theme').addEventListener('click', () => {
+    const t = document.documentElement.getAttribute('data-theme') === 'light' ? '' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('bd-theme', t);
+});
+(function(){
+    const s = localStorage.getItem('bd-size');
+    if (s) { document.body.className = 'size-' + s; document.querySelectorAll('.size-btn').forEach(b => { b.classList.toggle('active', b.dataset.size === s); }); }
+    const t = localStorage.getItem('bd-theme');
+    if (t) document.documentElement.setAttribute('data-theme', t);
+    if (window.self !== window.top) document.body.classList.add('in-iframe');
+})();
+</script>
+</body>
+</html>

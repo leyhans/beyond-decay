@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Comes from the Outlet | gu18.eu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --text: #e8e6e3;
+            --text-dim: #888888;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.15);
+            --border: #2a2a2a;
+        }
+        
+        [data-theme="light"] {
+            --bg: #f5f5f5;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-dim: #555555;
+            --accent: #8a7340;
+            --accent-dim: rgba(138, 115, 64, 0.1);
+            --border: #dddddd;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'IBM Plex Serif', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.size-small { font-size: 15px; }
+        body.size-normal { font-size: 18px; }
+        body.size-large { font-size: 21px; }
+        body.size-xlarge { font-size: 24px; }
+        
+        .controls-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-top: none;
+            border-right: none;
+            padding: 8px 15px;
+            display: flex;
+            gap: 8px;
+            z-index: 1000;
+            border-bottom-left-radius: 8px;
+        }
+        
+        .controls-bar button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+        
+        .controls-bar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .controls-bar button.active {
+            background: var(--accent);
+            color: #0a0a0a;
+            border-color: var(--accent);
+        }
+        
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 80px 25px 120px;
+        }
+        
+        .meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75em;
+            color: var(--text-dim);
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .meta a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        h1 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 2.4em;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: var(--text-dim);
+            font-style: italic;
+            margin-bottom: 50px;
+        }
+        
+        h2 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.4em;
+            font-weight: 500;
+            margin: 50px 0 25px;
+            color: var(--accent);
+        }
+        
+        p {
+            margin-bottom: 1.5em;
+            text-align: justify;
+            hyphens: auto;
+        }
+        
+        blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 25px;
+            margin: 35px 0;
+            font-style: italic;
+            color: var(--text-dim);
+        }
+        
+        blockquote cite {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.85em;
+            font-style: normal;
+            color: var(--accent);
+        }
+        
+        strong {
+            font-weight: 500;
+            color: var(--accent);
+        }
+        
+        .highlight-box {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            padding: 25px 30px;
+            margin: 40px 0;
+            border-radius: 4px;
+        }
+        
+        .highlight-box p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .footer-note {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75em;
+            color: var(--text-dim);
+        }
+        
+        .footer-note a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8em; }
+            .container { padding: 60px 20px 80px; }
+            .controls-bar { padding: 6px 10px; }
+        }
+    </style>
+</head>
+<body class="size-normal">
+    <div class="controls-bar">
+        <button onclick="setSize('small')">A−</button>
+        <button onclick="setSize('normal')" class="active">A</button>
+        <button onclick="setSize('large')">A+</button>
+        <button onclick="setSize('xlarge')">A++</button>
+        <button onclick="toggleTheme()">◐</button>
+    </div>
+
+    <div class="container">
+        <div class="meta">
+            <a href="https://gu18.eu">gu18.eu</a> · Essay · February 2026
+        </div>
+        
+        <h1>Electricity Comes from the Outlet</h1>
+        <p class="subtitle">Do progressives have any idea where wealth comes from?</p>
+
+        <h2>I. The Mystery of the Outlet</h2>
+        
+        <p>For a small child, the matter is clear: electricity comes from the outlet. You plug in the plug, and the device works. Where the electricity comes from, how it's generated, which power plants, grids, engineers, and investments are necessary for it to flow reliably — that lies beyond the child's horizon. The outlet is simply there, the electricity flows, the world works.</p>
+        
+        <p>At some point, the child learns that behind the outlet stands a complex system. Power plants must be built. Fuels must be procured, or wind and sun must be captured. Lines must be laid, transformers installed, grids stabilized. People must plan, build, maintain, and improve these systems. Capital must be provided to finance it all. Without this interplay of technology, organization, capital, and human labor, the outlet would be a dead hole in the wall.</p>
+        
+        <p>With economic values — prosperity, goods, services — this learning process seems never to occur for some people. For them, prosperity comes "from the economy," just as electricity comes from the outlet. Where it originates, how it comes into being, what is needed for it to come into being — this remains a mystery one doesn't think about because one doesn't need to think about it. It's simply there.</p>
+
+        <h2>II. The Progressive Worldview: Distribution without Creation</h2>
+        
+        <p>When you read progressive platforms, a peculiar imbalance stands out: For the distribution of wealth, there are detailed concepts. Wealth taxes, windfall profit taxes, inheritance taxes, maximum wages, minimum wages, transfer payments, social insurance — the arsenal of redistribution instruments is richly stocked and finely calibrated. Every percentage point, every allowance, every progression is thought through.</p>
+        
+        <p>For the creation of wealth, however, there is a peculiar silence. The central question — how does the cake come into being that one wants to distribute? — is treated like a law of nature: It's just there. The economy produces, as the sun shines. One only needs to ensure that the fruits are justly distributed.</p>
+        
+        <p>This blindness has tradition. Marx's labor theory of value claimed that the value of a commodity corresponds to the labor time "embodied" in it. Marx himself forestalled the obvious objection: it is not the hours of the slow cobbler that count, but the "socially necessary" labor time. But that only shifts the problem — for who determines what is necessary, if not the market, precisely the mechanism the theory set out to explain? That the doctrine thus runs in a circle has not diminished its effect on progressive thinking. It still shapes the notion that "labor" is inherently value-creating and "capital" merely extracts.</p>
+
+        <h2>III. How Wealth Actually Comes Into Being</h2>
+        
+        <p>In reality, wealth is not a natural product but the result of human creativity, organization, and willingness to take risks. It arises through a complex process whose elements progressive theory largely ignores.</p>
+        
+        <p>There is first <strong>innovation</strong> — the discovery of new possibilities to do things better, cheaper, or at all. The loom, the steam engine, the computer, the internet — each of these inventions has increased humanity's wealth many times over, not through redistribution of what exists, but through creation of something new.</p>
+        
+        <p>There is <strong>productivity</strong> — the ability to produce more with the same effort. Economic historians estimate the increase in labor productivity since the industrial revolution at twentyfold. This means: A worker today creates in one hour what his great-grandfather needed twenty hours for. This productivity gain — not redistribution — is the source of modern mass prosperity.</p>
+        
+        <p>There is <strong>entrepreneurship</strong> — the willingness to take risks to develop new products, services, or business models. The entrepreneur recognizes a possibility that others don't see, mobilizes resources, organizes production, and bears the risk of failure. Without this function, there would be no dynamic economy — only administration of the existing.</p>
+        
+        <p>There is finally <strong>capital</strong> — not as mere money, but as investment in means of production that increase productivity. The machine that a worker operates is accumulated human inventiveness, materialized in steel and software. Without this capital formation, humans would still be limited to the productivity of their bare hands.</p>
+
+        <h2>IV. Confusing the Cake with the Slices</h2>
+        
+        <p>The fundamental misunderstanding of the distribution fixation consists in conceiving of the economy as a zero-sum game: What one person has, the other lacks. When the rich get richer, the poor get poorer. When businesses make profits, workers are exploited.</p>
+        
+        <p>This notion fails to recognize that wealth is created, not just distributed. The cake can grow. In fact, that's exactly what has happened over the last two centuries: Global wealth has multiplied, not because it was distributed differently, but because humanity learned to produce more.</p>
+        
+        <p>Of course there are also distribution questions. Of course it's not irrelevant who gets which share of the cake. But the focus on distribution with simultaneous ignorance toward production resembles a cook who is exclusively interested in how the cake is sliced, without ever asking how it is baked.</p>
+        
+        <div class="highlight-box">
+            <p>The typical progressive demand reads: "There is enough for everyone, it just needs to be distributed fairly." But why is there enough for everyone? Because someone produced it. And whether there will be enough for everyone tomorrow depends on whether someone produces tomorrow. This causality is systematically ignored.</p>
+        </div>
+
+        <h2>V. The Goose That Lays Golden Eggs</h2>
+        
+        <p>John Maynard Keynes, whom progressives like to cite as a witness, is no witness against it here. We must not starve the goose that lays the golden eggs before we have discovered how to replace her: a thought as old as Aesop's fable, and one Keynes would have shared.</p>
+        
+        <p>The goose that lays golden eggs is the productive economy — the interplay of innovation, entrepreneurship, capital, and labor that creates wealth. You can distribute her eggs. But if you treat her so that she stops laying eggs, there's nothing left to distribute.</p>
+        
+        <p>That's exactly what threatens when economic policy is understood only as distribution policy. When every profit is suspected of being a "windfall profit." When entrepreneurship is considered exploitation. When capital is seen only as extraction, not as a prerequisite for productivity. When risk-taking is punished rather than rewarded. Then capital migrates away, entrepreneurship withers, innovation dries up — and in the end there's less to distribute.</p>
+
+        <h2>VI. The Legacy of East Germany</h2>
+        
+        <p>Germany has already conducted this experiment. For forty years, a state existed on German soil that placed the distribution question at the center of its economic order. The means of production were socialized, profits were redistributed, inequality was low.</p>
+        
+        <p>The result? East Germany fell economically further and further behind West Germany. Not because its people were less industrious, but because the system neutralized the forces that create wealth: Innovation was smothered by planned economy, entrepreneurship was not provided for, capital formation didn't work, productivity increases failed to materialize.</p>
+        
+        <p>In 1989, a West German industrial worker produced three times as much value per hour as his East German colleague — not because he worked three times as hard, but because he worked with better machines, in more efficient organizations, under more innovation-friendly conditions. Distribution in East Germany was fairer, but there was dramatically less to distribute.</p>
+
+        <h2>VII. The Blind Spots</h2>
+        
+        <p>The suppression of the value creation question has concrete political consequences. When the Left demands "windfall profit taxes," it doesn't ask how these profits came about — whether through market power, through risk, through innovation, or through chance. Everything above a level defined as "normal" is considered extractable.</p>
+        
+        <p>When green economic policy decrees which technologies should be promoted and which forbidden, it doesn't ask what entrepreneurial dynamism is thereby stifled. Politics knows better than the market what is sustainable — a presumption that collides with the historical experience of planned economies.</p>
+        
+        <p>When social democratic industrial policy demands subsidies for struggling industries, it doesn't ask why these industries are struggling and whether the resources might be more productively employed elsewhere. Preserving what exists counts as an end in itself, even when it blocks the change that could create new wealth.</p>
+
+        <h2>VIII. What a Real Progressive Economic Policy Would Need to Understand</h2>
+        
+        <p>An economic policy that wants to be both social and successful would need to keep both in view: the distribution and the creation of wealth. It would need to understand that you can only distribute what is produced, and that the conditions of production determine the limits of distribution.</p>
+        
+        <p>It would need to understand that innovation is not automatic, but needs framework conditions: education, research, access to capital, freedom to start businesses, protection of intellectual property, but also the willingness to accept failure and reward success.</p>
+        
+        <p>It would need to understand that entrepreneurship is a function, not exploitation — and that this function needs people who are willing to take risks, provide organization, and bear responsibility.</p>
+        
+        <p>It would need to understand that productivity is the actual source of mass prosperity — and that productivity requires investments that only happen when they pay off.</p>
+        
+        <p>Mondragón, the Basque cooperative group, has shown that an alternative form of ownership is possible without suspending the basic mechanisms of value creation. The employees are owners, but they still have to innovate, produce, compete, form capital. The distribution is different, but the laws of value creation apply there too.</p>
+
+        <div class="highlight-box">
+            <p>The adult knows that electricity doesn't come from the outlet, but that power plants, grids, and people stand behind it. The adult economist would need to know that prosperity doesn't come "from the economy," but from innovation, productivity, and entrepreneurship.</p>
+            <p>An economic policy that doesn't understand this resembles a child who wonders why no more electricity flows after shutting down the power plant.</p>
+        </div>
+
+        <div class="footer-note">
+            <p>Essay written February 2026 · Part of the <a href="https://gu18.eu">gu18.eu</a> mindmap</p>
+            <p>Topics: Value creation · Economic policy · Innovation · Productivity · Progressive politics</p>
+        </div>
+    </div>
+
+    <script>
+        function setSize(size) {
+            document.body.className = 'size-' + size;
+            document.querySelectorAll('.controls-bar button').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('fontSize', size);
+        }
+        
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        }
+        
+        // Load preferences
+        const savedSize = localStorage.getItem('fontSize') || 'normal';
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.body.className = 'size-' + savedSize;
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.querySelectorAll('.controls-bar button').forEach(b => {
+            if (b.textContent.includes('A') && b.onclick.toString().includes(savedSize)) {
+                b.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

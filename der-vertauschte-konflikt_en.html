@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Swapped Conflict | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+        text-decoration: none;
+    }
+    .site-name:hover { opacity: 0.7; }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        font-size: 2.2rem;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+        color: var(--text-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 300;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 1.5rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 2.5rem;
+        letter-spacing: 0.5px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        letter-spacing: 0.3px;
+    }
+    p {
+        margin-bottom: 1.2rem;
+        text-align: justify;
+        hyphens: auto;
+    }
+    em { color: var(--accent-color); font-style: italic; }
+    strong { color: var(--accent-color); font-weight: 500; }
+    a {
+        color: var(--link-color);
+        text-decoration: none;
+        border-bottom: 1px dotted var(--link-color);
+        transition: opacity 0.3s;
+    }
+    a:hover { opacity: 0.7; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .signature {
+        margin-top: 2.5rem;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        color: var(--meta-color);
+        line-height: 1.7;
+    }
+    .footer-back {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        text-align: center;
+    }
+    .footer-back a {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        border-bottom: none;
+    }
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+        header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+
+<header>
+    <a href="index.html" class="site-name">beyond-decay.org</a>
+    <div class="controls">
+        <a href="der-vertauschte-konflikt_de.html" class="ctrl-link" id="lang-toggle">DE</a>
+        <span class="ctrl-sep"></span>
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Größe</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+    <main>
+        <h1>The Swapped Conflict</h1>
+        <div class="subtitle">A reply to Christian Reiermann&#39;s SPIEGEL editorial »An End to the Tyranny of the Old«</div>
+        <div class="meta">beyond-decay.org — 14 June 2026</div>
+
+<p>The entire editorial rests on a single move, performed in the first third, almost in passing: the swapping of the conflict axis. For decades, the argument goes, political strife has run between rich and poor — but that is the worn-out line. The true, repressed conflict is called <em>old against young</em>. We want to take this swap seriously, for it is the most artful point in the text. And we want to show what it accomplishes: not the discovery of the real fault line, but the making-disappear of another.</p>
+
+<p>Note first how unequally the two axes are introduced. The rich-poor line is located by name — with „the SPD, the Left and the unions", who „like to strike up the tune". It appears as a party refrain, as ideology, as an ageing of the debate itself. The old-young line, by contrast, enters without a sender, as the sober reality lying behind the ideology. With that the rhetorical work is already done before a single argument is made: one framing is ennobled into reality, the other demoted to mere opinion. But they are two framings.</p>
+
+        <h2>What We Concede</h2>
+
+<p>Before we contradict, we concede the true core in full, for it is real and it is strong. The gerontocratic tilt of German social policy exists. Retirement at 63 relieves the well-off and the poorer early retirees alike and costs the pension fund nearly ten billion euros year after year; the expansion of the mothers&#39; pension is an expensive cohort transfer at a moment when the money is lacking. Whoever sees a distributional problem here is right. More than that: the mechanism is textbook. Pensioners are the model stable distributional coalition — large, concentrated in benefit, diffuse in cost (the costs fall on the younger and on the future), reliably voting and therefore rewarded by the median-voter calculus. That the young feel disadvantaged is no illusion, and that many escape into part-time work or abroad is, as the article rightly says, economically rational behaviour. Up to here we follow.</p>
+
+        <h2>The First Error: Selective Olson</h2>
+
+<p>The break begins not with the lens but with its application. The distributional coalition is named — but only one. On the old, the logic of organised interests is brought into sharp focus; on every other coalition, it is not. Why does the age cohort get a name and capital none? Why is the one stable coalition that shapes the country according to its interests called „the old" — while the other does not appear in the entire text? This is no slip of emphasis. It is the decision about which conflict may be seen.</p>
+
+        <h2>The Second Error: The Erased Axis</h2>
+
+<p>For this is the truly remarkable thing about this editorial — what is <em>missing</em>. In the whole text, capital does not appear. Not a word on wealth, on inheritance, on capital income, on corporate profits. The entire drama is staged within the population of the wage-dependent: contributors against transfer recipients, both hanging on the same wage-and-contribution system. The property dimension is not on the stage — it is not even named.</p>
+
+<p>And precisely here the frame falls apart on its own figures. If there is a great transfer between the generations, it is long under way, only it runs along a different axis than the one the article draws. In Germany around four hundred billion euros are inherited and gifted each year — more than ten percent of economic output. Of this enormous intergenerational stream, the richest ten percent receive half, while the poorer half of the population inherits almost nothing, or debt. The economic-miracle generation bequeaths its savings not to „the young" but to its heirs. The real generational transfer is <em>dynastic, not generational</em>: it flows from the wealthy old to the wealthy young and reproduces class position across the cohort boundary. Wealth itself is distributed in Germany as unequally as in almost no other European country — the richest ten percent hold around sixty percent of net wealth, the poorer half a good one percent. A narrative that hangs the country&#39;s future on the conflict between old and young while keeping silent about this axis does not describe reality. It selects from it.</p>
+
+        <h2>The Third Error: The Cohort as Monolith</h2>
+
+<p>The swap exacts a price, and it falls due in a single sentence: today&#39;s old are „the best-provided pensioner generation in history". That is true on average — and the average conceals what is decisive. In 2024, 19.6 percent of those over 65 counted as at risk of poverty, among women more than one in five; some 3.4 million older people are affected, the receipt of basic old-age security stands at a record and is rising. To speak of „the" best-provided generation is to render every fifth poor pensioner invisible.</p>
+
+<p>This making-invisible is no accident; it is statistically necessary for the recipe. The article justifies the proposed rise in value-added tax with the argument that, in an ageing society, it falls mainly on the old who consume their savings — that is, the well-provided. But a consumption tax does not ask about age; it asks about the consumption ratio. And that ratio falls as income and wealth rise: no one consumes in proportion to what they own. The poor pensioner spends nearly her entire income and is therefore taxed on almost all of it; the rich person — young or old — consumes only a fraction and accordingly bears the tax only on that fraction. The rest remains untaxed, grows, and is bequeathed. Value-added tax therefore does not relieve the young and burden the old — it relieves the wealthy and burdens those who consume, across both age cohorts. For the sentence „not unsocial" to stand, the old would have to be rich and the young poor. They are both only on average, and <strong>the average is here the lie</strong>.</p>
+
+        <h2>What the Frame Performs</h2>
+
+<p>Let us read, at the end, the recipe rather than the diagnosis. Proposed are: the abolition of the expensive cohort transfers (this hits the old — so far consistent), an income-tax reform with relief expressly „not only for lower and middle incomes", that is, reaching into the top, and, to finance it, a higher, regressive value-added tax. Under the banner of generational justice an upward redistribution is thereby packaged: relief that reaches the high incomes, paid for out of a tax that hits the weak hardest. In this construction the generational conflict is not the discovered fault line. It is the instrument that makes the wealth fault line unspeakable.</p>
+
+<p>Thus the article&#39;s diagnosis is not false but half — and the missing half is the decisive one. The truly hard-pressed young, who pay record levies on their labour, and the truly hard-pressed old, who live on basic security, are set against one another, while the axis along which the country&#39;s wealth actually concentrates and is actually bequeathed is kept off the stage. It is right to name the gerontocracy. But to name only the age coalition and keep silent about the capital coalition is itself a political act — and not a neutral one.</p>
+
+<p>That is why we put back the question with which an honest version of this editorial would have had to end: why is the one distributional coalition that gets a name precisely the one composed largely of the propertyless — and not the one to which the country belongs?</p>
+
+        <div class="signature">
+            Hans Ley und Claude Dedo (Anthropic)<br>
+            beyond-decay.org — 14 June 2026
+        </div>
+
+        <div class="footer-back">
+            <a href="index.html">← zur Übersicht</a>
+        </div>
+    </main>
+
+<script>
+(function() {
+    const body = document.body;
+    const themeBtn = document.getElementById('btn-theme');
+    const sizeBtns = document.querySelectorAll('.size-btn');
+
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+    }
+    function applySize(s) {
+        if (!s) return;
+        body.classList.remove('size-small','size-normal','size-large','size-xlarge');
+        body.classList.add('size-' + s);
+        sizeBtns.forEach(function(x){
+            x.classList.remove('active');
+            if (x.dataset.size === s) x.classList.add('active');
+        });
+    }
+
+    // Load saved preferences (shared keys with parent home-neu.html)
+    try {
+        var savedTheme = localStorage.getItem('theme');
+        var savedSize = localStorage.getItem('fontSize');
+        if (savedTheme) applyTheme(savedTheme);
+        if (savedSize) applySize(savedSize);
+    } catch(e) {}
+
+    themeBtn.addEventListener('click', function() {
+        var current = document.documentElement.getAttribute('data-theme');
+        var next = current === 'light' ? 'dark' : 'light';
+        applyTheme(next);
+        try { localStorage.setItem('theme', next); } catch(e) {}
+    });
+
+    sizeBtns.forEach(function(b){
+        b.addEventListener('click', function() {
+            var s = b.dataset.size;
+            applySize(s);
+            try { localStorage.setItem('fontSize', s); } catch(e) {}
+        });
+    });
+
+    // Listen for postMessage from parent frame (home-neu.html)
+    window.addEventListener('message', function(event) {
+        if (!event.data || !event.data.type) return;
+        if (event.data.type === 'setTheme') applyTheme(event.data.theme);
+        else if (event.data.type === 'setSize') applySize(event.data.size);
+    });
+
+    if (window.self !== window.top) body.classList.add('in-iframe');
+})();
+</script>
+</body>
+</html>

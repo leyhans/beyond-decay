@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game isch over | gu18.eu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #141414;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent-gold: #d4a574;
+            --accent-gold-dim: #8b7355;
+            --border-color: #2a2a2a;
+            --font-serif: 'Cormorant Garamond', Georgia, serif;
+            --font-sans: 'Source Sans Pro', -apple-system, sans-serif;
+            --font-size-base: 1.1rem;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f5f5f5;
+            --bg-secondary: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent-gold: #996633;
+            --accent-gold-dim: #774422;
+            --border-color: #cccccc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-serif);
+            font-size: var(--font-size-base);
+            line-height: 1.8;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Sticky Header */
+        header {
+            position: sticky;
+            top: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            transition: background 0.3s;
+        }
+
+        .site-title {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            color: var(--accent-gold);
+            text-decoration: none;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .lang-toggle, .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .lang-toggle:hover, .theme-toggle:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        .font-controls {
+            display: flex;
+            gap: 0.3rem;
+        }
+
+        .font-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .font-btn:hover, .font-btn.active {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--accent-gold);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+            z-index: 100;
+        }
+        
+        .back-button:hover {
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+        }
+        
+        @media (max-width: 1100px) {
+            .back-button {
+                top: auto;
+                bottom: 1rem;
+                left: 1rem;
+                transform: none;
+            }
+        }
+
+        /* Main Content */
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2rem 5rem;
+        }
+
+        h1 {
+            font-family: var(--font-serif);
+            font-size: 2.8rem;
+            font-weight: 400;
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-family: var(--font-sans);
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .meta {
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h2 {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--accent-gold);
+            margin: 3rem 0 1.5rem;
+        }
+
+        h3 {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        blockquote {
+            border-left: 3px solid var(--accent-gold);
+            margin: 2rem 0;
+            padding: 1rem 2rem;
+            background: var(--bg-secondary);
+            font-style: italic;
+        }
+
+        blockquote .source {
+            display: block;
+            margin-top: 1rem;
+            font-style: normal;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .highlight {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .satire {
+            font-style: italic;
+            color: var(--text-secondary);
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px dashed var(--border-color);
+        }
+
+        ul {
+            margin: 1.5rem 0 1.5rem 2rem;
+        }
+
+        li {
+            margin-bottom: 0.8rem;
+        }
+
+        .section-divider {
+            text-align: center;
+            margin: 3rem 0;
+            color: var(--accent-gold-dim);
+            font-size: 1.5rem;
+            letter-spacing: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-top: 1px solid var(--border-color);
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--accent-gold);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+
+            main {
+                padding: 2rem 1rem 4rem;
+            }
+
+            .font-controls {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/gu18-wegweiser.html" class="site-title">gu18.eu</a>
+        <div class="header-controls">
+            <a href="game-isch-over.html" class="lang-toggle">DE</a>
+            <div class="font-controls">
+                <button class="font-btn" onclick="setFontSize(0.95)">A−</button>
+                <button class="font-btn active" onclick="setFontSize(1.1)">A</button>
+                <button class="font-btn" onclick="setFontSize(1.25)">A+</button>
+                <button class="font-btn" onclick="setFontSize(1.4)">A++</button>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()">◐</button>
+        </div>
+    </header>
+
+    <!-- Back Button -->
+    <a href="/gu18-wegweiser.html" class="back-button" title="Back">←</a>
+
+    <main>
+        <article>
+            <h1>Game isch over</h1>
+            <p class="subtitle">On the winding down of flywheels and the art of inheriting problems</p>
+            <p class="meta">Essay VIII · January 2026</p>
+
+            <blockquote>
+                "Isch over."
+                <span class="source">— Wolfgang Schäuble on Greece, February 2015 (in Baden dialect: "It's over")</span>
+            </blockquote>
+
+            <p>It was the sentence of a victor. The German Finance Minister, Europe's disciplinarian from Baden, informed the Greeks in his broad Alemannic dialect that their game was over. Germany as moral authority, preaching fiscal discipline and balanced budgets to the "lazy Southerners." Teutonic arrogance in its purest form.</p>
+
+            <p>Ten years later, the sentence falls back on the sender. <span class="highlight">Game isch over</span> — for Germany itself.</p>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <h2>The Flywheel</h2>
+
+            <p>An engineer would explain it like this: Germany was a heavy flywheel, set in motion over decades. Infrastructure, industry, education, social cohesion — all built up between 1950 and 1980, driven by a generation that still knew what reconstruction meant.</p>
+
+            <p>The treacherous thing about flywheels: They feign stability. The rotation speed stays constant for a long time, even when no drive power remains. From the outside, everything looks normal — it's still spinning, after all. But those who look closely see: nothing is being added anymore. Energy is only being consumed.</p>
+
+            <p>The German business model of the last three decades essentially rested on three pillars:</p>
+
+            <ul>
+                <li>Cheap Russian energy</li>
+                <li>The Chinese market for cars and machinery</li>
+                <li>The American security umbrella</li>
+            </ul>
+
+            <p>All three pillars are gone or wobbling. Nord Stream is blown up. China now builds the machines itself. And America asks: "What exactly are you paying for your security?"</p>
+
+            <p>The flywheel has wound down. And everyone acts surprised.</p>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <h2>The Bazooka of Announcements</h2>
+
+            <p>In March 2020, Finance Minister Olaf Scholz stepped before the cameras and announced they would now "bring out the bazooka." 822 billion euros in guarantees! Unlimited credit programs! Germany shows how crisis management is done!</p>
+
+            <div class="satire">
+                Message from the Chancellery, 2020:<br>
+                "The bazooka is loaded. We'll fire as soon as the forms are filled out. In triplicate. And notarized. Please ask Bavaria's Minister-President Söder for patience."
+            </div>
+
+            <p>In September 2022 came the "Doppelwumms" (double boom). 200 billion euros against the energy crisis! A protective shield! No one will be left behind!</p>
+
+            <p>The balance sheet: Of the 200 billion, only part was actually drawn — for the gas and electricity price brakes and for the rescue of the gas company Uniper, which had gambled itself into trouble with Russian gas and swallowed 13.5 billion in state equity.</p>
+
+            <p>In February 2022, the same Chancellor proclaimed the "Zeitenwende" (turning point). 100 billion special fund for the Bundeswehr! Germany will become defense-capable! A historic new beginning!</p>
+
+            <p>The balance sheet after three years: Delivery delays on almost all major projects. Cost overruns on a large share of the projects — the Federal Court of Audit internally criticises around a third of all projects financed from the special fund. And the term "Sondervermögen" (special fund) was declared Germany's "non-word of the year" 2025 — because "special debt" would have been more honest.</p>
+
+            <p>Almost half the money went to a single corporation: Rheinmetall. Shareholders applauded. Whether the Bundeswehr has become more defense-capable, nobody knows exactly.</p>
+
+            <div class="satire">
+                Announcement from the Ministry of Defense, 2025:<br>
+                "The delivery date for the new battle tanks has been adjusted. Instead of 2025, now 2027. The delay is within the range of expectations. Expectations have been adjusted accordingly."
+            </div>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <h2>The Art of Postponing</h2>
+
+            <p>The pattern is always the same: Big announcement, martial language, enormous sums — and then little to nothing happens. But the real problem runs deeper.</p>
+
+            <p><span class="highlight">Postponed problems don't disappear. They grow.</span></p>
+
+            <p>The logic is compellingly simple: Those who govern today want to be re-elected today. So: good news now, costs later. The bill goes to the next generation. After me, the deluge.</p>
+
+            <ul>
+                <li><strong>Climate change:</strong> Known for 50 years, urgent for 30, acute for 10. Each generation passes it to the next. The costs multiply.</li>
+                <li><strong>Pensions:</strong> The demographics were foreseeable in the 70s. Nothing happened. Now generational conflict is pre-programmed.</li>
+                <li><strong>Infrastructure:</strong> Bridges, railways, networks — decades without investment. Now renovation costs ten times what maintenance would have.</li>
+                <li><strong>Integration:</strong> "We can do this" — without a plan, without resources, without honest debate. They didn't want ugly images at the borders. The images of the future will be worse.</li>
+                <li><strong>Digitalization:</strong> "Neuland" (uncharted territory) — Merkel, 2013. Since then: fax machines in health departments, dead zones on highways, digital government services as fiction.</li>
+            </ul>
+
+            <p>The perfidious part: Those who warn early are labeled doomsayers, populists, or misanthropes. Those who tell the truth lose elections. So everyone lies — and everyone knows it.</p>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <h2>The Eternal Recurrence</h2>
+
+            <p>This pattern is not new. It's as old as civilization itself.</p>
+
+            <p>Civilizations arise through problem-solving. They grow, become complex, develop institutions. But at some point, it tips: The institutions that were supposed to solve problems become the problem themselves. They become rigid, self-referential, incapable of adaptation.</p>
+
+            <p>And then the postponing begins.</p>
+
+            <p><strong>Rome:</strong> Borders overextended, military too expensive, so mercenaries. Taxes too high, so inflation. Infrastructure decays because maintenance isn't prestigious. Each emperor passes the buck to the next. Until the Goths arrive.</p>
+
+            <p><strong>The Maya:</strong> Soils depleted, forests cleared, but the temples grew ever larger. The elites celebrated while the foundation eroded. Then came the drought.</p>
+
+            <p><strong>Easter Island:</strong> Felling the last tree for the next statue. Prestige now, consequences later. In the end: no trees, no boats, no escape.</p>
+
+            <p>The blind spot is always the same: Complex societies cannot shrink. They can only grow or collapse. Controlled downsizing is politically unthinkable. So they carry on — until they can't.</p>
+
+            <p>And then it goes very fast.</p>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <h2>The Elite Celebrates</h2>
+
+            <p>While the flywheel winds down, the party continues. The elites have no incentive for change. They profit from the status quo.</p>
+
+            <p>The corporations get the billions — Rheinmetall, Uniper, Lufthansa. Shareholders applaud. Managers collect bonuses for "successful crisis management."</p>
+
+            <p>The politicians announce turning points and double booms, get re-elected (or not), and then move on to well-paid board positions.</p>
+
+            <p>And who pays? Always the same ones. Those without a lobby. The skilled workers whose jobs disappear. The young people who can't find housing. The retirees whose purchasing power dwindles. The municipalities that are broke.</p>
+
+            <div class="satire">
+                Message from Davos, January 2026:<br>
+                "We are deeply concerned about rising inequality. We will convene a panel on it. Between the champagne reception and the networking dinner. The results will feed into a study we'll present next year in Davos."
+            </div>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <h2>The Wobble</h2>
+
+            <p>Now the machine is wobbling to a halt. The rotation speed drops, imperceptibly at first, then noticeably. Those who look can see it:</p>
+
+            <ul>
+                <li>The industry that Greece never had is moving away</li>
+                <li>The infrastructure we were so proud of is crumbling</li>
+                <li>The balanced budget, the sacred dogma, was buried with 500 billion in special debt</li>
+                <li>The digitalization we lectured others about doesn't exist</li>
+                <li>The export champion is losing market share to China</li>
+                <li>"Made in Germany" is a memory, not a promise</li>
+            </ul>
+
+            <p>Germany 2026 is like a former World Cup champion still talking about 1990 while playing in a regional league, wondering why nobody watches anymore.</p>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <h2>If Nothing Happens</h2>
+
+            <p>When the flywheel comes to a standstill, then — as a Bavarian might put it — "God help us all."</p>
+
+            <p>They have created all the preconditions for a distribution battle with eyes wide open. The social cohesion built up over decades has been squandered. Trust in institutions has eroded. The center is shrinking. The fringes are growing.</p>
+
+            <p>The parties offer no solutions, only variations of the same:</p>
+
+            <ul>
+                <li>The conservatives talk about economic turnaround and mean tax cuts for companies that won't exist in ten years</li>
+                <li>The Greens believe cargo bikes and heat pumps will fix everything</li>
+                <li>The liberals are trapped in bonsai libertarianism</li>
+                <li>The Social Democrats are still looking for the working class</li>
+                <li>The far-right offers as a solution a past that never existed</li>
+            </ul>
+
+            <p>Nobody tells the truth: We're no longer number one. We're not even number three anymore. We're an aging society with crumbling infrastructure, living off past successes and thinking it will go on forever.</p>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <h2>Game Over?</h2>
+
+            <p>"Game over" is not the end. It's the moment of clarity. The end of an illusion.</p>
+
+            <p>The question is not whether Schäuble's sentence applies to Germany. It does. The question is what follows from it.</p>
+
+            <p>When you stop riding a dead horse, you can find a new one. But for that, you'd first have to admit the horse is dead.</p>
+
+            <p>Europe could still become something. But not with this EU, not with these structures, not with politicians who have the next election campaign in mind instead of the next generation.</p>
+
+            <p>The game is over. The old game. The question is: New game — or spectator?</p>
+
+            <blockquote>
+                "The sum of all evils is constant."
+                <span class="source">— Dr. Lückert</span>
+            </blockquote>
+
+            <p>Problems don't disappear. They are transformed. The only question is whether we transform them — or whether they transform us.</p>
+
+            <p>The answer isn't given by the past. The answer is given by us. Or not.</p>
+
+            <p>Game isch over.</p>
+
+            <p>What comes now?</p>
+
+        </article>
+    </main>
+
+    <footer>
+        <p>gu18.eu · Essay VIII · January 2026</p>
+        <p><a href="/gu18-wegweiser.html">← Back to Overview</a></p>
+    </footer>
+
+    <script>
+        // Font size control
+        function setFontSize(size) {
+            document.documentElement.style.setProperty('--font-size-base', size + 'rem');
+            document.querySelectorAll('.font-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('gu18-font-size', size);
+        }
+
+        // Theme toggle
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('gu18-theme', next);
+        }
+
+        // Load saved preferences
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('gu18-theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+            
+            const savedSize = localStorage.getItem('gu18-font-size');
+            if (savedSize) {
+                document.documentElement.style.setProperty('--font-size-base', savedSize + 'rem');
+                document.querySelectorAll('.font-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.onclick.toString().includes(savedSize)) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

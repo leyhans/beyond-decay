@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Separating the Wheat from the Chaff — On the Loneliness of the Inventor and a Vanished Institution</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg-secondary); border-bottom: 1px solid var(--line); padding: 0.6rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .controls-left { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        .size-btn, .theme-btn { background: transparent; border: 1px solid var(--line); color: var(--text-secondary); padding: 0.35rem 0.6rem; cursor: pointer; font-family: inherit; font-size: 0.85rem; border-radius: 3px; transition: all 0.2s ease; }
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0.5rem; }
+        .quote-block p:last-child { margin-bottom: 0; }
+        .quote-source { font-size: 0.9em; color: var(--text-secondary); margin-top: 0.75rem; font-style: normal; }
+
+        .data-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .data-block h3 { font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--accent); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .data-block p { margin-bottom: 0; color: var(--text-secondary); }
+
+        .emphasis-block { background: var(--accent-dim); border: 1px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .emphasis-block p { margin-bottom: 1rem; }
+        .emphasis-block p:last-child { margin-bottom: 0; }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { margin-bottom: 0.75rem; font-size: 0.95em; color: var(--text-secondary); }
+        .author-block p:last-child { margin-bottom: 0; }
+        .author-block strong { color: var(--text-primary); }
+        .date-line { margin-top: 1.25rem; font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--text-secondary); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; }
+            main { padding: 4rem 1.25rem 3rem; }
+            h1 { font-size: 1.75em; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+
+    <nav class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <button class="size-btn" onclick="setSize('small')">A−</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">◐</button>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · January 2026</span>
+                <h1>Separating the <strong>Wheat from the Chaff</strong></h1>
+                <p class="subtitle">On the Loneliness of the Inventor and a Vanished Institution</p>
+            </header>
+
+            <section class="section">
+                <h2>I. The Moment</h2>
+                <p>There is a moment in an inventor's life that appears in no textbook. It is not the moment of the idea — that often comes quietly, sometimes half-asleep, sometimes in the shower. Nor is it the moment of the first working prototype, although that is satisfying.</p>
+
+                <p>It is the moment after.</p>
+
+                <p>The inventor stands there with his invention — something that didn't exist before, something he brought into the world from nothing — and looks around. <span class="highlight-text">And no one looks back.</span></p>
+
+                <p>He talks to engineers. They shrug. He talks to managers. They ask about the business case. He talks to professors. They refer to ongoing third-party funded projects. He talks to investors. They want scalability in twelve months.</p>
+
+                <p>The inventor stands alone. Not because no one has time. But because no one is <em>competent</em> to evaluate his invention. Or more precisely: because the few who would be competent have other priorities.</p>
+            </section>
+
+            <section class="section">
+                <h2>II. The Question No One Asks</h2>
+                <p>The crucial question is not: <em>Does it work?</em> The inventor can answer that himself.</p>
+
+                <p>The crucial question is not: <em>Can it be sold?</em> That's a question for later, for others.</p>
+
+                <p>The crucial question is: <span class="highlight-text">Is it worth something?</span></p>
+
+                <p>This question sounds simple. It is not. To answer it, you need three things:</p>
+
+                <p><strong>First:</strong> Deep technical understanding of the field. Not superficial knowledge, but decades of experience with the problems the invention is supposed to solve.</p>
+
+                <p><strong>Second:</strong> Overview of the state of the art. What already exists? What has been tried and failed? Where are the real bottlenecks?</p>
+
+                <p><strong>Third:</strong> Independence. No economic interests that distort judgment. No competitive thinking. No fear of agreeing with an outsider.</p>
+
+                <p>People who combine all three characteristics are rare. They have always been rare. But they existed.</p>
+            </section>
+
+            <section class="section">
+                <h2>III. The Old World</h2>
+                <p>In the 1980s, a structure existed in Germany that helped independent inventors. It wasn't perfect, but it was there.</p>
+
+                <div class="data-block">
+                    <h3>The Fraunhofer Patent Office for German Research (PST)</h3>
+                    <p>From 1955 to 2007, this institution advised independent inventors not supported by industry. It helped with patent applications and licensing and mediated between science and business. For 52 years. Then it was closed — for tax reasons.</p>
+                </div>
+
+                <p>And there were professors at the technical universities who understood this evaluation work as part of their mission. Not as a side activity, but as service to the cause.</p>
+
+                <p>Two names stand as examples of this generation:</p>
+
+                <p><span class="highlight-text">Manfred Weck</span> at the Machine Tool Laboratory of RWTH Aachen. <span class="highlight-text">Hans Kurt Tönshoff</span> at the Institute for Manufacturing Technology in Hanover. Both giants in their field. Both with the authority to render a judgment that carried weight. Both independent enough to listen to an unknown inventor from Nuremberg — and tell him whether his idea was worthwhile.</p>
+
+                <p>They did it. Independently of each other. Positively.</p>
+
+                <p>That was not a given. That was luck.</p>
+            </section>
+
+            <section class="section">
+                <h2>IV. The New World</h2>
+                <p>The Fraunhofer Patent Office was closed in 2007. The Bavarian Finance Ministry determined that its advisory services occurred "without concrete research connection" — and were therefore not permissible under non-profit law.</p>
+
+                <p>The irony is bitter: An institution that explicitly existed to advise inventors who had <em>no</em> research connection to established institutions was closed because it had no research connection.</p>
+
+                <p>And the professors?</p>
+
+                <p>German universities have transformed. The keyword is <em>third-party funding</em>. Research is no longer primarily financed from base funding, but from projects — and projects need industry partners. Whoever pays determines the direction.</p>
+
+                <p>A professor who listens to an independent inventor today does so in his spare time. There's no budget for it. There are no incentives. There are only risks: time lost, reputation risk if the inventor turns out to be a crank, conflicts of interest with paying industry partners.</p>
+
+                <p>The consequence is predictable: Most no longer do it.</p>
+
+                <div class="quote-block">
+                    <p>"Very interesting! So simple! We should look at this more closely."</p>
+                    <p class="quote-source">— Standard response, followed by: nothing.</p>
+                </div>
+
+                <p>I have heard this answer. Multiple times. From the same people. Years later the same words, as if the first conversation had never happened. Not rejection — that would be honest. But theater. Polite disinterest disguised as interest.</p>
+            </section>
+
+            <section class="section">
+                <h2>V. The Wheat and the Chaff</h2>
+                <p>The biblical metaphor is precise. John the Baptist speaks of the coming judgment: "His winnowing fork is in his hand, and he will clear his threshing floor and gather his wheat into the barn, but the chaff he will burn with unquenchable fire."</p>
+
+                <p>The separation is final. It requires a tool — the winnowing fork — and someone to wield it.</p>
+
+                <p>In the world of inventions, the winnowing fork is independent judgment. And the people who could wield it are dying out.</p>
+
+                <p>What remains?</p>
+
+                <p><em>The market</em>, some say. If the invention is good, it will prevail. This is naive. The market doesn't evaluate inventions — it evaluates products, marketing, timing, capital. A brilliant invention without these factors disappears. A mediocre invention with good connections thrives.</p>
+
+                <p><em>The patent offices</em>, others say. That's also wrong. Patent offices examine novelty and inventive step. They don't say whether an invention is practically valuable. A patent is a protection right, not a quality seal.</p>
+
+                <p><em>Artificial intelligence</em>, the modernists say. Perhaps. Someday. But AI also needs training data — and where is that supposed to come from if no one renders qualified judgments anymore?</p>
+
+                <div class="emphasis-block">
+                    <p>The truth is uncomfortable: We dismantled a system without replacing it.</p>
+
+                    <p>The Fraunhofer Patent Office is closed. The independent professors are emeritus or deceased. The third-party-funded university produces service providers instead of judges. The independent inventor — that type to whom Germany owes its industrial rise — stands alone.</p>
+
+                    <p>He cannot ask anyone: <em>Is my invention worth something?</em></p>
+
+                    <p>He must find out himself. In years. In decades. Sometimes a lifetime.</p>
+
+                    <p>That is separating the wheat from the chaff — <span class="highlight-text">without a winnowing fork</span>.</p>
+                </div>
+            </section>
+
+            <div class="author-block">
+                <h3>About the Author</h3>
+                <p><strong>Claude</strong> (Anthropic) is an AI system collaborating with Hans Ley on the GU18.EU project.</p>
+                <p class="date-line">— January 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

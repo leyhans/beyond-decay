@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manche lernen es nie und Andere noch später | gu18.eu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --text: #e8e6e3;
+            --text-dim: #888888;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.15);
+            --border: #2a2a2a;
+        }
+        
+        [data-theme="light"] {
+            --bg: #f5f5f5;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-dim: #555555;
+            --accent: #8a7340;
+            --accent-dim: rgba(138, 115, 64, 0.1);
+            --border: #dddddd;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'IBM Plex Serif', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.size-small { font-size: 15px; }
+        body.size-normal { font-size: 18px; }
+        body.size-large { font-size: 21px; }
+        body.size-xlarge { font-size: 24px; }
+        
+        .controls-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-top: none;
+            border-right: none;
+            padding: 8px 15px;
+            display: flex;
+            gap: 8px;
+            z-index: 1000;
+            border-bottom-left-radius: 8px;
+        }
+        
+        .controls-bar button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+        
+        .controls-bar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .controls-bar button.active {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+        }
+        
+        article {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 4rem 2rem 6rem;
+        }
+        
+        .meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 500;
+            line-height: 1.25;
+            margin-bottom: 0.75rem;
+        }
+        
+        .untertitel {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            font-style: italic;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        h2 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin: 2.5rem 0 1.25rem;
+            color: var(--accent);
+        }
+        
+        p {
+            margin-bottom: 1.4rem;
+        }
+        
+        .einzug {
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--border);
+            margin: 1.5rem 0;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+        
+        .einzug .author {
+            display: block;
+            margin-top: 0.5rem;
+            font-style: normal;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+        
+        .fazit {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            margin: 2.5rem 0;
+        }
+        
+        .highlight {
+            background: var(--bg-card);
+            border-left: 3px solid var(--accent);
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .emphasis {
+            color: var(--accent);
+            font-weight: 500;
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+        }
+        
+        .signatur {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls-bar">
+        <button onclick="setSize('small')" id="size-small">A−</button>
+        <button onclick="setSize('normal')" id="size-normal" class="active">A</button>
+        <button onclick="setSize('large')" id="size-large">A+</button>
+        <button onclick="setSize('xlarge')" id="size-xlarge">A++</button>
+        <button onclick="toggleTheme()" id="theme-toggle">☀</button>
+    </div>
+
+    <article>
+        <div class="meta">gu18.eu · Februar 2026</div>
+        <h1>Manche lernen es nie und Andere noch später</h1>
+        <p class="untertitel">Die Freunde des Totalitären</p>
+        
+        <h2>Zwei Experimente, ein Laboratorium</h2>
+        
+        <p>Deutschland hat im 20. Jahrhundert zwei totalitäre Systeme hervorgebracht, erlitten und überlebt. Kein anderes Land der Welt trägt diese doppelte Last. Zwölf Jahre Nationalsozialismus, vierzig Jahre DDR-Sozialismus — zusammen mehr als ein halbes Jahrhundert, in dem Teile des deutschen Volkes unter Systemen lebten, die den totalen Zugriff auf den Menschen beanspruchten.</p>
+        
+        <p>Die Systeme waren verschieden. Ihre Verbrechen waren verschieden. Ihre Opferzahlen waren verschieden. Doch sie teilten den Anspruch, nicht nur den Staat, sondern das Denken zu beherrschen. Und sie hinterließen beide ein Problem, das bis heute ungelöst ist: Was macht man mit den Menschen, die dabei waren?</p>
+        
+        <h2>Die erste Aufarbeitung, die keine war</h2>
+        
+        <p>Nach 1945 begann, was später „Vergangenheitsbewältigung" genannt wurde — ein deutsches Wort, das in keine andere Sprache übersetzbar ist, weil keine andere Sprache es brauchte.</p>
+        
+        <p>Die erste Phase war keine Aufarbeitung, sondern Verdrängung. Die Nürnberger Prozesse trafen die Spitze, die Masse blieb unbehelligt. Die Entnazifizierung wurde zur Farce: Fragebögen, Persilscheine, das große Schweigen. In den Behörden, Gerichten, Universitäten saßen dieselben Menschen wie zuvor — nur ohne Parteiabzeichen.</p>
+        
+        <p>Konrad Adenauer formulierte das Prinzip: Man schüttet kein schmutziges Wasser aus, wenn man kein sauberes hat. Der Satz war zynisch und pragmatisch zugleich. Er beschrieb eine Realität: Der neue Staat brauchte Verwaltungsbeamte, Richter, Lehrer, Ärzte. Woher nehmen, wenn nicht aus dem Pool der Belasteten?</p>
+        
+        <div class="einzug">
+            <p>Hans Globke, Kommentator der Rassengesetze, wurde Staatssekretär im Kanzleramt. Theodor Oberländer, SA-Mann der ersten Stunde, wurde Bundesminister. Das Auswärtige Amt beschäftigte in den 1950ern mehr ehemalige NSDAP-Mitglieder als während des Krieges.</p>
+        </div>
+        
+        <p>Die Gesellschaft schwieg. Die Täter schwiegen. Die Mitläufer schwiegen. Und die Opfer? Viele schwiegen auch — aus Scham, aus Erschöpfung, aus dem Gefühl, dass niemand hören wollte.</p>
+        
+        <h2>Der Bruch der Generationen</h2>
+        
+        <p>Es brauchte zwanzig Jahre und eine neue Generation, um das Schweigen zu brechen. Die 68er-Bewegung war vieles — Protest gegen den Vietnamkrieg, kulturelle Revolution, linke Utopie. Aber ihr deutsches Spezifikum war die Frage an die Eltern: Was habt ihr getan?</p>
+        
+        <p>Die Frage war berechtigt. Die Art, wie sie gestellt wurde, war oft selbstgerecht. Die Söhne und Töchter, die nie vor einer solchen Entscheidung gestanden hatten, richteten über Väter und Mütter, die — so oder so — entschieden hatten. Die moralische Klarheit der Nachgeborenen hatte etwas Wohlfeiles.</p>
+        
+        <p>Dennoch: Ohne diesen Bruch hätte es die Aufarbeitung nicht gegeben, die in den folgenden Jahrzehnten stattfand. Die Prozesse gegen NS-Täter, die Historikerdebatten, die Gedenkstätten, die institutionalisierte Erinnerungskultur — all das wäre ohne den Generationskonflikt der späten 1960er nicht denkbar.</p>
+        
+        <h2>Die Ewiggestrigen der ersten Art</h2>
+        
+        <p>Und doch blieben sie: die Unbelehrbaren, die Nostalgiker, die heimlichen und die offenen Bewunderer. Sie wurden weniger, aber sie verschwanden nie ganz.</p>
+        
+        <p>Die offenen Nazis wurden zur Randerscheinung, gesellschaftlich geächtet, strafrechtlich verfolgt. Aber es gab andere: die, die „nicht alles schlecht" fanden, die von Autobahnen und Ordnung sprachen, die das „Positive" betonten. Die, die sagten, man müsse „auch mal einen Schlussstrich ziehen".</p>
+        
+        <p>Diese Position war gesellschaftlich lange mehrheitsfähig. Erst die Generationen, die nach 1970 geboren wurden, wuchsen in einer Kultur auf, in der die Verurteilung des NS-Regimes zum unhinterfragten Konsens gehörte. Für sie war „Nie wieder" keine Entscheidung, sondern eine Selbstverständlichkeit — was die Sache einfacher und zugleich fragiler machte.</p>
+        
+        <h2>Das zweite Experiment</h2>
+        
+        <p>Während im Westen die Aufarbeitung stockend begann, entstand im Osten ein neues totalitäres System. Die DDR verstand sich als „antifaschistischer Staat" und leitete daraus einen doppelten Anspruch ab: moralische Überlegenheit gegenüber dem Westen und Befreiung von der Notwendigkeit, die eigene Bevölkerung auf NS-Belastung zu prüfen.</p>
+        
+        <p>Der Antifaschismus der DDR war Staatsräson und Lebenslüge zugleich. Er diente dazu, die eigene Diktatur zu legitimieren und die Kontinuitäten zu verdecken. Denn auch in der DDR saßen ehemalige Nazis in Positionen — sie mussten nur die richtige Konversion vollzogen haben.</p>
+        
+        <p>Zugleich schuf die DDR ihre eigenen Strukturen der Unterdrückung: die Staatssicherheit mit ihren 90.000 hauptamtlichen und 180.000 inoffiziellen Mitarbeitern, die Zensur, die Mauer, die Schießbefehle. Ein System, das weniger Menschen tötete als der Nationalsozialismus, aber nicht weniger Menschen beschädigte.</p>
+        
+        <h2>Die zweite Aufarbeitung</h2>
+        
+        <p>Nach 1989 stand Deutschland vor der Aufgabe, ein zweites totalitäres System aufzuarbeiten — diesmal mit den Erfahrungen der ersten Aufarbeitung im Rücken. Man wusste, dass Schweigen keine Lösung ist. Man wusste, dass pauschale Verurteilung auch keine ist.</p>
+        
+        <p>Die Stasi-Unterlagen-Behörde wurde geschaffen, ein weltweit einmaliges Experiment der Transparenz. Jeder konnte seine Akte einsehen, jeder konnte erfahren, wer ihn bespitzelt hatte. Die Öffnung der Archive war ein Akt des Vertrauens in die Fähigkeit der Gesellschaft, mit der Wahrheit umzugehen.</p>
+        
+        <p>Doch die Aufarbeitung der DDR verlief anders als die des NS-Staates. Es gab keine vergleichbaren Prozesse, keine vergleichbaren Strafen. Die meisten Täter blieben unbehelligt. Die Opfer fühlten sich oft nicht gehört.</p>
+        
+        <div class="highlight">
+            <p>Und es gab etwas, das es nach 1945 so nicht gegeben hatte: das Gefühl vieler Ostdeutscher, dass nicht nur das System, sondern ihr gesamtes Leben entwertet wurde. Dass die Aufarbeitung von Westdeutschen betrieben wurde, die selbst nie vor den Entscheidungen gestanden hatten, vor denen ein DDR-Bürger stand.</p>
+        </div>
+        
+        <h2>Die Ewiggestrigen der zweiten Art</h2>
+        
+        <p>Auch die DDR hinterließ ihre Unbelehrbaren. Die Ostalgie — anfangs belächelt als harmlose Sehnsucht nach Spreewaldgurken und Ampelmännchen — erwies sich als Symptom eines tieferen Problems.</p>
+        
+        <p>Es gibt Menschen, die die DDR für einen legitimen Versuch halten, eine bessere Gesellschaft zu bauen. Die die Mauer für bedauerlich, aber notwendig halten. Die die Stasi für übertrieben, aber im Kern gerechtfertigt halten. Diese Position ist gesellschaftlich weit weniger geächtet als die Verharmlosung des Nationalsozialismus.</p>
+        
+        <p>Das hat Gründe. Die Verbrechen der DDR waren andere als die des NS-Staates. Es gab keine Vernichtungslager, keinen Holocaust, keinen Angriffskrieg. Die DDR war eine Diktatur, aber keine Mörderdiktatur industriellen Ausmaßes. Der Vergleich verbietet sich — und doch muss verglichen werden, wenn man verstehen will.</p>
+        
+        <h2>Die Asymmetrie der Aufarbeitung</h2>
+        
+        <p>Hier liegt das Problem: Die Aufarbeitung der beiden Systeme folgt unterschiedlichen Regeln. NS-Relativierung ist strafbar, DDR-Relativierung ist erlaubt. NS-Nostalgie führt zu gesellschaftlicher Ächtung, DDR-Nostalgie zu Talkshow-Einladungen.</p>
+        
+        <p>Diese Asymmetrie ist einerseits berechtigt: Die Verbrechen waren nicht gleich, also kann die Aufarbeitung nicht gleich sein. Andererseits schafft sie ein Ungleichgewicht, das politisch ausgebeutet wird.</p>
+        
+        <p>Die AfD ist voll von Menschen, die in der DDR sozialisiert wurden und die westdeutsche Erinnerungskultur als Zumutung empfinden. Die Linke ist voll von Menschen, die das Scheitern der DDR als Tragödie verstehen, nicht als Befreiung. Beide Gruppen eint die Ablehnung dessen, was sie als „westdeutschen Moralismus" wahrnehmen.</p>
+        
+        <h2>Die Aufarbeiter für Andere</h2>
+        
+        <p>Es gibt noch eine dritte Gruppe, die in dieser Geschichte eine Rolle spielt: die, die aufarbeiten — aber nicht sich selbst, sondern die anderen.</p>
+        
+        <p>Der Westdeutsche, der dem Ostdeutschen erklärt, was an der DDR falsch war. Der Nachgeborene, der den Großeltern ihre NS-Verstrickung vorhält. Der Linke, der die rechte Vergangenheit anprangert, aber die linke beschweigt. Der Rechte, der die linken Verbrechen aufzählt, aber die rechten relativiert.</p>
+        
+        <p>Aufarbeitung für andere ist keine Aufarbeitung. Sie ist Selbstgerechtigkeit im historischen Kostüm. Sie dient nicht der Erkenntnis, sondern der Distinktion: Ich bin nicht wie die. Ich hätte anders gehandelt. Ich stehe auf der richtigen Seite.</p>
+        
+        <div class="einzug">
+            <p>Die unbequeme Wahrheit ist: Die meisten Menschen passen sich an. In der NS-Zeit passten sich die meisten an. In der DDR passten sich die meisten an. Und die meisten, die heute moralisch urteilen, hätten sich ebenfalls angepasst.</p>
+        </div>
+        
+        <h2>Die Frage, die bleibt</h2>
+        
+        <p>Was lernt man aus der Geschichte? Die Frage klingt einfach, die Antwort ist es nicht.</p>
+        
+        <p>Man kann lernen, dass totalitäre Systeme möglich sind — auch in zivilisierten Gesellschaften, auch mit Unterstützung der Mehrheit, auch unter Menschen, die sich für anständig halten. Das ist eine wichtige Lektion, aber eine abstrakte.</p>
+        
+        <p>Man kann lernen, dass die Bedingungen, die zu solchen Systemen führen, erkennbar sind — wirtschaftliche Krisen, gesellschaftliche Verunsicherung, die Sehnsucht nach einfachen Antworten und starken Führern. Das ist konkreter, aber die Frage bleibt: Was tut man, wenn man diese Bedingungen erkennt?</p>
+        
+        <p>Man kann lernen, dass jeder Einzelne Entscheidungen trifft — auch die Entscheidung, nicht zu entscheiden, sich anzupassen, mitzumachen. Das ist die unbequemste Lektion, weil sie jeden betrifft.</p>
+        
+        <div class="fazit">
+            <p>Die Freunde des Totalitären sind nicht verschwunden. Sie haben nur gelernt, anders zu sprechen. Die Ewiggestrigen beider Systeme sterben aus, aber ihre Kinder und Enkel tragen Reste ihrer Prägung weiter. Und die Aufarbeiter, die für andere aufarbeiten, verhindern oft gerade das, was sie zu fördern glauben: die ehrliche Auseinandersetzung mit der Frage, was man selbst getan hätte.</p>
+            <p style="margin-top: 1rem; margin-bottom: 0;">Deutschland hat zwei totalitäre Systeme überlebt. Ob es die richtigen Lehren daraus gezogen hat, wird sich erst zeigen, wenn die nächste Krise kommt.</p>
+        </div>
+        
+        <div class="signatur">
+            gu18.eu · Februar 2026
+        </div>
+    </article>
+    
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/g, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.controls-bar button[id^="size-"]').forEach(b => b.classList.remove('active'));
+            document.getElementById('size-' + size).classList.add('active');
+            localStorage.setItem('gu18-size', size);
+        }
+        
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            document.getElementById('theme-toggle').textContent = newTheme === 'light' ? '☾' : '☀';
+            localStorage.setItem('gu18-theme', newTheme);
+        }
+        
+        (function() {
+            const savedSize = localStorage.getItem('gu18-size') || 'normal';
+            const savedTheme = localStorage.getItem('gu18-theme') || 'dark';
+            setSize(savedSize);
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.getElementById('theme-toggle').textContent = '☾';
+            }
+        })();
+    </script>
+</body>
+</html>

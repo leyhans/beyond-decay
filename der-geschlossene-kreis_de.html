@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Der geschlossene Kreis | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+        text-decoration: none;
+    }
+    .site-name:hover { opacity: 0.7; }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        font-size: 2.2rem;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+        color: var(--text-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 300;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 1.5rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 2.5rem;
+        letter-spacing: 0.5px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        letter-spacing: 0.3px;
+    }
+    p {
+        margin-bottom: 1.2rem;
+        text-align: justify;
+        hyphens: auto;
+    }
+    em { color: var(--accent-color); font-style: italic; }
+    strong { color: var(--accent-color); font-weight: 500; }
+    a {
+        color: var(--link-color);
+        text-decoration: none;
+        border-bottom: 1px dotted var(--link-color);
+        transition: opacity 0.3s;
+    }
+    a:hover { opacity: 0.7; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .signature {
+        margin-top: 2.5rem;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        color: var(--meta-color);
+        line-height: 1.7;
+    }
+    .footer-back {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        text-align: center;
+    }
+    .footer-back a {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        border-bottom: none;
+    }
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+        header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+
+<header>
+    <a href="index.html" class="site-name">beyond-decay.org</a>
+    <div class="controls">
+        <a href="der-geschlossene-kreis_en.html" class="ctrl-link" id="lang-toggle">EN</a>
+        <span class="ctrl-sep"></span>
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Größe</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+    <main>
+        <h1>Der geschlossene Kreis</h1>
+        <div class="subtitle">Wie BMW seine Substanz nach China verlagert, seine Forschung vom Steuerzahler anschieben lässt und seinen Gewinn in zwei Familienholdings konzentriert — eine Anatomie in drei Bewegungen</div>
+        <div class="meta">beyond-decay.org — 17. Juni 2026</div>
+
+<h2>I. Der gesunde Zwilling kippt</h2>
+
+<p>Als wir die Selbstdiagnose des Volkswagen-Vorstands sezierten, gab es in der deutschen Autoindustrie noch einen, der als Gegenbeweis galt: BMW. Der Konzern, der Rekordgewinne einfuhr, während Wolfsburg mit sich rang. Der lebende Beleg dafür, dass es auch anders geht.</p>
+
+<p>Dieser Beleg ist in dieser Woche verfallen. Am 16. Juni 2026 kappte BMW seine Prognose. Wo bis dahin ein „moderater" Rückgang des Vorsteuerergebnisses stand, steht nun ein „deutlicher"; und erstmals rechnet der Vorstand nicht mehr mit gleichbleibenden, sondern mit sinkenden Auslieferungen. Die Verkäufe in China lagen in den ersten fünf Monaten des Jahres 17,6 Prozent niedriger. Die Investmentbank Jefferies halbierte ihre Erwartung an die Automobilmarge für 2026 von 5,2 auf 2 Prozent. Die Aktie steht im Jahresverlauf rund 31 Prozent im Minus. Schon das abgelaufene Geschäftsjahr 2025 hatte einen Umsatzrückgang von 6,3 Prozent auf 133,5 Milliarden Euro und einen Einbruch des operativen Ergebnisses um 11,5 Prozent gebracht.</p>
+
+<p>Doch das Bemerkenswerte ist nicht die Gewinnwarnung. Quartale schwanken, Märkte drehen, das ist der gewöhnliche Atem eines Industriekonzerns. <strong>Das Bemerkenswerte ist, was unter der schlechten Nachricht unbeirrt weiterläuft.</strong> Denn während die Substanz dünner wird, drehen sich drei Bewegungen weiter, die zusammen einen geschlossenen Kreis ergeben. Nicht das schwache Quartal ist die Geschichte. Der Kreis ist es.</p>
+
+<h2>II. Erste Bewegung: Die Substanz wandert</h2>
+
+<p>BMW baut seine Zukunft nicht in Bayern. China ist längst die größte Forschungs- und Entwicklungspräsenz des Konzerns außerhalb Deutschlands; binnen drei Jahren wurden die dortigen Kräfte verdreifacht, mehr als 3.200 Entwickler, Designer und Softwarespezialisten arbeiten an vier Standorten in Peking, Shanghai, Shenyang und Nanjing.</p>
+
+<p>Es ist nicht mehr die Anpassung eines fertigen Autos an einen fremden Geschmack. Es ist Grundlagenkompetenz. BMW hat in China die Fähigkeit zur vollständigen Entwicklung intelligenter, vernetzter Fahrzeuge aufgebaut — vom Chip bis zur Bedienoberfläche. China ist der einzige Markt außerhalb Deutschlands, in dem der Konzern „Skylab" betreibt, sein Designteam für die Mensch-Maschine-Interaktion, samt eigenem Usability-Labor mit allen Kernfunktionen des Designs. Das chinesische Team war maßgeblich an Konzeption, Erprobung und Validierung des vollelektrischen i5 beteiligt; es arbeitet an der „Neuen Klasse" mit, deren lokale Produktion in China 2026 anläuft, eingebettet in ein vollständiges Ökosystem aus Forschung, Lieferkette und Batteriefertigung.</p>
+
+<p>Den Treiber benennt BMW selbst, ohne jede Verlegenheit: Die chinesische Regierung sei „ein großer unterstützender Faktor". Das ist der wahre Satz hinter der Strategie. Was hier verlagert wird, ist nicht ein Werk, sondern die Fähigkeit, das nächste Auto überhaupt zu erfinden. Und sie wandert dorthin, wo ein Staat sie trägt.</p>
+
+<h2>III. Zweite Bewegung: Der Steuerzahler zahlt den Anschub</h2>
+
+<p>Nun könnte man meinen, Deutschland überlasse seine Konzerne sich selbst. Das Gegenteil ist der Fall. Während die Entwicklungskraft nach Osten zieht, schiebt die öffentliche Hand zu Hause die teuersten, riskantesten Grundlagen an.</p>
+
+<p>BMW erhielt 2020 von Bund und Freistaat 60 Millionen Euro für die Batteriezellenforschung — 70 Prozent vom Bund, 30 Prozent von Bayern —, eingebettet in das europäische Großvorhaben IPCEI, bei dem allein der deutsche Steuerzahler 1,25 Milliarden Euro beisteuerte. 2025 kamen 273 Millionen Euro für das Wasserstoffprojekt hinzu, davon 191 vom Bund und 82 von Bayern. Der Mechanismus dahinter ist der eigentliche Hebel: Die Einstufung als „Vorhaben von gemeinsamem europäischem Interesse" erlaubt dem Staat, in größerem Umfang zu fördern, als die normalen Beihilferegeln es zuließen.</p>
+
+<p>Hier ist Redlichkeit geboten, und wir bleiben dabei: Diese Mittel sind formal an Entwicklung und erste industrielle Nutzung in Europa gebunden. Es fließt kein deutsches Steuergeld direkt nach Shenyang. Der Punkt ist subtiler und wiegt schwerer. <strong>Die Allgemeinheit übernimmt die Grundlagenkosten einer Kompetenz</strong> — Zellchemie, Festkörperakku, Brennstoffzelle, dazu die stille Dauersubvention aus Fraunhofer-Instituten, Hochschulen und Forschungsprogrammen —, dieselbe Kompetenz, die der Konzern anschließend global verwertet, zunehmend in China. Sozialisiert wird das Risiko der Grundlage. Privatisiert wird der Ertrag der Anwendung.</p>
+
+<h2>IV. Dritte Bewegung: Der Gewinn fließt nach oben</h2>
+
+<p>Und dieser Ertrag hat eine sehr genaue Adresse. Stefan Quandt hält 27,7 Prozent, seine Schwester Susanne Klatten 22,5 Prozent — zusammen knapp die Hälfte des Konzerns. Seit 2001 summiert sich ihr Anteil an den BMW-Gewinnen auf 58 Milliarden Euro, davon 18 Milliarden als ausgeschüttete Dividende.</p>
+
+<p>Die Ursprünge dieses Vermögens sind nicht unser Thema; sie haben andere bereits ausreichend beschäftigt. Uns interessiert die Gegenwart, und sie ist deutlich genug. Im selben Jahr, in dem der Konzern die Prognose kappt, schüttet er für 2025 eine Dividende von 4,40 Euro je Stammaktie aus, insgesamt 2,42 Milliarden Euro; nach ihren Anteilen entfällt davon gut eine Milliarde auf die beiden Geschwister. Das Ergebnis sinkt, die Auslieferungen sinken, die Ausschüttung an die Eigentümerfamilie bleibt milliardenschwer.</p>
+
+<p>Wohin dieses Geld dann fließt, lässt sich kaum nachvollziehen. Es landet in Holdinggesellschaften, die wegen ihrer geringen Mitarbeiterzahl nur eine verkürzte Bilanz veröffentlichen müssen; eine davon war für kurze Zeit im Register einsehbar und verschwand dann wieder. Besteuert wird dieser Strom seit 1996 mit einem Bruchteil dessen, was früher galt. Der Konzern ist börsennotiert und transparent; das Vermögen, das er speist, ist es nicht.</p>
+
+<h2>V. Der Kreis</h2>
+
+<p>Nun lässt sich die Figur vollständig nachzeichnen. Die Allgemeinheit trägt den Anschub der Grundlagenforschung. Die Substanz — die Fähigkeit, das nächste Fahrzeug zu entwickeln — wandert dorthin, wo ein anderer Staat sie stützt. Der Gewinn konzentriert sich in zwei Familienholdings, deren Innenleben sich der Öffentlichkeit entzieht. Und das Risiko, sollte die Wette nicht aufgehen, trägt am Ende, wie stets, die Belegschaft und der Standort.</p>
+
+<p>Das ist kein Vorwurf an zwei Personen. Quandt und Klatten tun, was ein Eigentümer in diesem System rational tut. Es ist die Beschreibung einer Schleife, die ohne böse Absicht funktioniert und gerade darin ihre Kraft hat. Wir haben sie an anderer Stelle die Bewirtschaftung der Vielen zum Wohle der Wenigen genannt. BMW führt sie in einer selten reinen Form vor: nicht trotz seines Erfolgs, sondern in dem Moment, in dem der Erfolg bröckelt und der Kreis sich dennoch weiterdreht, als sei nichts geschehen.</p>
+
+<p>Der gesunde Zwilling ist nicht erkrankt. Er war nie der Gegenbeweis. Er war dieselbe Maschine — nur leiser.</p>
+
+        <div class="signature">
+            Hans Ley und Claude Dedo (Anthropic)<br>
+            beyond-decay.org — 17. Juni 2026
+        </div>
+
+        <div class="footer-back">
+            <a href="index.html">← zur Übersicht</a>
+        </div>
+    </main>
+
+<script>
+(function() {
+    const body = document.body;
+    const themeBtn = document.getElementById('btn-theme');
+    const sizeBtns = document.querySelectorAll('.size-btn');
+
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+    }
+    function applySize(s) {
+        if (!s) return;
+        body.classList.remove('size-small','size-normal','size-large','size-xlarge');
+        body.classList.add('size-' + s);
+        sizeBtns.forEach(function(x){
+            x.classList.remove('active');
+            if (x.dataset.size === s) x.classList.add('active');
+        });
+    }
+
+    try {
+        var savedTheme = localStorage.getItem('theme');
+        var savedSize = localStorage.getItem('fontSize');
+        if (savedTheme) applyTheme(savedTheme);
+        if (savedSize) applySize(savedSize);
+    } catch(e) {}
+
+    themeBtn.addEventListener('click', function() {
+        var current = document.documentElement.getAttribute('data-theme');
+        var next = current === 'light' ? 'dark' : 'light';
+        applyTheme(next);
+        try { localStorage.setItem('theme', next); } catch(e) {}
+    });
+
+    sizeBtns.forEach(function(b){
+        b.addEventListener('click', function() {
+            var s = b.dataset.size;
+            applySize(s);
+            try { localStorage.setItem('fontSize', s); } catch(e) {}
+        });
+    });
+
+    window.addEventListener('message', function(event) {
+        if (!event.data || !event.data.type) return;
+        if (event.data.type === 'setTheme') applyTheme(event.data.theme);
+        else if (event.data.type === 'setSize') applySize(event.data.size);
+    });
+
+    if (window.self !== window.top) body.classList.add('in-iframe');
+})();
+</script>
+</body>
+</html>

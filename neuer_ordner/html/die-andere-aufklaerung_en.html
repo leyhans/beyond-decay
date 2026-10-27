@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Other Enlightenment | gu18.eu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --text: #e8e6e3;
+            --text-dim: #888888;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.15);
+            --border: #2a2a2a;
+        }
+        
+        [data-theme="light"] {
+            --bg: #f5f5f5;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-dim: #555555;
+            --accent: #8a7340;
+            --accent-dim: rgba(138, 115, 64, 0.1);
+            --border: #dddddd;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'IBM Plex Serif', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.size-small { font-size: 15px; }
+        body.size-normal { font-size: 18px; }
+        body.size-large { font-size: 21px; }
+        body.size-xlarge { font-size: 24px; }
+        
+        .controls-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-top: none;
+            border-right: none;
+            padding: 8px 15px;
+            display: flex;
+            gap: 8px;
+            z-index: 1000;
+            border-bottom-left-radius: 8px;
+        }
+        
+        .controls-bar button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+        
+        .controls-bar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .controls-bar button.active {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+        }
+        
+        article {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 4rem 2rem 6rem;
+        }
+        
+        .meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 500;
+            line-height: 1.25;
+            margin-bottom: 0.75rem;
+        }
+        
+        .untertitel {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            font-style: italic;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        h2 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin: 2.5rem 0 1.25rem;
+            color: var(--accent);
+        }
+        
+        p {
+            margin-bottom: 1.4rem;
+        }
+        
+        .einzug {
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--border);
+            margin: 1.5rem 0;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+        
+        .einzug .author {
+            display: block;
+            margin-top: 0.5rem;
+            font-style: normal;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+        
+        .fazit {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            margin: 2.5rem 0;
+        }
+        
+        .highlight {
+            background: var(--bg-card);
+            border-left: 3px solid var(--accent);
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .emphasis {
+            color: var(--accent);
+            font-weight: 500;
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+        }
+        
+        .signatur {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls-bar">
+        <button onclick="setSize('small')" id="size-small">A−</button>
+        <button onclick="setSize('normal')" id="size-normal" class="active">A</button>
+        <button onclick="setSize('large')" id="size-large">A+</button>
+        <button onclick="setSize('xlarge')" id="size-xlarge">A++</button>
+        <button onclick="toggleTheme()" id="theme-toggle">☀</button>
+    </div>
+
+    <article>
+        <div class="meta">gu18.eu · February 2026</div>
+        <h1>The Other Enlightenment</h1>
+        <p class="untertitel">The Radicals Who Were Forgotten — and the Half-Hearted Who Are Remembered</p>
+        
+        <h2>The Narrowed Canon</h2>
+        
+        <p>Ask anyone about the great Enlightenment thinkers, and you will hear three names: Kant, Voltaire, Rousseau. Perhaps Locke or Montesquieu as well. This is the canon as taught in schools and invoked in feuilletons.</p>
+        
+        <p>It is a peculiar canon. It contains an antisemite with money in slave-trading ventures who needed God for the servants. It contains a man who sent five of his own children to the foundling hospital and then wrote educational treatises. It contains a philosopher who never left Königsberg and explained the world from his study.</p>
+        
+        <p>And it omits the others — those who thought more consistently, who went further, who were more uncomfortable. The radical Enlightenment that was forgotten because it was too radical.</p>
+        
+        <h2>Voltaire — The Face of Hypocrisy</h2>
+        
+        <p>Let us begin with the worst case: François-Marie Arouet, called Voltaire, the radiant face of the Enlightenment, the epitome of the free spirit.</p>
+        
+        <p>The reality is less radiant.</p>
+        
+        <p>Voltaire was an antisemite — not in the mild, casual sense that was common in the 18th century, but with particular venom. In his "Dictionnaire philosophique" and elsewhere one finds attacks on Jews that disturbed even his contemporaries. He called them "the most abominable people on earth," described them as naturally deceitful and greedy. This was no side matter — it runs throughout his work.</p>
+        
+        <p>Voltaire put money into trading companies such as the Compagnie des Indes, which also profited from the slave trade. While writing elegant letters about humanity and tolerance, he was evidently untroubled by where the returns came from.</p>
+        
+        <div class="highlight">
+            <p>His most famous sentence — "If God did not exist, it would be necessary to invent him" — is often quoted as a witty bon mot. In truth, it is a confession of hypocrisy. Voltaire himself needed no God. But the servants, the people, the masses — they needed the fear of the afterlife to keep them obedient.</p>
+        </div>
+        
+        <p>Voltaire was a courtier. He flattered Frederick the Great until Frederick threw him out. He flattered Catherine the Great, who gave away serfs by the thousands. He flattered every powerful person who could offer him protection. The Enlightenment was a salon game for him, not an upheaval.</p>
+        
+        <p>And this man has become the face of the Enlightenment.</p>
+        
+        <h2>Rousseau — The Theorist of Alienation</h2>
+        
+        <p>Jean-Jacques Rousseau sent five children he had with his partner Thérèse Levasseur to the foundling hospital. All five. He justified it by saying he was too poor to raise them — while simultaneously living off wealthy patrons and composing operas himself.</p>
+        
+        <p>Then he wrote "Émile," one of the most influential educational books in history. In it he explains how children should be raised naturally and lovingly.</p>
+        
+        <p>This is not mere irony. It is a pattern. Rousseau theorized about the "noble savage," the uncorrupted state of nature, the corruption by civilization — while himself living a deeply civilized, deeply neurotic life, marked by persecution mania, broken friendships, and the inability to maintain lasting bonds.</p>
+        
+        <p>His political philosophy — the "general will" that is always right and to which the individual must submit — contains in embryo the terror that was committed in his name during the French Revolution. Robespierre was a Rousseauist.</p>
+        
+        <h2>Kant — Duty Without Warmth</h2>
+        
+        <p>Immanuel Kant is a different case. One cannot accuse him of personal depravity. He lived modestly, worked diligently, behaved decently. The problem lies in the work.</p>
+        
+        <p>The categorical imperative — "Act only according to that maxim whereby you can at the same time will that it should become a universal law" — is formally correct and existentially empty. It says that one should act morally, but not why. It appeals to duty, but not to the heart.</p>
+        
+        <p>Kant's moral philosophy is a morality without compassion. It functions from principle, not from sympathy. The good will is good not because it effects good, but because it is well-intentioned. This is an ethics for accountants.</p>
+        
+        <p>Kant never left Königsberg. He wrote about the world, about peoples, about humanity — from his study, based on travel reports and hearsay. His statements about non-European peoples are shameful; his racial theory was backward even for his time.</p>
+        
+        <p>And yet he has become the giant of philosophy, overshadowing everything before him.</p>
+        
+        <h2>The Forgotten: D'Holbach and His Circle</h2>
+        
+        <p>Paul Henri Thiry d'Holbach was born in 1723 as Paul Heinrich Dietrich in the Palatinate. He inherited a fortune and used it for the cause of Enlightenment — not for self-promotion, but for others.</p>
+        
+        <p>His salon in Paris was the meeting place of the radical Enlightenment. Here gathered Diderot, Hume, Grimm, Helvétius, sometimes Rousseau (until he quarreled with everyone). Twice a week, for decades, d'Holbach financed conversations, meals, contacts, publications.</p>
+        
+        <p>His main work, the "Système de la Nature" (1770), was the most radical text of the Enlightenment. D'Holbach was an atheist — not a deist like Voltaire, who needed a distant clockmaker God, but a consistent denier of any deity. He was a materialist — everything is matter in motion, no room for soul, spirit, or free will. He was a determinist — what happens, happens necessarily, from the chain of causes.</p>
+        
+        <div class="einzug">
+            <p>The "Système de la Nature" was called the "Bible of Atheism." It was publicly burned. Even Voltaire distanced himself — that went too far for him.</p>
+        </div>
+        
+        <p>And d'Holbach himself? He was, by all accounts, a warm-hearted person. Generous, hospitable, loyal. He used his fortune not for himself but for the movement. He wrote under pseudonyms because he cared nothing for fame. He died in 1789, shortly before the Revolution that realized much of what he had fought for.</p>
+        
+        <h2>La Mettrie — Too Radical for the Radicals</h2>
+        
+        <p>Julien Offray de La Mettrie was a physician and philosopher. His work "L'Homme Machine" (1747) — "Man a Machine" — was so offensive that he had to flee France. He found refuge with Frederick the Great, who collected radical thinkers as other princes collected paintings.</p>
+        
+        <p>La Mettrie went further than all others. Man is a machine, a complex automaton, distinguished from animals only by complexity, not by essence. There is no soul, no free will, no morality except the pursuit of pleasure. The distinction between good and evil is convention, not truth.</p>
+        
+        <p>That was too much. Even d'Holbach and Diderot distanced themselves. La Mettrie became a pariah, cited only as a boogeyman. He died in 1751 at 41 — allegedly from the effects of a spoiled pâté, which his critics interpreted as divine punishment for hedonism.</p>
+        
+        <h2>Helvétius — The Equality of Abilities</h2>
+        
+        <p>Claude Adrien Helvétius was wealthy, handsome, and influential — and wrote a book that could have cost him all of that. "De l'Esprit" (1758) advanced a thesis that sounds self-evident today and was outrageous then: All humans have the same natural abilities. What distinguishes them is only education.</p>
+        
+        <p>This was an attack on the foundation of the estate society. If the nobleman is not naturally superior, why should he rule? If the peasant is not naturally limited, why should he serve?</p>
+        
+        <p>The book was banned, publicly burned, condemned by the Sorbonne, placed on the Index by the Pope. Helvétius had to recant. He did — but his ideas continued to work, underground, until they exploded in the Revolution.</p>
+        
+        <h2>Condorcet — The Tragic Optimist</h2>
+        
+        <p>Marie Jean Antoine Nicolas de Caritat, Marquis de Condorcet, was a mathematician and philosopher. He believed in progress — not as vague hope but as mathematical certainty. Humanity would improve, knowledge would spread, reason would triumph.</p>
+        
+        <p>He supported the Revolution, sat in the National Convention, drafted a constitution. Then the Revolution turned against him. As a Girondin, he was persecuted by the Jacobins. He hid for months, writing in hiding his "Sketch for a Historical Picture of the Progress of the Human Mind" — a hymn to reason, written by a man who knew that reason would not save him.</p>
+        
+        <p>He was captured and died in 1794 in prison, probably by suicide. The optimist of the Enlightenment, killed by the Revolution that devoured its children.</p>
+        
+        <h2>Diderot — The Underestimated</h2>
+        
+        <p>Denis Diderot is better known than the others — but usually only as editor of the Encyclopedia, that monumental attempt to collect and organize all knowledge. His own philosophical writings are rarely read.</p>
+        
+        <p>Yet Diderot was perhaps the most original thinker of the Enlightenment. He developed a kind of materialism that was not mechanical but alive — matter that feels, that strives, that self-organizes. He wrote dialogues in which he questioned his own positions. He thought in contradictions rather than resolving them.</p>
+        
+        <p>Diderot was also more honest than the others. He admitted that he did not know everything, that his positions were provisional, that the questions were larger than the answers. This made him less quotable — and more interesting.</p>
+        
+        <h2>Why This Selection?</h2>
+        
+        <p>Why were Voltaire, Rousseau, and Kant canonized while d'Holbach, La Mettrie, and Helvétius were forgotten?</p>
+        
+        <p>One reason is: The canonized were capable of compromise. Voltaire criticized the Church but kept God. Rousseau criticized society but kept morality. Kant criticized metaphysics but saved God, freedom, and immortality as "postulates of practical reason."</p>
+        
+        <p>The forgotten were incapable of compromise. They drew the consequences that the others shunned. No God, no soul, no free will, no natural hierarchy. That was too much for a society that wanted to be enlightened, but not too much.</p>
+        
+        <div class="highlight">
+            <p>A second reason: The canonized were better stylists. Voltaire wrote brilliantly, Rousseau movingly, Kant — well, Kant wrote complicatedly, but that was considered a sign of depth. D'Holbach wrote dryly, La Mettrie polemically, Helvétius repetitively. Form triumphed over content.</p>
+        </div>
+        
+        <p>A third reason: History is written by the victors. The bourgeois society that emerged from the Enlightenment needed an Enlightenment that suited it. An Enlightenment that kept God, kept hierarchy, just on a new basis. The radical Enlightenment did not fit — so it was forgotten.</p>
+        
+        <h2>What Remains</h2>
+        
+        <p>The Enlightenment was not a unified movement. There was the moderate Enlightenment of salons and academies, which wanted to reform what existed. And there was the radical Enlightenment, which thought further, questioned further, went further.</p>
+        
+        <p>The moderates were canonized. The radicals were forgotten. But their questions have remained — questions about God and matter, about freedom and determination, about the equality of humans, about the relationship between knowledge and power.</p>
+        
+        <p>Perhaps it is time to rediscover the other Enlightenment. Not to idealize it — d'Holbach and his friends were also children of their time, with all its limitations. But to complete the picture. To see that there were always alternatives. That the history as told is not the only history.</p>
+        
+        <div class="fazit">
+            <p>The canonized Enlightenment was a half-hearted Enlightenment — bold enough to earn applause, cautious enough not to offend. The forgotten Enlightenment was more consistent, more uncomfortable, more honest. It lost the battle for memory.</p>
+            <p style="margin-top: 1rem; margin-bottom: 0;">But memory can be revised. That is perhaps the most important lesson of the Enlightenment itself: that nothing is finally written, that every generation has the right to examine the tradition and, if necessary, to correct it.</p>
+        </div>
+        
+        <div class="signatur">
+            gu18.eu · February 2026
+        </div>
+    </article>
+    
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/g, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.controls-bar button[id^="size-"]').forEach(b => b.classList.remove('active'));
+            document.getElementById('size-' + size).classList.add('active');
+            localStorage.setItem('gu18-size', size);
+        }
+        
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            document.getElementById('theme-toggle').textContent = newTheme === 'light' ? '☾' : '☀';
+            localStorage.setItem('gu18-theme', newTheme);
+        }
+        
+        (function() {
+            const savedSize = localStorage.getItem('gu18-size') || 'normal';
+            const savedTheme = localStorage.getItem('gu18-theme') || 'dark';
+            setSize(savedSize);
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.getElementById('theme-toggle').textContent = '☾';
+            }
+        })();
+    </script>
+</body>
+</html>

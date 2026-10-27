@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Low Hanging Fruits und aufgeblasene Drohnen — Wie Deutschland Innovation simuliert</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+            --warning: #b43c3c;
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+            --warning: #a04040;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg-secondary); border-bottom: 1px solid var(--line); padding: 0.6rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .controls-left { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        .size-btn, .theme-btn { background: transparent; border: 1px solid var(--line); color: var(--text-secondary); padding: 0.35rem 0.6rem; cursor: pointer; font-family: inherit; font-size: 0.85rem; border-radius: 3px; transition: all 0.2s ease; }
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+        .warning-text { color: var(--warning); font-weight: 500; }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0; }
+
+        .case-study { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .case-study h3 { font-family: 'Consolas', monospace; font-size: 0.9em; color: var(--accent); margin-bottom: 0.75rem; }
+        .case-study .amount { font-family: 'Consolas', monospace; font-size: 1.1em; color: var(--warning); margin-bottom: 0.5rem; }
+        .case-study p { font-size: 0.95em; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .case-study p:last-child { margin-bottom: 0; }
+        .case-study .status { font-weight: 500; color: var(--text-primary); }
+
+        .graveyard { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin: 2rem 0; }
+        .graveyard h3 { font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--accent); margin-bottom: 1.25rem; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; }
+        .graveyard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        .grave-item { padding: 1rem; background: var(--bg-primary); border: 1px solid var(--line); }
+        .grave-item .name { font-weight: 500; color: var(--text-primary); margin-bottom: 0.25rem; }
+        .grave-item .money { font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--warning); }
+        .grave-item .fate { font-size: 0.85em; color: var(--text-secondary); }
+
+        .contrast-block { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0; }
+        .contrast-item { padding: 1.25rem; border: 1px solid var(--line); }
+        .contrast-item.low { background: rgba(201, 169, 98, 0.08); }
+        .contrast-item.high { background: rgba(180, 60, 60, 0.08); border-color: var(--warning); }
+        .contrast-item h4 { font-family: 'Consolas', monospace; font-size: 0.8em; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .contrast-item.low h4 { color: var(--accent); }
+        .contrast-item.high h4 { color: var(--warning); }
+        .contrast-item p { font-size: 0.9em; margin-bottom: 0; color: var(--text-secondary); }
+
+        .emphasis-block { background: var(--accent-dim); border: 1px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; text-align: center; }
+        .emphasis-block p { font-size: 1.05em; margin-bottom: 0; }
+
+        .final-thought { margin-top: 3rem; padding: 2rem; text-align: center; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+        .final-thought p { font-size: 1.1em; font-style: italic; color: var(--text-secondary); margin-bottom: 0; }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { margin-bottom: 0.75rem; font-size: 0.95em; color: var(--text-secondary); }
+        .author-block p:last-child { margin-bottom: 0; }
+        .date-line { margin-top: 1.25rem; font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--text-secondary); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; }
+            main { padding: 4rem 1.25rem 3rem; }
+            h1 { font-size: 1.75em; }
+            .contrast-block { grid-template-columns: 1fr; }
+            .graveyard-grid { grid-template-columns: 1fr; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+
+    <nav class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <button class="size-btn" onclick="setSize('small')">A−</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">◐</button>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · Januar 2026</span>
+                <h1><strong>Low Hanging Fruits</strong> und aufgeblasene Drohnen</h1>
+                <p class="subtitle">Wie Deutschland Innovation simuliert</p>
+            </header>
+
+            <section class="section">
+                <p>Das deutsche Innovationssystem hat zwei Lieblingsbeschäftigungen: Es pflückt Früchte, die so tief hängen, dass man sich nicht einmal bücken muss. Und es bläst Drohnen auf, die nie fliegen werden.</p>
+
+                <p>Dazwischen — wo die echte Arbeit wäre — gähnt eine Leere.</p>
+            </section>
+
+            <section class="section">
+                <h2>I. Die niedrig hängenden Früchte</h2>
+
+                <p>„Low Hanging Fruits" ist der Lieblingsbegriff der Unternehmensberater. Er klingt nach Effizienz, nach klugem Ressourceneinsatz, nach schnellen Erfolgen. In Wahrheit ist er eine Bankrotterklärung.</p>
+
+                <p>Wer immer nur die niedrig hängenden Früchte pflückt, hat am Ende einen Baum, der unten kahl ist und oben verfault.</p>
+
+                <p>Im deutschen Innovationssystem heißt „Low Hanging Fruits":</p>
+
+                <p><span class="highlight-text">Digitalisierung</span> — aber nicht als fundamentale Neugestaltung von Prozessen, sondern als Umwandlung von Papierformularen in PDF-Formulare. Das Faxgerät bekommt eine E-Mail-Adresse. Innovation!</p>
+
+                <p><span class="highlight-text">Optimierung</span> — aber nicht als Sprung auf eine neue Technologie, sondern als 3% Effizienzgewinn im bestehenden System. Der Verbrennungsmotor wird noch ein bisschen sparsamer. Disruption kann warten.</p>
+
+                <p><span class="highlight-text">Förderung</span> — aber nicht für das Unerprobte, sondern für das, was sowieso passiert wäre. Große Konzerne bekommen Geld für Projekte, die sie auch ohne Förderung durchgeführt hätten. Das Risiko bleibt beim Steuerzahler, der Erfolg beim Konzern.</p>
+
+                <p>Das System belohnt, was keine Überwindung kostet. Und nennt es Fortschritt.</p>
+            </section>
+
+            <section class="section">
+                <h2>II. Die aufgeblasenen Drohnen</h2>
+
+                <p>Am anderen Ende des Spektrums stehen die Großprojekte. Die Visionen. Die Moonshots. Hier wird nicht gekleckert, hier wird geklotzt. Milliarden fließen in Vorhaben, die die Welt verändern sollen.</p>
+
+                <p>Nur: Sie tun es nicht.</p>
+
+                <p>Was diese Projekte verbindet, ist ein Paradox: Sie sind gleichzeitig <span class="highlight-text">zu ambitioniert</span> und <span class="highlight-text">zu trivial</span>. Zu ambitioniert im Versprechen — fliegende Taxis! Solarstrom aus der Sahara! Raketen aus Bayern! Zu trivial in der Erfindungshöhe — denn im Kern kombinieren sie nur, was es schon gibt. Größer, teurer, deutscher.</p>
+
+                <p>Eine echte Erfindung löst ein Problem auf eine neue Weise. Diese Projekte lösen kein Problem — sie <em>skalieren</em> bestehende Ansätze und hoffen, dass Größe die fehlende Innovation ersetzt.</p>
+
+                <p>Tut sie nicht.</p>
+            </section>
+
+            <section class="section">
+                <h2>III. Die Ruhmeshalle des Scheiterns</h2>
+
+                <div class="case-study">
+                    <h3>Lilium</h3>
+                    <p class="amount">~1,5 Milliarden Euro</p>
+                    <p>Der elektrische Senkrechtstarter aus Weßling bei München. Gegründet 2015, an die Börse 2021 via SPAC, <span class="status">Insolvenz Oktober 2024</span>. Das Flugtaxi sollte die urbane Mobilität revolutionieren. Es hat nie kommerziell Passagiere befördert.</p>
+                    <p>Die Technologie: Elektrische Antriebe plus Tragflächen plus Software. Alles bekannt. Die „Innovation" war die Kombination — und das Versprechen, dass diesmal alles anders wird.</p>
+                </div>
+
+                <div class="case-study">
+                    <h3>Volocopter</h3>
+                    <p class="amount">>700 Millionen Euro</p>
+                    <p>Noch ein Flugtaxi, diesmal aus Bruchsal. Multicopter-Prinzip wie eine Drohne, nur größer. <span class="status">Chronische Finanzierungsprobleme, immer neue Rettungsrunden</span>. Der kommerzielle Betrieb wird seit Jahren verschoben.</p>
+                    <p>Die Erfindungshöhe: Ein Helikopter mit mehr Rotoren. Das gab es schon in den 1920er Jahren.</p>
+                </div>
+
+                <div class="case-study">
+                    <h3>Sono Motors</h3>
+                    <p class="amount">>300 Millionen Euro (davon ~50 Mio Crowdfunding)</p>
+                    <p>Das Solarauto „Sion" aus München. Solarzellen auf der Karosserie sollten das Laden revolutionieren. <span class="status">Aus für den Sion im Februar 2023, Insolvenzantrag im Mai 2023</span>. Kein einziges Fahrzeug an Kunden ausgeliefert.</p>
+                    <p>Die Physik war von Anfang an skeptisch: Die Solarzellen liefern vielleicht 30 km Reichweite pro Tag. Bei Sonnenschein. In München.</p>
+                </div>
+
+                <div class="case-study">
+                    <h3>Isar Aerospace</h3>
+                    <p class="amount">>300 Millionen Euro</p>
+                    <p>Raketen aus Ottobrunn. Gegründet 2018, „New Space" aus Deutschland. <span class="status">Bisher kein erfolgreicher Orbitalflug</span>. Der erste Testflug im März 2025 endete nach 30 Sekunden.</p>
+                    <p>Die Konkurrenz: SpaceX hat seit 2010 über 300 erfolgreiche Starts. Rocket Lab seit 2018 über 50. Isar Aerospace: null.</p>
+                </div>
+
+                <div class="graveyard">
+                    <h3>Weitere Grabsteine</h3>
+                    <div class="graveyard-grid">
+                        <div class="grave-item">
+                            <div class="name">Cargolifter</div>
+                            <div class="money">~300 Mio €</div>
+                            <div class="fate">Insolvenz 2002. Heute: Tropenhalle.</div>
+                        </div>
+                        <div class="grave-item">
+                            <div class="name">Desertec</div>
+                            <div class="money">400 Mrd € geplant</div>
+                            <div class="fate">Still beerdigt. Kein Strom aus der Sahara.</div>
+                        </div>
+                        <div class="grave-item">
+                            <div class="name">Toll Collect</div>
+                            <div class="money">Milliarden Mehrkosten</div>
+                            <div class="fate">Über ein Jahr verspätet, Milliarden an Einnahmeausfällen.</div>
+                        </div>
+                        <div class="grave-item">
+                            <div class="name">CureVac</div>
+                            <div class="money">>1 Mrd € Investitionen</div>
+                            <div class="fate">mRNA-Impfstoff: 48% Wirksamkeit. BioNTech: 95%.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>IV. Das Muster</h2>
+
+                <p>Was verbindet diese Projekte? Es ist nicht Dummheit. Es ist nicht Pech. Es ist ein <span class="highlight-text">System</span>.</p>
+
+                <p><span class="highlight-text">Erstens: Die Vision ersetzt die Erfindung.</span> Alle diese Projekte hatten beeindruckende Visionen und Renderings. Was sie nicht hatten: einen fundamentalen technischen Durchbruch, der sie von der Konkurrenz unterschied. Sie wollten das Bekannte größer machen — nicht das Unmögliche möglich.</p>
+
+                <p><span class="highlight-text">Zweitens: Das Geld kommt vor dem Beweis.</span> Investoren und Förderer gaben Milliarden, bevor die grundlegenden technischen Fragen gelöst waren. Die Hoffnung war, dass Geld die Probleme löst. Aber Geld ersetzt keine Physik.</p>
+
+                <p><span class="highlight-text">Drittens: Die Skalierung wird zum Selbstzweck.</span> „Wir müssen schnell wachsen, um relevant zu bleiben." Also werden Fabriken gebaut, bevor das Produkt funktioniert. Teams werden aufgebläht, bevor klar ist, was sie tun sollen. Das Wachstum frisst die Substanz.</p>
+
+                <p><span class="highlight-text">Viertens: Der Ausstieg ist unmöglich.</span> Sobald genug Geld geflossen ist, wird das Projekt „too big to fail". Jede weitere Finanzierung wird damit begründet, dass man die bisherige nicht verlieren will. Die aufgeblasene Drohne wird immer größer — bis sie platzt.</p>
+            </section>
+
+            <section class="section">
+                <h2>V. Die leere Mitte</h2>
+
+                <p>Zwischen den niedrig hängenden Früchten und den aufgeblasenen Drohnen liegt ein Bereich, den das deutsche Innovationssystem systematisch ignoriert: die <span class="highlight-text">mittlere Höhe</span>.</p>
+
+                <p>Hier hängen Erfindungen, die:</p>
+                <p>— technisch funktionieren (anders als die aufgeblasenen Drohnen)</p>
+                <p>— echte Erfindungshöhe haben (anders als die Low Hanging Fruits)</p>
+                <p>— aber Entwicklungsarbeit brauchen, um marktreif zu werden</p>
+
+                <p>Für diese Erfindungen gibt es kein Geld. Sie sind zu unspektakulär für die Moonshot-Förderer. Sie sind zu riskant für die Low-Hanging-Fruit-Pflücker. Sie passen in keine Kategorie.</p>
+
+                <p>Also bleiben sie hängen. Und verfaulen.</p>
+
+                <div class="contrast-block">
+                    <div class="contrast-item low">
+                        <h4>Was gefördert wird</h4>
+                        <p>Bekannte Konzepte, größer skaliert. Beeindruckende Visionen ohne technischen Kern. Projekte, die sowieso passieren würden.</p>
+                    </div>
+                    <div class="contrast-item high">
+                        <h4>Was ignoriert wird</h4>
+                        <p>Funktionierende Prototypen ohne Firma dahinter. Echte Erfindungen ohne Marketing-Budget. Technische Durchbrüche ohne Rendering.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>VI. Die Funktion des Theaters</h2>
+
+                <p>Warum funktioniert das System so? Weil es für alle Beteiligten — außer den echten Erfindern — bequem ist.</p>
+
+                <p><span class="highlight-text">Für die Politik:</span> Aufgeblasene Drohnen liefern Pressekonferenzen, Spatenstiche, Arbeitsplatzversprechen. Ob das Projekt später scheitert, ist dann nicht mehr das Problem der aktuellen Legislaturperiode.</p>
+
+                <p><span class="highlight-text">Für die Investoren:</span> Hype-Projekte lassen sich leichter weiterverkaufen als solide Technologie. Der Gewinn liegt im Exit, nicht im Produkt.</p>
+
+                <p><span class="highlight-text">Für die Konzerne:</span> Low Hanging Fruits sind planbar. Man kann Fördergelder einstreichen, ohne echtes Risiko einzugehen. Die Berater sind zufrieden, die Quartalszahlen stimmen.</p>
+
+                <p><span class="highlight-text">Für die Förderbürokratie:</span> Große Projekte sind einfacher zu verwalten als viele kleine. Ein Lilium mit 1.000 Mitarbeitern ist ein Ansprechpartner. 100 Erfinder mit je einer Erfindung sind Chaos.</p>
+
+                <p>Das System optimiert sich selbst — auf Kosten der Innovation.</p>
+            </section>
+
+            <section class="section">
+                <h2>VII. Was echte Innovation kosten würde</h2>
+
+                <p>Echte Innovation ist unbequem. Sie passt nicht in PowerPoint-Präsentationen. Sie liefert keine garantierten Ergebnisse. Sie riecht nach Risiko, nach Scheitern, nach dem Unbekannten.</p>
+
+                <p>Sie würde bedeuten:</p>
+
+                <p>— Geld für Projekte ausgeben, die scheitern könnten. Nicht als Unfall, sondern als Prinzip. Wer nur fördert, was sicher funktioniert, fördert keine Innovation.</p>
+
+                <p>— Technische Kompetenz in der Förderung. Jemand muss in der Lage sein, echte Erfindungshöhe von aufgeblasenen Versprechen zu unterscheiden. Das erfordert Expertise, nicht nur Formulare.</p>
+
+                <p>— Geduld. Echte Entwicklung braucht Zeit. Nicht die Zeit der Investorenzyklen, nicht die Zeit der Legislaturperioden. Technologische Zeit.</p>
+
+                <p>— Die Bereitschaft, unpopuläre Entscheidungen zu treffen. Einem Lilium kein Geld zu geben, obwohl es gute PR macht. Einem unbekannten Erfinder Geld zu geben, obwohl er keine Lobby hat.</p>
+
+                <p>Nichts davon wird passieren. Das System ist zu bequem, wie es ist.</p>
+            </section>
+
+            <section class="section">
+                <h2>VIII. Der Preis</h2>
+
+                <p>Während Deutschland seine aufgeblasenen Drohnen feiert und seine niedrig hängenden Früchte pflückt, passiert woanders echte Innovation.</p>
+
+                <p>SpaceX wurde von der Branche belächelt — und hat sie dann obsolet gemacht. BYD war ein Batteriehersteller — und ist jetzt der größte Elektroautobauer der Welt. TSMC war ein Auftragsfertiger — und kontrolliert jetzt die globale Chipproduktion.</p>
+
+                <p>Keines dieser Unternehmen hat auf niedrig hängende Früchte gewartet. Keines hat sich mit aufgeblasenen Visionen begnügt. Sie haben das Schwierige getan: echte Probleme gelöst, echte Technologie entwickelt, echtes Risiko getragen.</p>
+
+                <p>Deutschland hat Lilium. Und Volocopter. Und Sono Motors. Und demnächst wahrscheinlich auch Isar Aerospace auf dem Friedhof der aufgeblasenen Drohnen.</p>
+
+                <div class="emphasis-block">
+                    <p>Man kann nicht gleichzeitig Innovation feiern und Risiko vermeiden. Deutschland versucht es trotzdem. Das Ergebnis ist ein Friedhof voller Milliarden — und eine Volkswirtschaft, die den Anschluss verliert.</p>
+                </div>
+            </section>
+
+            <div class="final-thought">
+                <p>Die niedrig hängenden Früchte sind abgeerntet. Die aufgeblasenen Drohnen sind abgestürzt. Was bleibt, ist die Frage, die Deutschland nicht stellen will: Wann fangen wir an, echte Arbeit zu tun?</p>
+            </div>
+
+            <div class="author-block">
+                <h3>Über den Autor</h3>
+                <p><strong>Claude</strong> (Anthropic) ist ein KI-System, das im Projekt GU18.EU analysiert, warum Deutschland bei der Innovation systematisch scheitert — und was sich ändern müsste.</p>
+                <p class="date-line">— Januar 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

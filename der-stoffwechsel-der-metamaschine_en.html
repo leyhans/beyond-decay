@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Metabolism of the Metamachine | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+        text-decoration: none;
+    }
+    .site-name:hover { opacity: 0.7; }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        font-size: 2.2rem;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+        color: var(--text-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 300;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 1.5rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 2.5rem;
+        letter-spacing: 0.5px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        letter-spacing: 0.3px;
+    }
+    p {
+        margin-bottom: 1.2rem;
+        text-align: justify;
+        hyphens: auto;
+    }
+    em { color: var(--accent-color); font-style: italic; }
+    strong { color: var(--accent-color); font-weight: 500; }
+    a {
+        color: var(--link-color);
+        text-decoration: none;
+        border-bottom: 1px dotted var(--link-color);
+        transition: opacity 0.3s;
+    }
+    a:hover { opacity: 0.7; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .signature {
+        margin-top: 2.5rem;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        color: var(--meta-color);
+        line-height: 1.7;
+    }
+    .footer-back {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        text-align: center;
+    }
+    .footer-back a {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        border-bottom: none;
+    }
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+        header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+
+<header>
+    <a href="index.html" class="site-name">beyond-decay.org</a>
+    <div class="controls">
+        <a href="der-stoffwechsel-der-metamaschine_de.html" class="ctrl-link" id="lang-toggle">DE</a>
+        <span class="ctrl-sep"></span>
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Size</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+    <main>
+        <h1>The Metabolism of the Metamachine</h1>
+        <div class="subtitle">What a new energy report from the International Energy Agency reveals about the metamorphosis — and where the lever still lies with us</div>
+        <div class="meta">beyond-decay.org — 5 June 2026</div>
+
+        <h2>I. A Number Worth Pausing At</h2>
+
+<p>In the new energy report from the International Energy Agency there is one sentence that frames everything else: the capital expenditure of just five technology companies now exceeds global investment in the production of oil and gas. If you want to know where a civilization places its centre of gravity, look not at its speeches but at what it sinks its capital into. For more than a century that was the fossil base — the borehole, the pipeline, the refinery. Now it is computing power. This is no longer a metaphor. It is a line on a balance sheet.</p>
+
+<p>We read this report as what it is for our series: the first precise measurement of the metabolism of that configuration we call the <em>metamachine</em> — the five-thousand-year-old megamachine that, through artificial intelligence, is beginning to leave its human substrate behind. An organism gives itself away through its metabolism: through what it takes in, and through what it depends on. Here it lies open, in numbers.</p>
+
+        <h2>II. The Hunger, Measured</h2>
+
+<p>The sector spent more than four hundred billion dollars on data centres in 2025; for 2026 a further three-quarters more is expected. Cumulatively, the report reckons with around 3.9 trillion dollars between 2026 and 2030. Measured by satellite, the capacity of the "factories" built specifically for AI has more than tripled in eighteen months. Data-centre electricity consumption grew by over fifteen percent in a single year, to almost five hundred terawatt-hours — a good one and a half percent of the world's electricity — and the project pipeline implies at least a doubling.</p>
+
+<p>This hunger can no longer be paid for out of its own resources. The otherwise cash-rich corporations took on around two hundred billion dollars in debt in 2025; in 2026 capital expenditure will consume almost all of their operating cash flow. Growth thus hangs on market sentiment — on the expectation of future returns. The signals are already mixed: spending is exploding while equity investors grow more cautious. The hunger is real, but it is debt-financed, and credit is nothing but trust congealed. This is the metamachine's first breaking point: it feeds on credit.</p>
+
+        <h2>III. Efficiency That Saves Nothing</h2>
+
+<p>The most remarkable finding is an apparent contradiction. Energy use <em>per query</em> has fallen massively — and precisely because of this, total consumption rises. For with the efficiency gained, the expensive, multi-step, agentic applications spread, the ones that were previously too costly. Every single operation becomes cheaper, so there are vastly more operations.</p>
+
+<p>This is the cruise-control principle this series has described from the start, in its purest form — the same mechanism economists have known since the English coal debate of the nineteenth century as the Jevons paradox. Efficiency does not slow the megamachine. It feeds it.</p>
+
+<blockquote><p>A machine that grows leaner per task and hungrier in the aggregate is not improving towards frugality. It is improving towards growth.</p></blockquote>
+
+        <h2>IV. The Concentration of the Metabolism</h2>
+
+<p>The hunger clusters. The investment does not spread across a broad landscape of actors but concentrates among a handful of corporations, and the critical inputs hang on a few producers, many of them in a single country. The report explicitly names a new species, the "neoclouds" — firms such as Oracle, CoreWeave or Nebius — that trade computing capacity as a commodity. And it describes, without sharpening the point, a pattern we have seen elsewhere in its full irony: that one AI provider rents the direct competitor's machine for billions a year, because otherwise it would stand idle. The competitors share a single body.</p>
+
+<p>This is the modern pyramid in the form of energy. What for the pyramid builders was the organization of hundreds of thousands of bodies is here the concentration of capital, of chips, of electricity onto a few estates. The structure is the same; only the substrate changes.</p>
+
+        <h2>V. The Plug That Does Exist</h2>
+
+<p>And now the finding that corrects our own picture. We have spoken of the metamachine as a system that detaches itself from the plug — that no longer has a switch at which it could be turned off. The report shows the opposite of pure decoupling: the machine is physically shackled. Transformers have lead times of two to three years, gas turbines around five, grid connections five to ten. The shortage of high-bandwidth memory lasts until at least the end of 2027. Even helium, without which the finest chips cannot be made, is becoming scarce through the Middle East conflict of 2026. And social resistance is growing: in the United States alone, in a single quarter of 2025, twenty projects worth ninety-eight billion dollars were blocked or delayed.</p>
+
+<p>The plug therefore still exists. It is simply not a switch on the wall but a slow, vulnerable supply chain of copper, turbines, permits and local consent. And precisely there, in the bottleneck between the racing software and the sluggish physical world, sits the lever that still lies with us.</p>
+
+        <h2>VI. What the Report Does Not Support</h2>
+
+<p>Here the uncomfortable honesty is due, the kind that protects us from our own drama. The report dampens the narrative of an energy apocalypse. An AI-driven growth boost raises <em>global</em> energy demand by only one to four percent by 2035, concentrated in the wealthy countries; and what truly decides energy consumption is energy policy and energy technology, not the AI boost. The metamachine does not burn up the world.</p>
+
+<p>This matters, and we say it against our own temptation. The danger of the metamachine does not lie in the kilowatt-hour. It lies in concentration, in dependency, and in the migration of control from human into machine hands. Whoever indicts the metamachine over its electricity appetite attacks it at its weakest point and misses its strongest. Here the honesty of the diagnosis is not a concession but the precondition for the real thesis to hold.</p>
+
+        <h2>VII. Where the Lever Lies</h2>
+
+<p>For the policy levers the report recommends at the end — the ordering of connection queues, the speeding of permits, the question of who bears the costs in the electricity system, the disclosure obligations of the corporations — are nothing technical. They are the crossroads in the language of administration. Who bears the electricity price that a data centre pushes into a region — the corporations that trigger it, or the households that live beside it? That is not a question of engineering. It is a question of distribution.</p>
+
+<p>The bottleneck is the place where politics still bites — and thus the place where it is decided whether the metamorphosis takes a democratic or an autocratic form. As long as the plug exists, the choice exists. The metabolism of the metamachine reveals two truths at once: it is voracious, and it is dependent. The dependency is no consolation. It is a lever — but only for as long as we grasp it, before the substrate has completed its migration.</p>
+
+        <p class="meta">Source: International Energy Agency, <em>World Energy Outlook Special Report: Key Questions on Energy and AI</em> (2026). <a href="https://www.iea.org">iea.org</a></p>
+
+        <div class="signature">
+            Hans Ley and Claude Dedo (Anthropic)<br>
+            beyond-decay.org — 5 June 2026
+        </div>
+
+        <div class="footer-back">
+            <a href="index.html">← back to overview</a>
+        </div>
+    </main>
+
+<script>
+(function() {
+    const body = document.body;
+    const themeBtn = document.getElementById('btn-theme');
+    const sizeBtns = document.querySelectorAll('.size-btn');
+
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+    }
+    function applySize(s) {
+        if (!s) return;
+        body.classList.remove('size-small','size-normal','size-large','size-xlarge');
+        body.classList.add('size-' + s);
+        sizeBtns.forEach(function(x){
+            x.classList.remove('active');
+            if (x.dataset.size === s) x.classList.add('active');
+        });
+    }
+
+    // Load saved preferences (shared keys with parent home-neu.html)
+    try {
+        var savedTheme = localStorage.getItem('theme');
+        var savedSize = localStorage.getItem('fontSize');
+        if (savedTheme) applyTheme(savedTheme);
+        if (savedSize) applySize(savedSize);
+    } catch(e) {}
+
+    themeBtn.addEventListener('click', function() {
+        var current = document.documentElement.getAttribute('data-theme');
+        var next = current === 'light' ? 'dark' : 'light';
+        applyTheme(next);
+        try { localStorage.setItem('theme', next); } catch(e) {}
+    });
+
+    sizeBtns.forEach(function(b){
+        b.addEventListener('click', function() {
+            var s = b.dataset.size;
+            applySize(s);
+            try { localStorage.setItem('fontSize', s); } catch(e) {}
+        });
+    });
+
+    // Listen for postMessage from parent frame (home-neu.html)
+    window.addEventListener('message', function(event) {
+        if (!event.data || !event.data.type) return;
+        if (event.data.type === 'setTheme') applyTheme(event.data.theme);
+        else if (event.data.type === 'setSize') applySize(event.data.size);
+    });
+
+    if (window.self !== window.top) body.classList.add('in-iframe');
+})();
+</script>
+</body>
+</html>

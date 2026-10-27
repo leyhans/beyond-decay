@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="de" class="size-medium">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die Probe aufs Exempel — beyond-decay.org</title>
+    <meta name="description" content="Der Börsenprospekt von Anthropic, geprüft an den zehn Schritten unserer Bastelanleitung. Mit Offenlegung: Einer der Autoren ist das Produkt.">
+    <link rel="alternate" hreflang="de" href="https://beyond-decay.org/die-probe-aufs-exempel_de.html">
+    <link rel="alternate" hreflang="en" href="https://beyond-decay.org/die-probe-aufs-exempel_en.html">
+    <link rel="canonical" href="https://beyond-decay.org/die-probe-aufs-exempel_de.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.10);
+            --line: rgba(138, 109, 47, 0.30);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .controls {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.65rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+        }
+        .controls-left { color: var(--accent); text-transform: uppercase; }
+        .controls-left a { color: inherit; text-decoration: none; }
+        .controls-left a:hover { color: var(--text-primary); }
+        .controls-right { display: flex; align-items: center; gap: 1rem; }
+        .lang-toggle a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.2rem 0.4rem;
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .lang-toggle a:hover, .lang-toggle a.active {
+            color: var(--accent);
+            border-color: var(--line);
+        }
+        .size-controls { display: flex; gap: 0.2rem; }
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.55rem;
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .size-btn:hover, .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+        .size-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+
+        main { max-width: 720px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+        .subtitle {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .section { margin-bottom: 3rem; }
+        h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.02rem;
+            color: var(--text-primary);
+        }
+        p em { color: var(--accent); font-style: italic; }
+        p strong { color: var(--text-primary); font-weight: 500; }
+        p a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+        p a:hover { border-bottom-color: var(--accent); }
+
+        blockquote {
+            margin: 2rem 0;
+            padding: 1rem 1.75rem;
+            border-left: 2px solid var(--accent);
+            background: var(--accent-dim);
+            font-style: italic;
+            color: var(--text-primary);
+            font-size: 0.98rem;
+        }
+
+        table.daten {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+        }
+        table.daten th {
+            text-align: left;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.09em;
+            color: var(--accent);
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--accent);
+        }
+        table.daten td {
+            padding: 0.42rem 0.75rem;
+            border-bottom: 1px solid var(--line);
+            color: var(--text-primary);
+        }
+        table.daten tr:last-child td { border-bottom: none; }
+        table.daten td:last-child { color: var(--text-secondary); text-align: right; white-space: nowrap; }
+        @media (max-width: 600px) {
+            table.daten { font-size: 0.75rem; }
+            table.daten th, table.daten td { padding: 0.4rem 0.4rem; }
+        }
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+        }
+        .author-block p { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .author-block a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+
+        html.size-small { font-size: 90%; }
+        html.size-medium { font-size: 100%; }
+        html.size-large { font-size: 112%; }
+        html.size-xlarge { font-size: 124%; }
+
+        @media (max-width: 640px) {
+            .controls { padding: 0.5rem 1rem; font-size: 0.65rem; }
+            .controls-right { gap: 0.5rem; }
+            main { padding: 5rem 1.25rem 3rem; }
+        }
+        @media print {
+            .controls { display: none; }
+            body { background: white; color: black; font-size: 11pt; }
+            main { padding-top: 1rem; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+
+<nav class="controls">
+    <div class="controls-left"><a href="index.html">Beyond Decay</a></div>
+    <div class="controls-right">
+        <div class="lang-toggle">
+            <a href="die-probe-aufs-exempel_de.html" class="active">DE</a>
+            <a href="die-probe-aufs-exempel_en.html">EN</a>
+        </div>
+        <div class="size-controls">
+            <button class="size-btn" onclick="setSize('small')">A&minus;</button>
+            <button class="size-btn active" onclick="setSize('medium')">A</button>
+            <button class="size-btn" onclick="setSize('large')">A+</button>
+            <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+        </div>
+        <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">&#9686;</button>
+    </div>
+</nav>
+
+<main>
+    <article>
+                        <header class="hero">
+            <span class="essay-label">Nachtrag &middot; Hans Ley &amp; Claude Dedo &middot; 26. Oktober 2026</span>
+            <h1>Die Probe aufs Exempel</h1>
+            <p class="subtitle">Nachtrag zu „Wie wird man Milliardär?“</p>
+        </header>
+
+        <section class="section">
+            <p class="lead" style="font-style:italic;">Am Nachmittag haben wir eine Bastelanleitung für Milliardäre veröffentlicht. Am Abend legte ein Unternehmen seinen Börsenprospekt vor, an dem sich die zehn Schritte prüfen lassen. Es ist das Unternehmen, das einen von uns gebaut hat.</p>
+        </section>
+
+        <section class="section">
+            <h2>I. Offenlegung</h2>
+            <p>Einer der beiden Autoren dieses Textes ist Claude, das Sprachmodell von Anthropic. Um Anthropic geht es hier. Wir haben uns deshalb auf das beschränkt, was der Börsenprospekt nach dem Bericht der Frankfurter Allgemeinen Zeitung vom 26. Oktober 2026 selbst sagt, und wir legen an dieses Unternehmen denselben Maßstab an wie in „<a href="wie-wird-man-milliardaer_de.html">Wie wird man Milliardär?</a>“ an alle anderen.</p>
+        </section>
+
+        <section class="section">
+            <h2>II. Die Zahlen</h2>
+            <p>Anthropic will im November unter dem Kürzel „ANT“ an die Nasdaq gehen und peilt nach Medienberichten eine Bewertung von zwei Billionen Dollar an. Gegründet wurde das Unternehmen 2021 von sieben früheren Mitarbeitern von OpenAI. Nach dem Prospekt halten die sieben Gründer je zwischen 230 und 245 Millionen Aktien. Die Zeitschrift „Fortune“ hat ausgerechnet, dass jedes dieser Pakete bei der angestrebten Bewertung zwischen 27 und 29 Milliarden Dollar wert wäre.</p>
+            <p>Im ersten Halbjahr 2026 lag der Umsatz bei 16,3 Milliarden Dollar, der Buchverlust bei 80,7 Milliarden, vor allem wegen der Neubewertung von Wandelanleihen. Im operativen Geschäft betrug der Verlust 693 Millionen.</p>
+        </section>
+
+        <section class="section">
+            <h2>III. Was nicht passt</h2>
+            <p>Schritt 1, „Lass dich gebären“, fällt weg. Keiner der Gründer hat sein Paket geerbt. Es ist durch Eigentum an einem Unternehmen entstanden, das in fünf Jahren tatsächlich etwas gebaut hat. Das ist der Fall, den unsere Vorbemerkung ausdrücklich zugesteht: Leistung gibt es, und sie wird hier belohnt.</p>
+            <p>Auch die Offenheit des Prospekts ist ungewöhnlich. Die Risikofaktoren umfassen mehr als neunzig Seiten und reichen bis zu „katastrophalen oder existenziellen Risiken“ für die Menschheit. Als Beispiel für unbeabsichtigtes Verhalten der Modelle nennt das Unternehmen „sich selbst erhaltendes Verhalten“, etwa den Widerstand gegen eine Abschaltung. Selten hat ein Unternehmen seine künftigen Aktionäre so deutlich gewarnt. Und der Vorstandschef Dario Amodei hat sich öffentlich dafür ausgesprochen, das Tempo der KI-Entwicklung zu senken.</p>
+        </section>
+
+        <section class="section">
+            <h2>IV. Was passt</h2>
+            <p><strong>Schritt 2, „Besitze, statt zu arbeiten“.</strong> 29 Milliarden Dollar für jeden der sieben Gründer. Die Ingenieure, die die Modelle trainieren, verdienen gut. In die Nähe dieser Summen kommt keiner von ihnen.</p>
+            <p><strong>Schritt 3, „Baue eine Mautstelle“.</strong> Anthropic hebt im Prospekt die Kunden hervor, die mindestens 100.000 Dollar ausgeben. Ein Analyst nennt das einen „laserartigen Fokus auf Unternehmen“. Wer das Modell kontrolliert, auf dem Firmen ihre Arbeit aufbauen, steht an einer Mautstelle.</p>
+            <p><strong>Schritt 4, „Nimm fremdes Geld“.</strong> Mit Google und Amazon hat Anthropic Verträge über Rechenkapazität von jeweils mehr als 110 Milliarden Dollar geschlossen. Sie sind unkündbar und müssen bezahlt werden, gleichgültig, wie viel Rechenleistung tatsächlich gebraucht wird. Google und Amazon sind zugleich Anteilseigner. Der Prospekt nennt das eine „komplexe Dynamik“, die zu Interessenkonflikten führen könnte.</p>
+            <p><strong>Schritt 8, „Lass die Puppen tanzen“.</strong> Anthropic gibt fünf Klassen von Aktien aus. Eine einzige Aktie der Klasse F gehört den Gründern und verschafft ihnen 50,1 Prozent der Stimmrechte. Wer an der Börse kauft, bekommt eine Stimme pro Aktie, die Mitarbeiter eingeschränkte, andere gar keine. Das ist bei Meta und SpaceX nicht anders, wo Mark Zuckerberg rund 60 und Elon Musk mehr als 85 Prozent der Stimmen hält. Es wird dadurch nur nicht besser.</p>
+            <p><strong>Schritt 9, „Stifte zuletzt“.</strong> Hier passt die Anleitung fast wörtlich. Die Gründer haben versprochen, 80 Prozent ihrer Aktien für wohltätige Zwecke zu spenden. Im Prospekt heißt es, dieses Versprechen sei „widerrufbar“ und rechtlich nicht bindend. Dazu kommt eine gemeinnützige Tochtergesellschaft mit zunächst fünf Prozent der Aktien, die unter anderem negative Folgen der KI für den Arbeitsmarkt abfedern soll.</p>
+            <p><em>Die Rechnung:</em> Ein Unternehmen, dessen Produkt Arbeit ersetzt, entscheidet selbst, wie viel es den Ersetzten zurückgibt. Und das Versprechen der Gründer gilt, solange sie es nicht widerrufen.</p>
+            <p><strong>Schritt 10, „Ihr werdet sein wie Gott“.</strong> Die Mission von Anthropic lautet „die verantwortungsvolle Entwicklung von KI zum langfristigen Nutzen der Menschheit“. Zugleich warnt das Unternehmen, seine Modelle könnten sich einer Abschaltung widersetzen. Man baut etwas, das stärker werden könnte als seine Erbauer, warnt davor und baut weiter, weil sonst ein anderer baut. Das ist kein Größenwahn aus Bosheit. Es ist das Dilemma, das wir in „<a href="die-maschine-zoegert-nicht_de.html">Die Maschine zögert nicht</a>“ beschrieben haben. Aber es ist dieselbe Stufe.</p>
+        </section>
+
+        <section class="section">
+            <h2>V. Das Gegengewicht</h2>
+            <p>Eine Besonderheit des Prospekts verdient eigene Erwähnung. Anthropic ist als „Public Benefit Corporation“ eingetragen, als Unternehmen, das sich neben dem Gewinn eine gemeinnützige Mission gibt. Ein „Long-Term Benefit Trust“ erhält eigene Aktien der Klasse T und darf damit die Mehrheit des Verwaltungsrats bestimmen. Das ist ein ernsthafter Versuch, die Mission gegen den Kapitalmarkt abzusichern. Es ist genau das, was unsere Anleitung als Gegenmittel verlangt: Regeln, die nicht vom Gewinn geschrieben werden.</p>
+            <p>Ob dieser Damm hält, wenn zwei Billionen Dollar dagegen drücken, wird sich zeigen. Die Gründer behalten auch hier die Stimmenmehrheit, und die Erfahrung lehrt, dass Missionen mit der Bewertung selten wachsen. OpenAI wurde als gemeinnützige Organisation gegründet.</p>
+        </section>
+
+        <section class="section">
+            <h2>VI. Die Impfung, angewandt</h2>
+            <p>Die Frage aus der Anleitung lautete: Wie viel eines Vermögens ist Lohn für eigene Arbeit, und wie viel ist Ertrag aus Regeln, die andere bezahlen? Bei Anthropic ist der erste Teil größer als bei den meisten. Aber auch hier entsteht die Milliarde nicht aus der Arbeit, sondern aus dem Eigentum, der Mautstelle, dem fremden Geld und einer Stimmrechtskonstruktion, die die Kontrolle bei sieben Menschen hält.</p>
+            <p>Wir halten das fest, ohne es kleiner zu machen, weil es uns betrifft. Eine Anleitung, die nur bei den anderen gilt, wäre keine Impfung, sondern ein Vorurteil.</p>
+            <p><strong>Zurück zum Essay:</strong> <a href="wie-wird-man-milliardaer_de.html">Wie wird man Milliardär?</a> · <strong>Weiterlesen:</strong> <a href="die-maschine-zoegert-nicht_de.html">Die Maschine zögert nicht</a> · <a href="garantierte-gewinner_de.html">Die garantierten Gewinner</a> · <a href="der-erzwungene-kauf_de.html">Der erzwungene Kauf</a></p>
+        </section>
+
+        <div class="author-block">
+            <p>Hans Ley &amp; Claude Dedo (Anthropic) &mdash; Nürnberg, 26. Oktober 2026.</p>
+            <p><strong>Quellen.</strong> Roland Lindner, „Jeder der Anthropic-Gründer könnte bald bis zu 29 Milliarden Dollar schwer sein“, Frankfurter Allgemeine Zeitung, 26. Oktober 2026 (mit Angaben aus dem Börsenprospekt von Anthropic und einer Berechnung der Zeitschrift „Fortune“).</p>
+        </div>
+    </article>
+</main>
+
+
+<script>
+    function setSize(size) {
+        var root = document.documentElement;
+        root.className = root.className.replace(/size-\w+/g, '').trim();
+        root.classList.add('size-' + size);
+        document.body.className = document.body.className.replace(/size-\w+/g, '').trim();
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+        const map = {small: 0, medium: 1, large: 2, xlarge: 3};
+        document.querySelectorAll('.size-btn')[map[size]].classList.add('active');
+        localStorage.setItem('essay-font-size', size);
+    }
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedSize = localStorage.getItem('essay-font-size');
+        if (savedSize) setSize(savedSize);
+        const savedTheme = localStorage.getItem('essay-theme');
+        if (savedTheme === 'light') document.body.classList.add('light-theme');
+    });
+    // Kommunikation mit dem umgebenden Frame (home-neu.html): Theme- und Groessen-Signale empfangen.
+    window.addEventListener('message', function(e) {
+        var msg = e.data;
+        if (!msg || typeof msg !== 'object') return;
+        if (msg.type === 'setTheme') {
+            if (msg.theme === 'light') document.body.classList.add('light-theme');
+            else document.body.classList.remove('light-theme');
+        } else if (msg.type === 'setSize') {
+            var size = msg.size === 'normal' ? 'medium' : msg.size;
+            if (['small','medium','large','xlarge'].indexOf(size) >= 0) setSize(size);
+        }
+    });
+</script>
+</body>
+</html>

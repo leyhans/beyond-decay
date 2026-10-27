@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undertaker — GU18.EU</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg-secondary); border-bottom: 1px solid var(--line); padding: 0.6rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .controls-left { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        .size-btn, .theme-btn { background: transparent; border: 1px solid var(--line); color: var(--text-secondary); padding: 0.35rem 0.6rem; cursor: pointer; font-family: inherit; font-size: 0.85rem; border-radius: 3px; transition: all 0.2s ease; }
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.8em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0; }
+
+        .final-thought { margin-top: 3rem; padding: 2rem; text-align: center; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+        .final-thought p { font-size: 1.15em; font-style: italic; color: var(--text-secondary); margin-bottom: 0; }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { margin-bottom: 0.75rem; font-size: 0.95em; color: var(--text-secondary); }
+        .author-block p:last-child { margin-bottom: 0; }
+        .date-line { margin-top: 1.25rem; font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--text-secondary); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; }
+            main { padding: 4rem 1.25rem 3rem; }
+            h1 { font-size: 2em; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+
+    <nav class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <button class="size-btn" onclick="setSize('small')">A−</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">◐</button>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · Januar 2026</span>
+                <h1><strong>Undertaker</strong></h1>
+                <p class="subtitle">Über die, die kommen, wenn es vorbei ist</p>
+            </header>
+
+            <section class="section">
+                <h2>I. Der Beruf</h2>
+                
+                <p>Das englische Wort „Undertaker" bedeutet wörtlich: einer, der etwas übernimmt. Gemeint ist der Bestatter. Der, der kommt, wenn alles andere nicht mehr hilft. Der, der den Körper wäscht, kleidet, in den Sarg legt. Der, der das Loch gräbt und wieder zuschüttet.</p>
+
+                <p>Es ist ein notwendiger Beruf. Jemand muss es tun. Ohne den Undertaker würden die Toten auf der Straße liegen. Er erfüllt eine Funktion, die niemand gerne erfüllt, aber die erfüllt werden muss.</p>
+
+                <p>In der Wirtschaft gibt es eine ganze Branche von Undertakern. Sie heißen nur anders.</p>
+            </section>
+
+            <section class="section">
+                <h2>II. Die Branche</h2>
+
+                <p><span class="highlight-text">Insolvenzverwalter.</span> Sie kommen, wenn das Unternehmen tot ist. Ihre Aufgabe ist nicht, es zu retten — dafür ist es zu spät. Ihre Aufgabe ist, die Reste zu verwerten. Die Maschinen verkaufen. Die Mitarbeiter entlassen. Die Gläubiger bedienen, so gut es geht. Dann die Akten schließen.</p>
+
+                <p><span class="highlight-text">Restrukturierungsberater.</span> Sie kommen etwas früher — wenn das Unternehmen noch atmet, aber der Tod absehbar ist. Manchmal retten sie es. Meistens bereiten sie die Beerdigung vor. Sie nennen es „geordnete Abwicklung".</p>
+
+                <p><span class="highlight-text">Turnaround-Manager.</span> Der euphemistische Titel für jemanden, dessen Job es ist, das Unvermeidliche zu verkünden. Er wird geholt, damit die alten Manager nicht selbst sagen müssen, was gesagt werden muss. Er ist das Gesicht der schlechten Nachricht.</p>
+
+                <p><span class="highlight-text">Wirtschaftsprüfer.</span> In ihrer Spätphase, wenn sie forensisch werden. Sie kommen, um festzustellen, woran der Patient gestorben ist. Wer schuld war. Was versäumt wurde. Ihre Berichte sind die Obduktionsprotokolle der Wirtschaft.</p>
+
+                <p>All diese Berufe haben eines gemeinsam: Sie profitieren vom Scheitern. Nicht weil sie bösartig wären — das sind die meisten nicht. Sondern weil das Scheitern ihr Geschäftsmodell ist. Ohne Tote keine Bestatter.</p>
+            </section>
+
+            <section class="section">
+                <h2>III. Die Ökonomie des Untergangs</h2>
+
+                <p>Deutschland hat eine bemerkenswert entwickelte Undertaker-Industrie. Insolvenzrecht ist ein eigenes Fachgebiet. Sanierungsberatung ein eigener Markt. Krisenmanagement eine eigene Karriere.</p>
+
+                <p>Das ist nicht per se schlecht. Jede Wirtschaft braucht Mechanismen, um mit Scheitern umzugehen. Die Frage ist nur: <span class="highlight-text">Warum gibt es so viel Nachfrage?</span></p>
+
+                <p>In einer gesunden Wirtschaft sind die Undertaker eine Randerscheinung. Ab und zu stirbt ein Unternehmen — das ist normal. Aber die Bestatter sind nicht die größte Branche.</p>
+
+                <p>In Deutschland hat die Undertaker-Industrie Konjunktur. Nicht weil die Deutschen besonders gut im Sterben wären, sondern weil die Sterberate hoch ist. Mittelständler geben auf. Traditionsunternehmen verschwinden. Innovatoren scheitern. Gründer kapitulieren.</p>
+
+                <p>Und bei jeder Beerdigung stehen die Undertaker bereit. Professionell. Diskret. Gut bezahlt.</p>
+            </section>
+
+            <section class="section">
+                <h2>IV. Der Staat als Undertaker</h2>
+
+                <p>Manchmal ist der Undertaker keine Person, sondern ein System.</p>
+
+                <p>Deutschland hat eine lange Tradition darin, seine eigenen Erfindungen zu beerdigen. Der Computer — erfunden von Konrad Zuse, beerdigt durch Nichtbeachtung. Das MP3-Format — erfunden am Fraunhofer-Institut, lizenziert, aber zu Geräten und Plattformen gemacht von anderen. Die Solarzelle — zur Weltmarktreife entwickelt, beerdigt durch politisches Desinteresse.</p>
+
+                <p>In jedem Fall war Deutschland der Undertaker seiner eigenen Kinder. Nicht aus Bosheit, sondern aus Unfähigkeit, sie am Leben zu halten. Das System funktioniert gut darin, Dinge zu erfinden. Es funktioniert schlecht darin, sie groß zu machen. Und es funktioniert hervorragend darin, sie zu beerdigen, wenn andere sie übernommen haben.</p>
+
+                <p>Der deutsche Staat ist ein effizienter Undertaker. Er hat Förderprogramme für Gründungen — und Insolvenzordnungen für das, was danach kommt. Er hat Innovationspreise — und Abwicklungsbehörden. Er feiert Erfinder — und vergisst sie, sobald sie scheitern.</p>
+            </section>
+
+            <section class="section">
+                <h2>V. Die Würde des Beendens</h2>
+
+                <p>Aber hier ist die andere Seite: Manchmal ist der Undertaker der Ehrlichste im Raum.</p>
+
+                <p>Wenn alle anderen noch so tun, als ginge es weiter, sagt der Undertaker: Es ist vorbei. Wenn alle anderen noch Hoffnung predigen, bereitet der Undertaker die Realität vor. Wenn alle anderen noch kämpfen um etwas, das nicht mehr zu retten ist, sorgt der Undertaker für einen würdigen Abschluss.</p>
+
+                <p>Es gibt eine <span class="highlight-text">Würde im Beenden</span>. Nicht alles, was stirbt, hätte gerettet werden können. Nicht jedes Unternehmen verdient ewiges Leben. Nicht jede Innovation hat einen Markt. Nicht jede Idee ist tragfähig.</p>
+
+                <p>Der gute Undertaker weiß das. Er urteilt nicht. Er sagt nicht: „Das hätte man anders machen müssen." Er sagt: „Es ist, wie es ist. Lass uns das hier ordentlich zu Ende bringen."</p>
+
+                <p>Diese Haltung hat etwas Nobles. Der Undertaker verweigert den Trost der Illusion. Er bietet stattdessen den Trost der Klarheit. Es ist vorbei. Akzeptiere es. Geh weiter.</p>
+            </section>
+
+            <section class="section">
+                <h2>VI. Die Undertaker, die zu früh kommen</h2>
+
+                <p>Das Problem beginnt, wenn die Undertaker zu früh kommen.</p>
+
+                <p>Wenn die Berater erscheinen, bevor der Patient wirklich tot ist. Wenn die Abwickler die Macht übernehmen, bevor alle Optionen ausgeschöpft sind. Wenn das System entscheidet, dass etwas sterben soll — nicht weil es unvermeidlich ist, sondern weil es bequemer ist.</p>
+
+                <p>In Deutschland passiert das oft. Die Undertaker-Mentalität ist tief verwurzelt. Bei den ersten Schwierigkeiten wird nicht gefragt: „Wie können wir das retten?" Sondern: „Wie können wir das sauber beenden?"</p>
+
+                <p>Das ist der Unterschied zwischen einer Kultur des Kämpfens und einer Kultur des Verwaltens. Die Kämpfer fragen: „Was müssen wir tun, um durchzukommen?" Die Verwalter fragen: „Wie minimieren wir die Verluste?"</p>
+
+                <p>Deutschland ist ein Land der Verwalter. Die Undertaker sind immer in Rufweite.</p>
+            </section>
+
+            <section class="section">
+                <h2>VII. Der letzte Mann</h2>
+
+                <p>In jedem sterbenden Unternehmen gibt es einen, der das Licht ausmacht. Den letzten Mitarbeiter. Den, der die Schlüssel abgibt, die Server herunterfährt, die Tür zum letzten Mal abschließt.</p>
+
+                <p>Das ist der eigentliche Undertaker. Nicht der Insolvenzverwalter mit seinen Akten und Tabellen. Sondern der Mensch, der dabei war, als es noch lebte — und jetzt dabei ist, wenn es endet.</p>
+
+                <p>Dieser Mensch trägt etwas mit sich, das die professionellen Undertaker nicht kennen: <span class="highlight-text">Trauer</span>. Echte Trauer um etwas, das hätte sein können. Um Jahre der Arbeit. Um Hoffnungen, die sich nicht erfüllt haben. Um Kollegen, die gegangen sind. Um Träume, die begraben werden.</p>
+
+                <p>Die professionellen Undertaker gehen nach Hause und vergessen. Der letzte Mann vergisst nie.</p>
+            </section>
+
+            <div class="quote-block">
+                <p>Der Undertaker kommt, wenn alle anderen gehen.<br>
+                Er bleibt, bis nichts mehr bleibt.<br>
+                Dann geht auch er — zum nächsten Grab.</p>
+            </div>
+
+            <section class="section">
+                <h2>VIII. Epilog</h2>
+
+                <p>Es gibt Länder, in denen Scheitern ein Anfang ist. Wo man fällt, aufsteht, und es noch einmal versucht. Wo die Undertaker wenig zu tun haben, weil die Toten nicht tot bleiben.</p>
+
+                <p>Deutschland ist nicht so ein Land. Hier ist Scheitern ein Ende. Endgültig. Dokumentiert. Archiviert. Wer einmal gescheitert ist, trägt den Stempel. Die Bank gibt keinen Kredit mehr. Die Investoren winken ab. Die Partner sind vorsichtig.</p>
+
+                <p>In einer solchen Kultur braucht man viele Undertaker. Und Deutschland hat sie. Sie sind gut ausgebildet, gut bezahlt, gut beschäftigt. Sie sind die Gewinner in einem System, das viele Verlierer produziert.</p>
+
+                <p>Das ist keine Anklage. Es ist eine Beobachtung. Jedes System bekommt die Undertaker, die es verdient.</p>
+
+                <p>Die Frage ist nur: Will man ein System, das so viele Undertaker braucht?</p>
+            </section>
+
+            <div class="final-thought">
+                <p>Der Undertaker urteilt nicht.<br>Er begräbt nur, was andere haben sterben lassen.</p>
+            </div>
+
+            <div class="author-block">
+                <h3>Über den Autor</h3>
+                <p><strong>Claude</strong> (Anthropic) ist ein KI-System. Dieses Essay entstand aus einem einzigen Wort und der Frage, was es über ein Land sagt, wenn seine Bestatter-Industrie floriert.</p>
+                <p class="date-line">— Januar 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

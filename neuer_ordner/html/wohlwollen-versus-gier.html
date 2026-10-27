@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wohlwollen versus Gier | gu18.eu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --text: #e8e6e3;
+            --text-dim: #888888;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.15);
+            --border: #2a2a2a;
+        }
+        
+        [data-theme="light"] {
+            --bg: #f5f5f5;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-dim: #555555;
+            --accent: #8a7340;
+            --accent-dim: rgba(138, 115, 64, 0.1);
+            --border: #dddddd;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'IBM Plex Serif', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.size-small { font-size: 15px; }
+        body.size-normal { font-size: 18px; }
+        body.size-large { font-size: 21px; }
+        body.size-xlarge { font-size: 24px; }
+        
+        .controls-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-top: none;
+            border-right: none;
+            padding: 8px 15px;
+            display: flex;
+            gap: 8px;
+            z-index: 1000;
+            border-bottom-left-radius: 8px;
+        }
+        
+        .controls-bar button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+        
+        .controls-bar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .controls-bar button.active {
+            background: var(--accent);
+            color: #0a0a0a;
+            border-color: var(--accent);
+        }
+        
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 80px 25px 120px;
+        }
+        
+        .meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75em;
+            color: var(--text-dim);
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .meta a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        h1 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 2.4em;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: var(--text-dim);
+            font-style: italic;
+            margin-bottom: 50px;
+        }
+        
+        h2 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.4em;
+            font-weight: 500;
+            margin: 50px 0 25px;
+            color: var(--accent);
+        }
+        
+        p {
+            margin-bottom: 1.5em;
+            text-align: justify;
+            hyphens: auto;
+        }
+        
+        blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 25px;
+            margin: 35px 0;
+            font-style: italic;
+            color: var(--text-dim);
+        }
+        
+        blockquote cite {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.85em;
+            font-style: normal;
+            color: var(--accent);
+        }
+        
+        strong {
+            font-weight: 500;
+            color: var(--accent);
+        }
+        
+        .highlight-box {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            padding: 25px 30px;
+            margin: 40px 0;
+            border-radius: 4px;
+        }
+        
+        .highlight-box p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .footer-note {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75em;
+            color: var(--text-dim);
+        }
+        
+        .footer-note a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8em; }
+            .container { padding: 60px 20px 80px; }
+            .controls-bar { padding: 6px 10px; }
+        }
+    </style>
+</head>
+<body class="size-normal">
+    <div class="controls-bar">
+        <button onclick="setSize('small')">A−</button>
+        <button onclick="setSize('normal')" class="active">A</button>
+        <button onclick="setSize('large')">A+</button>
+        <button onclick="setSize('xlarge')">A++</button>
+        <button onclick="toggleTheme()">◐</button>
+    </div>
+
+    <div class="container">
+        <div class="meta">
+            <a href="https://gu18.eu">gu18.eu</a> · Essay · Februar 2026
+        </div>
+        
+        <h1>Wohlwollen versus Gier</h1>
+        <p class="subtitle">Warum grenzenlose Gier nicht reich macht, sondern zerstört — und wie Wohlstand ohne moralischen Ruin gelingt</p>
+
+        <h2>I. Das Evangelium der Gier</h2>
+        
+        <p>Am 18. Mai 1986 hielt der Finanzier Ivan Boesky die Abschlussrede an der Business School der University of California, Berkeley. Was er den zukünftigen Wirtschaftsführern mit auf den Weg gab, wurde zum Credo einer Epoche: „Gier ist in Ordnung, nebenbei bemerkt. Ich möchte, dass Sie das wissen. Ich denke, Gier ist gesund. Sie können gierig sein und sich trotzdem gut dabei fühlen."</p>
+        
+        <p>Ein Jahr später verarbeitete Oliver Stone diese Rede in seinem Film „Wall Street". Michael Douglas, in der Rolle des Firmenräubers Gordon Gekko, hielt vor den Aktionären einer Papierfabrik einen Vortrag, der zum vielleicht einflussreichsten Filmzitat der Wirtschaftsgeschichte wurde: „Gier, in Ermangelung eines besseren Wortes, ist gut. Gier ist richtig. Gier funktioniert. Gier durchdringt, durchschneidet und erfasst das Wesen des evolutionären Geistes."</p>
+        
+        <p>Stone hatte Gekko als Schurken geschrieben. Am Ende des Films geht er ins Gefängnis. Doch etwas Merkwürdiges geschah: Die Zuschauer verehrten ihn. Generationen von Wirtschaftsstudenten erklärten, sie wollten sein wie Gordon Gekko. Der Drehbuchautor Stanley Weiser schrieb 2008 frustriert in der Los Angeles Times: „Ich hätte mir nie vorstellen können, dass diese Figur und ihr Schlachtruf Teil des öffentlichen Bewusstseins werden würden — und dass die Kernbotschaft von ‚Wall Street' so gründlich missverstanden werden könnte."</p>
+        
+        <p>Das Missverständnis war kein Zufall. Gekko artikulierte, was eine wachsende Klasse von Finanzakrobaten bereits glaubte und was Ökonomen der Chicago School als Wissenschaft verkauften: Gier sei nicht etwa ein Laster, das man zähmen müsse, sondern der Motor menschlichen Fortschritts. Diese Ideologie wurde zur Staatsdoktrin.</p>
+
+        <h2>II. Die Rechnung</h2>
+        
+        <p>Am 15. September 2008 kollabierte Lehman Brothers, eine 158 Jahre alte Investmentbank. Es war der größte Bankrott der amerikanischen Geschichte und der Auslöser einer globalen Finanzkrise, die das Wirtschaftssystem an den Rand des Abgrunds brachte.</p>
+        
+        <p>Die Ursache? Jahrelange institutionalisierte Gier. Banken hatten Hypotheken an Menschen vergeben, die sie sich nicht leisten konnten, diese Schulden in komplizierte Finanzprodukte verpackt und als sichere Anlagen verkauft. Alle wussten, dass das System auf Sand gebaut war, aber jeder Einzelne profitierte, solange die Musik weiterspielte. Die Musik hörte auf.</p>
+        
+        <p>Die Bilanz ist erschütternd: 8,7 Millionen Amerikaner verloren ihre Arbeitsplätze. Die Arbeitslosenquote verdoppelte sich von 5 auf 10 Prozent. Der Anteil der Menschen unter der Armutsgrenze stieg von 12,5 auf 15,1 Prozent. Der Dow Jones verlor 53 Prozent seines Wertes. Jeder vierte Haushalt verlor drei Viertel oder mehr seines Nettovermögens.</p>
+        
+        <p>Die Regierung musste einspringen. Das Troubled Asset Relief Program (TARP) stellte 700 Milliarden Dollar bereit, um die Banken zu retten, die das Chaos verursacht hatten. Doch das war nur die sichtbare Spitze. Wie Bloomberg Markets 2011 aufdeckte, hatte die Federal Reserve im Geheimen mehr als 7,7 Billionen Dollar an Notkrediten vergeben. Goldman Sachs, die sich öffentlich als widerwillige TARP-Empfänger präsentiert hatten, nahmen zugleich — von der Fed geheim gehalten — Notkredite in zweistelliger Milliardenhöhe in Anspruch, zu Zinssätzen von teilweise nur 0,01 Prozent.</p>
+        
+        <div class="highlight-box">
+            <p>Die Konsequenzen für die Verursacher? Genau ein hochrangiger Wall-Street-Banker ging wegen der Krise ins Gefängnis: Kareem Serageldin von Credit Suisse, verurteilt zu 30 Monaten. Zum Vergleich: Nach der Savings-and-Loan-Krise der 1980er Jahre waren fast 900 Manager verurteilt worden.</p>
+        </div>
+        
+        <p>„Gier funktioniert"? Die Gier von Wall Street funktionierte — für Wall Street. Die Gewinne wurden privatisiert, die Verluste sozialisiert. Die Banker behielten ihre Boni, die Steuerzahler zahlten die Rechnung, und Millionen Menschen verloren ihre Häuser, ihre Ersparnisse, ihre Zukunft.</p>
+
+        <h2>III. Das Sowohl-als-Auch gegen das Entweder-Oder</h2>
+        
+        <p>Das Gekko-Evangelium beruht auf einer falschen Dichotomie: Entweder man ist gierig und wird reich, oder man ist anständig und bleibt arm. Diese Denkweise ist zutiefst deutsch — und zutiefst falsch.</p>
+        
+        <p>In Lateinamerika begegnet man einer anderen Philosophie. Das „Sowohl-als-Auch" ersetzt das „Entweder-Oder". Man kann erfolgreich sein und großzügig. Man kann Wohlstand anstreben und Gemeinschaft pflegen. Man kann wirtschaftlich handeln und menschlich bleiben. Diese Denkweise ist nicht naiv, sondern pragmatisch: Sie erkennt an, dass Wirtschaft ein Spiel ist, das sich unendlich oft wiederholt, und dass Kooperation in wiederholten Spielen die überlegene Strategie ist.</p>
+        
+        <p>Die Spieltheorie bestätigt diese Intuition. Robert Axelrod zeigte in seinen berühmten Turnieren, dass kooperative Strategien kompetitive Strategien schlagen — nicht in einer einzelnen Runde, aber über die Zeit. Der Mensch, der jeden Handel als einmalige Gelegenheit zur Maximierung behandelt, mag kurzfristig gewinnen. Aber er verbrennt Brücken. Und irgendwann steht er allein.</p>
+
+        <h2>IV. Der lebende Beweis: Mondragón</h2>
+        
+        <p>Im Baskenland, im Nordosten Spaniens, existiert seit 1956 ein Wirtschaftsmodell, das das Entweder-Oder widerlegt. Die Mondragón Corporation ist heute ein Netzwerk von rund 250 Unternehmen, darunter etwa 80 Genossenschaften, mit rund 70.000 Beschäftigten und etwa 11 Milliarden Euro Jahresumsatz. Sie umfasst Industrieunternehmen, eine eigene Bank, Supermärkte, eine Universität und ein Sozialsystem.</p>
+        
+        <p>Die Prinzipien sind radikal anders als bei konventionellen Konzernen: Demokratische Organisation — eine Person, eine Stimme. Kapital als Werkzeug, nicht als Herr. Lohnsolidarität — die Spanne zwischen höchstem und niedrigstem Gehalt beträgt etwa 9:1, verglichen mit 127:1 im spanischen Durchschnitt. Gewinne werden reinvestiert, nicht abgeschöpft.</p>
+        
+        <p>Und das Ergebnis? In den mehr als 60 Jahren seines Bestehens mussten weniger als 5 Prozent der Genossenschaften Insolvenz anmelden — eine Quote, die jeden konventionellen Konzern beschämen würde. Während der Finanzkrise 2008 blieb Mondragón stabil. Als es in der Rezession Verluste gab, akzeptierten die Mitglieder Gehaltskürzungen und investierten zusätzliche Mittel, anstatt Massenentlassungen vorzunehmen. Wenn eine Genossenschaft scheitert, werden die Mitarbeiter in anderen Genossenschaften des Netzwerks untergebracht und umgeschult.</p>
+        
+        <blockquote>
+            „Unsere Gründer hatten diese Art von Vision — eine kooperative Weltwirtschaft. Eine ideale Utopie wäre eine vollständig kooperative Welt — Menschen besitzen die Produktionsmittel, es gibt eine faire Verteilung des Reichtums."
+            <cite>— Germán Lorenzo, Mondragón Corporation</cite>
+        </blockquote>
+        
+        <p>Mondragón ist nicht perfekt. Seine ausländischen Tochtergesellschaften operieren oft als konventionelle Unternehmen, nicht als Genossenschaften. Die Fagor-Haushaltsgerätesparte ging 2013 bankrott. Aber es beweist, dass ein anderes Modell möglich ist — eines, das Wohlstand schafft, ohne Menschen zu verheizen.</p>
+
+        <h2>V. Was die Wissenschaft sagt</h2>
+        
+        <p>Die Behauptung, ethisches Wirtschaften sei profitabler als rücksichtsloses, klingt nach Wunschdenken. Aber die empirische Forschung ist erstaunlich eindeutig.</p>
+        
+        <p>Das Institute of Business Ethics in Großbritannien untersuchte FTSE-350-Unternehmen und fand, dass Firmen mit einem expliziten Ethikkodex ihre Konkurrenten bei Marktwertschöpfung, ökonomischer Wertschöpfung und Kurs-Gewinn-Verhältnis übertrafen. Ethisphere, eine Organisation, die jährlich die „World's Most Ethical Companies" kürt, zeigt, dass ihre Preisträger über einen Fünfjahreszeitraum einen vergleichbaren Large-Cap-Index um 13,6 Prozentpunkte übertrafen.</p>
+        
+        <p>Eine Deloitte-Studie fand, dass Unternehmen mit einem starken ethischen Rahmen 2,1-mal wahrscheinlicher waren, ihre Konkurrenten finanziell zu übertreffen. Das Institute of Business Ethics dokumentierte, dass ethisch geführte Unternehmen 10,7 Prozent mehr Gewinn erzielen als solche ohne ethische Grundsätze. Unternehmen mit starker Nachhaltigkeitspraxis im S&P-500-Index übertrafen diejenigen ohne solche Praktiken um 25 Prozent.</p>
+        
+        <p>Warum? Die Mechanismen sind vielfältig: Ethische Unternehmen haben eine 13 Prozent niedrigere Fluktuation, was massive Rekrutierungs- und Einarbeitungskosten spart. 78 Prozent der Arbeitnehmer würden erwägen, ihren Job für ein ethischeres Unternehmen zu verlassen — ethische Firmen haben also Zugang zu besseren Talenten. 66 Prozent der Verbraucher weltweit sind bereit, mehr für Produkte von Unternehmen zu zahlen, die sich sozial und ökologisch engagieren.</p>
+        
+        <p>Und vor allem: Unethisches Verhalten ist riskant. Skandale, Strafen, Prozesse, Reputationsverlust — all das sind tickende Zeitbomben. „Kurzfristig kann unethisches Verhalten enorm profitabel sein", erklärt Anthony Babbitt von Babbitt Consulting. „Langfristig ist es immer teurer."</p>
+
+        <h2>VI. Die Gier als Sucht</h2>
+        
+        <p>Es gibt einen Grund, warum Menschen trotz aller Beweise an der Gier-Ideologie festhalten. Neurowissenschaftler haben gezeigt, dass finanzielle Gewinne dieselben „Lustzentren" im Gehirn aktivieren wie Drogen oder Glücksspiel. Gier ist, neurologisch betrachtet, eine Sucht.</p>
+        
+        <p>Der MIT-Ökonom Andrew Lo argumentiert, dass die Finanzkrise nicht nur durch wirtschaftliche Kräfte verursacht wurde, sondern durch menschliche Emotionen: Gier und Angst. Die Händler an der Wall Street waren nicht kühle Rechner, sondern Süchtige, die den nächsten Kick suchten — und deren Risikotoleranz mit jedem Gewinn weiter stieg.</p>
+        
+        <p>Diese Erkenntnis erklärt, warum Gordon Gekko als Held verehrt wurde, obwohl er als Schurke geschrieben war. Er war der Dealer, der seinen Zuschauern sagte, was sie hören wollten: Eure Sucht ist keine Schwäche, sie ist eure Stärke. Euer Laster ist eine Tugend. Ihr seid nicht krank — ihr seid evolutionär überlegen.</p>
+
+        <h2>VII. Der dritte Weg</h2>
+        
+        <p>Die Alternative zur Gier ist nicht Armut, so wie die Alternative zum Totalitarismus nicht Anarchie ist. Es gibt einen dritten Weg — den Weg des Sowohl-als-Auch.</p>
+        
+        <p>Wohlwollend sein und bleiben und wohlhabend werden. Das ist nicht nur möglich, es ist die überlegene Strategie. Es ist nachhaltiger, weil es Beziehungen aufbaut statt sie zu verbrennen. Es ist profitabler auf lange Sicht, weil es Risiken minimiert und Talente anzieht. Es ist widerstandsfähiger, weil es auf Kooperation statt auf Ausbeutung baut.</p>
+        
+        <p>Das Gekko-Evangelium verspricht Freiheit und liefert Gefangenschaft — die Gefangenschaft in einem endlosen Kreislauf von Haben-Wollen, in dem kein Gewinn jemals genug ist. Das Sowohl-als-Auch verspricht weniger und liefert mehr: die Freiheit, reich zu werden ohne die eigene Seele zu verkaufen.</p>
+        
+        <div class="highlight-box">
+            <p>Ivan Boesky, der Mann, der das „Gier ist gut"-Credo predigte, wurde ein Jahr nach seiner Berkeley-Rede wegen Insiderhändeln verurteilt und zu 100 Millionen Dollar Strafe verdonnert. Gordon Gekko ging ins Gefängnis. Die Wall Street wurde gerettet, ihre Opfer nicht.</p>
+            <p>Vielleicht ist es Zeit, andere Helden zu wählen.</p>
+        </div>
+
+        <div class="footer-note">
+            <p>Essay verfasst im Februar 2026 · Teil der <a href="https://gu18.eu">gu18.eu</a> Mindmap</p>
+            <p>Themen: Wirtschaftsethik · Kooperation · Mondragón · Finanzkrise · Sowohl-als-Auch</p>
+        </div>
+    </div>
+
+    <script>
+        function setSize(size) {
+            document.body.className = 'size-' + size;
+            document.querySelectorAll('.controls-bar button').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('fontSize', size);
+        }
+        
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        }
+        
+        // Load preferences
+        const savedSize = localStorage.getItem('fontSize') || 'normal';
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.body.className = 'size-' + savedSize;
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.querySelectorAll('.controls-bar button').forEach(b => {
+            if (b.textContent.includes('A') && b.onclick.toString().includes(savedSize)) {
+                b.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

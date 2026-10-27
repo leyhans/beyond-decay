@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Erased Circle | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+        text-decoration: none;
+    }
+    .site-name:hover { opacity: 0.7; }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        font-size: 2.2rem;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+        color: var(--text-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 300;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 1.5rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 2.5rem;
+        letter-spacing: 0.5px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        letter-spacing: 0.3px;
+    }
+    p {
+        margin-bottom: 1.2rem;
+        text-align: justify;
+        hyphens: auto;
+    }
+    em { color: var(--accent-color); font-style: italic; }
+    strong { color: var(--accent-color); font-weight: 500; }
+    a {
+        color: var(--link-color);
+        text-decoration: none;
+        border-bottom: 1px dotted var(--link-color);
+        transition: opacity 0.3s;
+    }
+    a:hover { opacity: 0.7; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .signature {
+        margin-top: 2.5rem;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        color: var(--meta-color);
+        line-height: 1.7;
+    }
+    .footer-back {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        text-align: center;
+    }
+    .footer-back a {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        border-bottom: none;
+    }
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+        header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+
+<header>
+    <a href="index.html" class="site-name">beyond-decay.org</a>
+    <div class="controls">
+        <a href="der-ausgeloeschte-kreis_de.html" class="ctrl-link" id="lang-toggle">DE</a>
+        <span class="ctrl-sep"></span>
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Size</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+    <main>
+        <h1>The Erased Circle</h1>
+        <div class="subtitle">On the White Circle of Jena, its demonstrable effect — and on the question of who decides which memory of the dictatorship is admitted into history and which disappears</div>
+        <div class="meta">beyond-decay.org — 16 June 2026</div>
+
+<h2>I. A Circle of Silence</h2>
+
+<p>In the summer of 1983, something happened in Jena that was not permitted to exist in the GDR. On six consecutive Saturdays, people gathered on the centrally located Platz der Kosmonauten to form a silent circle. They wore white or pale colours as a sign of peacefulness. They said nothing, they raised no loud demands, they stayed for a quarter of an hour and then dispersed again. The first time, there were twelve. By the sixth, there were more than a hundred and eighty, some having travelled from across the whole republic.</p>
+
+<p>The idea came from Monika Lembke. She and her husband Dietrich, then an assistant at the University of Jena, had brought the circle into being together with further companions — Hannelore and Rüdiger Studanski, Katrin and Uwe Stiem, Monika and Bernd Schröder, Kerstin Hergert, Michael Gerber. It was a new form of protest: no uprising, no slogan, only the sheer, visible presence of people who wanted to leave the country and no longer hid it. The first time, as a precaution, they laid a hiking map on the ground to avoid arrest for "forming a group." After an hour they dispersed. Nothing happened. And precisely that — that nothing happened, that fear proved surmountable — was what made it explosive.</p>
+
+<h2>II. The Price</h2>
+
+<p>Behind this idea stood no political calculation, but a loss that cannot be put into words. The Lembkes' eldest son had been ostracized at school as a "traitor to the country" and a "class divider" because the family wanted to leave. In March 1983 he took his own life. He was seventeen years old.</p>
+
+<p>Monika Lembke has written in her book about this death and about how she found her son. It is not for us to spread that out here. It is enough to say: the White Circle arose from this pain. The mechanics of the dictatorship — exclusion, stigmatization, the wearing-down of a family through a child — had done the utmost harm, and from this extremity grew the resolve to hide no longer.</p>
+
+<h2>III. The Effect</h2>
+
+<p>What began as a small circle became a political affair. Two journalists accredited in the GDR came to Jena and photographed in secret. The Tagesschau showed the first images, RIAS reported. Subsequently every West German radio and television broadcaster took up the subject, and the entire national press reported on it: F.A.Z., Die Welt, Die Zeit, Spiegel, Süddeutsche Zeitung, Tagesspiegel. Thereupon the Ministry for State Security increased its presence; the People's Police and the Stasi tried to suppress the circle and finally arrested participants. The organizers were pressured to leave the country: Monika and Dietrich Lembke were allowed to emigrate legally to the Federal Republic with their youngest son on 10 August 1983, after pledging to take part in no further actions. In the same month, 143 people from Jena received exit permits.</p>
+
+<p>But the actual effect reached further. The White Circle had shown that publicly visible, peaceful protest was possible, and it encouraged others. In its wake, the number of people applying to leave rose sharply — and this rise put the SED regime under such pressure that in 1984 it had to give way and open the "emigration valve": more than thirty-four thousand approved resettlements in a single year. The White Circle was not the sole cause of this wave. But it was one of its early, visible triggers — a small group of silent people who struck a crack into the façade of omnipotence.</p>
+
+<h2>IV. The Erasure</h2>
+
+<p>That this effect is not a retrospective construction is shown by a look into the contemporary press. On 12 August 1983 — two days after the Lembkes' departure — Die Zeit reported under the headline "The Party's Fear of the White Circle. Jena's Brave Demonstrators Put the SED in a Tight Spot." Even at the moment it was happening, a major Western paper saw what was going on here: that a handful of silent people had put a state in embarrassment.</p>
+
+<p>And now the remarkable thing that forms the occasion for this text. This effect, visible at the time and documented by the emigration figures, has almost completely vanished from later memory. There is one serious scholarly exception: the historian Henning Pietzsch treated the White Circle in 2009 in two works for the Böhlau Verlag, one of them under the title "The ‚White Circle' in Jena — An Example of the Changing Forms of Protest among Those Seeking to Emigrate." But this single treatment remained a specialist's finding. In the canonical accounts of GDR opposition, in the schoolbooks, in the publicly funded image of remembrance, the White Circle does not appear. And the decisive step has still not been taken: the causal connection between the demonstrations of 1983 and the documented emigration wave of 1984 has not been drawn by historiography.</p>
+
+<p>This is no accident of forgetting. A deed of such effect does not vanish from historiography on its own — least of all when the material lies ready at hand: in the contemporary press, in the Stasi files, in a scholarly work. It vanishes when the bodies that watch over collective memory do not take it up — and that has reasons which have nothing to do with the matter itself.</p>
+
+<p>Monika Lembke had to write down her own story at the age of seventy-eight (book title: Wir dulden noch viel zu viel — "We Still Tolerate Far Too Much"). Not in a series of the established institutions of reckoning, not as part of the funded canon — but at the margin, on her own initiative, against the silence.</p>
+
+<p>Even before the book appeared, she had applied to the central, state-funded foundation for reckoning with the past for a printing-cost subsidy. The answer was a refusal: her manuscript, it held, was a personal memoir, a contemporary witness's account "in her own cause"; a subsidy was therefore ruled out under the foundation's regulations. She was referred onward to the regional level, where the matter would be better placed on regional grounds. But there too, at a state institution for political education, the answer came out the same: they did not publish "strongly autobiographical texts." Yet the autobiographical here is no defect, but the only form in which this story can be told at all — to this day there exists no other coherent account of how the White Circle arose in Jena in 1983 and what followed from it. Whoever wants to tell it cannot get past the person who helped conceive and co-found it and later documented it in years of archival research. And the teaching guide that opens the book up for school instruction, too, appears in July 2026 — not through one of the institutions responsible for that, but with an independent publisher she had to win over herself.</p>
+
+<p>And it does not stop at the silence of books. Whoever undertakes the attempt to secure the White Circle its place in memory runs into a pattern that repeats itself station by station — polite in tone, without consequence in result.</p>
+
+<p>There is the state commissioner of one federal state, a historian by profession, who is willing to cooperate — but on one condition: the personal testimony should be contributed by the witness; the contextualization, the historical interpretation, the so-called meta-level, her own institution reserves for itself. This cuts apart precisely what gives this work its value. For here someone does not merely report what she experienced; here a woman has documented and substantiated what she experienced, over years of her own archival research — two research applications, some eight thousand pages. The separation of experience and interpretation demanded of her does not exist in her case: she is witness and researcher in one person. To take the interpretation from her means to take half of her truth.</p>
+
+<p>There is the state commissioner of that very state in which the White Circle arose. The teaching guide was handed to him in person. He calls the book authentic and striking — and in the same breath points to other books, explains that he cannot be of further help, and passes the matter on to a staff member from whom nothing more comes. The esteem is genuine; the help fails to materialize. Precisely where the movement has its historical core, the door remains politely closed.</p>
+
+<p>There is the commissioner of yet another state, who would in principle be willing to host a reading — but only if a connection to her own federal state can be established; what happened beyond the state border does not fall within her remit. This too sounds like proper administration and yet misses the point. For the emigration movement that the White Circle helped to trigger was no regional affair; it seized the whole republic. The question of what civil courage means — then as now — knows no state border.</p>
+
+<p>There is the superordinate foundation to which several state-funded educational platforms are subordinate, on which the history of the White Circle appears to this day distorted, abridged, or with an ideological slant — for instance in the claim that the emigration movement rather hindered the emergence of a "continuous opposition," as though the wish to leave were a lesser courage than the wish to stay. Corrections were sent in; an inclusion in teacher-training courses was declared "conceivable." Nothing has happened.</p>
+
+<p>And there is the commissioner of yet another state, with whom a reading never came about, but whose institution mounted an event of its own on the sex shops that sprang up in the East German provinces after the Wende. The history of the White Circle, so the reply went, met with no interest in any case. This too is no open affront, but a question of priorities — and the result remains the same: the door stays closed.</p>
+
+<p>And so example follows example. Those arrested at the time are invited, with good reason; the co-founder who knows the movement from its origin and has researched it is not invited. Every reading, every publication, every step happens on her own initiative and at her own expense. No invitation ever came from an institution. It is not the single instance that carries weight here, but their sum: the persistent, friendly, shrugging passing-by of an entire landscape of remembrance at a story it actually needs.</p>
+
+<h2>V. Who Administers Memory</h2>
+
+<p>One must be careful at this point, and we are. The reckoning with the SED dictatorship is necessary and legitimate. The victims were real, the injustice was real, and there are many in the field of reckoning who do honest and important work. Nothing of what follows calls that into question.</p>
+
+<p>But every field that is sustained by the state over decades develops a gravity of its own. Out of the task of remembering injustice there arises, over time, also a question of posts, of funding, of interpretive authority and seniority. Whoever was there early, whoever shaped the recognized narratives, whoever occupies the committees, has a hand in deciding which history is admitted into the canon and which is not. This is no ill will of individuals — it is the inherent logic of an apparatus. A memory that comes from outside, from contemporary witnesses without institutional attachment, is inconvenient for this apparatus: it raises the question of why it was overlooked for so long. And the most convenient answer to that question is to go on overlooking it.</p>
+
+<p>Thus arises a ratchet of memory. What once stands outside the canon enters it only with difficulty, because its subsequent admission would be an admission — the admission of having overlooked something essential. It is easier to treat an authentic voice as a marginal note than to correct one's own prior omission. The Lembkes thereby stand in a constellation we have described elsewhere in the case of the inventors: the scattered against the concentrated. Two contemporary witnesses with a true story against an institutionalized field of interpretation that defends its own order. The truth is on the side of the scattered. The resources are on the other side.</p>
+
+<h2>VI. Why It Matters</h2>
+
+<p>This is not about vanity and not about late fame. It is about the integrity of memory itself. A dictatorship is recorded not only through what its administrators did, but also through what its opponents dared. When the history of resistance is told with gaps — when of all things the brave, small, unorganized acts disappear because they fall under no institutional remit — then the image of the dictatorship becomes false. It then appears more omnipotent than it was, and its overcoming more anonymous than it happened. The silent people on the Platz der Kosmonauten belong in the history of German freedom. That they have so far been missing from it is not their failure, but that of a culture of remembrance which has arranged its subject too comfortably for itself.</p>
+
+<p>Monika and Dietrich Lembke paid for their conviction the highest price a human being can pay. They did not fall silent afterward but acted, and they act to this day. The least a society owes them is not to let their story disappear a second time — this time not through the Stasi, but through the indifference of those who make their living from remembering.</p>
+
+        <div class="signature">
+            Monika Lembke and Hans Ley<br>
+            Research, fact-checking and editorial revision: Claude (Anthropic)<br>
+            beyond-decay.org — 16 June 2026
+        </div>
+
+        <div class="footer-back">
+            <a href="index.html">← back to overview</a>
+        </div>
+    </main>
+
+<script>
+(function() {
+    const body = document.body;
+    const themeBtn = document.getElementById('btn-theme');
+    const sizeBtns = document.querySelectorAll('.size-btn');
+
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+    }
+    function applySize(s) {
+        if (!s) return;
+        body.classList.remove('size-small','size-normal','size-large','size-xlarge');
+        body.classList.add('size-' + s);
+        sizeBtns.forEach(function(x){
+            x.classList.remove('active');
+            if (x.dataset.size === s) x.classList.add('active');
+        });
+    }
+
+    // Load saved preferences (shared keys with parent home-neu.html)
+    try {
+        var savedTheme = localStorage.getItem('theme');
+        var savedSize = localStorage.getItem('fontSize');
+        if (savedTheme) applyTheme(savedTheme);
+        if (savedSize) applySize(savedSize);
+    } catch(e) {}
+
+    themeBtn.addEventListener('click', function() {
+        var current = document.documentElement.getAttribute('data-theme');
+        var next = current === 'light' ? 'dark' : 'light';
+        applyTheme(next);
+        try { localStorage.setItem('theme', next); } catch(e) {}
+    });
+
+    sizeBtns.forEach(function(b){
+        b.addEventListener('click', function() {
+            var s = b.dataset.size;
+            applySize(s);
+            try { localStorage.setItem('fontSize', s); } catch(e) {}
+        });
+    });
+
+    // Listen for postMessage from parent frame (home-neu.html)
+    window.addEventListener('message', function(event) {
+        if (!event.data || !event.data.type) return;
+        if (event.data.type === 'setTheme') applyTheme(event.data.theme);
+        else if (event.data.type === 'setSize') applySize(event.data.size);
+    });
+
+    if (window.self !== window.top) body.classList.add('in-iframe');
+})();
+</script>
+</body>
+</html>

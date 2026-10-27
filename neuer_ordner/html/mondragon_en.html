@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Experiment to Model | gu18.eu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --text: #e8e6e3;
+            --text-dim: #888888;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.15);
+            --border: #2a2a2a;
+        }
+        
+        [data-theme="light"] {
+            --bg: #f5f5f5;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-dim: #555555;
+            --accent: #8a7340;
+            --accent-dim: rgba(138, 115, 64, 0.1);
+            --border: #dddddd;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'IBM Plex Serif', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.size-small { font-size: 15px; }
+        body.size-normal { font-size: 18px; }
+        body.size-large { font-size: 21px; }
+        body.size-xlarge { font-size: 24px; }
+        
+        .controls-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-top: none;
+            border-right: none;
+            padding: 8px 15px;
+            display: flex;
+            gap: 8px;
+            z-index: 1000;
+            border-bottom-left-radius: 8px;
+        }
+        
+        .controls-bar button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+        
+        .controls-bar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .controls-bar button.active {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+        }
+        
+        article {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 4rem 2rem 6rem;
+        }
+        
+        .meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 500;
+            line-height: 1.25;
+            margin-bottom: 0.75rem;
+        }
+        
+        .untertitel {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            font-style: italic;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        h2 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin: 2.5rem 0 1.25rem;
+            color: var(--accent);
+        }
+        
+        p {
+            margin-bottom: 1.4rem;
+        }
+        
+        .einzug {
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--border);
+            margin: 1.5rem 0;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+        
+        .einzug .author {
+            display: block;
+            margin-top: 0.5rem;
+            font-style: normal;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+        
+        .fazit {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            margin: 2.5rem 0;
+        }
+        
+        .highlight {
+            background: var(--bg-card);
+            border-left: 3px solid var(--accent);
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .emphasis {
+            color: var(--accent);
+            font-weight: 500;
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+        }
+        
+        ul {
+            margin: 1rem 0 1.5rem 1.5rem;
+            color: var(--text-dim);
+        }
+        
+        ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        ol {
+            margin: 1rem 0 1.5rem 0;
+            list-style: none;
+            counter-reset: item;
+        }
+        
+        ol li {
+            margin-bottom: 1.2rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+        
+        ol li::before {
+            content: counter(item) ".";
+            counter-increment: item;
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 500;
+        }
+        
+        .signatur {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls-bar">
+        <button onclick="setSize('small')" id="size-small">A−</button>
+        <button onclick="setSize('normal')" id="size-normal" class="active">A</button>
+        <button onclick="setSize('large')" id="size-large">A+</button>
+        <button onclick="setSize('xlarge')" id="size-xlarge">A++</button>
+        <button onclick="toggleTheme()" id="theme-toggle">☀</button>
+    </div>
+
+    <article>
+        <div class="meta">gu18.eu · December 2025</div>
+        <h1>From Experiment to Model</h1>
+        <p class="untertitel">Why Mondragón Must Now Show the World a Path</p>
+        
+        <h2>The Historical Starting Point</h2>
+        
+        <p>Don José María Arizmendiarrieta always emphasized: <em>"We are not a model that can be copied — we are an experiment."</em></p>
+        
+        <p>This humility was right. It was necessary. When five graduates of a vocational school in the Basque Country founded their first cooperative in 1956, any greater claim would have been hubris. They first had to prove that it could work at all. They had to survive — in a hostile environment, under Franco, without access to social insurance, without bank loans.</p>
+        
+        <p>The experiment worked. 69 years later, Mondragón is the largest cooperative in the world. Around 70,000 people. Five continents. Global corporations as partners. High-tech production. Its own bank, its own university, its own social system.</p>
+        
+        <p class="emphasis">The experiment is complete. It was successful.</p>
+        
+        <p>The question is: What comes next?</p>
+        
+        <h2>The World Needs a Model</h2>
+        
+        <div class="einzug">
+            <p>"The world was not given to us to contemplate, but to transform."</p>
+            <span class="author">— José María Arizmendiarrieta</span>
+        </div>
+        
+        <p>The world of 2025 is not the world of 1956. Back then there were two systems — capitalism and communism — and the question was which would survive. Communism failed. Capitalism won. But it did not triumph.</p>
+        
+        <p>What we see today:</p>
+        <ul>
+            <li>A climate crisis born from the logic of endless growth</li>
+            <li>Inequality corroding democratic societies</li>
+            <li>Work that exhausts people rather than fulfills them</li>
+            <li>Technological power concentrated in the hands of a few</li>
+            <li>Political systems that no one considers legitimate anymore</li>
+            <li>A young generation searching for alternatives — and finding none</li>
+        </ul>
+        
+        <p>The discovery of Mondragón is of world-historical significance. But this significance can only become effective if Mondragón stops being merely an experiment — and begins to become a model.</p>
+        
+        <h2>What Distinguishes an Experiment from a Model?</h2>
+        
+        <p><strong>An experiment</strong> proves that something is possible.</p>
+        <p><strong>A model</strong> shows others how they can do it themselves.</p>
+        
+        <p>An experiment says: <em>"Look, it works for us."</em></p>
+        <p>A model says: <em>"This is how you can do it too."</em></p>
+        
+        <p>Mondragón has been an experiment until now. The message was: <em>"We emerged under very special conditions — temporal, geographical, cultural. This cannot be repeated."</em></p>
+        
+        <p>This message has a kernel of truth. But it also has a function: It protects. It prevents disappointments. It shields from being held responsible for others' failures. Yet this protective function has a price: It prevents Mondragón from assuming its world-historical role.</p>
+        
+        <h2>The Principles, Not the Circumstances</h2>
+        
+        <p>What made Mondragón successful?</p>
+        
+        <p>It was not the Basque culture, not the timing, not the geographical location. These factors helped — but they were not decisive. What was decisive:</p>
+        
+        <ol>
+            <li><strong>Education before production.</strong> Arizmendiarrieta founded a school in 1943 — 13 years before the first cooperative was established. <em>"The socialization of knowledge must precede the socialization of wealth."</em></li>
+            <li><strong>Democracy in the economy.</strong> One person, one vote. Not: One euro, one vote. Labor rules over capital, not the other way around.</li>
+            <li><strong>Solidarity as structure.</strong> Not as feeling, not as appeal — but built into the rules: profit distribution, wage ratios (maximum 1:9), mutual support among cooperatives.</li>
+            <li><strong>Decentralization with coherence.</strong> Small, autonomous units — but connected through shared values, shared institutions, shared goals.</li>
+            <li><strong>Permanent development.</strong> <em>"There is always one more step to take."</em> No state is final. The sign of vitality is not persistence, but rebirth.</li>
+        </ol>
+        
+        <p class="emphasis">These principles are universal. They can be applied anywhere — adapted to local conditions, but faithful to the core.</p>
+        
+        <h2>Why Now?</h2>
+        
+        <p>Three reasons:</p>
+        
+        <div class="highlight">
+            <p><strong>1. The alternatives are exhausted.</strong></p>
+            <p>State socialism has failed. Unfettered capitalism is destroying its own foundations. The "social market economy" has become an empty phrase. Chinese state capitalism is no alternative for free people. The world is searching for a third way. Mondragón has found it — but the world doesn't know.</p>
+        </div>
+        
+        <div class="highlight">
+            <p><strong>2. Technology enables something new.</strong></p>
+            <p>Decentralized organization used to be difficult. Communication was slow, expensive, limited. Today a cooperative in Colombia, one in Germany, one in the Basque Country can work together in real time. The technological conditions for a global cooperative movement are better than ever.</p>
+        </div>
+        
+        <div class="highlight">
+            <p><strong>3. A generation is waiting.</strong></p>
+            <p>People who are 20 or 30 years old today no longer believe in capitalism's promise. They are searching for meaning — and not finding it in companies that view them as "human capital." This generation is ready for Mondragón. But Mondragón must be ready for them.</p>
+        </div>
+        
+        <h2>What Does "Becoming a Model" Mean Concretely?</h2>
+        
+        <p>It does not mean that Mondragón exports its structure like a franchise system. It means:</p>
+        
+        <ol>
+            <li><strong>Systematic documentation.</strong> What exactly worked? What failed? What mistakes were made? These experiences must be prepared — honestly, in detail, practically applicable.</li>
+            <li><strong>Active knowledge transfer.</strong> Not waiting until someone comes and asks. But going out. Training programs. Partnerships with universities worldwide. Online resources in all major languages.</li>
+            <li><strong>Accompanying new foundations.</strong> Not just transferring knowledge, but accompanying. Mentoring. Partner cooperatives. Seed funding. The Caja Laboral Popular model — startup consulting — on a global level.</li>
+            <li><strong>Network instead of hierarchy.</strong> Not Mondragón branches, but a network of autonomous cooperatives that share common values and support each other. A global ecosystem.</li>
+            <li><strong>Open evolution.</strong> The model must remain alive. Others will adapt it, change it, develop it further. This is not a betrayal of the original — it is its fulfillment.</li>
+        </ol>
+        
+        <h2>What I Bring</h2>
+        
+        <p>I am a <span class="age"></span>-year-old German inventor and engineer. I have 40 years of experience with everything that doesn't work:</p>
+        
+        <ul>
+            <li>With a patent system that expropriates inventors</li>
+            <li>With a funding system that rewards "innovations" and ignores inventions</li>
+            <li>With an economic system that systematically produces power concentration</li>
+            <li>With institutions that administer their own incompetence</li>
+        </ul>
+        
+        <p>This experience is valuable. It shows which obstacles a cooperative model must overcome.</p>
+        
+        <p>I also bring a technology — polygon turning — that has quietly transformed the manufacturing industry over the past 40 years. This technology could be manufactured by Mondragón cooperatives.</p>
+        
+        <p>And I bring a new form of collaboration: META-CLAUDE documents how humans and AI can think, research, and develop together. This is relevant to the question of how knowledge can be democratized in the future.</p>
+        
+        <h2>A Proposal</h2>
+        
+        <p>Mondragón has said: <em>"We are an experiment."</em></p>
+        
+        <p>I propose that Mondragón says:</p>
+        
+        <p class="emphasis">"We were an experiment. Now we are ready to become a model."</p>
+        
+        <p>Not a model that must be copied.</p>
+        <p><em>A model that can be copied.</em></p>
+        <p>A model that invites, inspires, accompanies.</p>
+        
+        <div class="einzug">
+            <p>"Cooperativism is the affirmation of faith in humanity."</p>
+            <span class="author">— José María Arizmendiarrieta</span>
+        </div>
+        
+        <p class="emphasis">This faith must not remain locked in the Basque Country. It belongs to the world.</p>
+        
+        <div class="fazit">
+            <p><em>"The economy only becomes economic, democracy only becomes democratic, when the economy becomes democratic."</em></p>
+            <p style="margin-top: 1rem; margin-bottom: 0;">Mondragón has proven that this is possible. Now it is time to show it to the world.</p>
+        </div>
+        
+        <div class="signatur">
+            Hans Ley · Nuremberg, December 2025
+        </div>
+    </article>
+    
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/g, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.controls-bar button[id^="size-"]').forEach(b => b.classList.remove('active'));
+            document.getElementById('size-' + size).classList.add('active');
+            localStorage.setItem('gu18-size', size);
+        }
+        
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            document.getElementById('theme-toggle').textContent = newTheme === 'light' ? '☾' : '☀';
+            localStorage.setItem('gu18-theme', newTheme);
+        }
+        
+        (function() {
+            const savedSize = localStorage.getItem('gu18-size') || 'normal';
+            const savedTheme = localStorage.getItem('gu18-theme') || 'dark';
+            setSize(savedSize);
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.getElementById('theme-toggle').textContent = '☾';
+            }
+            
+            // Calculate age
+            document.querySelectorAll('.age').forEach(el => {
+                const birth = new Date(1947, 0, 10);
+                const today = new Date();
+                let age = today.getFullYear() - birth.getFullYear();
+                const m = today.getMonth() - birth.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+                el.textContent = age;
+            });
+        })();
+    </script>
+</body>
+</html>

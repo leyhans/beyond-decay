@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASML — Die (letzte) Trumpfkarte Europas. Wie lange noch?</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --bg-tertiary: #1a1a1d;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+            --contrast-bg: #1e1e22;
+            --warning: #b43c3c;
+            --warning-dim: rgba(180, 60, 60, 0.1);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --bg-tertiary: #e8e8e4;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+            --contrast-bg: #e0e0dc;
+            --warning: #a04040;
+            --warning-dim: rgba(160, 64, 64, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .size-controls {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        
+        .size-controls span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .size-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        
+        .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .theme-btn {
+            font-size: 1.1rem;
+            padding: 0.3rem 0.5rem;
+        }
+
+        main {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 5rem 2rem 4rem;
+        }
+
+        .hero {
+            margin-bottom: 3.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        
+        .essay-label {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            font-weight: 300;
+            line-height: 1.25;
+            margin-bottom: 1rem;
+        }
+
+        h1 strong {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .subtitle {
+            font-size: 1.15em;
+            font-weight: 300;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8em;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section h3 {
+            font-size: 1.1em;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+        }
+
+        .section p {
+            margin-bottom: 1.25rem;
+            font-weight: 300;
+        }
+
+        .quote-block {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+            font-style: italic;
+        }
+
+        .quote-block p {
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .quote-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        .quote-block .attribution {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8em;
+            font-style: normal;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+        }
+
+        .warning-block {
+            background: var(--warning-dim);
+            border-left: 3px solid var(--warning);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+        }
+
+        .warning-block p {
+            margin-bottom: 0;
+            color: var(--text-primary);
+        }
+
+        .highlight-text {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .data-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+        }
+
+        .data-box .data-title {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8em;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .data-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .data-row .label {
+            color: var(--text-secondary);
+            font-size: 0.95em;
+        }
+
+        .data-row .value {
+            color: var(--text-primary);
+            font-weight: 500;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+        }
+
+        .data-row.highlight .value {
+            color: var(--accent);
+        }
+
+        .timeline {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+        }
+
+        .timeline-title {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8em;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 0.75rem;
+            padding-left: 0;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-item .year {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.85em;
+            color: var(--accent);
+            min-width: 4rem;
+            margin-right: 1rem;
+        }
+
+        .timeline-item .event {
+            color: var(--text-primary);
+            font-size: 0.95em;
+        }
+
+        .ecosystem-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+        }
+
+        .ecosystem-title {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8em;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .ecosystem-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .ecosystem-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .ecosystem-item .company {
+            font-weight: 500;
+            color: var(--accent);
+            margin-bottom: 0.25rem;
+        }
+
+        .ecosystem-item .role {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .ecosystem-item .location {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75em;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            text-align: center;
+        }
+
+        .date-line {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .series-info {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background: var(--accent-dim);
+            border: 1px solid var(--line);
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 600px) {
+            .controls {
+                padding: 0.5rem 1rem;
+            }
+            
+            .controls-left {
+                display: none;
+            }
+            
+            main {
+                padding: 4rem 1.25rem 3rem;
+            }
+            
+            h1 {
+                font-size: 1.75em;
+            }
+
+            .data-row {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">Essay</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Größe:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">◐</button>
+            <a href="asml-trumpfkarte_en.html" class="lang-btn" title="English version">EN</a>
+        </div>
+    </div>
+
+    <main>
+        <header class="hero">
+            <span class="essay-label">Essay</span>
+            <h1><strong>ASML</strong> — Die (letzte) Trumpfkarte Europas</h1>
+            <p class="subtitle">Wie lange noch?</p>
+        </header>
+
+        <!-- I. Das Monopol -->
+        <section class="section">
+            <h2>I. Das Monopol</h2>
+            
+            <p>In Veldhoven, einem unscheinbaren Ort bei Eindhoven, steht ein Unternehmen, das die gesamte digitale Welt in der Hand hält. Nicht im übertragenen Sinne. Im wörtlichen.</p>
+
+            <p>ASML ist der einzige Hersteller von EUV-Lithografie-Maschinen auf dem Planeten. Ohne diese Maschinen keine Chips unter 7 Nanometer. Ohne Chips unter 7 Nanometer keine modernen Smartphones, keine KI-Beschleuniger, keine Hochleistungsrechner. Die gesamte technologische Zukunft — von autonomem Fahren bis zur medizinischen Bildgebung — fließt durch diesen einen Engpass in den Niederlanden.</p>
+
+            <div class="data-box">
+                <div class="data-title">ASML in Zahlen (2025)</div>
+                <div class="data-row highlight">
+                    <span class="label">Marktanteil EUV-Lithografie</span>
+                    <span class="value">100%</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Marktanteil Lithografie gesamt</span>
+                    <span class="value">83%</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Umsatz 2025</span>
+                    <span class="value">32,7 Mrd. €</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Auftragsbestand</span>
+                    <span class="value">38,8 Mrd. €</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Marktkapitalisierung</span>
+                    <span class="value">527 Mrd. $</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Preis einer EUV-Maschine</span>
+                    <span class="value">200-400 Mio. €</span>
+                </div>
+            </div>
+
+            <p>Die OPEC kontrolliert 40 Prozent der weltweiten Ölproduktion und gilt als mächtiges Kartell. ASML kontrolliert 100 Prozent der EUV-Produktion. Es gibt kein Kartell — es gibt nur ASML. Und ASML ist europäisch.</p>
+
+            <p>Das ist keine Übertreibung. TSMC in Taiwan, der größte Auftragsfertiger der Welt mit 71 Prozent Marktanteil, ist vollständig abhängig von ASML. Samsung in Korea, Intel in den USA — sie alle stehen in der Warteschlange für Maschinen aus Veldhoven. Apple, Nvidia, AMD — ihre Produkte existieren nur, weil ASML liefert.</p>
+
+            <div class="quote-block">
+                <p>Europa hat in der digitalen Welt fast alles verloren — die Plattformen, die Daten, die Cloud, die sozialen Netzwerke. Aber an der Wurzel der gesamten Hardware-Lieferkette sitzt ein niederländisches Unternehmen, ohne das nichts geht.</p>
+            </div>
+        </section>
+
+        <!-- II. Die 30-Jahres-Wette -->
+        <section class="section">
+            <h2>II. Die 30-Jahres-Wette</h2>
+            
+            <p>Wie konnte ein europäisches Unternehmen diese Position erreichen — in einer Industrie, die von amerikanischen und asiatischen Giganten dominiert wird?</p>
+
+            <p>Die Antwort ist: durch eine Wette, die niemand sonst eingehen wollte. ASML begann in den 1990er Jahren mit der Entwicklung von EUV-Technologie, als die meisten Experten sie für unmöglich hielten. Über neun Milliarden Dollar flossen in Forschung und Entwicklung. Jahrzehnt für Jahrzehnt, ohne Garantie auf Erfolg.</p>
+
+            <p>Die technischen Hürden waren absurd. EUV-Licht hat eine Wellenlänge von 13,5 Nanometern — so kurz, dass es von allem absorbiert wird, auch von Luft. Der gesamte Prozess muss im Vakuum stattfinden. Die Lichtquelle entsteht, indem ein Hochleistungslaser 50.000 Mal pro Sekunde auf winzige Zinntröpfchen feuert und ein Plasma erzeugt, das 40-mal heißer ist als die Oberfläche der Sonne. Die Spiegel, die dieses Licht auf den Wafer lenken, müssen auf atomarer Ebene perfekt sein — eine molekulare Abweichung wäre fatal.</p>
+
+            <div class="ecosystem-box">
+                <div class="ecosystem-title">Das europäische Ökosystem</div>
+                <div class="ecosystem-item">
+                    <div class="company">Carl Zeiss SMT</div>
+                    <div class="role">Einziger Lieferant der hochpräzisen EUV-Optiken und Spiegel. Ohne Zeiss kein ASML.</div>
+                    <div class="location">Oberkochen, Deutschland</div>
+                </div>
+                <div class="ecosystem-item">
+                    <div class="company">TRUMPF</div>
+                    <div class="role">Liefert die leistungsstärksten gepulsten Industrielaser der Welt für die EUV-Lichtquelle.</div>
+                    <div class="location">Ditzingen, Deutschland</div>
+                </div>
+                <div class="ecosystem-item">
+                    <div class="company">imec</div>
+                    <div class="role">Führendes Forschungszentrum für Halbleitertechnologie, betreibt mit ASML das High-NA EUV Lab.</div>
+                    <div class="location">Leuven, Belgien</div>
+                </div>
+                <div class="ecosystem-item">
+                    <div class="company">Fraunhofer IOF</div>
+                    <div class="role">Entwickelte die reflektive Beschichtung der EUV-Spiegel.</div>
+                    <div class="location">Jena, Deutschland</div>
+                </div>
+            </div>
+
+            <p>2020 erhielt das Forscherteam von ZEISS, TRUMPF und Fraunhofer den Deutschen Zukunftspreis für die Entwicklung der EUV-Lithografie. Es war eine Anerkennung dessen, was sie geschafft hatten: eine europäische Erfolgsgeschichte, geboren aus Zusammenarbeit, Präzision und Ausdauer.</p>
+
+            <p>Das Entscheidende: Diese Technologie lässt sich nicht einfach kopieren. ASML-Maschinen bestehen aus über 50.000 Komponenten von mehr als 800 Zulieferern. 30 Jahre iterativer Verbesserungen, entdeckter Sackgassen, aufgebauter Lieferantenbeziehungen, optimierter Fertigungsprozesse — das lässt sich nicht komprimieren. Selbst mit unbegrenztem Budget und Zugang zu allen Ingenieuren würde ein Konkurrent Jahrzehnte brauchen.</p>
+        </section>
+
+        <!-- III. Der amerikanische Griff -->
+        <section class="section">
+            <h2>III. Der amerikanische Griff</h2>
+            
+            <p>Washington hat früh erkannt, was ASML bedeutet. Und Washington hat gehandelt — nicht um Europa zu stärken, sondern um ASML als Waffe gegen China einzusetzen.</p>
+
+            <div class="timeline">
+                <div class="timeline-title">Chronik des Drucks</div>
+                <div class="timeline-item">
+                    <span class="year">2018</span>
+                    <span class="event">Die niederländische Regierung genehmigt EUV-Exportlizenzen für China.</span>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">2019</span>
+                    <span class="event">Trump-Administration setzt die Niederlande unter Druck. Die Lizenzen werden nicht verlängert — bevor eine einzige EUV-Maschine nach China geliefert wurde.</span>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">2023</span>
+                    <span class="event">Die Niederlande verbieten auch den Export fortgeschrittener DUV-Maschinen (ArF Immersion) nach China.</span>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">2024</span>
+                    <span class="event">Die USA überschreiben die niederländische Entscheidung und verbieten einseitig den Export noch älterer DUV-Maschinen — ASMLs "Cash-Cows".</span>
+                </div>
+                <div class="timeline-item">
+                    <span class="year">2024</span>
+                    <span class="event">Die Niederlande ziehen die Lizenzpflicht für ältere DUV-Anlagen an sich (September 2024): ASML muss bei der niederländischen Regierung Exportlizenzen beantragen — statt bei den USA.</span>
+                </div>
+            </div>
+
+            <p>Das Muster ist klar: Die USA nutzen ihre Hebelwirkung — amerikanische Komponenten in ASML-Maschinen, die "de minimis"-Regel des US-Handelsrechts — um ein europäisches Unternehmen für amerikanische Geopolitik zu instrumentalisieren. Die Niederlande wurden unter Druck gesetzt, und als das nicht reichte, wurden sie übergangen.</p>
+
+            <p>Der Vorgang hat in Europa Unbehagen ausgelöst. Niederländische Regierungsbeamte äußerten öffentlich Bedenken wegen der Souveränität. Es gab Vorstöße, das Anti-Coercion Instrument der EU anzuwenden — ein Werkzeug, das geschaffen wurde, um wirtschaftlichen Druck von Drittstaaten abzuwehren. Doch die großen EU-Mitgliedstaaten — Deutschland, Frankreich — waren mehr mit den Auswirkungen des amerikanischen Inflation Reduction Act auf ihre Automobilindustrie beschäftigt. ASML wurde nicht als europäisches Asset verteidigt, sondern als Verhandlungsmasse betrachtet.</p>
+
+            <div class="warning-block">
+                <p>Die USA verhandelten die Exportbeschränkungen im selben Atemzug wie die Ukraine-Unterstützung – beim Treffen Biden–Rutte im Januar 2023 standen beide Themen auf derselben Agenda. Europas wichtigstes Technologieunternehmen wurde zum Spielball amerikanischer Interessen — mit europäischer Duldung.</p>
+            </div>
+
+            <p>Dabei liegt in ASML ein enormes Potenzial: Wenn die Maschinen, die man braucht, um Chips zu produzieren, von einem europäischen Unternehmen kontrolliert werden — warum nutzt Europa diesen Hebel nicht selbst? Warum überlässt man die Spielführung Washington?</p>
+        </section>
+
+        <!-- IV. Der chinesische Schatten -->
+        <section class="section">
+            <h2>IV. Der chinesische Schatten</h2>
+            
+            <p>Peking hat verstanden, was auf dem Spiel steht. Die Unfähigkeit, EUV-Maschinen zu beschaffen, ist der größte Engpass für Chinas technologische Ambitionen. Also hat China ein "Manhattan-Projekt" für Chips gestartet — koordiniert von Huawei, finanziert vom Staat, durchgeführt von tausenden Ingenieuren.</p>
+
+            <p>Im Dezember 2025 berichtete Reuters, dass in einem Hochsicherheitslabor in Shenzhen ein Prototyp einer EUV-Maschine fertiggestellt wurde. Ehemalige ASML-Ingenieure sollen beteiligt gewesen sein. Parallel arbeiten chinesische Teams an einer anderen Lichtquelle als ASML — Laser-Induced Discharge Plasma (LDP) statt Laser-Produced Plasma (LPP).</p>
+
+            <p>Die Frage ist: Was bedeutet das?</p>
+
+            <p>Die nüchterne Antwort: noch nicht viel. Die chinesischen Prototypen erreichen Leistungen von 100-150 Watt. Für Massenproduktion braucht man mindestens 250 Watt. Die Optik, die Masken, die Photoresists — überall gibt es Engpässe. ASML-CEO Christophe Fouquet schätzt den Rückstand Chinas auf 10 bis 15 Jahre, möglicherweise mehr.</p>
+
+            <p>ASML ließ wissen, man habe nie eine EUV-Maschine nach China geliefert – nicht einmal EUV-spezifische Komponenten. Hinter jeder Anlage stecken mehr als zwanzig Jahre Entwicklung und ein weltweites Zuliefernetz.</p>
+
+            <p>Aber die Geschichte lehrt Vorsicht. 2023 überraschte Huawei die Welt mit dem Mate 60 Pro — einem Smartphone mit einem 7-Nanometer-Chip, gefertigt trotz aller Sanktionen. China hatte DUV-Maschinen gehortet und mit Multi-Patterning-Techniken das Maximum herausgeholt. Die Ausbeute war schlecht (geschätzt 30-35%), die Kosten enorm — aber es funktionierte.</p>
+
+            <p>Wenn China bereit ist, wirtschaftliche Effizienz für strategische Autonomie zu opfern — und alles deutet darauf hin — dann ist der Zeitvorsprung von ASML endlich. Die Frage ist nicht ob, sondern wann China funktionsfähige EUV-Maschinen produzieren kann. 2028? 2030? Später? Irgendwann wird es passieren.</p>
+        </section>
+
+        <!-- V. Die amerikanische Alternative -->
+        <section class="section">
+            <h2>V. Die amerikanische Alternative</h2>
+            
+            <p>Während China von unten drängt, entsteht ein anderer Druck — von einer unerwarteten Seite.</p>
+
+            <p>Pat Gelsinger, der gescheiterte CEO von Intel, hat nicht aufgegeben. Als Executive Chairman von xLight, einem 2021 gegründeten Startup, arbeitet er an einer Alternative zur EUV-Lichtquelle. xLight entwickelt Free-Electron-Laser auf Basis kompakter Teilchenbeschleuniger — eine radikal andere Technologie als ASMLs Laser-Produced-Plasma-Methode.</p>
+
+            <p>Die Trump-Administration hat xLight mit bis zu 150 Millionen Dollar an staatlicher Förderung ausgestattet. Das Versprechen: 30-40% niedrigere Wafer-Verarbeitungskosten und geringerer Energieverbrauch. Das Ziel: erste Silizium-Tests bis 2028.</p>
+
+            <p>Die unmittelbare Bedrohung für ASML ist gering. xLight baut keine kompletten Lithografie-Maschinen — nur bessere Lichtquellen. Und Teilchenbeschleuniger außerhalb von Labors wie CERN in die Fabrikhallen zu bringen, ist eine gewaltige Herausforderung. Aber die Signale sind eindeutig: Die USA wollen nicht dauerhaft von einem europäischen Unternehmen abhängig sein.</p>
+
+            <p>Der CHIPS Act hat 52 Milliarden Dollar für die heimische Halbleiterproduktion bereitgestellt, davon 825 Millionen für ein "EUV Accelerator"-Programm. Die strategische Logik ist klar: ASMLs Monopol ist eine Verletzlichkeit für die amerikanische Technologieführerschaft — eine Verletzlichkeit, die Washington langfristig eliminieren will.</p>
+        </section>
+
+        <!-- VI. Die europäische Frage -->
+        <section class="section">
+            <h2>VI. Die europäische Frage</h2>
+            
+            <p>Europa besitzt mit ASML einen Hebel, den es kaum nutzt. Ein niederländischer Think Tank (DenkWerk) hat es kürzlich auf den Punkt gebracht: "Wenn man geopolitisch handeln will, muss man auch geopolitische Dinge tun."</p>
+
+            <p>Die Idee ist einfach: ASML könnte ein Instrument europäischer Politik sein — nicht nur amerikanischer. Die EU könnte Exportlizenzen an Bedingungen knüpfen. Sie könnte verlangen, dass Chips, die mit ASML-Technologie hergestellt werden, bestimmte Standards erfüllen — etwa im Bereich KI-Sicherheit. Sie könnte Service und Wartung — rund ein Viertel von ASMLs Umsatz — als Druckmittel einsetzen. ASML hat angeblich sogar einen "Kill Switch" in seinen Maschinen, ursprünglich entwickelt für den Fall einer Taiwan-Invasion.</p>
+
+            <p>Aber das würde voraussetzen, dass Europa ASML als strategisches Asset begreift — nicht als niederländisches Unternehmen, das zufällig erfolgreich ist. Es würde voraussetzen, dass die EU eine kohärente Technologiepolitik entwickelt, statt den Mitgliedstaaten das Feld zu überlassen. Es würde voraussetzen, dass Europa bereit ist, Konflikte mit Washington zu riskieren.</p>
+
+            <p>Nichts davon ist in Sicht. Der European Chips Act mobilisiert 43 Milliarden Euro — beachtlich, aber ein Bruchteil dessen, was die USA und China investieren. Die EU plant, ihren globalen Marktanteil bei der Chipproduktion von 10 auf 20 Prozent zu verdoppeln — ein Ziel, das selbst Optimisten für unrealistisch halten. Und die Frage, wie ASML als geopolitischer Hebel eingesetzt werden könnte, wird kaum diskutiert.</p>
+
+            <div class="warning-block">
+                <p>Europa besitzt die entscheidende Technologie für die digitale Zukunft — und behandelt sie wie einen Exportartikel statt wie eine strategische Waffe. Die USA haben das verstanden. China hat das verstanden. Nur Europa scheint es nicht zu verstehen.</p>
+            </div>
+        </section>
+
+        <!-- VII. Wie lange noch? -->
+        <section class="section">
+            <h2>VII. Wie lange noch?</h2>
+            
+            <p>Die Frage ist nicht, ob ASMLs Monopol ewig hält. Kein technologisches Monopol ist ewig. Die Frage ist, wie Europa die verbleibende Zeit nutzt.</p>
+
+            <p><strong>Kurzfristig (bis 2028)</strong> ist ASMLs Position unangreifbar. Die Auftrags­bücher sind voll. Die nächste Generation — High-NA EUV mit 0,55 numerischer Apertur statt 0,33 — wird gerade ausgeliefert. Intel, TSMC, Samsung stehen Schlange. Der KI-Boom treibt die Nachfrage. China kann bestenfalls experimentieren.</p>
+
+            <p><strong>Mittelfristig (2028-2035)</strong> wird es komplizierter. China könnte funktionsfähige EUV-Maschinen entwickeln — nicht so gut wie ASML, aber ausreichend für den heimischen Markt. xLight oder ähnliche Projekte könnten ASMLs Lichtquellen-Technologie herausfordern. Alternative Ansätze wie Nanoimprint-Lithografie könnten für bestimmte Anwendungen konkurrenzfähig werden.</p>
+
+            <p><strong>Langfristig (nach 2035)</strong> ist alles offen. Moore's Law nähert sich physikalischen Grenzen. Neue Paradigmen — Quantencomputing, neuromorphe Chips, optische Computer — könnten die Spielregeln ändern. ASML investiert bereits in angrenzende Bereiche, aber niemand weiß, welche Technologie die nächste Ära dominieren wird.</p>
+
+            <div class="quote-block">
+                <p>Die Trumpfkarte ist noch im Spiel. Aber Trumpfkarten nützen nur, wenn man sie ausspielt. Europa hält sie in der Hand und schaut zu, wie andere das Blatt mischen.</p>
+            </div>
+
+            <p>Was wäre nötig? Eine europäische Strategie, die ASML als das behandelt, was es ist: nicht nur ein erfolgreiches Unternehmen, sondern ein geopolitisches Instrument von historischer Bedeutung. Eine Koordination zwischen Brüssel, Den Haag, Berlin, die über handelspolitische Scharmützel hinausgeht. Eine Bereitschaft, amerikanischem Druck zu widerstehen — oder ihn zumindest in Verhandlungsmasse umzuwandeln. Und eine Investition in die nächste Generation der Technologie, damit Europa nicht nur den aktuellen Engpass kontrolliert, sondern auch den zukünftigen.</p>
+
+            <p>Nichts davon wird geschehen, solange Europa seine technologische Position als Zufall betrachtet statt als Chance. ASML ist keine Anomalie — es ist der Beweis, dass europäische Zusammenarbeit Weltklasse-Ergebnisse produzieren kann. Das Ökosystem von ASML, Zeiss, TRUMPF, imec, Fraunhofer zeigt, was möglich ist, wenn langfristiges Denken, staatliche Förderung und industrielle Exzellenz zusammenkommen.</p>
+
+            <p>Die Frage "Wie lange noch?" ist falsch gestellt. Die richtige Frage lautet: Was macht Europa aus der Zeit, die ihm bleibt?</p>
+
+            <p>Bisher lautet die Antwort: zu wenig.</p>
+        </section>
+
+        <footer>
+            <p class="date-line">— Februar 2026 —</p>
+            <div class="series-info">
+                <p>Dieses Essay ist Teil der Serie <strong>„Die Innovationswüste Deutschland"</strong></p>
+                <p style="font-size: 0.85em; margin-top: 0.5rem;">
+                    Das Material fließt in das Buch „Die Himmelsmechanik in der Werkzeugmaschine" ein.
+                </p>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            localStorage.setItem('essay-font-size', size);
+        }
+        
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+            }
+        });
+    </script>
+</body>
+</html>

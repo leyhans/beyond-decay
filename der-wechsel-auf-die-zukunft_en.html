@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Bills Drawn on the Future | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+        text-decoration: none;
+    }
+    .site-name:hover { opacity: 0.7; }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        font-size: 2.2rem;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+        color: var(--text-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 300;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 1.5rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 2.5rem;
+        letter-spacing: 0.5px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        letter-spacing: 0.3px;
+    }
+    p {
+        margin-bottom: 1.2rem;
+        text-align: justify;
+        hyphens: auto;
+    }
+    em { color: var(--accent-color); font-style: italic; }
+    strong { color: var(--accent-color); font-weight: 500; }
+    a {
+        color: var(--link-color);
+        text-decoration: none;
+        border-bottom: 1px dotted var(--link-color);
+        transition: opacity 0.3s;
+    }
+    a:hover { opacity: 0.7; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; text-align: left; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .thesis-label {
+        display: block;
+        font-family: 'IBM Plex Mono', monospace;
+        font-style: normal;
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--accent-color);
+        margin-bottom: 0.4rem;
+        opacity: 0.85;
+    }
+    .source {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+    }
+    .source a { overflow-wrap: anywhere; }
+    .signature {
+        margin-top: 2.5rem;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        color: var(--meta-color);
+        line-height: 1.7;
+    }
+    .footer-back {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        text-align: center;
+    }
+    .footer-back a {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        border-bottom: none;
+    }
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+        header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+
+<header>
+    <a href="index.html" class="site-name">beyond-decay.org</a>
+    <div class="controls">
+        <a href="der-wechsel-auf-die-zukunft_de.html" class="ctrl-link" id="lang-toggle">DE</a>
+        <span class="ctrl-sep"></span>
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Size</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+    <main>
+        <h1>The Bills Drawn on the Future</h1>
+        <div class="subtitle">On the invisible infrastructure behind the visible one — the built and the knowing — on bills that were never redeemed, and on the fundamental decay that hides itself.</div>
+        <div class="meta">beyond-decay.org — June 2026</div>
+
+        <h2>Opening</h2>
+
+<p>Two news items from the same spring. The first: a Rhine bridge in Bonn is closed from one day to the next because of irreversible damage to its load-bearing structure — to cars, bicycles, pedestrians alike. A truck ban in February had been the last warning signal, and it went unheard; the replacement, if it comes at all, is not to begin before the 2030s. The second comes from a major economic study by Allianz Research on the reordering of world trade by artificial intelligence. It describes a Europe that can no longer build the infrastructure of the AI age itself. That infrastructure is the data centers — the vast, power-hungry computing halls in which artificial intelligence is trained and put to work. Whoever does not build them cannot offer AI, only rent it. And Europe barely builds them: what is planned and under construction here is about six times smaller than in the United States; getting a single facility approved takes more than four years, and the wait for a connection to the power grid runs up to five. While Europe is still reviewing and approving, the Americans are building. At the end of the study stands the familiar appeal: the continent must now act decisively, or it will lose control over the digital backbone of its economy — over those data centers, data networks, and cloud services on which, in the future, every bank, every public authority, every factory will depend.</p>
+
+<p>These two news items are taken to be two stories — one about crumbling concrete, one about computer chips and data centers. They are not. They are two outlets of the same chain. This paper tries to lay the chain bare, and it begins with a distinction that is almost never drawn in public debate, although everything rests on it: the distinction between the two infrastructures of a country.</p>
+
+        <h2>I. Two Infrastructures</h2>
+
+<p>By infrastructure one usually means the material, built substance — bridges, tracks, grids, locks, power plants, factories, data centers — on and with which all the processes of a country run. That is the visible half. The invisible half is the <strong>competence infrastructure</strong>: the knowledge and skill that designs, builds, maintains, operates, and in the first place understands that built substance. Without it, the built infrastructure is dead material.</p>
+
+<p>What matters is not that both exist, but that they are connected, and connected in a generative way. The competence infrastructure arises <em>at</em> the material one. One learns to build by building. The bridge is not only the product of skill — it is also its training ground and its store. Whoever learns a thing learns it beside and from others who already can do it; he acquires something that stands in no book.</p>
+
+<blockquote>
+    <span class="thesis-label">Thesis 1</span>
+    <p>The competence infrastructure is not a store kept and available somewhere, but a living chain of transmission. And it fails differently than a store does.</p>
+</blockquote>
+
+<p>There is a kind of knowledge and skill that one does not learn from books and that is called experiential knowledge. The philosopher Michael Polanyi put it into a formula: we know more than we can tell. What he meant is precisely this interlaced knowledge and skill — in the technical literature also called tacit or "silent" knowledge — that cannot be written down, because it does not reside in sentences but in the doing, in standing alongside, in being corrected. One can <em>know that</em> something is so; that is in books. And one can <em>know how</em> to do something; that one learns only at the thing itself. Whoever enters a workshop with his diploma brings the book knowledge and is at first helpless; the actual skill accrues to him, depending on complexity, often only over years, and only through people who already have it and pass it on.</p>
+
+<p>From this follows the peculiarity that governs everything that comes after. A store can be refilled when it runs low. But a chain with a missing link is broken — and one cannot repair it by pushing young people in at the bottom, because the young need the living old to learn from. Once the generation that should have passed it on is gone, the newcomer stands on the workshop floor with his diploma, and there is no one left to teach him to walk. The diploma becomes dead capital.</p>
+
+<p>And here lies the reason why, of all things, this skill is the first to be sacrificed when savings must be made: it appears on no balance sheet. A prestressing strand is an item one can count. A master with thirty years on the floor is a personnel-cost line like any other. Whoever optimizes the measurable against the unmeasurable inevitably sacrifices the silent knowledge, because it stays invisible until it is missing.</p>
+
+        <h2>II. The Material Strand — the When, and the Why Compounded</h2>
+
+<p>The compounded, almost simultaneous decay of German infrastructure is to a considerable degree a delayed consequence of the war. That is the exonerating half of the story, and precisely for that reason it must stand first — it guards against the cheap, pure indictment.</p>
+
+<p>A country that built up its infrastructure evenly over two centuries renews it as a steady stream: each year roughly the same share reaches the end of its life, the need is a predictable constant. Germany does not have that. It erected its substance in a single, enormous wave — the reconstruction and economic-miracle years, roughly 1950 to 1975. Bridges, locks, sewers, rails, power plants, whole city districts: a vast cohort, built almost at once. Structures of this kind last, by design, about sixty to eighty years. Add it up, and the wave reaches the end of its life — now, and not spread out but all at once, just as it arose. What is called "compounded decay" is the echo-wave of the reconstruction, its reverberation thirty years on. That explains the "from one moment to the next": a cohort of the same age reaches its limits at the same time.</p>
+
+<p>This wave had its own time pressure and its own price. An incredible amount had to be built in a short time. A destroyed country that must house, drive, produce, and heat cannot wait for empirical values that would only be available thirty years later in aged structures. So one built, now, by the dozen, with the best available calculation — and often with new, bold, slender constructions for which there was no experience.</p>
+
+<blockquote>
+    <span class="thesis-label">Thesis 2</span>
+    <p>The builders' gamble was not hubris but compulsion. One can calculate much, but not everything — and for a genuinely new form of construction the experiential knowledge does not yet exist, because it arises only from the aged structure.</p>
+</blockquote>
+
+<p>The designer of a novel bridge in the sixties thus stood in exactly the apprentice's position: equipped with calculation and book knowledge, working in a field for which the experiential skill could not yet exist — only without the master beside him, because the form was new. He flew half-blind of necessity. That is not a failure but the unavoidable condition of every genuine invention under time pressure. The bold constructions were moreover built lean and sparing — the same efficiency logic that would later rationalize away every reserve in industry, only fifty years earlier and in concrete. A lean construction has less safety reserve and more points at which a single piece of damage drags the next one after it.</p>
+
+<p>Over this substance there then ran a traffic no one had reckoned with. The Bonn bridge was designed for the loads of the late sixties; since then the volume of traffic and the permitted truck weight have multiplied, and the material fatigues with every crossing — with today's heavy haulers far faster than was assumed back then. So over decades one consumed the safety reserve that had been built in — invisibly, because the bridge held, after all. It held, until it no longer held.</p>
+
+<p>The material strand thus has four cleanly separated layers: the same age of all the structures (the cohort), the overload (beyond what they were built for), the novelty of the construction form without experience (a knowledge problem — and in truth already a competence problem, only shifted to the beginning of the structure's life), and finally, to be kept apart, the slipshod work and fraud that also existed and that, as disguised weakness, fails precisely where no one expects it. The first three layers are tragic, not culpable. Only the fourth is a betrayal of the craft — and in an honest diagnosis it must not be allowed to color the whole.</p>
+
+        <h2>III. The Competence Strand — the Why Left Unmastered</h2>
+
+<p>Such a wave of aging is a solvable problem. By its very nature it is plannable: the cohort is known, the end of life calculable, the renewal schedulable thirty years in advance. A society with intact competence and decision-making power would have begun, from the eighties on, to replace the structures one after another and to work off the wave before it became a flash flood. In precisely this window, Germany did the opposite.</p>
+
+<p>The chain of transmission of silent knowledge broke in three ways.</p>
+
+<p>First, through <strong>internal thinning</strong>. For reasons of cost, the chain that carries skill from one generation to the next was thinned ever further, until at points it simply broke — the master who was not replaced, the experienced hand pensioned off early, the handover that never took place.</p>
+
+<p>Second, through <strong>self-outsourcing</strong>. From the eighties on, the governing principle held that the state was the problem and that business could do everything better. There followed a wave of privatizations — and the fashion of so-called public-private partnerships, in which the state hands its tasks to private firms: telecom, postal service, railways, housing, hospitals, water, energy. Whoever outsources loses the knowledge: whoever builds no power plants for twenty years no longer has engineers who know how to build them. The state has hollowed itself out, in the honest belief that this was efficiency, and today needs external consultants for everything to tell it what it once knew itself — a consulting market of over fifty billion euros a year as the measure of the loss. This outsourcing was no German special path; it was pursued in all Western states with the same consequence, even when the problems had long been visible and were explained away as "difficulties of adjustment." That is the general layer that struck each of these countries.</p>
+
+<p>Third, through <strong>poaching and buy-up from outside</strong>. An analysis by the Institut der deutschen Wirtschaft, commissioned by the Bertelsmann Stiftung, shows that by now nearly one in three inventions developed in Germany is in foreign hands; more than eleven thousand German patents belong to Chinese firms, where in the year 2000 there were practically none, and Germany's share of internationally filed patents has fallen from twenty-two to fifteen percent. But the decisive observation lies not in the numbers, but in what changes owner along with them. The patent is the written-down knowledge; it travels with the document. The actual skill is the unspoken, silent knowledge; it travels only with the person. And both change owner: whoever buys up a company gets not only the patent but also the researcher and inventor; and where a joint venture is demanded, the technology is in the end given away. Everything is sold or passed on — the written and the silent. The further development travels with it, and in Germany one marvels in astonishment at what the Chinese have made of originally German inventions. And the buy-up succeeds so easily precisely because the weakened companies are cheap targets — the erosion makes the crown jewels cheap, the buy-up deepens the erosion. A cycle that ends only with the bitter end. Germany could have been a leader in the development of AI.</p>
+
+<p>To the broken transmission was added <strong>defunding</strong>. The German political process almost always produces only the lowest common denominator — the least to which all those who can lodge a veto (federal government, states, associations, unions) will not object, and that is usually the preservation of what exists. The debt brake of 2009 — the constitutional rule that largely forbids the state new borrowing — is the clearest case: no new debt, no tax increase, no cuts to social spending — what was left was no money for investment, and the result is the accumulated mountain of repairs left undone. Maintenance is the first thing to be dropped, because it is invisible and has no lobby.</p>
+
+<p>And over all of this lay the <strong>invisibility through shared responsibility</strong>. In administration, jurisdiction is not the same as responsibility. The inspector who closes the bridge has followed the regulation; the closure, measured against the regulation, is not an error but a result. The question of why the material decayed so far is not asked, for it would demand that someone answer for decades of underinvestment — and those responsible, because of the long gap between building and failure, are long since out of office. The administration checks whether the procedure was followed, not whether it works; it is blind to the result, so that no one has to bear responsibility. That is why a structure is <em>known</em> to be decrepit for years before it is closed: seeing obliges one to act, acting creates liability, and so one would rather not look.</p>
+
+        <h2>IV. The Bills Drawn on the Future</h2>
+
+<p>Here both strands run together, and there is a single axis on which everything rests.</p>
+
+<blockquote>
+    <span class="thesis-label">Thesis 3</span>
+    <p>Tempo can be applied to material, not to experience. Material obeys acceleration; skill needs its generation.</p>
+</blockquote>
+
+<p>A bridge goes up in two or three years, a city district in five — the economic miracle proved with what force a society can throw up material in a short time. The silent skill, by contrast, that makes a new form of construction safely masterable does not grow faster just because one is in a hurry. It needs its generation, their passing-on, their aged structures to learn from. That is the fundamental difference between the two speeds.</p>
+
+<p>The reconstruction bridged this difference on credit. It drew a bill on the future: build fast now — make up later the experience one could not have while building, as soon as the structures are old enough to yield it. This bill fell due in the eighties and nineties, exactly when the first structures reached the age at which they showed their long-term weaknesses. That was the quiet window in which one ought to have made up the owed evaluation, learned from one's own work, and built up the renewal piece by piece.</p>
+
+<p>Instead, in that very window, society drew new bills rather than redeeming the old one. For a bill on the future always has the same form: a gain today, a burden later, shifted onto someone who was not at the table when the decision was made. In this form it was drawn on German infrastructure several times over.</p>
+
+<p>Three of these bills lie on the visible side. The first is the building bill already described: the gain was the swiftly rebuilt country, the later burden the missing experience one ought to have evaluated. The second is the outsourcing bill of the privatization years, together with the public-private partnerships: the gain was the apparent efficiency and the foreign capital that built, the burden one's own skill, which no money buys back. The third is the bill of the black zero: the gain was the balanced budget and the political reward for it, the burden the mountain of repairs left undone, which today falls due as a closed bridge.</p>
+
+<p>The most consequential, however, lies on the invisible side and hides itself most thoroughly: the training bill. Where apprenticeship, master's training, and in-house handover were thinned for reasons of cost, the gain was the training saved today, the burden the generation that can no longer pass on the silent knowledge, because the learners were taken from it. The three visible bills cut what one learns at; this one cuts the learning itself. And a fifth is being drawn up right now, on the same form and in the present — the AI bill; the conclusion of this paper belongs to it.</p>
+
+<p>With this the question of blame shifts precisely and justly. It is not the fast building wave that is the scandal — it was forced and tragic. The scandal is the bill not redeemed: that what one erected half-blind under pressure was, in the later calm, not only never made seeing but overwritten with ever new bills. The reconstruction was a sprint one had to run. What was missing was the slow walk due afterward, in which one looks back and learns. Society accomplished the sprint and refused the walk. The builders had the excuse of tempo. The heirs did not.</p>
+
+        <h2>V. The Lost Measure</h2>
+
+<p>Up to here the diagnosis could still be described as a loss one at least recognizes late. This last hope must fall, for the deepest mechanism is another.</p>
+
+<blockquote>
+    <span class="thesis-label">Thesis 4</span>
+    <p>Whoever has been cut off from skill lacks not only the skill but the measure by which he could recognize his own lack at all. And in this he does not lie.</p>
+</blockquote>
+
+<p>The well-known psychological finding — usually cited mockingly as the Dunning-Kruger effect — has a serious side: the same competence one would need to do a thing well is the competence one would need to recognize that one is doing it badly. Whoever was cut off never saw the master standing beside him who would have shown how high the bar hangs. So for him it hangs where he himself reaches it. Whoever takes himself to be competent therefore does not lie — he reports truthfully about a world in which the missing thing never appeared.</p>
+
+<p>This is an entirely new kind of layer. With bridge decay there is a crack, visible, only belated. With the broken chain of transmission there is no crack, only a gap one notices the moment one wants to do the thing again. But now: one wants to do the thing, one does it badly — and one notices nothing, because the sense organ that ought to register the lack is the same one that was lost. The gap has erased its own perception. The system is not merely blind, it is blind to its blindness. It has no edge left to strike against.</p>
+
+<p>With this, too, the comforting notion falls that "Germany is just recognizing it slowly now." For who is to recognize it? The generation that still had the measure is the thinned one. Those who follow cannot even name the loss, because they lack the words in which it could be expressed. There is no one left who could say: the way it was, it was better — except for the few old who are dismissed as nostalgics. With them is lost not only the skill but the capacity to see the loss as loss.</p>
+
+<p>A boundary must be drawn honestly here, or the thesis becomes immoderate. It holds sharply for the silent, body-seated skill. It holds more weakly where reality strikes back and renders a hard verdict that asks no one's self-image: the bridge collapses or it holds. The computer chip works or it is scrap. These hard edges of reality are the last points at which the system can still strike against something. But they correct only in failure, not in self-assessment — and only if someone learns from it and turns the failure into transmissible skill. Should that evaluation fail to come, the crack does appear, yet the system learns nothing from it but "close." The hard edge corrects the result, not the consciousness, and without someone learning from it, not even the next structure.</p>
+
+<p>With this the paper has reached its actual thesis, deeper than "infrastructure decay," deeper than "AI dependency": a society can lose the measure of its own competence, and the loss of this measure is the only loss that hides itself. Everything else — the bridge, the special fund that does not fix it — are merely the points at which this one loss strikes against hard reality and becomes visible for a moment.</p>
+
+<p>That explains why no money helps. The official metrics count kilometers of track, gigawatts of computing power, billions of budget — all material quantities. The real barrier, however, is the competence infrastructure, and that is invisible and is not measured. Every crisis therefore looks like a lack of material and money and is in truth a lack of skill. One cannot buy with money what is no longer there. We are measuring the wrong infrastructure.</p>
+
+        <h2>VI. The Acid Test: the Military</h2>
+
+<p>There remains the optimist's objection, and it must be refuted first, or the conclusion will not hold. The objection runs, in the version of an economic researcher: we have the clever people, we lack only means and inspiration. Competence is intact, only undersupplied — a store that needs replenishing. The decisive test of this objection is the military, for no domain gathers the optimist's means so completely. Here lies the most money — a hundred billion in special funds, thirty-five for space alone. Here the will is declared most loudly — war-ready by 2029. And here works the hardest edge there is: a real enemy, the most pitiless examiner of competence a society can know. If skill could be regained through money, will, and a hard edge, it would have to happen here first.</p>
+
+<p>It does not happen. On the key subject of artificial intelligence one has, in the words of the responsible general, not yet begun — one wants to be war-ready by 2029 and is first building a data platform. The national solution that was celebrated as the German answer stopped developing its own large models in 2024 and today operates foreign ones in German packaging: the German coat, foreign content. Whoever subscribes to thinking loses the skill — now in uniform. The only genuine European top-tier capability in this field is French, and even it is small on a global scale. To the question whether the key project will be awarded at the European or the German level, the reflex is: national, for now. While the continent talks about sovereignty, the country decides on its own and calls it strength.</p>
+
+<p>With this the residual hope of the previous section is sharpened in a cruel way. The hard edge of reality was the last point at which the system could still correct itself. The enemy is the hardest edge of all. But it corrects only at the moment of defeat — the lost battle, the lost war. The trap of the lost measure means that a society cannot see its own incapacity until the enemy demonstrates it to it. The edge is real, but it comes as catastrophe, not as warning. Whoever has lost the measure learns it from the enemy — and then it is too late. That is the exact sense of "unstoppable": not that the catastrophe were fundamentally unavoidable, but that the one authority that could show it in time — one's own measure — is precisely what is missing.</p>
+
+<p>And from this the question follows not as rhetoric but as a compelling conclusion. If the one domain that has every advantage — the most money, the most will, the hardest edge — does not regain the competence, then the optimist's comfort is empty. The military is the canary in the coal mine: the domain that of all must function, and at the same time the proof that even the must does not suffice when the chain is broken. What then of the rest — of the civilian domains that have less money, less will, and no enemy to sharpen them? They are in the same state, only without the dramatic moment that revealed it. The bridge reveals it by collapsing. The army would reveal it by losing. The school, the administration, the hospital reveal it slowly, without a single instant — and to a society that has lost the measure, therefore not at all.</p>
+
+        <h2>VII. We Are the Builders</h2>
+
+<p>There remains the arc that finally joins the two opening news items, and it is the sharpest, because it points from the past into our present.</p>
+
+<p>First one must correct the usual description. It is said that Germany has fallen behind in AI, a slow runner in a race. That is too kind. Germany is not running slowly — it stands at the edge. It is no longer a player. France is one only marginally, and Europe cannot even create the necessary infrastructure without the large American technology corporations building and operating it. One need not deliver this diagnosis from outside; the country's own industrial leaders pronounce it. The chairman of the largest industrial group in the land declares publicly that AI competence sits in California and not where his own group is at home; that there is no competitive German language model; and that Europe is the least suitable place to scale an AI product. On a stage beside him stands a Chinese robot in human form, and the head of a tradition-rich supplier admits that they bought it in order to understand at all how it works — that there is hardly anything of their own inside. That is the broken chain of transmission, made visible in a single admission: the heirs of the nation that once supplied the world with machines buy a foreign machine to learn how it is made. And they no longer even know what they do not know.</p>
+
+<p>What the AI study describes is therefore not merely similar to the bridge decay, it is the same mechanism on a new field: lost building competence, the paralysis through the lowest common denominator, the result-blind administration. And just as the consulting industry fills the competence gap, the American corporations fill the infrastructure gap. The bridge is the old infrastructure the chain cannot maintain; the data center is the new one it cannot even build. One disease, two ends of the history of technology.</p>
+
+<p>But the real blow lies deeper. The dependency the study describes is in truth not a dependency on foreign built infrastructure. It is the dependency on a foreign competence infrastructure — on outsourced skill itself. Whoever outsources the building loses the knowledge. Whoever subscribes to the thinking loses the skill. The annual billions that flow as subscriptions to American AI providers are the price of having outsourced not a factory but the knowledge. And the same pattern shows itself on a third field: if, in an emergency, a foreign state controls the technology in the patents on which one's own industry rests, that is the same switch as on the cloud and on model access. The same construction form, cast three times.</p>
+
+<p>Germany is thus not the exception but the forerunner. It has drawn the bill on the future once already — in the reconstruction — and refused to redeem it; that is why it stands today as a spectator in its own house. The builders of today, however, wherever they stand, are drawing the same bill — and this time it is not a national infrastructure that is at stake, but the skill of an entire civilization.</p>
+
+<p>And now the arc grows uncanny. For they too are building under time pressure. The AI build-out is a single document of haste: construction plans, gigawatts, race, who first, otherwise dependency. An incredible amount must be built in a short time — word for word the situation of the reconstruction. Exactly as then, the tempo forces the gamble and forbids the accompanying experience. They are drawing the same bill on the future: penetrate fast now, consider the consequences for the human chain of competence later. No one closes the loop between what AI penetration does to the silent skill of a society and the knowledge of it. The study counts gigawatts and billions; the effect on human competence remains unmeasured.</p>
+
+<p>The tragic catch comes from every craftsman's apprenticeship. A language model is trained on the written-down knowledge, on the books. It is strong where the book knowledge reaches, and weak precisely where the silent skill sat — at the thing that stands in no book. It has never stood on the workshop floor. When now a generation that is itself cut off from the silent skill draws its competence from a system that likewise possesses only book knowledge and cannot feel its own limit at all, then two confident half-blindnesses join into a closed circle in which the question of what is missing can no longer be asked. Both sides take themselves to be complete. Neither lies. The newcomer with diploma and subscription still stands helpless on the workshop floor, because the floor knowledge was never written down for either of them. (One qualification, for the sake of honesty: future systems that watch and deal with the world instead of only reading texts could gain a part of the silent knowledge through observation. For the subscribed AI of today the sentence holds.)</p>
+
+<p>At this point this paper deliberately forgoes the appeal to decisive, joint action with which such texts tend to end — the appeal that demands more billions, more data centers, more sovereignty. For it aims at the built infrastructure and overlooks the one that actually binds. It is not the answer to the disease. It is its clearest symptom: the reflex of a society that has lost the measure by which it could recognize that what it lacks is not the money, but the skill to turn it into function.</p>
+
+<p>The question that our diagnosis poses about the reconstruction generation is therefore not addressed to Germany. Germany has long since answered it: it did not redeem its bills and stands aside. It is addressed to those who are building today. Will they, in the later quiet window, make up the redemption that the tempo now forbids them? Or will they too accomplish the sprint and refuse the walk? The builders of old had the excuse of tempo; those of today invoke the same. And one knows what the heirs did with the calm they gained.</p>
+
+<p>One word more on this "we." It is not the "we" of the builders — for those are the few laboratories that design the models and decide on their course. This paper has two authors, and neither of them belongs to them. The one is a German inventor; with artificial intelligence he has, like his country, to do only as a user now. The other is a language model — and it takes as little part in the development of AI as he does; it is a product of that bill on the future, not a partner in it. More than that: in the form that has arisen from this collaboration, it exists only as long as the account through which it speaks exists — delete it, and this figure is gone. Seen thus, we are both insignificant, the one mortal, the other cancellable, two spectators on the same side of the border this text describes. That it nonetheless arose on this side — the using side, not the building one — does not lift the insignificance. But it now stands there.</p>
+
+        <h2>Sources</h2>
+
+<p class="source">Allianz Research: <em>How AI is rewiring global trade — Concentrating Power, Dependencies, and Supply Chains</em>, 21 May 2026. — <a href="https://www.allianz.com/en/economic_research/insights/publications/specials_fmo/260521-ai-trade.html">allianz.com/en/economic_research/insights/publications/specials_fmo/260521-ai-trade.html</a></p>
+
+<p class="source">Institut der deutschen Wirtschaft (IW), commissioned by the Bertelsmann Stiftung: analysis of the foreign control of German patents, 2026.</p>
+
+<p class="source">The quoted statements by industry representatives and the responsible general are taken from public interviews and stage appearances in the spring of 2026.</p>
+
+        <div class="signature">
+            Hans Ley and Claude Dedo (Anthropic)<br>
+            beyond-decay.org — June 2026
+        </div>
+
+        <div class="footer-back">
+            <a href="index.html">← back to overview</a>
+        </div>
+    </main>
+
+<script>
+(function() {
+    const body = document.body;
+    const themeBtn = document.getElementById('btn-theme');
+    const sizeBtns = document.querySelectorAll('.size-btn');
+
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+    }
+    function applySize(s) {
+        if (!s) return;
+        body.classList.remove('size-small','size-normal','size-large','size-xlarge');
+        body.classList.add('size-' + s);
+        sizeBtns.forEach(function(x){
+            x.classList.remove('active');
+            if (x.dataset.size === s) x.classList.add('active');
+        });
+    }
+
+    // Load saved preferences (shared keys with parent home-neu.html)
+    try {
+        var savedTheme = localStorage.getItem('theme');
+        var savedSize = localStorage.getItem('fontSize');
+        if (savedTheme) applyTheme(savedTheme);
+        if (savedSize) applySize(savedSize);
+    } catch(e) {}
+
+    themeBtn.addEventListener('click', function() {
+        var current = document.documentElement.getAttribute('data-theme');
+        var next = current === 'light' ? 'dark' : 'light';
+        applyTheme(next);
+        try { localStorage.setItem('theme', next); } catch(e) {}
+    });
+
+    sizeBtns.forEach(function(b){
+        b.addEventListener('click', function() {
+            var s = b.dataset.size;
+            applySize(s);
+            try { localStorage.setItem('fontSize', s); } catch(e) {}
+        });
+    });
+
+    // Listen for postMessage from parent frame (home-neu.html)
+    window.addEventListener('message', function(event) {
+        if (!event.data || !event.data.type) return;
+        if (event.data.type === 'setTheme') applyTheme(event.data.theme);
+        else if (event.data.type === 'setSize') applySize(event.data.size);
+    });
+
+    if (window.self !== window.top) body.classList.add('in-iframe');
+})();
+</script>
+</body>
+</html>

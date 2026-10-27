@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Kingmakers | gu18.eu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --text: #e8e6e3;
+            --text-secondary: #a0a0a0;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.15);
+            --border: #2a2a2a;
+        }
+        
+        [data-theme="light"] {
+            --bg: #f5f5f5;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a7340;
+            --accent-dim: rgba(138, 115, 64, 0.1);
+            --border: #dddddd;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'IBM Plex Serif', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.size-small { font-size: 15px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 21px; }
+        body.size-xlarge { font-size: 24px; }
+        
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 2rem;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+        
+        .controls-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-weight: 500;
+        }
+        
+        .controls-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .size-controls, .lang-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .size-controls span, .lang-controls span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+        
+        .size-btn, .theme-btn, .lang-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        
+        .size-btn:hover, .theme-btn:hover, .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .size-btn.active, .lang-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg);
+        }
+        
+        main {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 6rem 2rem 4rem;
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .essay-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 1.5rem;
+        }
+        
+        h1 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 2.4em;
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        
+        h1 strong {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .subtitle {
+            font-size: 1.1em;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        
+        .section {
+            margin-bottom: 2.5rem;
+        }
+        
+        h2 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.3em;
+            font-weight: 500;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        p {
+            margin-bottom: 1.25rem;
+            text-align: justify;
+            hyphens: auto;
+        }
+        
+        .highlight-box {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 1.25rem 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+        
+        .highlight-box p {
+            margin-bottom: 0;
+        }
+        
+        .highlight-text {
+            background: var(--accent-dim);
+            padding: 0.1em 0.3em;
+            border-radius: 2px;
+        }
+        
+        blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+        
+        em {
+            font-style: italic;
+        }
+        
+        strong {
+            font-weight: 600;
+        }
+        
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+        
+        .author-block .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        .date-line {
+            margin-top: 0.5rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+        }
+        
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; }
+            main { padding: 5rem 1.25rem 3rem; }
+            h1 { font-size: 1.8em; }
+            .controls-right { gap: 0.5rem; }
+            .size-controls span, .lang-controls span { display: none; }
+        }
+        
+        @media print {
+            .controls { display: none; }
+            main { padding-top: 1rem; }
+            body { font-size: 11pt; background: white; color: black; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+    <nav class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="lang-controls">
+                <a href="koenigsmacher-liminski-linnemann.html" class="lang-btn">DE</a>
+                <a href="koenigsmacher-liminski-linnemann_en.html" class="lang-btn active">EN</a>
+            </div>
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A−</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">◐</button>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · February 2026</span>
+                <h1>The <strong>Kingmakers</strong></h1>
+                <p class="subtitle">Nathanael Liminski and Carsten Linnemann — two strategists, one chancellor</p>
+            </header>
+
+            <section class="section">
+                <h2>I. The Invisible Power</h2>
+                <p>German politics has a peculiar tradition: the truly powerful are rarely those whose names appear in the headlines. Behind the scenes, in state chancelleries and party headquarters, men work — they are almost always men — whose influence far exceeds their formal titles.</p>
+                
+                <p>Friedrich Merz is Chancellor. That is what the history books will say. But who paved the way there, who laid the stones one by one and cleared away the pitfalls — those are others. <span class="highlight-text">Nathanael Liminski and Carsten Linnemann are the architects of a chancellorship that would be unthinkable without them.</span></p>
+                
+                <p>One, Liminski, comes from the orbit of Catholic conservatism; the other, Linnemann, from the business wing. Together they represent the two souls beating within the CDU — and which Merz attempts to embody as their synthesis.</p>
+            </section>
+
+            <section class="section">
+                <h2>II. Liminski — The Faith Soldier in Civil Service</h2>
+                <p>Nathanael Liminski was born in Bonn in 1985, the eighth of ten children in a family that embodies German Catholicism in its most conservative form. His father Jürgen Liminski, a journalist and member of Opus Dei, shaped the family with a value system that seems like a relic from another era in modern Germany.</p>
+                
+                <p>The young Liminski became political early. At 19, following the Cologne World Youth Day, he founded "Generation Benedict" — a network of young Catholics who not only revered the then-Pope but aggressively promoted his conservative positions in public. Premarital sex? Reprehensible. Homosexuality? Pitiable. Abortion? A crime.</p>
+                
+                <div class="highlight-box">
+                    <p>As spokesman of "Generation Benedict," Liminski aggressively defended the Church's sexual morality — in 2007 on a talk show against sex before marriage, in 2010 on television the Church's teaching on homosexuality. Appearances that would haunt him.</p>
+                </div>
+                
+                <p>Yet Liminski was clever enough to reduce his public appearances once his political career began. He gained experience under Roland Koch in Hesse, under Guttenberg and de Maizière at the federal level. Then came Armin Laschet.</p>
+                
+                <p>Laschet, the liberal Rhinelander, and Liminski, the conservative zealot — it seemed an unlikely partnership. But Liminski brought something Laschet desperately needed: access to the conservative milieus of the CDU that distrusted the Merkel-loyal Laschet. Liminski became the "shadow man," the "mastermind," the "right hand" — the media outdid themselves in metaphors for a man who wielded power without ever standing for election.</p>
+            </section>
+
+            <section class="section">
+                <h2>III. Linnemann — The Market Believer</h2>
+                <p>Carsten Linnemann, born in 1977, embodies a different type. Where Liminski brings faith in God, Linnemann carries faith in the market. A PhD economist, formerly of Deutsche Bank, then IKB — Linnemann is a man of business who entered politics to make economic policy.</p>
+                
+                <p>From 2013 to 2021, he led the Mittelstands- und Wirtschaftsunion (SME and Business Union), that lobby within the CDU ensuring that business interests are never forgotten. Linnemann speaks the language of efficiency, deregulation, tax cuts. He is not an ideologue in the religious sense, but an ideologue of the market economy.</p>
+                
+                <p>His political talent became evident in 2023 when Merz made him Secretary General. Linnemann took the lead on the CDU's new policy program — and proved he could do more than economic policy. He became the face of the CDU in the media, the attacker against the traffic-light coalition, the hardliner on migration policy.</p>
+                
+                <div class="highlight-box">
+                    <p>Linnemann categorically ruled out any cooperation with the AfD in January 2025 — after the Union's migration motion had found a majority only thanks to AfD votes.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>IV. The Coalition Negotiations</h2>
+                <p>In February 2025, the Union won the federal election. Merz had the mandate, Linnemann had positioned the party, Liminski had pulled the strings in the background. Now the game of coalition negotiations began — and both showed their different roles.</p>
+                
+                <p>Linnemann was the public face. He tempered expectations, set accents, alternated between mediator and hardliner. "What I'm hearing from the working groups is encouraging," he said — while behind the scenes, every paragraph was being haggled over.</p>
+                
+                <p>Liminski remained in Düsseldorf, but his influence reached to Berlin. As Minister for Federal and European Affairs in NRW, he already had one foot in federal politics. His network, built over years in Catholic circles and the Young Union, functioned like a second intelligence service.</p>
+                
+                <p>In the end stood a coalition agreement — titled "Responsibility for Germany." Linnemann had declined a cabinet post. Instead of moving to the Economics Ministry, he remained Secretary General. The official reasoning: the party's development was not yet complete. The unofficial: a Secretary General controls the party; a minister merely administers a department.</p>
+            </section>
+
+            <section class="section">
+                <h2>V. The Catholic Network</h2>
+                <p>What connects Liminski and Linnemann is more than party membership. Both are products of a Catholic milieu that, while shrinking in Germany, still wields disproportionate influence within the CDU. Linnemann is Vice President of SC Paderborn — no small matter in Catholic Westphalia. Liminski's network reaches into the innermost circle of the CDU leadership.</p>
+                
+                <p>These networks function differently from the party's formal structures. They are based on personal trust, shared values, a worldview that comes before politics. Those who belong can count on support that no party congress resolution can guarantee.</p>
+                
+                <p>For Liminski, this means: he never needs to stand for election to have influence. His power is informal but real. For Linnemann, it means: he can count on a base that extends beyond delegate votes.</p>
+            </section>
+
+            <section class="section">
+                <h2>VI. Kingmakers Without a Crown</h2>
+                <p>The term "kingmaker" has a long history. It describes those who install kings without ascending the throne themselves. German postwar history has seen several: Adenauer's Globke, Kohl's Teltschik, Schröder's Hombach.</p>
+                
+                <p>Liminski and Linnemann fit this tradition — yet break with it too. For both have ambitions of their own that go beyond mere kingmaking. Linnemann could have become a minister in 2025; at the time he consciously chose the party. Liminski is already a minister — in Düsseldorf, not Berlin. Not yet.</p>
+                
+                <div class="highlight-box">
+                    <p>Linnemann made it unmistakably clear that under him the party would be no mere handmaiden of the Chancellery. A declaration of intent — politely packaged, but meant as such.</p>
+                </div>
+                
+                <p>What does this mean for Merz? He is Chancellor, but he is dependent on two men whose loyalty comes with conditions. As long as Merz delivers — economically for Linnemann, value-conservatively for Liminski — they will support him. But should he stumble, both have the means and the networks to install alternatives.</p>
+            </section>
+
+            <section class="section">
+                <h2>VII. The Irony of History</h2>
+                <p>There is an irony in the story of Liminski and Linnemann. Both owe their rise to men who failed: Liminski served Laschet, whose chancellorship dream burst in 2021. Linnemann was recruited by Merz after he had twice lost to Merkel-backed candidates.</p>
+                
+                <p>From their mentors' failures, they learned. They became more cautious, more strategic, more patient. They understood that power in democracy is not conquered but accumulated — contact by contact, favor by favor, crisis by crisis.</p>
+                
+                <p>Now they have reached their goal: a CDU Chancellor governs Germany, and they contributed significantly to making it happen. But it is not the end of the story. Kingmakers rarely stay in the background. Eventually, they too want the crown — or at least the power that comes with it.</p>
+                
+                <p>Whether Liminski will ever move to Berlin, whether Linnemann will develop even higher ambitions — that remains to be seen. What is certain is this: anyone who wants to understand German politics in the coming years must know these two names. For behind every king stand the kingmakers.</p>
+
+                <p><em>Postscript, October 2026: Since July 2026, Carsten Linnemann has been Federal Minister of Health.</em></p>
+            </section>
+
+            <footer class="author-block">
+                <p class="label">Essay Series</p>
+                <p class="date-line">February 2026</p>
+            </footer>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = 'size-' + size;
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('gu18-size', size);
+        }
+        
+        function toggleTheme() {
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+            localStorage.setItem('gu18-theme', isLight ? 'dark' : 'light');
+        }
+        
+        // Restore preferences
+        const savedSize = localStorage.getItem('gu18-size');
+        const savedTheme = localStorage.getItem('gu18-theme');
+        if (savedSize) {
+            document.body.className = 'size-' + savedSize;
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.includes(savedSize === 'small' ? '−' : savedSize === 'medium' ? 'A' : savedSize === 'large' ? '+' : '++'));
+            });
+        }
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+    </script>
+</body>
+</html>

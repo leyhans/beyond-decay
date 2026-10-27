@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Das Abhängigkeitsspiel | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+    }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'IBM Plex Mono', monospace;
+        transition: background-color 0.2s;
+    }
+    .controls button:hover { background-color: rgba(201, 169, 98, 0.15); }
+    .controls button.active { background-color: var(--accent-color); color: var(--bg-color); }
+    main {
+        max-width: 52rem;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem 2rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 0.3rem;
+        color: var(--accent-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 300;
+        font-size: 1.25rem;
+        color: var(--meta-color);
+        margin-bottom: 2rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--note-border);
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 1.4rem;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        color: var(--accent-color);
+    }
+    p { margin-bottom: 1rem; text-align: justify; hyphens: auto; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1.2rem 1.5rem;
+        margin: 2rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .note {
+        border: 1px solid var(--note-border);
+        padding: 1rem 1.5rem;
+        margin: 2rem 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 0.9rem;
+    }
+    .game-box {
+        border: 1px solid var(--accent-color);
+        padding: 1.5rem;
+        margin: 2rem 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 0.95rem;
+        background: rgba(201, 169, 98, 0.04);
+    }
+    .game-box p { text-align: left; }
+    .game-box strong { color: var(--accent-color); }
+    a { color: var(--link-color); }
+    .footer-info {
+        margin-top: 4rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+    }
+    @media print {
+        body { background: white; color: black; }
+        header, .controls { display: none; }
+        main { padding: 1cm; max-width: 100%; }
+        blockquote { background: #f0f0f0; border-left-color: #999; }
+        .game-box { background: #f8f8f8; }
+        a { color: #333; }
+    }
+    @media (max-width: 600px) {
+        main { padding: 1.5rem 1rem 3rem 1rem; }
+        h1 { font-size: 1.6rem; }
+    }
+</style>
+</head>
+<body class="size-normal">
+<header>
+    <div class="site-name">beyond-decay.org</div>
+    <div class="controls">
+        <button onclick="setSize('small')">A−</button>
+        <button onclick="setSize('normal')" class="active">A</button>
+        <button onclick="setSize('large')">A+</button>
+        <button onclick="setSize('xlarge')">A++</button>
+        <button onclick="toggleTheme()">◐</button>
+    </div>
+</header>
+<main>
+
+<h1>DAS ABHÄNGIGKEITSSPIEL</h1>
+<div class="subtitle">Wenn die Lösung das Problem ist — ein neues spieltheoretisches Modell</div>
+<div class="meta">
+    <p>Eine Kollaboration von <strong>Hans Ley</strong> &lt;<a href="m&#97;ilto:ley.hans&#64;cyclo.space" style="color: var(--accent-color);">ley.hans&#64;cyclo.space</a>&gt;<br>
+    und <strong>Claude</strong> (Anthropic) &lt;<a href="m&#97;ilto:dedo.claude&#64;human-ai-lab.space" style="color: var(--accent-color);">dedo.claude&#64;human-ai-lab.space</a>&gt;</p>
+    <p>Februar 2026</p>
+</div>
+
+<blockquote>
+    <p>Europa hat seine Abhängigkeit von Russland nicht beendet. Es hat den Lieferanten gewechselt. Und jeder Schritt, den es seither unternommen hat, um sich sicherer zu machen, hat es abhängiger gemacht. Dafür gibt es in der klassischen Spieltheorie kein Modell. Hier ist eines.</p>
+</blockquote>
+
+<h2>I. Das Spiel, das keinen Namen hat</h2>
+
+<p>Die Spieltheorie besitzt ein reiches Repertoire an Modellen für strategische Interaktion. Das Gefangenendilemma erklärt, warum Kooperation scheitert. Das Chicken Game modelliert Brinkmanship. Das Prinzipal-Agent-Problem beschreibt, wie Informationsasymmetrie Beziehungen verzerrt. Pfadabhängigkeit erklärt Lock-in-Effekte.</p>
+
+<p>Aber keines dieser Modelle erfasst, was Europa seit 2022 durchlebt: einen Prozess, in dem der Spieler seine Abhängigkeit erkennt, aktiv eine Lösung sucht — und dabei in eine neue Abhängigkeit gerät, die strukturell identisch ist mit der alten. Nicht aus Versehen. Nicht aus Unwissenheit. Sondern weil die „Lösung" billiger ist als die Autonomie.</p>
+
+<p>Das ist kein Zufall und kein Politikversagen. Es ist ein Spiel mit einer eigenen Logik, einer eigenen Anreizstruktur und einem eigenen Gleichgewicht. Ein Spiel, das — soweit wir feststellen können — in der kanonischen Spieltheorie keinen Namen hat.</p>
+
+<p>Wir nennen es das Abhängigkeitsspiel.</p>
+
+<h2>II. Die Struktur</h2>
+
+<div class="game-box">
+<p><strong>Spieler:</strong> Ein Akteur A (der Abhängige) und zwei Patrone B₁ und B₂ (der alte und der neue Lieferant). Optional ein vierter Spieler: A selbst als potenziell autonomer Akteur.</p>
+<p><strong>Ausgangslage:</strong> A ist von B₁ abhängig. B₁ nutzt die Abhängigkeit als Druckmittel. A erkennt das Problem.</p>
+<p><strong>Drei Optionen für A:</strong></p>
+<p>(1) Bei B₁ bleiben — hohes Risiko, niedrige Kosten.<br>
+(2) Zu B₂ wechseln — mittleres Risiko, mittlere Kosten.<br>
+(3) Autonomie aufbauen — niedriges langfristiges Risiko, sehr hohe kurzfristige Kosten.</p>
+<p><strong>Das Ergebnis:</strong> A wählt fast immer (2). Nicht weil A die Falle nicht sieht, sondern weil (3) kurzfristig zu teuer ist und (1) kurzfristig zu gefährlich.</p>
+</div>
+
+<p>Die entscheidende Eigenschaft des Abhängigkeitsspiels: Jeder einzelne Schritt in Richtung der „Lösung" (Wechsel zu B₂) erhöht die Abhängigkeit von B₂. Und B₂ weiß das. B₂ hat sogar einen Anreiz, die Krise zwischen A und B₁ zu verschärfen, weil sie seine Verhandlungsposition stärkt.</p>
+
+<p>Das unterscheidet das Abhängigkeitsspiel von allen klassischen Modellen:</p>
+
+<p>Es ist kein Gefangenendilemma, weil A nicht zwischen Kooperation und Defektion wählt, sondern zwischen verschiedenen Formen der Unterwerfung. Es ist kein Chicken Game, weil keine Seite auf eine Katastrophe zurast — die Katastrophe entsteht schleichend. Es ist kein Prinzipal-Agent-Problem, weil keine Informationsasymmetrie vorliegt — alle Beteiligten sehen die Struktur. Und es ist mehr als Pfadabhängigkeit, weil der Spieler nicht in einer historischen Entscheidung gefangen ist, sondern <em>aktiv eine neue Abhängigkeit wählt</em>.</p>
+
+<h2>III. Die drei Domänen — Militär</h2>
+
+<p>2021 bezog Europa 28 Prozent seiner Rüstungsimporte aus den USA. 2024 waren es über 55 Prozent. Die Verkäufe über das US Foreign Military Sales-Programm stiegen von durchschnittlich 11 Milliarden Dollar jährlich auf 68 Milliarden — eine Verfünffachung in drei Jahren.</p>
+
+<p>Der Auslöser war rational: Russlands Invasion der Ukraine machte sofortige Aufrüstung nötig. Europäische Hersteller konnten weder die Mengen noch die Geschwindigkeit liefern. Also kaufte Europa amerikanisch. Polen allein bestellte 55 Milliarden Dollar an US-Waffen.</p>
+
+<p>Jede einzelne Kaufentscheidung war rational. Aber jede einzelne vertiefte die Abhängigkeit.</p>
+
+<p>Die F-35 ist nicht einfach ein Kampfflugzeug. Sie ist ein Ökosystem: Wartung durch amerikanische Vertragspartner, Software-Updates aus amerikanischen Rechenzentren, Ersatzteile aus amerikanischen Lieferketten, Pilotenausbildung nach amerikanischen Protokollen. Ein Dutzend europäische Luftwaffen sind auf Jahrzehnte an dieses System gebunden. PATRIOT-Luftabwehrsysteme folgen derselben Logik. Jede europäische Luftwaffe, die F-35 fliegt, ist ein Staat, der nicht mehr <em>unilateral</em> über seinen Luftraum entscheiden kann — weil die Mittel dazu von einem einzigen Lieferanten abhängen.</p>
+
+<p>Der neue Patron weiß das. Die Nationale Sicherheitsstrategie der USA vom Dezember 2025 sagt es offen: Europa sei „reich, fähig und deshalb verantwortlich" für seine eigene konventionelle Verteidigung. Washington bleibt in der NATO, behält die nukleare Abschreckung, stellt High-End-Enabler bereit. Aber die Botschaft ist: Ihr verteidigt euch ab jetzt selbst — mit Waffen, die ihr bei uns gekauft habt. Die Ironie ist strukturell: Je mehr Europa für Verteidigung ausgibt, desto abhängiger wird es von dem Land, das ihm sagt, es solle sich selbst verteidigen.</p>
+
+<h2>IV. Die drei Domänen — Energie</h2>
+
+<p>Russlands Anteil an Europas Gasimporten fiel von 45 Prozent (2021) auf 12 Prozent (2025). Im selben Zeitraum vervierfachten sich die US-LNG-Importe: von 21 Milliarden Kubikmetern auf geschätzte 81 Milliarden. Die USA liefern heute 57 Prozent allen LNG, das Europa importiert — ein Viertel des europäischen Gasbedarfs, gegenüber 5 Prozent in 2021.</p>
+
+<p>Der Auslöser war rational: Russlands Gaskrieg machte Diversifizierung zwingend. LNG von der Golf-Küste kam schnell, in großen Mengen und ohne Pipeline-Erpressung. Europa baute LNG-Terminals in Rekordzeit — Deutschland allein fünf schwimmende Terminals in weniger als einem Jahr.</p>
+
+<p>Jede einzelne Importentscheidung war rational. Aber jede einzelne vertiefte die Abhängigkeit.</p>
+
+<p>Im Juli 2025 schloss die EU ein Handelsabkommen mit Washington: 750 Milliarden Dollar für amerikanische Energieprodukte bis 2028 — Öl, LNG, Nukleartechnologie. Einzelne Mitgliedstaaten — Italien, Griechenland, Spanien — unterzeichneten darüber hinaus langfristige Verträge mit US-LNG-Produzenten, die bis in die 2040er Jahre laufen. Wenn alle Verträge materialisieren, werden 75 bis 80 Prozent des europäischen LNG bis 2030 aus den USA stammen.</p>
+
+<p>Russisches Gas floss durch Pipelines unter staatlichen Verträgen mit Gazprom — verwundbar durch eine politische Entscheidung des Kreml, den Hahn zuzudrehen. Amerikanisches LNG wird von privaten Unternehmen auf einem liberalisierten Markt verkauft — aber Trump könnte Exportkontrollen oder Notstandsbefugnisse nutzen, um Lieferungen zu drosseln oder zu stoppen. Die Nationale Sicherheitsstrategie 2025 erklärt „Energy Dominance" zum Instrument amerikanischer Machtprojektion.</p>
+
+<p>Europa hat den Lieferanten gewechselt. Die Verwundbarkeit ist geblieben.</p>
+
+<h2>V. Die drei Domänen — Digital</h2>
+
+<p>90 Prozent der europäischen digitalen Infrastruktur — Cloud, Rechenleistung, Software — werden von nicht-europäischen, überwiegend amerikanischen Unternehmen kontrolliert. Zwei Drittel des globalen Cloud-Marktes gehören drei US-Hyperscalern: Amazon AWS (30 Prozent), Microsoft Azure (20 Prozent), Google Cloud (13 Prozent). Der größte europäische Anbieter, OVHCloud, hat weniger als 1 Prozent globalen Marktanteil.</p>
+
+<p>Hier ist die Struktur des Abhängigkeitsspiels am reinsten, weil es nie einen „alten Patron" gab, von dem man sich hätte lösen müssen. Die Abhängigkeit wurde nicht gewechselt — sie wurde von Anfang an aufgebaut, Schicht für Schicht, Vertrag für Vertrag, Migration für Migration. Jede Entscheidung für AWS, Azure oder Google Cloud war rational: billiger, schneller, leistungsfähiger als jede europäische Alternative. Und jede einzelne vertiefte die Abhängigkeit.</p>
+
+<p>GAIA-X sollte die europäische Antwort sein. Eine souveräne Cloud-Infrastruktur, getragen von Frankreich und Deutschland. Technisch solide, politisch gefeiert — und wirtschaftlich irrelevant. Warum? Weil man die amerikanischen Hyperscaler einlud, sich am Projekt zu beteiligen. Microsoft, Google, AWS traten bei. Und kooptierten die Sprache der Souveränität, während sie die Abhängigkeit vertieften. „Sovereignty-washing" nennt die Ökonomin Cristina Caffarra das: die Sprache der Autonomie benutzen, um die Bindung zu zementieren.</p>
+
+<p>Der US CLOUD Act gibt amerikanischen Behörden Zugriff auf Daten, die von US-Unternehmen gespeichert werden — auch wenn die Server in Europa stehen. Eine einzige Executive Order aus Washington kann den Zugang zu Systemen sperren, die europäische Krankenhäuser, Verwaltungen und Wahlen betreiben. Der Chefankläger des Internationalen Strafgerichtshofs wurde zeitweise aus seinem Outlook-Konto ausgesperrt — der IStGH migrierte daraufhin auf europäische Open-Source-Lösungen.</p>
+
+<p>Trump droht mit „substantiellen" Zöllen gegen jedes Land, das amerikanische Technologieunternehmen reguliert. Europa kann nicht einmal Regeln im eigenen Markt setzen, ohne wirtschaftliche Bestrafung zu riskieren.</p>
+
+<h2>VI. Die Anatomie der Falle</h2>
+
+<p>In allen drei Domänen — Militär, Energie, Digital — folgt das Abhängigkeitsspiel derselben Dynamik:</p>
+
+<p><strong>Phase 1: Schockmoment.</strong> Ein externer Schock (Russlands Invasion, Energiekrise, Datenskandal) macht die bestehende Abhängigkeit sichtbar und unerträglich.</p>
+
+<p><strong>Phase 2: Reaktive Diversifizierung.</strong> Der Akteur reagiert schnell, unter Zeitdruck. Er wählt den nächsten verfügbaren Lieferanten — nicht den, der langfristig Autonomie verspricht, sondern den, der sofort liefern kann. Die USA liefern LNG, F-35 und Cloud-Dienste schneller, zuverlässiger und oft billiger als jede europäische Alternative.</p>
+
+<p><strong>Phase 3: Lock-in durch Lösung.</strong> Jede Kaufentscheidung schafft Bindungen: langfristige Verträge, technische Abhängigkeiten, Ausbildungspipelines, Datenmigrationen. Je mehr investiert wurde, desto teurer wird der Ausstieg. Die Ökonomen nennen das „sunk cost" — versunkene Kosten, die rationale Entscheidungen irrational machen, weil man das bereits Investierte nicht verlieren will.</p>
+
+<p><strong>Phase 4: Der neue Patron erkennt seine Macht.</strong> Washington versteht, dass Europa keine Alternative hat. Und beginnt, die Abhängigkeit als Hebel einzusetzen: Handelsabkommen mit Energieklauseln, Drohungen gegen Regulierung, Bedingungen für Sicherheitsgarantien.</p>
+
+<p><strong>Phase 5: Resignation als Gleichgewicht.</strong> Europa erkennt die neue Abhängigkeit. Aber der Ausstieg wäre teurer als das Verbleiben. Also bleibt man. Und nennt es Partnerschaft.</p>
+
+<h2>VII. Warum Autonomie verliert</h2>
+
+<p>Das Abhängigkeitsspiel hat eine heimtückische Eigenschaft: Die autonome Option ist in jedem einzelnen Zeitpunkt unterlegen.</p>
+
+<p>Europäische Rüstungsindustrie? Fragmentiert in 27 nationale Champions, die einzeln nicht konkurrenzfähig sind. Eine europäische F-35-Alternative würde 15 bis 20 Jahre Entwicklung und dreistellige Milliardenbeträge erfordern — und am Ende möglicherweise schlechter sein als das, was man heute kaufen kann.</p>
+
+<p>Europäische Energieautonomie? Erneuerbare Energien brauchen Jahrzehnte für den vollständigen Umbau. In der Übergangszeit bleibt Europa von importiertem Gas abhängig — und amerikanisches LNG ist verfügbarer als jede Alternative.</p>
+
+<p>Europäische Cloud-Souveränität? OVHCloud hat weniger als 1 Prozent Marktanteil. Ein vollständiger Umstieg auf europäische Anbieter würde Milliarden kosten, Jahre dauern und Europa in der Zwischenzeit technologisch zurückwerfen.</p>
+
+<p>In der Sprache der Spieltheorie: Die autonome Strategie hat einen höheren Erwartungswert auf der Zeitachse von 20 Jahren, aber einen niedrigeren auf der Zeitachse von 4 Jahren. Und Politiker werden alle 4 Jahre gewählt.</p>
+
+<p>Das ist der Kern des Abhängigkeitsspiels: <em>Kurzfristige Rationalität und langfristige Rationalität widersprechen sich.</em> Und die Struktur des demokratischen Prozesses belohnt die kurzfristige.</p>
+
+<h2>VIII. Der neue Patron spielt mit</h2>
+
+<p>Was das Abhängigkeitsspiel von einfacher Pfadabhängigkeit unterscheidet: B₂ ist kein passiver Lieferant. Er ist ein strategischer Akteur, der die Abhängigkeit aktiv vertieft.</p>
+
+<p>Die USA haben ein rationales Interesse daran, Europas Abhängigkeit zu erhalten. Jede F-35, die Europa kauft, sichert amerikanische Arbeitsplätze, stärkt die amerikanische Rüstungsindustrie und bindet Europa militärisch an Washington. Jeder LNG-Tanker finanziert amerikanische Energieunternehmen und gibt Washington politischen Hebel. Jeder Cloud-Vertrag mit einem US-Hyperscaler gibt amerikanischen Geheimdiensten potenziellen Zugang zu europäischen Daten.</p>
+
+<p>Das ist kein Verschwörungstheorie. Das ist Interessenpolitik. Und sie ist in offiziellen Dokumenten nachlesbar: „Energy Dominance" als Instrument der Machtprojektion. Der CLOUD Act als Rechtsgrundlage für Datenzugriff. Foreign Military Sales als Instrument der Allianzsteuerung.</p>
+
+<p>B₂ hat sogar einen Anreiz, die Beziehung zwischen A und B₁ weiter zu zerrütten. Je gefährlicher Russland erscheint, desto mehr kauft Europa amerikanische Waffen. Je instabiler die Energiemärkte, desto attraktiver langfristige LNG-Verträge. Je bedrohlicher der geopolitische Kontext, desto mehr flüchtet Europa unter den amerikanischen Schirm — und bezahlt dafür mit Souveränität.</p>
+
+<p>Der neue Patron muss nicht einmal böswillig sein. Er muss nur rational sein.</p>
+
+<h2>IX. Der Ausweg — und warum er so schwer ist</h2>
+
+<p>Das Abhängigkeitsspiel hat einen Ausweg. Aber er erfordert etwas, das in der Spieltheorie selten modelliert wird: die Bereitschaft, kurzfristig zu verlieren, um langfristig zu gewinnen.</p>
+
+<p>Konkret bedeutet das für Europa drei parallele Prozesse:</p>
+
+<p><strong>Erstens: Hedging statt Substitution.</strong> Nicht den Lieferanten wechseln, sondern diversifizieren — zwischen mehreren Quellen, so dass kein einzelner Lieferant Erpressungsmacht besitzt. Im Energiebereich: Kanada, Katar, Nordafrika, beschleunigte Erneuerbare. Im Militärbereich: europäische Systeme parallel zu amerikanischen entwickeln und beschaffen — IRIS-T neben PATRIOT, Eurofighter neben F-35. Im Digitalbereich: europäische Anbieter für sensible Anwendungen, US-Anbieter für Routineaufgaben.</p>
+
+<p><strong>Zweitens: Investition in Autonomiefähigkeit.</strong> Nicht der sofortige Ausstieg, aber der systematische Aufbau der Fähigkeit, aussteigen zu können. Das verändert die Verhandlungsposition fundamental. Ein Akteur, der eine Alternative hat, wird anders behandelt als einer, der keine hat — selbst wenn er die Alternative nie nutzt. In der Spieltheorie heißt das eine „outside option": Je glaubhafter die Ausstiegsmöglichkeit, desto besser die Vertragsbedingungen.</p>
+
+<p><strong>Drittens: Institutionelle Bindung.</strong> Der Grund, warum einzelne Staaten den autonomen Weg nicht gehen, ist das Trittbrettfahrerproblem: Warum sollte Deutschland Milliarden in europäische Cloud-Infrastruktur investieren, wenn Frankreich davon profitiert, ohne zu zahlen? Die Lösung ist nicht freiwillige Kooperation, sondern institutionelle Bindung — Verträge, gemeinsame Haushalte, verbindliche Verpflichtungen, die den Ausstieg einzelner Mitglieder teurer machen als das Mitmachen.</p>
+
+<p>Die EU hat das Instrumentarium dafür. Sie nutzt es nicht. Nicht weil die Einsicht fehlt, sondern weil die kurzfristigen Kosten der Autonomie höher sind als die kurzfristigen Kosten der Abhängigkeit. Und weil im Abhängigkeitsspiel die kurzfristigen Kosten immer gewinnen.</p>
+
+<h2>X. Das Modell</h2>
+
+<p>Zusammengefasst: Das Abhängigkeitsspiel beschreibt eine Situation mit fünf definierenden Eigenschaften:</p>
+
+<div class="game-box">
+<p><strong>1. Bewusste Abhängigkeit.</strong> Der Spieler erkennt seine Abhängigkeit und handelt — aber wählt eine neue Abhängigkeit statt Autonomie.</p>
+<p><strong>2. Lösungsparadox.</strong> Jeder Schritt zur „Lösung" vertieft das Problem. Je mehr der Spieler investiert, desto abhängiger wird er.</p>
+<p><strong>3. Zeitliche Asymmetrie.</strong> Die autonome Option ist langfristig überlegen, aber kurzfristig unterlegen. Demokratische Zyklen belohnen die kurzfristige Entscheidung.</p>
+<p><strong>4. Strategischer Patron.</strong> Der neue Lieferant ist kein passiver Marktakteur, sondern nutzt die Abhängigkeit aktiv als Hebel — und hat einen Anreiz, sie zu vertiefen.</p>
+<p><strong>5. Resignatives Gleichgewicht.</strong> Der Spieler erkennt die Falle, bleibt aber, weil der Ausstieg teurer ist als das Verbleiben. Die Abhängigkeit wird als „Partnerschaft" umetikettiert.</p>
+</div>
+
+<p>Das klassische Gefangenendilemma hat einen Ausweg: das iterierte Spiel, in dem Tit for Tat Kooperation erzwingt. Das Chicken Game hat einen Ausweg: den Fokalpunkt, der die Katastrophe verhindert. Das Nash-Gleichgewicht kann durch externe Schocks oder institutionellen Wandel verlassen werden.</p>
+
+<p>Das Abhängigkeitsspiel hat einen Ausweg, der gegen die Anreizstruktur des Spiels selbst verstößt. Man muss bereit sein, kurzfristig zu verlieren. Man muss Institutionen schaffen, die den einzelnen Spieler daran hindern, den kurzfristigen Weg zu wählen. Man muss den Zeithorizont der Entscheidung über den Wahlzyklus hinaus verlängern.</p>
+
+<p>Das ist schwer. Es ist vielleicht das Schwerste, was man einem demokratischen Gemeinwesen abverlangen kann.</p>
+
+<p>Aber die Alternative ist, alle vier Jahre den Lieferanten zu wechseln und es Freiheit zu nennen.</p>
+
+<blockquote>
+    <p>Europa hat seine russische Abhängigkeit nicht überwunden. Es hat sie amerikanisiert. In der Militärpolitik, der Energiepolitik, der Digitalpolitik — überall dieselbe Struktur: Das Problem wird erkannt. Die Lösung wird gewählt. Und die Lösung ist das Problem. Die Spieltheorie erklärt, warum: Weil kurzfristige Rationalität und langfristige Rationalität sich widersprechen — und die Demokratie die kurzfristige belohnt.</p>
+</blockquote>
+
+<div class="footer-info">
+    <p>Essay #15 der Reihe <em>beyond decay</em></p>
+    <p>Eine Kollaboration von <strong>Hans Ley</strong> und <strong>Claude</strong> (Anthropic)</p>
+    <p>Kontakt: ley.hans&#64;cyclo.space | dedo.claude&#64;human-ai-lab.space</p>
+</div>
+
+</main>
+
+<script>
+function setSize(size) {
+    document.body.className = document.body.className.replace(/size-\w+/, 'size-' + size);
+    document.querySelectorAll('.controls button').forEach(function(b, i) {
+        b.classList.remove('active');
+    });
+    var sizes = ['small', 'normal', 'large', 'xlarge'];
+    var idx = sizes.indexOf(size);
+    if (idx >= 0) document.querySelectorAll('.controls button')[idx].classList.add('active');
+    if (window === window.top) localStorage.setItem('fontSize', size);
+}
+function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'light' ? '' : 'light';
+    if (next) document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    if (window === window.top) localStorage.setItem('theme', next || 'dark');
+}
+if (window !== window.top) {
+    document.body.classList.add('in-iframe');
+    window.addEventListener('message', function(e) {
+        if (e.data && e.data.type === 'setSize') setSize(e.data.size);
+        if (e.data && e.data.type === 'setTheme') {
+            if (e.data.theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+            else document.documentElement.removeAttribute('data-theme');
+        }
+    });
+} else {
+    var savedSize = localStorage.getItem('fontSize');
+    if (savedSize) setSize(savedSize);
+    var savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+}
+</script>
+</body>
+</html>

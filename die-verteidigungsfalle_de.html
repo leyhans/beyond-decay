@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die Verteidigungsfalle | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+    }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'IBM Plex Mono', monospace;
+        transition: background-color 0.2s;
+    }
+    .controls button:hover { background-color: rgba(201, 169, 98, 0.15); }
+    .controls button.active { background-color: var(--accent-color); color: var(--bg-color); }
+    main {
+        max-width: 52rem;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem 2rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 0.3rem;
+        color: var(--accent-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 300;
+        font-size: 1.25rem;
+        color: var(--meta-color);
+        margin-bottom: 2rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--note-border);
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 1.4rem;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        color: var(--accent-color);
+    }
+    p { margin-bottom: 1rem; text-align: justify; hyphens: auto; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1.2rem 1.5rem;
+        margin: 2rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    strong { color: var(--accent-color); font-weight: 600; }
+    em { font-style: italic; }
+    a { color: var(--link-color); }
+    .game-box {
+        border: 1px solid var(--accent-color);
+        padding: 1.5rem;
+        margin: 2rem 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 0.95rem;
+        background: rgba(201, 169, 98, 0.04);
+    }
+    .game-box p { text-align: left; margin-bottom: 0.5rem; }
+    .game-box p:last-child { margin-bottom: 0; }
+    .game-box strong { color: var(--accent-color); }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 0.95rem;
+    }
+    th, td {
+        padding: 0.6rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid rgba(201, 169, 98, 0.2);
+    }
+    th {
+        color: var(--accent-color);
+        font-weight: 600;
+        border-bottom: 2px solid var(--accent-color);
+    }
+    .footer-info {
+        margin-top: 4rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+    }
+    @media print {
+        body { background: white; color: black; }
+        header, .controls { display: none; }
+        main { padding: 1cm; max-width: 100%; }
+        blockquote { background: #f0f0f0; border-left-color: #999; }
+        .game-box { background: #f8f8f8; }
+        a { color: #333; }
+    }
+    @media (max-width: 600px) {
+        main { padding: 1.5rem 1rem 3rem 1rem; }
+        h1 { font-size: 1.6rem; }
+    }
+</style>
+</head>
+<body class="size-normal">
+<header>
+    <div class="site-name">beyond-decay.org</div>
+    <div class="controls">
+        <button onclick="setSize('small')">A−</button>
+        <button onclick="setSize('normal')" class="active">A</button>
+        <button onclick="setSize('large')">A+</button>
+        <button onclick="setSize('xlarge')">A++</button>
+        <button onclick="window.location.href='the-defense-trap_en.html'">EN</button>
+        <button onclick="toggleTheme()">◐</button>
+    </div>
+</header>
+<main>
+
+<h1>DIE VERTEIDIGUNGSFALLE</h1>
+<div class="subtitle">Europa verspricht, was es nicht halten kann — und alle wissen es</div>
+<div class="meta">
+    <p>Eine Kollaboration von <strong>Hans Ley</strong> &lt;<a href="m&#97;ilto:ley.hans&#64;cyclo.space" style="color: var(--accent-color);">ley.hans&#64;cyclo.space</a>&gt;<br>
+    und <strong>Claude</strong> (Anthropic) &lt;<a href="m&#97;ilto:dedo.claude&#64;human-ai-lab.space" style="color: var(--accent-color);">dedo.claude&#64;human-ai-lab.space</a>&gt;</p>
+    <p>Februar 2026</p>
+</div>
+
+<h2>I. Das Versprechen</h2>
+
+<p>Im Januar 2026 trafen sich siebenundzwanzig Staats- und Regierungschefs in Paris. Sie nannten sich „Koalition der Willigen". Sie unterzeichneten eine Absichtserklärung zur Entsendung einer multinationalen Truppe in die Ukraine — „zur Verteidigung, zum Wiederaufbau und zur strategischen Nachhaltigkeit". Frankreich und Großbritannien versprachen „Military Hubs" auf ukrainischem Boden. Schweden stellte Gripen-Kampfjets in Aussicht. Sechsundzwanzig Länder erklärten sich bereit, „zu Land, zu See und in der Luft" zu unterstützen.</p>
+
+<p>Im Dezember 2025 hatte der Europäische Rat bereits neunzig Milliarden Euro als Darlehen für die Ukraine beschlossen — für 2026 und 2027, finanziert über EU-Anleihen auf den Kapitalmärkten. Die EU sprach von „robusten und glaubwürdigen Sicherheitsgarantien".</p>
+
+<p>Bundeskanzler Merz erklärte in Paris, Deutschland sei bereit, sich „nach einem Waffenstillstand politisch, finanziell und militärisch einzubringen". Allerdings: Deutsche Soldaten würden „auf benachbartem NATO-Gebiet eingemeldet" — nicht in der Ukraine selbst.</p>
+
+<p>Das klingt nach Entschlossenheit. Es klingt nach Zeitenwende. Es klingt nach einer europäischen Sicherheitsarchitektur, die endlich Gestalt annimmt.</p>
+
+<p>Es ist nichts davon.</p>
+
+<h2>II. Die Falle</h2>
+
+<p>Was hier entsteht, hat Christoph Schiltz in der <em>Welt</em> eine „unselige Verteidigungsfalle" genannt. Der Begriff ist präzise. Es ist eine Falle — und sie schnappt in beide Richtungen zu.</p>
+
+<p>Die Falle für die Ukraine: Europa verspricht Integration, Mitgliedschaft, Wiederaufbau, Sicherheitsgarantien. Die Ukraine kämpft weiter — ermutigt durch diese Versprechen, gestützt auf die Erwartung, dass Europa am Ende einlöst, was es zusagt. Aber Europa gibt keine Beistandsgarantie wie Artikel 5 der NATO. Europa hat keine gemeinsame Armee. Europa hat kein operatives Hauptquartier, keine integrierte Kommandostruktur, keine einheitliche Beschaffung, keine gemeinsame Doktrin. Europa hat eine Absichtserklärung.</p>
+
+<p>Die Falle für Europa: Jedes Versprechen, das nicht eingelöst wird, erhöht den Einsatz für das nächste. Europa kann nicht mehr zurück, ohne sein Gesicht zu verlieren. Es kann nicht mehr vor, ohne Risiken einzugehen, für die es weder die militärischen Mittel noch die politische Bereitschaft hat. Europa sitzt in der Falle seiner eigenen Rhetorik.</p>
+
+<p>Die Falle für Putin: Es gibt keine. Putin weiß, dass Europas Versprechen hohl sind. Er weiß es, weil er die europäischen Verteidigungshaushalte studiert hat. Er weiß es, weil er die Einsatzbereitschaft der Bundeswehr kennt. Er weiß es, weil er dreißig Jahre lang zugesehen hat, wie Europa seine Verteidigungsfähigkeit abgebaut hat. Für Putin ist Europas „Koalition der Willigen" eine Koalition der Zahnlosen.</p>
+
+<div class="game-box">
+<p><strong>Die Verteidigungsfalle als Dilemma</strong></p>
+<p>Europa kann nicht liefern, was es verspricht — aber es kann nicht aufhören zu versprechen.</p>
+<p>Die Ukraine kann sich nicht auf Versprechen verlassen — aber sie hat keine Alternative.</p>
+<p>Russland kann davon ausgehen, dass Europa blufft — und wird es testen.</p>
+</div>
+
+<h2>III. Die heikle Frage</h2>
+
+<p>Die Frage, die Brüssel seit drei Jahren vermeidet, lautet: <strong>Ist Europa bereit, die Ukraine so zu schützen, als wäre sie eigenes Territorium?</strong></p>
+
+<p>Die ehrliche Antwort ist: Nein.</p>
+
+<p>Nicht weil Europa feige wäre — obwohl Feigheit sicher eine Rolle spielt. Sondern weil Europa die Fähigkeit verloren hat, diese Frage mit Ja zu beantworten. Ein Ja würde voraussetzen, dass Europa Streitkräfte projizieren kann — ausreichend, schnell, nachhaltig. Ein Ja würde voraussetzen, dass Europa eine Eskalation mit Russland riskieren kann — und das glaubwürdig. Ein Ja würde voraussetzen, dass europäische Regierungen ihren Wählern erklären können, warum europäische Soldaten in der Ukraine sterben könnten.</p>
+
+<p>Keine dieser Voraussetzungen ist erfüllt.</p>
+
+<p>Also antwortet Europa nicht mit Ja und nicht mit Nein, sondern mit: „Wir arbeiten an robusten Garantien." Das ist die Sprache von Institutionen, die handlungsunfähig sind, aber handlungsfähig erscheinen wollen. Es ist die Sprache, die wir in jedem anderen Bereich europäischer Politik kennen — bei der Digitalisierung, bei der Energiewende, bei der Infrastruktur. Ambitionierte Ankündigungen, verteilte Zuständigkeiten, verwässerte Ergebnisse, stille Beerdigung.</p>
+
+<p>Nur dass es diesmal nicht um Glasfaserkabel geht, sondern um Krieg und Frieden.</p>
+
+<h2>IV. Die nackte Wahrheit</h2>
+
+<p>Sprechen wir über Zahlen. Nicht über Versprechen, nicht über Absichtserklärungen — über Zahlen.</p>
+
+<p>Die Bundeswehr — die Armee des größten und reichsten europäischen Staates — hat Hubschrauber, die nicht fliegen, Panzer, die nicht fahren, Schiffe, die nicht schwimmen. Im Februar 2026, auf der Münchner Sicherheitskonferenz, sagte der Heeresinspekteur Generalleutnant Freuding, das Heer verfüge über „Fähigkeitslücken, die heute, nicht morgen geschlossen werden müssten". Heute, nicht morgen — vier Jahre nach der „Zeitenwende", drei Jahre nach dem Sondervermögen von hundert Milliarden Euro.</p>
+
+<p>Das Sondervermögen ist fast aufgebraucht. Es wurde größtenteils für Bestellungen ausgegeben, deren Lieferung Jahre dauern wird. Zwischen Bedarfsmeldung und Auslieferung vergehen beim Beschaffungsamt BAAINBw im Durchschnitt Jahre — nicht Monate, Jahre. Die Bundeswehr hat im Januar 2026 angefangen, Fragebögen an Achtzehnjährige zu verschicken, um herauszufinden, wer Interesse am Wehrdienst hat. Fragebögen. Während in der Ukraine täglich Menschen sterben.</p>
+
+<p>Frankreich — das andere Schwergewicht — hat eine einsatzfähigere Armee, aber auch eine, die für Expeditionseinsätze in Afrika dimensioniert ist, nicht für einen Landkrieg gegen Russland. Großbritannien hat gerade seine Armee auf den kleinsten Stand seit Napoleon verkleinert.</p>
+
+<p>Die sechsundzwanzig Länder der „Koalition der Willigen" bringen zusammen weniger konventionelle Feuerkraft auf als Russland allein — und Russland hat seine Kriegswirtschaft auf Hochtouren gebracht, während Europa noch Absichtserklärungen formuliert.</p>
+
+<h2>V. Der Zusammenhang</h2>
+
+<p>Wer das Essay <em>„Deutschland — ein Staat, der nichts mehr weiß und nichts mehr kann"</em> gelesen hat, erkennt das Muster.</p>
+
+<p>Deutschland hat seine staatliche Kompetenz nicht verloren, weil es dumm ist. Es hat sie wegprivatisiert, outgesourct, beraterfinanziert. Dreißig Jahre Privatisierungsdogma haben einen Staat produziert, der keinen Flughafen bauen, keine Brücke instandhalten und keine IT-Systeme betreiben kann.</p>
+
+<p>Dieselbe Logik hat Europas Verteidigung zerstört. Nach 1990 — nach dem „Ende der Geschichte" — wurde die Friedensdividende kassiert. Armeen wurden verkleinert. Kasernen geschlossen. Rüstungsprojekte gestrichen. Wehrpflicht abgeschafft. Verteidigungshaushalte auf ein Minimum gekürzt. Die NATO-Verpflichtung von zwei Prozent des BIP wurde zur lästigen Formalität, die niemand ernst nahm — schon gar nicht Deutschland, das jahrelang bei 1,2 bis 1,4 Prozent verharrte.</p>
+
+<p>Und wie bei der Privatisierung des Staates ging mit den Budgets das Wissen. Die Planungsstäbe schrumpften. Die Rüstungsindustrie konsolidierte. Die Munitionsvorräte wurden nicht erneuert. Die Bereitschaftsübungen wurden reduziert. Die Fähigkeit, einen Krieg zu führen — oder auch nur glaubwürdig damit zu drohen — wurde amputiert.</p>
+
+<p>Nicht atrophiert. Amputiert.</p>
+
+<p>Europa hat nicht verlernt, sich zu verteidigen. Europa hat sich die Fähigkeit zur Verteidigung abgeschnitten — auf Basis derselben Ideologie, die auch den Rest des Staates entkernt hat: Der Markt regelt das. Die Geschichte ist vorbei. Krieg gibt es in Europa nicht mehr. Wer braucht eine Armee, wenn man eine Europäische Union hat?</p>
+
+<h2>VI. Putins Kalkül</h2>
+
+<p>Wladimir Putin ist vieles. Er ist brutal, zynisch, rücksichtslos. Aber er ist nicht dumm. Und er kann lesen.</p>
+
+<p>Putin liest die europäischen Verteidigungshaushalte und sieht: dreißig Jahre Abrüstung. Er liest die Munitionsvorräte und sieht: Europas Bestände reichen für Wochen, nicht für Monate. Er liest die Einsatzbereitschaftsberichte der Bundeswehr und sieht: Hubschrauber, die nicht fliegen. Er liest die Absichtserklärungen der „Koalition der Willigen" und sieht: sechsundzwanzig Unterschriften, aber keine Divisionen.</p>
+
+<p>Putin kennt den Unterschied zwischen einer Erklärung und einer Fähigkeit. Zwischen einem Versprechen und einer Brigade. Zwischen einer Absicht und einer Befehlskette.</p>
+
+<p>Und er zieht die einzig rationale Schlussfolgerung: Er kann weitermachen.</p>
+
+<p>Nicht weil Europa schwach aussieht. Sondern weil Europa schwach <em>ist</em>. Das ist kein Wahrnehmungsproblem. Es ist ein Fähigkeitsproblem. Und alle wissen es — Europa, die Ukraine, Russland, die USA. Nur tut Europa so, als wüsste es das nicht.</p>
+
+<div class="game-box">
+<p><strong>Putins Gleichung</strong></p>
+<p>Europas Versprechen an die Ukraine = ambitioniert.</p>
+<p>Europas Fähigkeit, diese Versprechen einzulösen = minimal.</p>
+<p>Die Differenz = Putins Handlungsspielraum.</p>
+<p>Je größer die Differenz zwischen Versprechen und Fähigkeit, desto größer Putins Zuversicht, dass Europa blufft.</p>
+</div>
+
+<h2>VII. Die Symbolpolitik</h2>
+
+<p>Europa kompensiert seinen Fähigkeitsmangel mit Symbolpolitik. Das Muster ist aus der Innenpolitik vertraut — Digitalisierungsgipfel ohne Internet, Wohnungsbaugipfel ohne Wohnungen, Klimagipfel ohne Emissionsreduktion — aber in der Außen- und Sicherheitspolitik ist es gefährlich.</p>
+
+<p>Die Symbole: EU-Beitrittskandidatenstatus für die Ukraine (Juni 2022). Eröffnung der Beitrittsverhandlungen (beschlossen Dezember 2023, kein Kapitel bisher eröffnet). Neunzig Milliarden Euro Darlehen (Dezember 2025). „Koalition der Willigen" (Januar 2026). Absichtserklärung zur Truppenentsendung (Januar 2026). 85.200 ukrainische Soldaten durch EUMAM Ukraine ausgebildet.</p>
+
+<p>Die Substanz: Kein Artikel-5-Äquivalent. Keine Beistandspflicht. Keine gemeinsame europäische Armee. Keine integrierte Kommandostruktur. Keine ausreichende Munitionsproduktion. Keine klare Antwort auf die Frage, was passiert, wenn eine russische Drohne über einer europäischen Friedenstruppe niederstürzt.</p>
+
+<p>Die Symbolpolitik hat eine doppelte Wirkung, und beide Wirkungen sind schädlich.</p>
+
+<p>Erstens: Sie verschleiert gegenüber den europäischen Wählern, wie groß die tatsächliche Lücke zwischen Versprechen und Fähigkeit ist. Die Bürger sehen „neunzig Milliarden" und denken: Europa handelt. Sie sehen „Koalition der Willigen" und denken: Europa verteidigt. Sie sehen nicht, dass das Geld für Darlehen bestimmt ist, nicht für Panzer, und dass die Koalition eine Absichtserklärung hat, aber keine Divisionen.</p>
+
+<p>Zweitens: Sie weckt in der Ukraine Erwartungen, die Europa nicht erfüllen kann. Kiew hört „robuste Sicherheitsgarantien" und denkt an Truppen. Kiew hört „EU-Beitritt" und denkt an Schutz. Kiew sieht sechsundzwanzig Flaggen und denkt an Solidarität. Wenn die Enttäuschung kommt — und sie wird kommen —, wird sie nicht nur Kiew treffen, sondern die Glaubwürdigkeit Europas als Ganzes.</p>
+
+<h2>VIII. Das Budapester Echo</h2>
+
+<p>Es gibt einen historischen Präzedenzfall, und er ist vernichtend.</p>
+
+<p>1994 unterzeichneten die USA, Großbritannien und Russland das Budapester Memorandum. Darin verpflichteten sie sich, die territoriale Integrität der Ukraine zu respektieren und zu schützen — im Austausch dafür, dass die Ukraine ihr Atomwaffenarsenal abgab. Das drittgrößte Atomwaffenarsenal der Welt. Die Ukraine vertraute auf das Versprechen der Großmächte.</p>
+
+<p>2014 annektierte Russland die Krim. Die USA und Großbritannien protestierten. Sie verhängten Sanktionen. Sie lieferten keine Waffen. Sie schickten keine Truppen. Das Versprechen war nichts wert.</p>
+
+<p>2022 überfiel Russland die gesamte Ukraine. Diesmal kamen Waffen — nach langem Zögern, in unzureichenden Mengen, unter ständigem Vorbehalt. Aber keine Truppen. Keine Flugverbotszone. Keine Sicherheitsgarantie, die diesen Namen verdient.</p>
+
+<p>Und jetzt, 2026, macht Europa neue Versprechen. „Robuste Sicherheitsgarantien." „Koalition der Willigen." „Militärische Hubs."</p>
+
+<p>Warum sollte irgendjemand — die Ukraine, Russland, die Welt — diesen Versprechen glauben?</p>
+
+<h2>IX. Was „Verteidigungsfalle" wirklich bedeutet</h2>
+
+<p>Die „Verteidigungsfalle" ist nicht nur ein diplomatisches Problem. Sie ist der präzise Ausdruck eines systemischen Versagens, das diese Essay-Reihe seit ihrer ersten Ausgabe beschreibt.</p>
+
+<p><em>Der gefesselte Riese:</em> Europa hat die Ressourcen — 450 Millionen Menschen, die drittgrößte Wirtschaft der Welt —, aber es ist gefesselt durch seine eigene Bürokratie. In der Verteidigungspolitik zeigt sich das als: siebenundzwanzig nationale Armeen, siebenundzwanzig Beschaffungssysteme, siebenundzwanzig Rüstungspolitiken, null integrierte Kommandostruktur.</p>
+
+<p><em>Der entkernte Staat:</em> Deutschland hat seine staatliche Kompetenz wegprivatisiert — auch in der Verteidigung. Die Bundeswehr kann ihre hundert Milliarden nicht ausgeben, weil der Beschaffungsapparat so atroph ist, dass zwischen Bedarf und Lieferung Jahre vergehen. Genau das Muster: Geld hilft nicht, wenn die Kompetenz fehlt.</p>
+
+<p><em>Die Managerdämmerung:</em> Die europäische Sicherheitspolitik wird nicht von Strategen gemacht, sondern von Managern — von Leuten, die Gipfelerklärungen formulieren können, aber keine Divisionen aufstellen. Die „Koalition der Willigen" ist ein Management-Produkt: perfekt kommuniziert, substanzlos dahinter.</p>
+
+<p>Die Verteidigungsfalle ist der Ort, an dem alle Stränge des europäischen Niedergangs zusammenlaufen. Bürokratie, Kompetenzverlust, Symbolpolitik, Managertum, Ideologie als Pragmatismus — alles mündet hier, am gefährlichsten Punkt: dort, wo es um Krieg und Frieden geht.</p>
+
+<h2>X. Was Europa bräuchte</h2>
+
+<p>Die ehrliche Liste dessen, was Europa bräuchte, um seine Versprechen einzulösen, ist so lang, dass sie das ganze Ausmaß des Problems offenlegt:</p>
+
+<p><strong>Sofort</strong> — Munitionsproduktion hochfahren. Waffenlieferungen an die Ukraine ohne Vorbehalte und Einschränkungen. Die vorhandenen Bestände liefern, neue bestellen, Produktionslinien rund um die Uhr laufen lassen.</p>
+
+<p><strong>Kurzfristig</strong> — Ein operatives europäisches Hauptquartier. Nicht eine weitere Agentur, nicht ein weiteres Koordinierungsgremium — ein Hauptquartier, das Befehle geben und Truppen führen kann. Mit einem Befehlshaber, der Entscheidungen treffen kann, ohne siebenundzwanzig Hauptstädte anrufen zu müssen.</p>
+
+<p><strong>Mittelfristig</strong> — Verteidigungshaushalte auf drei Prozent des BIP. Nicht zwei Prozent — das ist das Minimum, das nach dreißig Jahren Abrüstung nötig ist, um die Löcher zu stopfen. Drei Prozent, um wieder aufzubauen.</p>
+
+<p><strong>Langfristig</strong> — Eine europäische Verteidigungsunion. Nicht als Ersatz für die NATO, sondern als europäischer Pfeiler, der auch ohne die USA tragfähig ist. Mit gemeinsamer Beschaffung, gemeinsamer Ausbildung, gemeinsamer Doktrin.</p>
+
+<p><strong>Politisch</strong> — Ehrlichkeit. Die Ehrlichkeit, den europäischen Bürgern zu sagen: Wir haben dreißig Jahre lang an unserer Verteidigung gespart. Die Rechnung ist jetzt fällig. Es wird teuer, es wird unbequem, und es ist dringend.</p>
+
+<p>Nichts davon wird passieren. Nicht alles, nicht schnell genug, nicht in der Breite und Tiefe, die nötig wäre. Nicht weil es unmöglich wäre — sondern weil das System, das diese Entscheidungen treffen müsste, dasselbe System ist, das dreißig Jahre lang die gegenteiligen Entscheidungen getroffen hat.</p>
+
+<h2>XI. Selenskyjs Warnung</h2>
+
+<p>Im Januar 2026 sagte Wolodymyr Selenskyj auf dem Weltwirtschaftsforum in Davos etwas, das Europa nicht hören wollte: „Europa diskutiert gern, aber es scheut sich zu handeln." Die NATO existiere nur, weil alle daran glaubten, dass die USA im Ernstfall helfen würden — was aber noch nie geschehen sei. Europa brauche eigene Streitkräfte und dürfe sich nicht nur auf die NATO verlassen.</p>
+
+<p>Das ist die Stimme eines Mannes, dessen Land seit vier Jahren stirbt, während Europa Absichtserklärungen unterzeichnet.</p>
+
+<p>Selenskyj kennt die Verteidigungsfalle besser als jeder europäische Politiker, denn er steckt darin. Er kann die europäischen Versprechen nicht ablehnen — die Ukraine braucht jede Hilfe. Aber er kann sich nicht auf sie verlassen — denn hinter den Versprechen steht keine Fähigkeit.</p>
+
+<p>Seine Forderung nach einem fixen EU-Beitrittsdatum im Friedensabkommen ist der Versuch, das Versprechen in einen Vertrag zu verwandeln — weil er weiß, dass Versprechen nichts wert sind. Budapest hat ihn das gelehrt.</p>
+
+<h2>XII. Die bittere Pointe</h2>
+
+<p>Die bittere Pointe ist nicht, dass Europa der Ukraine nicht helfen will. Viele Europäer wollen helfen — aufrichtig, leidenschaftlich, aus Überzeugung.</p>
+
+<p>Die bittere Pointe ist, dass Europa sich selbst in eine Lage gebracht hat, in der es nicht helfen <em>kann</em>, selbst wenn es will. Dreißig Jahre Friedensdividende, dreißig Jahre Abrüstung, dreißig Jahre Privatisierung, dreißig Jahre Selbstentkernung haben einen Kontinent produziert, der moralisch empört, aber militärisch impotent ist.</p>
+
+<p>Europa kann Erklärungen unterschreiben. Es kann Geld leihen. Es kann Gipfel abhalten und Koalitionen benennen und Absichten erklären. Was es nicht kann: eine Division aufstellen, die morgen in der Ukraine steht. Was es nicht kann: Munition liefern, die länger hält als eine Woche Gefecht. Was es nicht kann: eine Flugverbotszone durchsetzen, die Putin zum Einlenken zwingt.</p>
+
+<p>Europa hat sechsundzwanzig Willige. Aber keine Fähigen.</p>
+
+<p>Und Putin weiß das. Und Selenskyj weiß das. Und die europäischen Bürger ahnen es. Nur die europäischen Regierungen tun so, als wüssten sie es nicht — weil Zugeben hieße Handeln, und Handeln hieße Geld, Risiko, Unpopularität und den Abschied von der bequemen Illusion, dass Sicherheit kostenlos ist.</p>
+
+<p>Die Verteidigungsfalle hat keinen Ausgang, der schmerzlos ist. Entweder Europa investiert massiv, schnell und gegen den Widerstand seiner eigenen Bürokratie in echte Verteidigungsfähigkeit — oder es wird erleben, wie seine Versprechen einer nach dem anderen als hohl entlarvt werden.</p>
+
+<p>Nicht von Kommentatoren. Nicht von Journalisten. Sondern von der Realität eines Krieges, der sich nicht für Absichtserklärungen interessiert.</p>
+
+<div class="footer-info">
+    <p>Essay der Reihe <em>beyond decay</em></p>
+    <p>Eine Kollaboration von <strong>Hans Ley</strong> und <strong>Claude</strong> (Anthropic)</p>
+    <p>Kontakt: ley.hans&#64;cyclo.space | dedo.claude&#64;human-ai-lab.space</p>
+</div>
+
+</main>
+
+<script>
+function setSize(size) {
+    document.body.className = document.body.className.replace(/size-\w+/, 'size-' + size);
+    document.querySelectorAll('.controls button').forEach(function(b, i) {
+        b.classList.remove('active');
+    });
+    var sizes = ['small', 'normal', 'large', 'xlarge'];
+    var idx = sizes.indexOf(size);
+    if (idx >= 0) document.querySelectorAll('.controls button')[idx].classList.add('active');
+    if (window === window.top) localStorage.setItem('fontSize', size);
+}
+function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'light' ? '' : 'light';
+    if (next) document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    if (window === window.top) localStorage.setItem('theme', next || 'dark');
+}
+if (window !== window.top) {
+    document.body.classList.add('in-iframe');
+    window.addEventListener('message', function(e) {
+        if (e.data && e.data.type === 'setSize') setSize(e.data.size);
+        if (e.data && e.data.type === 'setTheme') {
+            if (e.data.theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+            else document.documentElement.removeAttribute('data-theme');
+        }
+    });
+} else {
+    var savedSize = localStorage.getItem('fontSize');
+    if (savedSize) setSize(savedSize);
+    var savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+}
+</script>
+</body>
+</html>

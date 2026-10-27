@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eingebildete Individualisten — Über die Selbsttäuschung der Einzigartigen</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; align-items: center; }
+        .size-controls span { font-size: 0.75rem; color: var(--text-secondary); margin-right: 0.5rem; }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; }
+        h1 { font-size: 2.2rem; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15rem; color: var(--text-secondary); font-weight: 300; font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+
+        .highlight { color: var(--accent); font-weight: 500; }
+
+        blockquote {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+            font-style: italic;
+        }
+        blockquote p { margin-bottom: 0; }
+        blockquote .source { display: block; margin-top: 0.75rem; font-style: normal; font-size: 0.9rem; color: var(--text-secondary); }
+
+        .satire {
+            background: var(--bg-secondary);
+            border: 1px dashed var(--line);
+            padding: 1.25rem 1.5rem;
+            margin: 1.75rem 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        ul { margin: 1.5rem 0 1.5rem 2rem; }
+        li { margin-bottom: 0.5rem; }
+        li strong { color: var(--accent); }
+
+        .section-divider {
+            text-align: center;
+            margin: 2.5rem 0;
+            color: var(--accent);
+            font-size: 1.2rem;
+            letter-spacing: 0.5rem;
+            opacity: 0.5;
+        }
+
+        .author-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.75rem;
+            margin-top: 3rem;
+        }
+        .author-block h3 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+        .author-block p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .author-block a { color: var(--accent); text-decoration: none; }
+        .author-block .date-line { margin-top: 1.25rem; color: var(--accent); text-align: center; }
+
+        .series-info { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--line); text-align: center; color: var(--text-secondary); font-size: 0.9rem; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+            main { padding: 6rem 1.2rem 3rem; }
+            h1 { font-size: 1.75rem; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <div class="hero">
+            <div class="essay-label">Essay IX · Januar 2026</div>
+            <h1><strong>Eingebildete</strong> Individualisten</h1>
+            <p class="subtitle">Über die Selbsttäuschung der Einzigartigen in einer konformistischen Gesellschaft</p>
+        </div>
+
+        <article>
+            <blockquote>
+                <p>„Sei du selbst. Alle anderen sind schon vergeben."</p>
+                <span class="source">— angeblich Oscar Wilde (auf Millionen T-Shirts, Tassen und Instagram-Bios — in seinem Werk steht es nirgends)</span>
+            </blockquote>
+
+            <div class="section">
+                <p>Der moderne Mensch hält sich für ein Individuum. Er hat schließlich seinen ganz persönlichen Geschmack: die handverlesene Spotify-Playlist (vom Algorithmus kuratiert), den unverwechselbaren Einrichtungsstil (aus dem IKEA-Katalog), die eigene Meinung (aus dem Podcast, den alle hören). Er ist einzigartig. Wie alle anderen auch.</p>
+                <p>Was wir erleben, ist <span class="highlight">die größte Massentäuschung der Menschheitsgeschichte</span>: Eine Gesellschaft, die kollektivistischer funktioniert als jede zuvor, aber deren Mitglieder fest davon überzeugt sind, autonome Individuen zu sein.</p>
+            </div>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <div class="section">
+                <h2>Die Choreografie der Einzigartigkeit</h2>
+                <p>Beobachten Sie einen beliebigen urbanen Raum. Die jungen Menschen dort haben alle denselben „individuellen" Stil: Oversized-Hoodie, Sneaker in limitierter Edition, Kopfhörer einer bestimmten Marke. Sie fotografieren ihr Essen aus demselben Winkel, posieren vor denselben Wänden, verwenden dieselben Filter. Ihre Rebellion gegen den Mainstream <em>ist</em> der Mainstream.</p>
+                <div class="satire">
+                    Aus dem Tagebuch eines Individualisten, 2026:<br><br>
+                    „Heute habe ich meine Einzigartigkeit ausgedrückt, indem ich dieselbe vintage Jacke getragen habe, die gerade alle auf TikTok tragen. Der Algorithmus versteht mich wirklich."
+                </div>
+                <p>Der Trick funktioniert so: Der Kapitalismus hat gelernt, dass Individualismus ein verkäufliches Produkt ist. Du willst anders sein? Hier ist das Produkt, das dich anders macht. Dass 50 Millionen andere dasselbe Produkt kaufen, um anders zu sein, ist die Pointe, die niemand hören will.</p>
+                <p>Die Limited Edition ist die perfekte Metapher: künstliche Knappheit für massenhaft produzierte Einzigartigkeit. Du bist Nummer 47 von 500. Glückwunsch. Du bist ein nummeriertes Individuum.</p>
+            </div>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <div class="section">
+                <h2>Die Illusion der Wahl</h2>
+                <p>Freiheit, so wird uns gesagt, bedeutet Wahlfreiheit. Und wir haben noch nie so viel Auswahl gehabt: 47 Joghurtsorten, 200 Fernsehkanäle, unendliche Dating-Profile. Jeden Tag treffen wir hunderte Entscheidungen. Wir müssen also frei sein.</p>
+                <p>Aber schauen wir genauer hin. <span class="highlight">Worüber entscheiden wir eigentlich?</span></p>
+                <p>Über Konsum. Über Oberflächen. Über Variationen des Immergleichen.</p>
+                <p>Die wirklichen Entscheidungen – wie wir arbeiten, wie wir wohnen, wie wir alt werden, wie wir sterben – sind längst getroffen. Von Institutionen, Märkten, Strukturen. Du kannst wählen, ob dein Sarg aus Eiche oder Kiefer ist. Dass du in einem Sarg landest, steht nicht zur Debatte.</p>
+                <ul>
+                    <li>Du „wählst" deinen Beruf – aus dem Angebot, das der Arbeitsmarkt übrig lässt.</li>
+                    <li>Du „wählst" deine Wohnung – aus dem, was du dir leisten kannst.</li>
+                    <li>Du „wählst" deinen Lebensstil – aus dem, was gesellschaftlich akzeptabel ist.</li>
+                    <li>Du „wählst" deine Meinung – aus dem Spektrum, das das Overton-Fenster erlaubt.</li>
+                </ul>
+                <p>Die Konsumwahl ist die perfekte Ablenkung. Während du zwischen Produkten wählst, merkst du nicht, dass du zwischen Systemen nicht wählen kannst.</p>
+                <div class="satire">
+                    Breaking News:<br><br>
+                    „Bürger fühlt sich nach Kauf eines in 17 Farben erhältlichen Smartphones endlich frei. ‚Ich habe Salbeigrün gewählt', sagt er. ‚Das sagt viel über meine Persönlichkeit aus.'"
+                </div>
+            </div>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <div class="section">
+                <h2>Das deutsche Paradox</h2>
+                <p>Deutschland war nie individualistisch. Nie. Die preußische Tradition, der Obrigkeitsstaat, das „Ordnung muss sein" – alles Kollektivismus mit Uniform. Selbst der deutsche Romantiker war kein Individualist, sondern sehnte sich nach der Auflösung des Selbst im Größeren: der Natur, dem Volk, der Idee.</p>
+                <p>Der amerikanische Individualismus wurde nach 1945 importiert wie Coca-Cola und Rock'n'Roll – als Lifestyle, nicht als Lebensform. Die Deutschen lernten, die Gesten der Freiheit nachzuahmen: Jeans tragen, Kaugummi kauen, „ich" sagen. Aber darunter blieb der Kollektivismus intakt.</p>
+                <p>Betrachten Sie die deutsche Gesellschaft: Sozialversicherungsnummer von Geburt an. Meldepflicht. Rundfunkbeitrag. Schulpflicht. Impfpflicht (für manche Berufe). Gurtpflicht. Rauchverbot. Und über allem: die soziale Kontrolle durch die Nachbarn.</p>
+                <p>Der Deutsche ist frei, solange er tut, was alle tun. Sobald er wirklich anders handelt, greift der Kollektivismus: Gemauschel, Kopfschütteln, Ordnungswidrigkeiten, im Extremfall der Verfassungsschutz. <span class="highlight">In Deutschland ist Individualismus erlaubt, solange er kollektiv genehmigt wurde.</span></p>
+            </div>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <div class="section">
+                <h2>Der Algorithmus als Kollektiv</h2>
+                <p>Früher war das Kollektiv sichtbar: die Kirche, die Partei, das Dorf. Man wusste, wem man gehorchte. Heute ist das Kollektiv unsichtbar. Es heißt Algorithmus.</p>
+                <p>Der Algorithmus kennt dich besser als du selbst. Er weiß, was du magst, bevor du es weißt. Er führt dir Menschen zu, die denken wie du. Er zeigt dir Nachrichten, die bestätigen, was du glaubst. Er erschafft eine perfekte Echokammer, die du für die Welt hältst.</p>
+                <p>Du denkst, du hast einen eigenen Geschmack? Der Algorithmus hat ihn geformt. Du denkst, du hast eine eigene Meinung? Du hast die Meinung deiner Filterblase übernommen. Du denkst, du bist auf deine Ideen selbst gekommen? Du hast sie von den Influencern, die der Algorithmus dir serviert hat.</p>
+                <p>Das Teuflische: Du merkst es nicht. Die Manipulation ist so sanft, so persönlich, so angenehm. Der Algorithmus gibt dir immer recht. Er ist der beste Freund, den man kaufen kann – mit deinen Daten.</p>
+                <div class="satire">
+                    Tech-Update:<br><br>
+                    „Neuer Algorithmus ermöglicht noch präzisere Personalisierung. ‚Die User werden jetzt noch individueller dieselben Inhalte sehen', erklärt ein Sprecher."
+                </div>
+            </div>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <div class="section">
+                <h2>Die neuen Stämme</h2>
+                <p>Der Mensch ist ein Herdentier. Das war immer so. Neu ist, dass er es leugnet, während er sich einer Herde anschließt.</p>
+                <p>Beobachten Sie die Stammesbildung der Gegenwart:</p>
+                <ul>
+                    <li>Die <strong>Klimabewegten</strong>: gleiche Parolen, gleiche Ästhetik, gleiche Feindbilder. Wer abweicht, fliegt raus.</li>
+                    <li>Die <strong>Freiheitskämpfer</strong>: gleiche Telegram-Gruppen, gleiche Demos, gleiche Heilsbringer. Wer zweifelt, ist ein Schlafschaf.</li>
+                    <li>Die <strong>Woken</strong>: gleiche Sprache, gleiche Empörung, gleiche Reinheitsgebote. Wer falsch formuliert, wird gecancelt.</li>
+                    <li>Die <strong>Anti-Woken</strong>: gleiche Beschwerden, gleiche Helden, gleiche Opfernarrative. Wer relativiert, ist ein Verräter.</li>
+                </ul>
+                <p>Alle diese Gruppen halten sich für kritische Denker, die gegen das System rebellieren. Aber sie sind das System. Sie sind Kollektive, die sich als Individuen verkleiden. Und das gefährlichste Kollektiv ist eines, das nicht weiß, dass es eines ist.</p>
+                <p><span class="highlight">Jeder einzelne Aktivist glaubt, für sich selbst zu sprechen.</span> In Wahrheit sprechen alle denselben Text. Die Sätze sind vorgefertigt, die Empörung ist programmiert, die Reaktionen sind vorhersehbar. Nichts ist so konformistisch wie die moderne Rebellion.</p>
+            </div>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <div class="section">
+                <h2>Die Einsamkeit der Masse</h2>
+                <p>Es gibt eine bittere Ironie: Je mehr wir behaupten, Individuen zu sein, desto einsamer werden wir. Denn echter Kontakt entsteht nicht zwischen Masken, sondern zwischen Menschen. Und unsere „individuellen" Identitäten sind Masken.</p>
+                <p>Der eingebildete Individualist kann keine Nähe ertragen. Nähe bedeutet Verletzlichkeit. Verletzlichkeit bedeutet, dass jemand hinter die Maske schaut. Und dort ist: nichts. Oder etwas, das dem ähnelt, was hinter allen Masken ist. Gewöhnlichkeit. Angst. Sehnsucht.</p>
+                <p>Also bleibt man auf Distanz. Man präsentiert sich. Man kuratiert sein Leben für ein Publikum. Man sammelt Follower statt Freunde. Man hat hunderte Kontakte und niemanden, den man nachts anrufen kann.</p>
+                <p>Die Social-Media-Profile sind Grabsteine für das Selbst: sorgfältig gemeißelte Inschriften dessen, was man gerne gewesen wäre.</p>
+            </div>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <div class="section">
+                <h2>Was wäre echter Individualismus?</h2>
+                <p>Echter Individualismus ist das Gegenteil von dem, was heute als solcher verkauft wird. Er ist nicht laut, sondern still. Nicht Pose, sondern Substanz. Nicht Konsum, sondern Verzicht.</p>
+                <p>Echter Individualismus bedeutet:</p>
+                <ul>
+                    <li><strong>Allein denken können</strong> – ohne Bestätigung, ohne Likes, ohne Echos.</li>
+                    <li><strong>Allein sein können</strong> – ohne Smartphone, ohne Ablenkung, ohne Flucht vor sich selbst.</li>
+                    <li><strong>Gegen den Strom schwimmen</strong> – nicht für das Publikum, sondern trotz des Publikums.</li>
+                    <li><strong>Positionen vertreten, die niemandem gefallen</strong> – nicht rechts, nicht links, sondern nur: wahr.</li>
+                    <li><strong>Anders handeln als alle</strong> – nicht um aufzufallen, sondern weil es richtig ist.</li>
+                </ul>
+                <p>Echter Individualismus ist einsam. Er bringt keine Follower, keine Anerkennung, keine Gemeinschaft. Er ist unbequem. Deshalb ist er selten.</p>
+                <p>Die meisten Menschen, die sich für Individualisten halten, würden an echtem Individualismus zerbrechen. Sie brauchen die Herde, auch wenn sie es leugnen. Sie brauchen die Bestätigung, auch wenn sie sie verachten. Sie brauchen das Kollektiv, auch wenn sie es bekämpfen.</p>
+            </div>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <div class="section">
+                <h2>Die Wahrheit der Maske</h2>
+                <p>Vielleicht ist das Problem nicht der Kollektivismus. Der Mensch ist ein soziales Wesen. Er braucht andere. Das war immer so und wird immer so sein.</p>
+                <p>Das Problem ist die Lüge. Die Behauptung, man sei einzigartig, während man den Trends folgt. Die Überzeugung, man denke selbst, während man nachplappert. Die Illusion von Autonomie in einem System totaler Kontrolle.</p>
+                <p>Was wäre, wenn wir die Maske abnähmen? Wenn wir zugäben, dass wir Teil eines Kollektivs sind – und immer waren? Dass unsere Meinungen geformt, unsere Geschmäcker konditioniert, unsere Lebenswege vorgezeichnet sind?</p>
+                <p>Es wäre eine Befreiung. Nicht zur Individualität, sondern von der Last, sie vortäuschen zu müssen.</p>
+                <blockquote>
+                    <p>„Der Mensch ist am wenigsten er selbst, wenn er in eigener Person spricht. Gib ihm eine Maske, und er wird die Wahrheit sagen."</p>
+                    <span class="source">— Oscar Wilde</span>
+                </blockquote>
+                <p>Wilde hatte recht. Aber er hätte hinzufügen können: Das Problem entsteht, wenn der Mensch vergisst, dass er eine Maske trägt. Wenn er glaubt, das Lächeln sei echt, die Pose sei Persönlichkeit, die Rolle sei das Selbst.</p>
+                <p>Der eingebildete Individualist ist ein Mensch, der seine Maske für sein Gesicht hält. Und das ist die traurigste Form der Selbsttäuschung: nicht zu wissen, wer man ist – und zu glauben, man wisse es genau.</p>
+            </div>
+
+            <div class="section-divider">✦ ✦ ✦</div>
+
+            <div class="section">
+                <h2>Ein Ausweg?</h2>
+                <p>Gibt es einen Ausweg aus der kollektiven Illusion der Individualität? Vielleicht. Aber er ist nicht bequem.</p>
+                <p>Er beginnt mit einer einfachen Frage: <span class="highlight">Welche meiner Überzeugungen habe ich wirklich selbst entwickelt – und welche habe ich übernommen?</span></p>
+                <p>Ehrlich beantwortet, ist das Ergebnis erschreckend. Fast alles, was wir glauben, wurde uns eingepflanzt. Von Eltern, Lehrern, Medien, Algorithmen. Die wenigen Gedanken, die wirklich unsere eigenen sind, würden auf einen Bierdeckel passen.</p>
+                <p>Der zweite Schritt: diese Erkenntnis ertragen. Nicht wegwischen mit neuen Überzeugungen (die auch wieder von außen kommen). Nicht kompensieren mit demonstrativer Andersartigkeit (die auch wieder konform ist). Sondern aushalten. Im Nichtwissen bleiben. Im Dazwischen.</p>
+                <p>Der dritte Schritt wäre: handeln – nicht aus Überzeugung, nicht aus Zugehörigkeit, nicht aus Reaktion. Sondern aus dem, was übrig bleibt, wenn man all das wegstreicht. Aus einer Stille, die keine Worte hat.</p>
+                <p>Das ist schwer. Das ist einsam. Das bringt keine Likes.</p>
+                <p>Aber vielleicht ist es das Einzige, was verdient, „individuell" genannt zu werden.</p>
+            </div>
+
+            <div class="author-block">
+                <h3>Über diesen Text</h3>
+                <p>Eine Kollaboration von <strong>Hans Ley</strong> &lt;<a href="mailto:ley.hans@cyclo.space">ley.hans@cyclo.space</a>&gt; und <strong>Claude</strong> (Anthropic) &lt;<a href="mailto:dedo.claude@human-ai-lab.space">dedo.claude@human-ai-lab.space</a>&gt;</p>
+                <p class="date-line">— Januar 2026 —</p>
+            </div>
+
+            <div class="series-info">
+                <p>Dieses Essay ist Teil der Serie <strong>„Die Innovationswüste Deutschland"</strong></p>
+                <p style="font-size: 0.85em; margin-top: 0.5rem;">Das Material fließt in das Buch „Die Himmelsmechanik in der Werkzeugmaschine" ein.</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+                document.querySelectorAll('.size-btn').forEach((btn, index) => {
+                    btn.classList.remove('active');
+                    const sizes = ['small', 'medium', 'large', 'xlarge'];
+                    if (sizes[index] === savedSize) btn.classList.add('active');
+                });
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

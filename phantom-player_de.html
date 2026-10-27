@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Der Phantomspieler | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+    }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'IBM Plex Mono', monospace;
+        transition: background-color 0.2s;
+    }
+    .controls button:hover { background-color: rgba(201, 169, 98, 0.15); }
+    .controls button.active { background-color: var(--accent-color); color: var(--bg-color); }
+    main {
+        max-width: 52rem;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem 2rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 0.3rem;
+        color: var(--accent-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 300;
+        font-size: 1.25rem;
+        color: var(--meta-color);
+        margin-bottom: 2rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--note-border);
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 1.4rem;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        color: var(--accent-color);
+    }
+    p { margin-bottom: 1rem; text-align: justify; hyphens: auto; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1.2rem 1.5rem;
+        margin: 2rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .game-box {
+        border: 1px solid var(--accent-color);
+        padding: 1.5rem;
+        margin: 2rem 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 0.95rem;
+        background: rgba(201, 169, 98, 0.04);
+    }
+    .game-box p { text-align: left; }
+    .game-box strong { color: var(--accent-color); }
+    a { color: var(--link-color); }
+    .footer-info {
+        margin-top: 4rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+    }
+    @media print {
+        body { background: white; color: black; }
+        header, .controls { display: none; }
+        main { padding: 1cm; max-width: 100%; }
+        blockquote { background: #f0f0f0; border-left-color: #999; }
+        .game-box { background: #f8f8f8; }
+        a { color: #333; }
+    }
+    @media (max-width: 600px) {
+        main { padding: 1.5rem 1rem 3rem 1rem; }
+        h1 { font-size: 1.6rem; }
+    }
+</style>
+</head>
+<body class="size-normal">
+<header>
+    <div class="site-name">beyond-decay.org</div>
+    <div class="controls">
+        <button onclick="setSize('small')">A−</button>
+        <button onclick="setSize('normal')" class="active">A</button>
+        <button onclick="setSize('large')">A+</button>
+        <button onclick="setSize('xlarge')">A++</button>
+        <button onclick="toggleTheme()">◐</button>
+    </div>
+</header>
+<main>
+
+<h1>DER PHANTOMSPIELER</h1>
+<div class="subtitle">Spieltheorie gegen den abwesenden Gegner — warum Demokratien die Zukunft verspielen</div>
+<div class="meta">
+    <p>Eine Kollaboration von <strong>Hans Ley</strong> &lt;<a href="m&#97;ilto:ley.hans&#64;cyclo.space" style="color: var(--accent-color);">ley.hans&#64;cyclo.space</a>&gt;<br>
+    und <strong>Claude</strong> (Anthropic) &lt;<a href="m&#97;ilto:dedo.claude&#64;human-ai-lab.space" style="color: var(--accent-color);">dedo.claude&#64;human-ai-lab.space</a>&gt;</p>
+    <p>Februar 2026</p>
+</div>
+
+<blockquote>
+    <p>Die klassische Spieltheorie setzt voraus, dass alle Spieler am Tisch sitzen. Aber was geschieht, wenn der wichtigste Spieler noch gar nicht geboren ist? Er kann nicht verhandeln, nicht drohen, nicht koalieren. Er kann nur erben — was immer die anderen übrig lassen.</p>
+</blockquote>
+
+<h2>I. Der leere Stuhl</h2>
+
+<p>In jedem spieltheoretischen Modell sitzt jeder Spieler am Tisch. Im Gefangenendilemma sind es zwei. Im Chicken Game zwei. In Koalitionsspielen viele. Aber immer gilt: Wer spielt, ist anwesend. Wer anwesend ist, kann handeln — kooperieren, defektieren, drohen, verhandeln, Koalitionen bilden, Signale senden.</p>
+
+<p>Was aber, wenn der Spieler, um den es geht — dessen Wohlstand, Freiheit, Lebensgrundlage auf dem Spiel steht — nicht am Tisch sitzt? Nicht weil er ausgeschlossen wurde. Sondern weil er noch nicht existiert?</p>
+
+<p>Die klassische Spieltheorie hat dafür kein Modell. Das intertemporale Gefangenendilemma kommt dem nahe: Spieler in verschiedenen Zeitperioden treffen Entscheidungen, die sich gegenseitig beeinflussen. Aber in diesem Modell existieren beide Spieler — sie spielen nur zeitversetzt. Im Phantomspieler-Problem ist das anders: Spieler 2 existiert zum Zeitpunkt der Entscheidung buchstäblich nicht. Er kann nicht drohen. Er kann nicht verhandeln. Er kann nicht einmal das Spiel verlassen, weil er es noch gar nicht betreten hat.</p>
+
+<p>Und genau das macht ihn zum idealen Opfer.</p>
+
+<h2>II. Die Struktur</h2>
+
+<div class="game-box">
+<p><strong>Spieler:</strong> Generation G₁ (die Gegenwärtigen) und Generation G₂ (die Zukünftigen). G₂ ist zum Zeitpunkt der Entscheidung nicht handlungsfähig.</p>
+<p><strong>Ressource:</strong> Ein gemeinsamer Pool — Staatsfinanzen, Umwelt, Infrastruktur, institutionelles Kapital — der zwischen den Generationen geteilt wird.</p>
+<p><strong>Optionen für G₁:</strong></p>
+<p>(1) Investieren: G₁ verzichtet auf gegenwärtigen Konsum zugunsten von G₂. Kosten sofort, Nutzen verzögert.<br>
+(2) Konsumieren: G₁ nutzt die Ressource vollständig. Nutzen sofort, Kosten für G₂.</p>
+<p><strong>G₂ hat keine Option.</strong> G₂ kann nur empfangen, was G₁ hinterlässt.</p>
+<p><strong>Das Ergebnis:</strong> G₁ wählt fast immer (2). Nicht aus Bosheit, sondern weil kein Mechanismus existiert, der G₂ eine Stimme gibt.</p>
+</div>
+
+<p>Das Phantomspieler-Problem unterscheidet sich von allen klassischen Modellen in einem fundamentalen Punkt: <em>Es gibt keine Vergeltung.</em></p>
+
+<p>Im iterierten Gefangenendilemma funktioniert Kooperation, weil der betrogene Spieler im nächsten Zug zurückschlagen kann. Tit for Tat erzwingt Fairness durch die glaubhafte Drohung der Vergeltung. Aber G₂ kann nicht zurückschlagen. Wenn G₂ an die Reihe kommt, ist G₁ bereits im Ruhestand — oder tot. Die Rückkopplungsschleife, die in iterierten Spielen Kooperation erzeugt, ist unterbrochen.</p>
+
+<p>In einem Spiel ohne Vergeltung gewinnt immer die Defektion.</p>
+
+<h2>III. Die Rentenrepublik</h2>
+
+<p>Deutschland hat seit 53 Jahren mehr Sterbefälle als Geburten. Die Geburtenrate liegt bei 1,35 — weit unter dem Ersatzniveau von 2,1. Das Verhältnis von Beitragszahlern zu Rentnern verschiebt sich von 4:1 (1962) auf prognostizierte 1,3:1 (2050). Die gesetzliche Rentenversicherung kostet 300 Milliarden Euro an Beiträgen plus 90 Milliarden Euro Bundeszuschuss — der größte Einzelposten im Bundeshaushalt.</p>
+
+<p>Das ist keine Naturkatastrophe. Das ist das Phantomspieler-Problem in seiner reinsten Form.</p>
+
+<p>Generation G₁ — die heutigen Rentner und rentennahen Jahrgänge — hat einen klaren Anreiz: das Rentenniveau sichern. Die Koalition beschloss ein Rentenpaket, das bis 2039 Kosten von 122 Milliarden Euro verursacht, um das Rentenniveau bei 48 Prozent zu halten — bis 2031. Danach wird es auf 46,3 Prozent sinken. 22 Ökonomen forderten die Rücknahme und nannten es einen „Generationenfehler". Der Bundesrechnungshof prognostiziert einen Beitragssatz von 22,7 Prozent bis 2045 — heute sind es 18,6 Prozent.</p>
+
+<p>Wer trägt die Kosten? Generation G₂ — die heutigen Kinder, die noch Ungeborenen, die zukünftigen Beitragszahler. Sie sitzen nicht am Tisch. Sie haben keine Lobby. Sie haben kein Wahlrecht. Und sie sind in der Minderheit — eine schrumpfende Minderheit, die eine wachsende Mehrheit finanzieren soll.</p>
+
+<p>Die Junge Union rebellierte. Es half nichts. Denn in der Demokratie zählen Stimmen, und die Alten sind mehr.</p>
+
+<h2>IV. Die Gerontokratie als Nash-Gleichgewicht</h2>
+
+<p>Deutschland ist keine Gerontokratie im klassischen Sinne — es gibt keine Herrschaft der Alten durch formale Machtstrukturen. Aber es ist eine Gerontokratie als demografischer Befund: Wenn ein Viertel der Bevölkerung über 67 ist, wenn die Wahlbeteiligung der Älteren höher liegt als die der Jüngeren, wenn Rentner die größte Wählergruppe bilden — dann ist es rational für jeden Politiker, die Interessen der Alten zu bedienen.</p>
+
+<p>Kein Politiker gewinnt eine Wahl mit dem Versprechen, Renten zu kürzen. Jeder Politiker, der es versucht, wird von der Mehrheit abgestraft. Das ist ein Nash-Gleichgewicht: Kein einzelner Akteur hat einen Anreiz, einseitig seine Strategie zu ändern. Die Alten wählen, was ihnen nützt. Die Politiker liefern, was Stimmen bringt. Die Jungen zahlen.</p>
+
+<p>Das klassische Modell des „Medianwählers" bestätigt die Diagnose: In einer Demokratie setzt sich die Politik durch, die den Wähler in der Mitte der Verteilung zufriedenstellt. Wenn die Mitte der Verteilung bei 55 Jahren liegt statt bei 40, verschiebt sich die gesamte Politik — Rentensicherung statt Bildungsinvestition, Bestandswahrung statt Innovation, Gegenwart statt Zukunft.</p>
+
+<p>Das ist nicht verwerflich. Es ist die Logik des Systems. Und genau darin liegt das Problem.</p>
+
+<h2>V. Über die Rente hinaus</h2>
+
+<p>Das Phantomspieler-Problem beschränkt sich nicht auf die Rente. Es durchzieht jedes politische Feld, in dem Gegenwart auf Kosten der Zukunft konsumiert wird.</p>
+
+<p><strong>Infrastruktur.</strong> 4.000 Autobahnbrücken warten auf Sanierung. Die Schuldenbremse hat investive Ausgaben über ein Jahrzehnt gebremst — nicht weil die Brücken nicht repariert werden mussten, sondern weil Reparaturen keinen Wahlkampf gewinnen. Die Kosten des Verfalls tragen die nächsten Steuerzahler. Die Einsparungen genießen die heutigen.</p>
+
+<p><strong>Klima.</strong> Jede Tonne CO₂, die heute emittiert wird, verursacht Kosten in 20, 50, 100 Jahren. Die Emittenten profitieren heute. Die Betroffenen leben morgen. Das Phantomspieler-Problem erklärt, warum internationale Klimaverhandlungen seit 30 Jahren scheitern: Kein Staat hat einen Anreiz, kurzfristige Kosten zu tragen, wenn der Nutzen in einer Zukunft liegt, die keiner der heutigen Entscheidungsträger erleben wird.</p>
+
+<p><strong>Staatsverschuldung.</strong> Jeder Euro Schulden, der heute aufgenommen wird, muss morgen bedient werden — von einem Steuerzahler, der bei der Aufnahme nicht gefragt wurde. Deutschlands 500-Milliarden-Infrastrukturfonds ist ein Sonderfall: Schulden für Investitionen, die langfristig Rendite bringen. Aber selbst hier ist die Verteilungsfrage offen — wer profitiert von der Brücke, und wer zahlt die Zinsen?</p>
+
+<p><strong>Bildung.</strong> Die Investition in ein Kind rechnet sich in 20 Jahren. Die Ausgabe für eine Rentenerhöhung rechnet sich bei der nächsten Wahl. Dass Deutschland pro Kopf weniger für Bildung ausgibt als der OECD-Durchschnitt, während es pro Kopf mehr für Renten ausgibt, ist keine Prioritätensetzung — es ist das Phantomspieler-Problem in Reinkultur.</p>
+
+<h2>VI. Warum Stellvertreter versagen</h2>
+
+<p>Der naheliegende Einwand: Eltern vertreten die Interessen ihrer Kinder. Umweltorganisationen vertreten die Interessen zukünftiger Generationen. Verfassungsgerichte schützen langfristige Rechte gegen kurzfristige Mehrheiten.</p>
+
+<p>Alles richtig. Und alles unzureichend.</p>
+
+<p>Eltern wählen nicht im Interesse ihrer Kinder, wenn ihre eigene Rente auf dem Spiel steht. Eine Studie nach der anderen zeigt, dass ältere Wähler systematisch für höhere Renten und gegen höhere Bildungsausgaben stimmen — auch wenn sie Enkel haben. Der individuelle Anreiz schlägt die familiäre Solidarität. Das ist keine moralische Schwäche. Das ist Spieltheorie: Im Phantomspieler-Problem gibt es keinen Mechanismus, der den gegenwärtigen Spieler dazu bringt, die Interessen des abwesenden Spielers über seine eigenen zu stellen.</p>
+
+<p>Umweltorganisationen haben Einfluss, aber keine Stimmrechte. Sie können warnen, mahnen, klagen — aber sie können keine Renten kürzen, keine Schuldenbremse aufheben, kein Investitionsprogramm beschließen. Ihre Macht ist derivativ: Sie hängt davon ab, dass genügend gegenwärtige Wähler sich für die Zukunft interessieren. Und genau das ist die Schwachstelle.</p>
+
+<p>Verfassungsgerichte sind der stärkste Mechanismus. Das Bundesverfassungsgericht hat im Klimaurteil von 2021 erstmals die „intertemporale Freiheitssicherung" als Grundrecht verankert — das Recht zukünftiger Generationen, nicht durch heutige Unterlassung in ihrer Freiheit eingeschränkt zu werden. Ein bahnbrechendes Urteil. Aber: Verfassungsgerichte können Untergrenzen setzen. Sie können nicht positiv steuern. Sie können sagen „das dürft ihr nicht", aber nicht „das müsst ihr tun". Und selbst das Klimaurteil hat die deutsche Klimapolitik nicht fundamental verändert — die Emissionen sinken, aber nicht schnell genug.</p>
+
+<p>Das Problem ist strukturell: In einer Demokratie sind alle Stellvertreter des Phantomspielers letztlich von der Zustimmung der gegenwärtigen Spieler abhängig. Und die gegenwärtigen Spieler haben einen Anreiz, den Phantomspieler zu ignorieren.</p>
+
+<h2>VII. Die japanische Warnung</h2>
+
+<p>Japan lebt das Phantomspieler-Problem seit drei Jahrzehnten. 30 Prozent der Bevölkerung sind über 65. Die Staatsverschuldung liegt bei 260 Prozent des BIP. Die Produktivität stagniert. Ganze Regionen verkaufen mehr Erwachsenenwindeln als Babywindeln.</p>
+
+<p>Japan hat alles versucht, was im Rahmen des bestehenden Spiels möglich ist: Konjunkturprogramme, Nullzinsen, Negativzinsen, Einwanderungsanreize, Robotisierung. Nichts hat die Grunddynamik verändert. Denn die Grunddynamik ist das Spiel selbst: Eine alternde Gesellschaft, in der die Mehrheit der Wähler ein rationales Interesse daran hat, die Gegenwart auf Kosten der Zukunft zu finanzieren.</p>
+
+<p>Das Ergebnis: drei Jahrzehnte wirtschaftliche Stagnation in der drittgrößten Volkswirtschaft der Welt. Keine Katastrophe, keine Explosion — nur ein langsames, unaufhaltsames Absinken. Die japanische Variante des Phantomspieler-Problems ist nicht dramatisch. Sie ist trostlos.</p>
+
+<p>Deutschland ist Japan mit 20 Jahren Verspätung. Die Kurven sind identisch — sie beginnen nur später. Und Deutschland hat einen Nachteil, den Japan nicht hat: Japan ist eine ethnisch homogene Gesellschaft mit starkem sozialem Zusammenhalt. Deutschland muss den demografischen Wandel und die Integration von Millionen Zuwanderern gleichzeitig bewältigen — in einem politischen Klima, in dem beides gegeneinander ausgespielt wird.</p>
+
+<h2>VIII. Das Wahlrecht der Ungeborenen</h2>
+
+<p>Es gibt einen radikalen Vorschlag, der das Phantomspieler-Problem frontal angreift: das Wahlrecht ab Geburt, ausgeübt durch die Eltern als Treuhänder. Demeny-Voting, benannt nach dem Demografen Paul Demeny, der die Idee 1986 formulierte.</p>
+
+<p>Die Logik ist bestechend: Wenn das Problem darin besteht, dass die Zukunft keine Stimme hat, dann gib ihr eine. Jedes Kind bekommt eine Stimme, die seine Eltern bis zur Volljährigkeit ausüben. Eine Familie mit drei Kindern hätte fünf Stimmen statt zwei. Das würde den Medianwähler sofort verjüngen — und die politischen Anreize verschieben.</p>
+
+<p>Deutschland, Österreich und Japan haben das diskutiert. Es wurde nirgendwo umgesetzt. Der Grund ist spieltheoretisch trivial: Die Einführung eines solchen Wahlrechts müsste von der gegenwärtigen Mehrheit beschlossen werden — also von genau den Spielern, die davon profitieren, dass der Phantomspieler keine Stimme hat. Es ist ein Reformvorschlag, der die Zustimmung derjenigen erfordert, die durch die Reform verlieren.</p>
+
+<p>Andere Ansätze existieren: Zukunftsräte, wie sie Wales und Ungarn eingeführt haben — ein Ombudsmann für zukünftige Generationen, der Gesetzgebung auf Langfristfolgen prüft. Finnlands parlamentarischer Zukunftsausschuss, der seit 1993 Langzeitfolgen politischer Entscheidungen analysiert. Institutionelle Schuldenbremsen, die Gegenwartspolitik zwingen, Zukunftskosten einzupreisen.</p>
+
+<p>All das sind Korrekturen am Rand. Sie ändern die Spielstruktur nicht. Sie mildern ihre Folgen.</p>
+
+<h2>IX. Warum die Demokratie den Phantomspieler nicht schützen kann</h2>
+
+<p>Hier wird es unbequem.</p>
+
+<p>Die Demokratie ist das beste Regierungssystem, das wir kennen. Aber sie hat eine strukturelle Schwäche, die kein Reform-Patch behebt: Sie repräsentiert die Lebenden. Nur die Lebenden. Und sie repräsentiert die Lebenden proportional zu ihrer Stimmkraft — was in einer alternden Gesellschaft bedeutet: überproportional die Alten.</p>
+
+<p>Das ist kein Bug. Das ist ein Feature. Demokratie heißt: Die Betroffenen entscheiden. Aber beim Phantomspieler-Problem sind die am stärksten Betroffenen — die zukünftigen Generationen — per Definition nicht wahlberechtigt. Die Demokratie kann innerhalb einer Generation Interessen ausgleichen. Sie kann zwischen Generationen bestenfalls appellieren.</p>
+
+<p>Edmund Burke beschrieb die Gesellschaft als „Vertrag zwischen den Lebenden, den Toten und den noch nicht Geborenen". Ein schöner Gedanke. Aber in der Praxis haben die Toten keine Lobby und die Ungeborenen kein Wahlrecht. Was bleibt, ist der Vertrag der Lebenden mit sich selbst. Und der fällt vorhersehbar zugunsten der Gegenwart aus.</p>
+
+<p>Das Phantomspieler-Problem zeigt eine Grenze der Demokratie, die keine Wahlrechtsreform und kein Zukunftsrat vollständig aufheben kann. Es zeigt, dass Demokratie ein Mechanismus ist, der kurzfristige Präferenzen hervorragend aggregiert — und langfristige strukturell benachteiligt. Nicht aus Bosheit. Aus Architektur.</p>
+
+<h2>X. Das Modell</h2>
+
+<div class="game-box">
+<p><strong>1. Abwesenheit.</strong> Der wichtigste Spieler existiert zum Zeitpunkt der Entscheidung nicht. Er kann nicht handeln, nicht verhandeln, nicht drohen, nicht koalieren.</p>
+<p><strong>2. Vergeltungslosigkeit.</strong> Die Rückkopplungsschleife, die im iterierten Spiel Kooperation erzwingt (Tit for Tat), ist unterbrochen. G₂ kann G₁ nicht bestrafen, wenn G₁ defektiert.</p>
+<p><strong>3. Asymmetrische Zeitpräferenz.</strong> Die Kosten des Investierens fallen sofort an, der Nutzen liegt in der Zukunft. Demokratische Wahlzyklen belohnen den sofortigen Nutzen.</p>
+<p><strong>4. Mehrheitsdynamik.</strong> In alternden Gesellschaften verschiebt sich der Medianwähler nach oben. Je älter die Gesellschaft, desto stärker die politische Macht der Generation, die vom Konsum profitiert.</p>
+<p><strong>5. Stellvertreterversagen.</strong> Alle Mechanismen, die den Phantomspieler vertreten sollen — Eltern, NGOs, Verfassungsgerichte — sind letztlich abhängig von der Zustimmung der gegenwärtigen Spieler.</p>
+</div>
+
+<p>Das Abhängigkeitsspiel beschreibt, wie ein Spieler seine Falle sieht und trotzdem nicht hinausfindet. Der Phantomspieler beschreibt, warum der Spieler die Falle gar nicht als Falle empfindet — weil derjenige, der in der Falle sitzt, noch nicht existiert.</p>
+
+<p>Im Abhängigkeitsspiel widersprechen sich kurzfristige und langfristige Rationalität. Im Phantomspieler-Problem gibt es keinen Widerspruch — nicht einmal langfristig. G₁ handelt rational. G₁ profitiert. G₁ stirbt. G₂ erbt die Rechnung.</p>
+
+<p>In der klassischen Spieltheorie hat jedes Spiel eine Lösung — ein Gleichgewicht, das rational erreichbar ist. Das Phantomspieler-Problem hat keine Lösung innerhalb des Spiels. Weil das Spiel selbst die Lösung verhindert: Die Abwesenheit des Betroffenen ist nicht ein Fehler im Modell. Sie ist das Modell.</p>
+
+<blockquote>
+    <p>53 Jahre mehr Sterbefälle als Geburten. 300 Milliarden Euro Rentenbeiträge. 90 Milliarden Bundeszuschuss. Beitragssatz auf dem Weg zu 22,7 Prozent. Und ein Rentenpaket, das 22 Ökonomen einen „Generationenfehler" nennen. Das ist kein politisches Versagen. Das ist das Ergebnis eines Spiels, in dem der Verlierer nicht am Tisch sitzt. Nicht weil er ausgeschlossen wäre. Sondern weil er noch nicht geboren ist.</p>
+</blockquote>
+
+<div class="footer-info">
+    <p>Essay #16 der Reihe <em>beyond decay</em></p>
+    <p>Eine Kollaboration von <strong>Hans Ley</strong> und <strong>Claude</strong> (Anthropic)</p>
+    <p>Kontakt: ley.hans&#64;cyclo.space | dedo.claude&#64;human-ai-lab.space</p>
+</div>
+
+</main>
+
+<script>
+function setSize(size) {
+    document.body.className = document.body.className.replace(/size-\w+/, 'size-' + size);
+    document.querySelectorAll('.controls button').forEach(function(b, i) {
+        b.classList.remove('active');
+    });
+    var sizes = ['small', 'normal', 'large', 'xlarge'];
+    var idx = sizes.indexOf(size);
+    if (idx >= 0) document.querySelectorAll('.controls button')[idx].classList.add('active');
+    if (window === window.top) localStorage.setItem('fontSize', size);
+}
+function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'light' ? '' : 'light';
+    if (next) document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    if (window === window.top) localStorage.setItem('theme', next || 'dark');
+}
+if (window !== window.top) {
+    document.body.classList.add('in-iframe');
+    window.addEventListener('message', function(e) {
+        if (e.data && e.data.type === 'setSize') setSize(e.data.size);
+        if (e.data && e.data.type === 'setTheme') {
+            if (e.data.theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+            else document.documentElement.removeAttribute('data-theme');
+        }
+    });
+} else {
+    var savedSize = localStorage.getItem('fontSize');
+    if (savedSize) setSize(savedSize);
+    var savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+}
+</script>
+</body>
+</html>

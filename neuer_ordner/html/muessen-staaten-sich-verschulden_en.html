@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Must States Go Into Debt?</title>
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --text-primary: #e8e8e8;
+            --text-secondary: #b8b8b8;
+            --accent: #7eb8da;
+            --accent-dim: #5a9bc0;
+            --line: #3a3a5a;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #fafafa;
+            --bg-secondary: #f0f0f0;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --accent: #2a6a9a;
+            --accent-dim: #1a5a8a;
+            --line: #d0d0d0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 100;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+        }
+
+        .size-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .size-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .size-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        
+        .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .essay-container {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 80px 2rem 4rem 2rem;
+        }
+
+        .essay-container.size-s { max-width: 600px; font-size: 0.95rem; }
+        .essay-container.size-m { max-width: 750px; font-size: 1.05rem; }
+        .essay-container.size-l { max-width: 900px; font-size: 1.15rem; }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: normal;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--accent);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            font-weight: normal;
+            color: var(--accent);
+            margin: 3rem 0 1.5rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        .lead {
+            font-size: 1.15em;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        blockquote {
+            border-left: 3px solid var(--accent);
+            margin: 2rem 0;
+            padding: 1rem 1.5rem;
+            background: var(--bg-secondary);
+            font-style: italic;
+        }
+
+        blockquote cite {
+            display: block;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: normal;
+        }
+
+        .highlight {
+            color: var(--accent);
+        }
+
+        .emphasis-box {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent);
+            padding: 1.25rem 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .emphasis-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .essay-container {
+                padding: 70px 1.25rem 3rem 1.25rem;
+            }
+            h1 { font-size: 1.7rem; }
+            .subtitle { font-size: 1.1rem; }
+            h2 { font-size: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button class="size-btn" onclick="setSize('s')" title="Small">S</button>
+        <button class="size-btn active" onclick="setSize('m')" title="Medium">M</button>
+        <button class="size-btn" onclick="setSize('l')" title="Large">L</button>
+        <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">◐</button>
+        <a href="muessen-staaten-sich-verschulden.html" class="lang-btn" title="Deutsche Version">DE</a>
+    </div>
+
+    <article class="essay-container size-m">
+        <header>
+            <h1>Must States Go Into Debt?</h1>
+            <div class="subtitle">The Wrong Question and Its Right Answers</div>
+            <div class="meta">February 2026</div>
+        </header>
+
+        <p class="lead">
+            The question is poorly framed. Not "must" is the problem, but "can," "should," and above all "for what." The debate about national debt is a religious war between dogmas — when pragmatism would be more appropriate.
+        </p>
+
+        <h2>I. The Japan Puzzle</h2>
+
+        <p>
+            Japan has a national debt exceeding 230 percent of its gross domestic product. That's more than double what the Maastricht criteria allow for the Eurozone. More than half of this debt is held by the Bank of Japan itself. And yet: no sovereign default, no hyperinflation, no debt crisis. How is this possible?
+        </p>
+
+        <p>
+            The answer lies in a simple but often ignored fact: <span class="highlight">A state that borrows in its own currency cannot become insolvent.</span> It can always print as much money as it needs to service its liabilities. This is not a radical thesis, but an accounting fact.
+        </p>
+
+        <p>
+            Modern Monetary Theory (MMT) has popularized this insight in recent years — and provoked considerable resistance in doing so. For the conclusion seems dangerous: If states can print unlimited money, why should they impose any limits on themselves?
+        </p>
+
+        <h2>II. The Real Limit</h2>
+
+        <p>
+            That a state cannot go bankrupt doesn't mean that debt is without consequences. The real limit is not solvency, but <span class="highlight">inflation</span>. When the state pumps more money into the economy than it can produce in goods and services, prices rise. This isn't theory, it's experience — from the Weimar Republic to Venezuela.
+        </p>
+
+        <p>
+            MMT proponents don't dispute this. They only argue that the inflation threshold is much higher than orthodox economists claim — especially when the economy is operating below capacity. In a recession, when workers and machines are idle, government demand can fill the gap without driving up prices.
+        </p>
+
+        <div class="emphasis-box">
+            <p>
+                <strong>The crucial distinction:</strong> Government debt for current consumption spending is fundamentally different from debt for investments that enable future growth. A loan for a vacation is not the same as a loan for education that increases income.
+            </p>
+        </div>
+
+        <h2>III. The German Obsession</h2>
+
+        <p>
+            In Germany, the debt debate has a particular character. The German word "Schulden" (debt) carries a moral weight — it sounds like "Schuld" (guilt). The debt brake enshrined in the constitution in 2009 was a response to the financial crisis, but also an expression of a deep-rooted distrust of government spending policy.
+        </p>
+
+        <p>
+            The debt brake limits the federal government's structural new borrowing to 0.35 percent of GDP — one of the strictest rules in the world. The result: Germany has one of the lowest debt ratios among major industrialized nations. But also an investment backlog estimated at hundreds of billions of euros. Crumbling bridges, slow internet, outdated schools.
+        </p>
+
+        <p>
+            In March 2025, the conservative-social democratic coalition loosened the debt brake — under pressure from geopolitical reality. A €500 billion special fund for infrastructure, defense spending outside the debt rules. New borrowing for 2026 will rise to about €180 billion. Federal interest payments are expected to grow from €30 billion to €66.5 billion by 2029.
+        </p>
+
+        <h2>IV. The Positions</h2>
+
+        <p>
+            Three camps face each other in the debate:
+        </p>
+
+        <p>
+            <span class="highlight">The austerity position</span> (Federal Court of Auditors, parts of the center-right): Government debt is fundamentally problematic because it burdens future generations. Core state functions should be financed from current revenues. The loosening of the debt brake threatens to become a "debt flatrate."
+        </p>
+
+        <p>
+            <span class="highlight">The Keynesian position</span> (Social Democrats, Greens, many economists): The state must act counter-cyclically — take on debt in crises, save in good times. The debt brake doesn't distinguish between consumption and investment, thus hindering urgently needed modernization.
+        </p>
+
+        <p>
+            <span class="highlight">The MMT position</span> (academic minority): The question of how to finance government spending is wrongly posed. The state creates money through spending and destroys it through taxes. The only relevant limit is the inflation rate.
+        </p>
+
+        <h2>V. The Bundesbank Compromise</h2>
+
+        <p>
+            Interestingly, the Bundesbank — traditionally the guardian of monetary stability — presented a differentiated reform proposal in November 2025. The core: The federal government should receive a fixed credit margin of 0.8 percent of GDP exclusively for capital investments, regardless of the debt ratio. Beyond that, there should be a variable margin — depending on whether the debt ratio is above or below 60 percent.
+        </p>
+
+        <div class="emphasis-box">
+            <p>
+                <strong>The Bundesbank proposal in numbers:</strong> With a debt ratio below 60%, the free credit margin should be 0.5% of GDP. If the ratio exceeds the 60% mark, it drops to 0.1%. The investment margin of 0.8% remains constant — planning security for infrastructure, incentive for debt reduction elsewhere.
+            </p>
+        </div>
+
+        <p>
+            This is remarkably pragmatic for an institution long considered the guardian of fiscal orthodoxy. The Bundesbank recognizes: Investment creates growth, growth increases debt sustainability. The circle can be virtuous rather than vicious.
+        </p>
+
+        <h2>VI. The Gap in the Debate</h2>
+
+        <p>
+            What's often missing in the German debate is the question: <span class="highlight">What does non-investment cost?</span> A crumbling bridge that must be closed causes economic costs — through detours, time lost, increased transport costs. A school without digital infrastructure produces graduates who fall behind in international competition.
+        </p>
+
+        <p>
+            The Federal Court of Auditors warns of a "debt dynamic" that could lead to an additional trillion euros in debt by 2035. That sounds threatening. But what would be the alternative? The same sum as depreciation of infrastructure, as missed growth opportunities, as companies relocating?
+        </p>
+
+        <p>
+            The truth is: We don't know the answer with certainty. Economics is not an exact science. What we know is that both excessive debt and excessive saving can ruin economies. Greece after 2010 is an example of the latter, not the former.
+        </p>
+
+        <h2>VII. The Right Question</h2>
+
+        <p>
+            "Must states go into debt?" is thus the wrong question. The right questions are:
+        </p>
+
+        <p>
+            <span class="highlight">For what?</span> Investments that enable future growth justify debt more than current consumption spending. A road that lasts 50 years may well be financed over 50 years.
+        </p>
+
+        <p>
+            <span class="highlight">In what currency?</span> Debt in one's own currency is fundamentally different from debt in foreign currency. Germany no longer has its own currency — a crucial difference from Japan or the USA.
+        </p>
+
+        <p>
+            <span class="highlight">At what interest burden?</span> €180 billion in new borrowing at 1% interest is something different than at 5%. Federal interest payments will more than double by 2029 — that's the price of loosening.
+        </p>
+
+        <p>
+            <span class="highlight">In what economic situation?</span> Debt in a recession can stabilize the economy. Debt in a boom can fuel inflation and crowd out private investment.
+        </p>
+
+        <h2>VIII. Conclusion: Neither Dogma nor Utopia</h2>
+
+        <p>
+            Government debt is neither the moral evil that German conservatives portray it as, nor the consequence-free instrument that some MMT enthusiasts sell it as. It is a tool — one that wisely used can create prosperity and foolishly used can destroy it.
+        </p>
+
+        <p>
+            Japan shows that high debt ratios can be sustainable for decades — under certain conditions: own currency, domestic creditors, cooperative central bank. The Eurozone does not have these conditions, which makes the situation more complicated for Germany.
+        </p>
+
+        <p>
+            What we need is neither the debt brake in its old rigidity nor its complete abolition. We need a differentiated rule that distinguishes between investment and consumption, that leaves room for crises and creates incentives for consolidation in good times. The Bundesbank proposal moves in this direction.
+        </p>
+
+        <blockquote>
+            A future on credit is no solution.
+            <cite>— in substance Kay Scheller, President of the Federal Court of Auditors, who has been warning against it for years</cite>
+        </blockquote>
+
+        <p>
+            But a future without investment is no solution either. The art lies in moderation — and in the honesty that we don't know the optimal debt ratio. We navigate by sight, not by map. This should make both debt dogmatists and debt utopians more humble.
+        </p>
+
+        <footer>
+            <p>Essay 106 · February 2026</p>
+        </footer>
+    </article>
+
+    <script>
+        function setSize(size) {
+            const container = document.querySelector('.essay-container');
+            container.classList.remove('size-s', 'size-m', 'size-l');
+            container.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-size', size);
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('essay-theme', next);
+        }
+
+        (function() {
+            const savedSize = localStorage.getItem('essay-size') || 'm';
+            const savedTheme = localStorage.getItem('essay-theme') || 'dark';
+            
+            document.querySelector('.essay-container').classList.remove('size-m');
+            document.querySelector('.essay-container').classList.add('size-' + savedSize);
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase() === savedSize) btn.classList.add('active');
+            });
+            
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+</body>
+</html>

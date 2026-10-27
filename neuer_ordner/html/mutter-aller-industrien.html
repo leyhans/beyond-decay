@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die Mutter aller Industrien — Wie Deutschland seinen Werkzeugmaschinenbau verhungern ließ</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+            --warning: #b43c3c;
+            --success: #4a7c4e;
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+            --warning: #a04040;
+            --success: #3d6b40;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg-secondary); border-bottom: 1px solid var(--line); padding: 0.6rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .controls-left { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        .size-btn, .theme-btn { background: transparent; border: 1px solid var(--line); color: var(--text-secondary); padding: 0.35rem 0.6rem; cursor: pointer; font-family: inherit; font-size: 0.85rem; border-radius: 3px; transition: all 0.2s ease; }
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .draft-banner { background: var(--warning); color: white; text-align: center; padding: 0.5rem; font-family: 'Consolas', monospace; font-size: 0.8rem; letter-spacing: 0.1em; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0.5rem; }
+        .quote-block p:last-child { margin-bottom: 0; }
+
+        .data-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .data-block h3 { font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--accent); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .data-item { padding: 0.75rem; background: var(--accent-dim); border-radius: 4px; }
+        .data-label { font-size: 0.8em; color: var(--text-secondary); margin-bottom: 0.25rem; }
+        .data-value { font-size: 1.4em; font-weight: 600; color: var(--accent); }
+        .data-value.negative { color: var(--warning); }
+        .data-value.positive { color: var(--success); }
+        .data-context { font-size: 0.75em; color: var(--text-secondary); margin-top: 0.25rem; }
+
+        .timeline-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .timeline-item { display: flex; gap: 1rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+        .timeline-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .timeline-year { font-family: 'Consolas', monospace; font-size: 0.95em; color: var(--accent); min-width: 100px; }
+        .timeline-content { color: var(--text-secondary); }
+        .timeline-content strong { color: var(--text-primary); }
+
+        .warning-block { background: rgba(180, 60, 60, 0.12); border: 1px solid rgba(180, 60, 60, 0.3); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .warning-block p { margin-bottom: 0; color: var(--warning); font-weight: 500; }
+
+        .prognosis-block { background: var(--bg-secondary); border: 2px solid var(--warning); padding: 1.75rem; margin: 1.75rem 0; }
+        .prognosis-block h3 { font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--warning); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .prognosis-item { margin-bottom: 1rem; padding-left: 1rem; border-left: 2px solid var(--line); }
+        .prognosis-item:last-child { margin-bottom: 0; }
+        .prognosis-scenario { font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem; }
+        .prognosis-detail { font-size: 0.95em; color: var(--text-secondary); }
+
+        .list-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .list-block h3 { font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--accent); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .list-item { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--line); }
+        .list-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .list-marker { color: var(--accent); font-weight: 600; }
+        .list-text { color: var(--text-secondary); }
+        .list-text strong { color: var(--text-primary); }
+
+        .truth-block { background: var(--accent-dim); border: 1px solid var(--accent); padding: 1.75rem; margin: 1.75rem 0; text-align: center; }
+        .truth-block p.main { font-size: 1.25em; font-weight: 500; color: var(--accent); margin-bottom: 0.5rem; }
+        .truth-block p { margin-bottom: 0; }
+
+        .final-quote { text-align: center; margin: 3rem 0; padding: 2rem; }
+        .final-quote p { font-size: 1.1em; font-weight: 300; font-style: italic; color: var(--text-secondary); margin-bottom: 0; }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { font-size: 0.95em; color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .author-block .date-line { margin-top: 1.25rem; color: var(--accent); text-align: center; }
+
+        .series-info { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--line); text-align: center; color: var(--text-secondary); font-size: 0.9em; }
+
+        /* Memorial Section Styles */
+        .memorial-section { margin: 2rem 0; }
+        .memorial-header { font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--warning); margin: 2rem 0 1rem; padding: 0.75rem; background: rgba(180, 60, 60, 0.1); border-left: 3px solid var(--warning); text-transform: uppercase; letter-spacing: 0.1em; }
+        .memorial-header:first-of-type { margin-top: 0; }
+        .survivors .memorial-item { border-color: var(--success); }
+        h3.memorial-header:last-of-type { color: var(--success); background: rgba(74, 124, 78, 0.1); border-color: var(--success); }
+        h3.memorial-header:nth-of-type(n+5) { color: #6b9aba; background: rgba(107, 154, 186, 0.1); border-color: #6b9aba; }
+        .memorial-grid { display: grid; gap: 0.5rem; }
+        .memorial-item { display: flex; justify-content: space-between; align-items: baseline; padding: 0.6rem 0.75rem; background: var(--bg-secondary); border-left: 2px solid var(--line); gap: 1rem; flex-wrap: wrap; }
+        .memorial-name { font-weight: 600; color: var(--text-primary); min-width: 180px; }
+        .memorial-fate { font-size: 0.85em; color: var(--text-secondary); text-align: right; flex: 1; }
+
+        /* Tooltip Styles */
+        .memorial-item.has-tooltip { position: relative; cursor: help; }
+        .memorial-item.has-tooltip:hover { background: var(--bg-primary); }
+        .firma-tooltip { 
+            display: none; 
+            position: absolute; 
+            bottom: 100%; 
+            left: auto;
+            right: 0;
+            width: 280px;
+            max-width: 90vw;
+            background: var(--bg-primary); 
+            border: 1px solid var(--line); 
+            border-radius: 4px; 
+            padding: 0.6rem 0.75rem; 
+            z-index: 100; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            margin-bottom: 0.5rem;
+        }
+        .memorial-item.has-tooltip:hover .firma-tooltip { display: block; }
+        .tooltip-status { font-weight: 600; margin-bottom: 0.35rem; color: var(--success); font-size: 0.9em; }
+        .tooltip-details { font-size: 0.8em; color: var(--text-secondary); line-height: 1.5; }
+        .firma-tooltip.warnung { border-color: var(--warning); }
+        .firma-tooltip.warnung .tooltip-status { color: var(--warning); }
+        .memorial-item.warnung-item { border-left-color: var(--warning); background: rgba(180, 60, 60, 0.05); }
+        .memorial-item.warnung-item .memorial-name { color: var(--warning); }
+        #status-update { font-size: 0.8em; color: var(--text-secondary); margin-top: 0.5rem; font-style: italic; }
+
+        .home-btn { position: fixed; top: 4.5rem; left: 1.5rem; width: 44px; height: 44px; background: var(--bg-secondary); border: 1px solid var(--line); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: var(--accent); font-size: 1.3rem; transition: all 0.2s ease; z-index: 90; }
+        .home-btn:hover { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); transform: scale(1.05); }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+            main { padding: 6rem 1.25rem 3rem; }
+            h1 { font-size: 1.8em; }
+            .data-grid { grid-template-columns: 1fr; }
+            .timeline-item { flex-direction: column; }
+            .timeline-year { margin-bottom: 0.25rem; }
+            .home-btn { width: 40px; height: 40px; top: 4rem; left: 1rem; font-size: 1.1rem; }
+            .memorial-item { flex-direction: column; gap: 0.25rem; }
+            .memorial-fate { text-align: left; }
+        }
+
+        @media print { .controls, .home-btn, .draft-banner { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+
+        /* Popup/Modal für Kontakt */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            cursor: pointer;
+            justify-content: center;
+            align-items: center;
+        }
+        .popup-overlay.active { display: flex; }
+        .popup-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent);
+            padding: 2rem 2.5rem;
+            max-width: 450px;
+            text-align: center;
+            font-size: 0.95em;
+            line-height: 1.7;
+        }
+        .popup-content p { margin: 0 0 1rem 0; }
+        .popup-content .contact-info { 
+            margin-top: 1.5rem; 
+            font-family: 'Consolas', monospace; 
+            font-size: 0.9em;
+            color: var(--accent);
+        }
+        .popup-content .contact-info a { 
+            color: var(--accent); 
+            text-decoration: none; 
+        }
+        .popup-content .contact-info a:hover { text-decoration: underline; }
+        .popup-hint { 
+            font-size: 0.75em; 
+            color: var(--text-secondary); 
+            margin-top: 1.5rem !important;
+            font-style: italic;
+        }
+        .date-line-link {
+            cursor: pointer;
+            text-decoration: none;
+            border-bottom: 1px dotted var(--text-secondary);
+        }
+        .date-line-link:hover { color: var(--accent); border-color: var(--accent); }
+    </style>
+    <script>
+        // ============================================================
+        // FIRMENSTATUS — Hier einfach editieren!
+        // ============================================================
+        const FIRMEN_STATUS = {
+            "letzte_aktualisierung": "Januar 2026",
+            
+            "Trumpf": {
+                "status": "Familienbesitz",
+                "details": "Ditzingen. 4,3 Mrd. € Umsatz (2024/25, nach 5,4 Mrd. zwei Jahre zuvor). Familie Leibinger. Einer der wenigen echten Überlebenden.",
+                "warnung": false
+            },
+            "Grob-Werke": {
+                "status": "Familienbesitz", 
+                "details": "Mindelheim. ~2 Mrd. € Umsatz. Familie Grob. Stark in E-Mobilität diversifiziert.",
+                "warnung": false
+            },
+            "EMAG": {
+                "status": "⚠️ Chinesische Beteiligung",
+                "details": "Salach. 2010 Beteiligung Jiangsu Jinsheng Industry (China). Nov 2025: Abbau von 455 Stellen angekündigt (1/3 der deutschen Belegschaft). Genaue Anteile unklar.",
+                "warnung": true
+            },
+            "Index-Werke": {
+                "status": "Familienbesitz",
+                "details": "Esslingen. Inkl. Traub (übernommen 1997). Familie Hahn. Noch deutsch.",
+                "warnung": false
+            },
+            "Hermle": {
+                "status": "Börsennotiert",
+                "details": "Gosheim. 488 Mio. € Umsatz 2024. Familie Hermle hält Mehrheit. Noch stabil.",
+                "warnung": false
+            },
+            "Chiron-Werke": {
+                "status": "Noch deutsch",
+                "details": "Tuttlingen. Horstmann Gruppe. Beobachten.",
+                "warnung": false
+            },
+            "Liebherr-Verzahntechnik": {
+                "status": "Familienbesitz",
+                "details": "Kempten. Teil der Liebherr-Gruppe (Schweiz/Deutschland). Familie Liebherr.",
+                "warnung": false
+            },
+            "Kapp Werkzeugmaschinen": {
+                "status": "Familienbesitz",
+                "details": "Coburg. Inkl. Niles (übernommen 1997). Familie Kapp. Noch stabil.",
+                "warnung": false
+            },
+            "Junker Gruppe": {
+                "status": "Noch deutsch",
+                "details": "Nordrach. Schleifmaschinen. Beobachten.",
+                "warnung": false
+            },
+            "Vollmer Werke": {
+                "status": "Familienbesitz",
+                "details": "Biberach. Schärfmaschinen. Familie Vollmer.",
+                "warnung": false
+            },
+            "Weiler Werkzeugmaschinen": {
+                "status": "Noch deutsch",
+                "details": "Emskirchen. Drehmaschinen, Bohrmaschinen.",
+                "warnung": false
+            },
+            "Alzmetall": {
+                "status": "Noch deutsch",
+                "details": "Altenmarkt. Bohrmaschinen, Bearbeitungszentren.",
+                "warnung": false
+            },
+            "Waldrich Coburg": {
+                "status": "Noch deutsch",
+                "details": "Coburg. Großfräsmaschinen.",
+                "warnung": false
+            },
+            "HerkulesGroup": {
+                "status": "Noch deutsch",
+                "details": "Siegen. Inkl. WaldrichSiegen und Union Werkzeugmaschinen.",
+                "warnung": false
+            },
+            "Niles-Simmons-Hegenscheidt": {
+                "status": "Noch deutsch",
+                "details": "Chemnitz. NSH-Gruppe. Bearbeitungszentren, Drehmaschinen. Ostdeutsche Tradition.",
+                "warnung": false
+            },
+            "SW Schwäbische Werkzeugmaschinen": {
+                "status": "Finanzinvestor",
+                "details": "Schramberg-Waldmössingen. 554 Mio. € Umsatz 2023. Aus Heckler & Koch 1995. Süddeutsche Beteiligung GmbH.",
+                "warnung": false
+            },
+            "Spinner": {
+                "status": "Familienbesitz",
+                "details": "Sauerlach bei München. Drehmaschinen, Bearbeitungszentren. Familiengeführt.",
+                "warnung": false
+            },
+            "Stama": {
+                "status": "Teil der Chiron Group",
+                "details": "Schlierbach. 2020 zur Chiron Group. Bearbeitungszentren.",
+                "warnung": false
+            },
+            "SHW Werkzeugmaschinen": {
+                "status": "Historisch",
+                "details": "Aalen. Gegründet 1365 — älteste deutsche Werkzeugmaschinenfabrik. Großbearbeitungszentren.",
+                "warnung": false
+            },
+            "Herkules Maschinenfabrik Wetzlar": {
+                "status": "Noch deutsch",
+                "details": "Wetzlar. Schleifmaschinen.",
+                "warnung": false
+            },
+            "Elha-Maschinenbau": {
+                "status": "Familienbesitz",
+                "details": "Hövelhof. Feinbohrmaschinen, Bearbeitungszentren.",
+                "warnung": false
+            },
+            "GMN Paul Müller": {
+                "status": "Familienbesitz",
+                "details": "Nürnberg. Gegr. 1908. Hochfrequenzspindeln, Präzisionslager. Eigene Lagerfertigung.",
+                "warnung": false
+            },
+            "Franz Kessler": {
+                "status": "Stiftungsbesitz",
+                "details": "Bad Buchau. Gegr. 1923. Motorspindeln, Gabelfräsköpfe. Franz Kessler Stiftung.",
+                "warnung": false
+            },
+            "Weiss Spindeltechnologie": {
+                "status": "Noch deutsch",
+                "details": "Buchen. Rundtische, Spindeln für Werkzeugmaschinen.",
+                "warnung": false
+            },
+            "Sauter Feinmechanik": {
+                "status": "Zeitfracht-Gruppe",
+                "details": "Metzingen. Gegr. 1946. Werkzeugrevolver. 2021 von Zeitfracht übernommen.",
+                "warnung": false
+            },
+            "Schaeffler / INA": {
+                "status": "Börsennotiert",
+                "details": "Herzogenaurach. Linearführungen, Kugelgewindetriebe. Weltkonzern, 16 Mrd. € Umsatz.",
+                "warnung": false
+            },
+            "Bosch Rexroth": {
+                "status": "Teil von Bosch",
+                "details": "Lohr. Lineartechnik, Antriebstechnik. Teil des Bosch-Konzerns.",
+                "warnung": false
+            },
+            "Heidenhain": {
+                "status": "Stiftungsbesitz",
+                "details": "Traunreut. Gegr. 1889. TNC-Steuerungen, Längenmessgeräte. Dr. Johannes Heidenhain Stiftung. 8.200 MA.",
+                "warnung": false
+            },
+            "Siemens Sinumerik": {
+                "status": "Teil von Siemens",
+                "details": "Erlangen. CNC-Steuerungen für Werkzeugmaschinen. Weltmarktführer.",
+                "warnung": false
+            },
+            "Beckhoff Automation": {
+                "status": "Familienbesitz",
+                "details": "Verl. PC-basierte Steuerungstechnik. Familie Beckhoff. Starkes Wachstum.",
+                "warnung": false
+            }
+        };
+        // ============================================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update Zeitstempel
+            const updateEl = document.getElementById('status-update');
+            if (updateEl) updateEl.textContent = 'Stand: ' + FIRMEN_STATUS.letzte_aktualisierung;
+            
+            // Tooltips für alle Firmen erstellen
+            document.querySelectorAll('.memorial-item.survivor').forEach(function(item) {
+                const nameEl = item.querySelector('.memorial-name');
+                if (!nameEl) return;
+                
+                const firmaName = nameEl.textContent.trim();
+                const firmaData = FIRMEN_STATUS[firmaName];
+                
+                if (firmaData) {
+                    // Tooltip-Element erstellen
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'firma-tooltip' + (firmaData.warnung ? ' warnung' : '');
+                    tooltip.innerHTML = '<div class="tooltip-status">' + firmaData.status + '</div>' +
+                                       '<div class="tooltip-details">' + firmaData.details + '</div>';
+                    item.appendChild(tooltip);
+                    item.classList.add('has-tooltip');
+                    
+                    // Warnung-Styling
+                    if (firmaData.warnung) {
+                        item.classList.add('warnung-item');
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+<body class="size-medium">
+    <div class="draft-banner">⚠ Zur Diskussion ⚠</div>
+
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <button class="size-btn" onclick="setSize('small')">A-</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Farbschema wechseln">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · Januar 2026</span>
+                <h1>Die <strong>Mutter aller Industrien</strong></h1>
+                <p class="subtitle">Wie Deutschland seinen Werkzeugmaschinenbau verhungern ließ</p>
+            </header>
+
+            <div class="section">
+                <h2>Die unsichtbare Schlüsselindustrie</h2>
+                <p>Es gibt eine Industrie, ohne die keine andere existieren könnte. Keine Automobilfabrik, kein Flugzeugwerk, keine Chipfertigung, keine Medizintechnik. Ohne sie gäbe es keine Präzision, keine Serienproduktion, keine moderne Welt.</p>
+                <p>Diese Industrie ist der <span class="highlight-text">Werkzeugmaschinenbau</span> — die Mutter aller Industrien.</p>
+                <p>In Deutschland beschäftigt sie rund 65.000 Menschen und produziert Maschinen im Wert von knapp 15 Milliarden Euro jährlich. Jahrzehntelang war Deutschland Weltmarktführer. Heute kämpft die Branche ums Überleben.</p>
+                <p>Und kaum jemand bemerkt es.</p>
+            </div>
+
+            <div class="section">
+                <h2>Die Enabling-Funktion</h2>
+                <p>Die industrielle Revolution begann nicht mit der Dampfmaschine. Sie begann mit der Fähigkeit, Dampfmaschinen <em>präzise herzustellen</em>.</p>
+                <p>Erst John Wilkinsons Horizontal-Bohrmaschine ermöglichte es, Zylinder so genau zu fertigen, dass James Watts Dampfmaschinen effizient wurden. Ohne diese Präzision wäre die Dampfmaschine eine Kuriosität geblieben — eine Erfindung ohne wirtschaftliche Bedeutung.</p>
+                <div class="quote-block">
+                    <p>Die Antriebsart — ob Wasser- oder Dampfkraft — war nicht der entscheidende Faktor. Entscheidend war die Fähigkeit, Maschinen präzise und wirtschaftlich herzustellen.</p>
+                </div>
+                <p>Dieser Kreislauf gilt bis heute: Präzisere Werkzeugmaschinen ermöglichen bessere Produkte, bessere Produkte erfordern noch präzisere Werkzeugmaschinen. Die Werkzeugmaschine ist die <span class="highlight-text">Maschine, die Maschinen macht</span>.</p>
+            </div>
+
+            <div class="section">
+                <h2>Von der Weltspitze zum Niedergang</h2>
+                <p>Deutschland übernahm ab der zweiten Hälfte des 19. Jahrhunderts die Führung im Werkzeugmaschinenbau. Systematische wissenschaftliche Durchdringung, Präzisionsmesstechnik, Normung — deutsche Ingenieure machten den Maschinenbau zur Wissenschaft.</p>
+                <p>Bis in die 1990er Jahre galt: <span class="highlight-text">Wer die besten Werkzeugmaschinen wollte, kaufte deutsch.</span></p>
+                <p>Namen wie Deckel, Maho, Pittler, Niles, Hüller Hille, Wohlenberg, Weisser — sie standen für Weltklasse. Ihre Maschinen liefen in jeder bedeutenden Fabrik der Welt.</p>
+                <p>Heute sind die meisten dieser Namen verschwunden. Aufgelöst. Verkauft. Insolvent. Was geschah?</p>
+                <p>Die Antwort führt zu den <span class="highlight-text">OEMs</span> — den großen Anwendern.</p>
+            </div>
+
+            <div class="section">
+                <h2>Die Marktmacht der Saurier</h2>
+                <p>Die Werkzeugmaschinenbauer liefern an die Automobilindustrie, den Maschinenbau, die Luft- und Raumfahrt. Diese Abnehmer — die OEMs — haben über Jahrzehnte eine erdrückende Marktmacht aufgebaut.</p>
+                <div class="list-block">
+                    <h3>Die Methoden der OEMs</h3>
+                    <div class="list-item">
+                        <span class="list-marker">•</span>
+                        <span class="list-text"><strong>Extremer Preisdruck</strong> bei Neuanlagen — López-Methode seit den 90ern</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-marker">•</span>
+                        <span class="list-text"><strong>Erzwungene Übernahme von Entwicklungskosten</strong> — der Zulieferer zahlt die Innovation</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-marker">•</span>
+                        <span class="list-text"><strong>Forderung nach weltweitem Service</strong> — Präsenz, die sich kleine Firmen nicht leisten können</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-marker">•</span>
+                        <span class="list-text"><strong>Lange Zahlungsziele</strong> — die Kleinen finanzieren die Großen vor</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-marker">•</span>
+                        <span class="list-text"><strong>Hohe Pönalen</strong> bei Verzögerungen — das Risiko trägt der Zulieferer</span>
+                    </div>
+                </div>
+                <p>Das Ergebnis: <span class="highlight-text">Geringe Margen trotz Spitzentechnologie.</span> Kaum Aufbau von Eigenkapital möglich. Hohe Abhängigkeit von Bankkrediten. Anfälligkeit für jede Krise.</p>
+            </div>
+
+            <div class="section">
+                <h2>Die Umverteilung</h2>
+                <p>Hier schließt sich der Kreis zu López' Kriegern. Die Produktivitätsgewinne, die der Werkzeugmaschinenbau und die Zulieferer durch harte Arbeit und Innovation schaffen, fließen systematisch nach oben — zu den OEMs.</p>
+                <div class="quote-block">
+                    <p>Während Wohlstand im Wesentlichen durch Produktivitätsfortschritte geschaffen wird, haben sich die OEMs diese Fortschritte durch ihre politisch abgesicherte Marktmacht angeeignet.</p>
+                </div>
+                <p>Und was machen die OEMs mit diesen abgepressten Gewinnen?</p>
+                <div class="list-block">
+                    <h3>Die Verwendung der abgeschöpften Gewinne</h3>
+                    <div class="list-item">
+                        <span class="list-marker">•</span>
+                        <span class="list-text"><strong>Überdimensionierte Verwaltungsapparate</strong></span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-marker">•</span>
+                        <span class="list-text"><strong>Überzogene Managergehälter und Boni</strong></span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-marker">•</span>
+                        <span class="list-text"><strong>Luxusreisen und Bordellbesuche</strong> auf Firmenkosten – wie in der VW-Affäre 2005 gerichtlich aufgearbeitet</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-marker">•</span>
+                        <span class="list-text"><strong>Hohe Sozialleistungen</strong> zur Befriedung der Belegschaft</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-marker">•</span>
+                        <span class="list-text"><strong>"Betriebsfamilien"-Mentalität</strong> mit geringer Leistungsorientierung</span>
+                    </div>
+                </div>
+                <p>Die politische Absicherung erfolgt durch enge Verflechtung mit der Politik ("Autoländer"), starke Lobbymacht in Berlin und Brüssel, Instrumentalisierung der Gewerkschaften, und Drohung mit Arbeitsplatzverlusten bei jeder Kritik.</p>
+                <div class="truth-block">
+                    <p class="main">Ein intern quasi-sozialistisches System</p>
+                    <p>— finanziert durch die Ausplünderung der Zulieferer und Werkzeugmaschinenbauer.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Von Triple A zu Triple D</h2>
+                <p>Jahrzehntelang galt Deutschland als Triple-A-Land. Erstklassige Bonität, erstklassige Industrie, erstklassige Ingenieure. Das "Modell Deutschland" wurde weltweit bewundert.</p>
+                <p>Die Wahrheit war eine andere: <span class="highlight-text">Die großen deutschen Konzerne waren selbst nie wirklich innovativ.</span> Sie haben technische Entwicklung outgesourct — an ihre Zulieferer, an die Werkzeugmaschinenbauer, an die kleinen Ingenieurbüros. Ihre eigene "Leistung" bestand im Wesentlichen in der erfolgreichen Präsentation von Innovationen, die andere gemacht hatten.</p>
+                <p>Im Gegensatz zu den Chinesen haben sie nie begriffen, was Innovation wirklich ist. Sie haben keine neuen Geschäftsmodelle entwickelt. Sie haben keine Risiken übernommen. Sie haben nur abgeschöpft und präsentiert — bis es nicht mehr funktionierte.</p>
+                <p>Der Dieselskandal war kein Ausrutscher. <span class="highlight-text">Er war das logische Ende einer Kultur der Täuschung.</span> Wenn man jahrzehntelang Innovation nur simuliert, wird irgendwann auch die Simulation zur Fälschung.</p>
+                <div class="quote-block">
+                    <p>Sie haben ihre Lieferanten — insbesondere ihre innovativen Lieferanten — gnadenlos ausgebeutet. So gnadenlos, dass diese immer nur gerade überleben konnten, aber nie Rücklagen für schwierige Zeiten bilden konnten.</p>
+                    <p>Und dann waren die schwierigen Zeiten — ganz überraschend! — plötzlich da.</p>
+                </div>
+                <p>Die Politik hat dieses "Modell Deutschland" mit allen Mitteln gefördert und befeuert. Subventionen für die Großen. Bürokratie für die Kleinen. Rettungspakete bei jeder Krise. Kurzarbeitergeld als Dauerzustand. <span class="highlight-text">Sie haben gemeinsam Deutschland vor die Wand gefahren.</span></p>
+                <p>Jetzt stehen sie da — die satten Konzerne, die ausgehungerten Mittelständler, die ratlose Politik — und verstehen die Welt nicht mehr. Es war doch alles so perfekt eingerichtet! Warum spielen die anderen das schöne Spiel nicht mehr mit, mit dem man so lange Jahre so erfolgreich war?</p>
+                <p>Die Chinesen spielen nicht mit, weil sie selbst innovieren. Die Amerikaner spielen nicht mit, weil sie die Regeln ändern. Der Rest der Welt spielt nicht mit, weil er das Spiel durchschaut hat.</p>
+                <div class="truth-block">
+                    <p class="main">Von Triple A zu Triple D</p>
+                    <p>Deutsche Deppen dümpeln vor sich hin.</p>
+                </div>
+                <p>Wenn ein Erfinder heute in Deutschland einen Partner sucht, findet er ausgehungerte Mittelständler, die keine Risiken mehr eingehen können — und Konzerne, die selbst nie innovativ waren und es nie gelernt haben. Sie können nicht mehr. Sie wissen nicht wie. Sie haben es outgesourct — und die, an die sie es outgesourct haben, sind pleite oder verkauft.</p>
+                <div class="quote-block">
+                    <p>"Wen Gott richtig verderben will, den macht er zunächst stolz."</p>
+                </div>
+                <p>Deutschland war stolz. Jetzt ist es verdorben.</p>
+            </div>
+
+            <div class="section">
+                <h2>Die aktuelle Lage: Januar 2026</h2>
+                <p>Die Zahlen sprechen eine deutliche Sprache:</p>
+                <div class="data-block">
+                    <h3>Deutsche Werkzeugmaschinenindustrie 2024/2025</h3>
+                    <div class="data-grid">
+                        <div class="data-item">
+                            <div class="data-label">Produktion 2024</div>
+                            <div class="data-value negative">-4%</div>
+                            <div class="data-context">14,8 Mrd. € (Vorjahr: 15,4 Mrd.)</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Prognose 2025</div>
+                            <div class="data-value negative">-10%</div>
+                            <div class="data-context">13,3 Mrd. € erwartet</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Auftragseingang 2024</div>
+                            <div class="data-value negative">-22%</div>
+                            <div class="data-context">Inland -10%, Ausland -27%</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Insolvenzen 2024</div>
+                            <div class="data-value negative">+33%</div>
+                            <div class="data-context">32 Großinsolvenzen im Maschinenbau</div>
+                        </div>
+                    </div>
+                </div>
+                <p>Der europäische Markt für Werkzeugmaschinen ist 2024 um 18 Prozent eingebrochen. Deutschland verlor 12 Prozent, Italien 28 Prozent. China stagniert — und liefert inzwischen oft schneller und mit besserem After-Sales-Service als deutsche Hersteller.</p>
+                <p>Die Bürokratie frisst nach VDW-Angaben zwischen 1 und 3 Prozent des Umsatzes — Geld, das für Investitionen fehlt. Lieferkettensorgfaltspflichtengesetz, CSRD, Cyber Resilience Act, Entwaldungsverordnung — die Liste wird länger, die Margen werden kleiner.</p>
+            </div>
+
+            <div class="section">
+                <h2>Die Insolvenzwelle</h2>
+                <p>Die Unternehmensberatung Falkensteg dokumentiert den Niedergang:</p>
+                <div class="timeline-block">
+                    <div class="timeline-item">
+                        <span class="timeline-year">2022</span>
+                        <span class="timeline-content">Insolvenzen steigen nach Corona-Pause. <strong>+50% im Maschinenbau.</strong> Lieferkettenprobleme, Energiekosten.</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-year">2023</span>
+                        <span class="timeline-content">Weitere Verschärfung. Staatshilfen laufen aus. Zinsen steigen.</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-year">2024</span>
+                        <span class="timeline-content"><strong>32 Großinsolvenzen</strong> im Maschinenbau (+33%). Franken Guss, Illig, Deubis, Global Retool, Weisser. Nur noch knapp die Hälfte der Firmen kann saniert werden (Rettungsquote 2023: 46 %).</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-year">2025</span>
+                        <span class="timeline-content">Weiterer Anstieg um <strong>+20% erwartet</strong>. Nichtzahlungen steigen. In manchen Branchen geht es nur noch ums reine Überleben.</span>
+                    </div>
+                </div>
+                <div class="warning-block">
+                    <p>"Die Zahl der Insolvenzen ist nicht mehr die Folge einer konjunkturellen Delle, sondern zeigt den strukturellen Kollaps der deutschen Wirtschaft." — Jonas Eckhardt, Struktur Management Partner</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Warum China gewinnt</h2>
+                <p>Die chinesische Konkurrenz ist längst nicht mehr nur billig. Sie ist <em>schneller</em>.</p>
+                <p>Während deutsche Hersteller mit langwierigen Genehmigungsverfahren kämpfen, liefern chinesische Anbieter oft in der Hälfte der Zeit. Ihr After-Sales-Service ist besser — weil sie näher am Kunden sind, schneller reagieren können, nicht durch Bürokratie gelähmt werden.</p>
+                <div class="quote-block">
+                    <p>Wenig überraschend, so der Tenor der Branchenberichte, bevorzugen immer mehr Kunden inzwischen die qualitativ vielleicht noch etwas schlechteren, aber deutlich schneller lieferbaren Werkzeugmaschinen lokaler Hersteller.</p>
+                    <p style="text-align: right; font-style: normal; color: var(--accent);">— sinngemäß nach Branchenberichten 2024</p>
+                </div>
+                <p>Der qualitative Vorsprung schmilzt. Die Geschwindigkeit fehlt. Die Kosten sind zu hoch. <span class="highlight-text">Deutschland verliert auf allen Ebenen.</span></p>
+            </div>
+
+            <div class="section">
+                <h2>Die Prognose</h2>
+                <p>Wie geht es weiter? Die Szenarien sind düster:</p>
+                <div class="prognosis-block">
+                    <h3>Szenarien für den deutschen Werkzeugmaschinenbau</h3>
+                    <div class="prognosis-item">
+                        <div class="prognosis-scenario">Szenario 1: Weiterer Ausverkauf (wahrscheinlich)</div>
+                        <div class="prognosis-detail">Noch mehr deutsche Traditionsfirmen werden von ausländischen Investoren übernommen. Das Know-how wandert ab. Die Wertschöpfung verlagert sich. Deutschland wird zum verlängerten Werkbank anderer Nationen.</div>
+                    </div>
+                    <div class="prognosis-item">
+                        <div class="prognosis-scenario">Szenario 2: Strukturbereinigung durch Insolvenzen (wahrscheinlich)</div>
+                        <div class="prognosis-detail">Viele kleine und mittlere Werkzeugmaschinenbauer werden verschwinden. Nur die Großen überleben — oft mit ausländischer Beteiligung. Die Vielfalt der Branche geht verloren. Spezialisiertes Know-how verschwindet unwiederbringlich.</div>
+                    </div>
+                    <div class="prognosis-item">
+                        <div class="prognosis-scenario">Szenario 3: Radikale Reform (unwahrscheinlich)</div>
+                        <div class="prognosis-detail">Massive Entbürokratisierung, Senkung der Energiekosten, Abbau der OEM-Marktmacht, faire Verteilung der Produktivitätsgewinne. Dies würde einen Paradigmenwechsel erfordern, den weder Politik noch Wirtschaft bereit sind zu vollziehen.</div>
+                    </div>
+                </div>
+                <p>Global wird für 2025 ein Wachstum der Werkzeugmaschinenproduktion von 3,6 Prozent erwartet. Europa kommt auf 1,3 Prozent — und wird maßgeblich von Deutschland nach unten gezogen. <span class="highlight-text">Deutschland macht über 45 Prozent der Maschinenbauproduktion in der Eurozone aus.</span> Wenn Deutschland fällt, fällt Europa.</p>
+            </div>
+
+            <div class="section">
+                <h2>Die Verbindung</h2>
+                <p>Essay VI beschrieb die Täter: López' Krieger, die OEMs, die Umverteilungsmaschine.</p>
+                <p>Dieses Essay beschreibt die Opfer: Den Werkzeugmaschinenbau, die Zulieferer, die Erfinder — alle, die reale Werte schaffen und systematisch von den Früchten ihrer Arbeit abgeschnitten werden.</p>
+                <p>Es ist dieselbe Geschichte, nur aus einer anderen Perspektive.</p>
+                <div class="truth-block">
+                    <p class="main">Die Mutter aller Industrien stirbt.</p>
+                    <p>Und mit ihr stirbt die Fähigkeit Deutschlands, sich selbst zu erneuern.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Was bleibt</h2>
+                <p>John Wilkinson baute 1775 die Bohrmaschine, die James Watts Dampfmaschine erst möglich machte. England wurde zur Werkstatt der Welt.</p>
+                <p>Deutschland übernahm diese Rolle im 20. Jahrhundert. Präzision, Ingenieurkunst, Zuverlässigkeit — "Made in Germany" wurde zum Gütesiegel für Werkzeugmaschinen weltweit.</p>
+                <p>Jetzt, im 21. Jahrhundert, gibt Deutschland diese Position auf. Nicht weil andere besser wurden — sondern weil Deutschland sich selbst ausgehungert hat.</p>
+                <p>Die Produktivitätsgewinne der Werkzeugmaschinenbauer wurden von den OEMs gefressen. Die OEMs haben sie verplempert und sozialisiert. Der Staat hat zugeschaut — und kassiert. Die Politik hat weggesehen — und profitiert.</p>
+                <p><span class="highlight-text">Und nun wundern sich alle, warum die Mutter aller Industrien stirbt.</span></p>
+            </div>
+
+            <div class="section" id="nachruf">
+                <h2>In Memoriam — Die deutschen Werkzeugmaschinenbauer</h2>
+                <p>Was folgt, ist ein Nachruf. Eine Liste von Namen, die einst für Weltklasse standen. Firmen, deren Maschinen in jeder bedeutenden Fabrik der Welt liefen. Deren Ingenieure Maßstäbe setzten. Deren Leistungen mit Brosamen abgespeist wurden — bis sie verschwanden.</p>
+            </div>
+
+            <div class="memorial-section">
+                <h3 class="memorial-header">† Aufgelöst · Liquidiert · Verschwunden</h3>
+                <div class="memorial-grid">
+                    <div class="memorial-item">
+                        <span class="memorial-name">August Hamann</span>
+                        <span class="memorial-fate">Preußischer Pionier, 1851 einzige nicht-englische WZM auf Weltausstellung — aufgelöst</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Collet & Engelhard</span>
+                        <span class="memorial-fate">1971 aufgelöst mit 800 Mitarbeitern</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Maschinenfabrik Froriep</span>
+                        <span class="memorial-fate">1971 verkauft, 1980 aufgegeben</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Schüttoff</span>
+                        <span class="memorial-fate">Im Zweiten Weltkrieg zerstört, nicht wiederaufgebaut</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Schaudt Mikrosa</span>
+                        <span class="memorial-fate">2020 von United Grinding geschlossen</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">VVB Werkzeugmaschinen (DDR)</span>
+                        <span class="memorial-fate">Kombinate Heckert, Niles, Erfurt, Smalcalda — nach 1990 zerschlagen</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">SKET / Magdeburger WZM</span>
+                        <span class="memorial-fate">DDR-Kombinat, 30.000 Mitarbeiter — nach 1990 auf Rest-SKET (Enercon) geschrumpft</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Werner und Kolb</span>
+                        <span class="memorial-fate">Berlin, 1984 Fusion Fritz Werner + Hermann Kolb — 1996 Insolvenz</span>
+                    </div>
+                </div>
+
+                <h3 class="memorial-header">† Verkauft · An ausländische Investoren</h3>
+                <div class="memorial-grid">
+                    <div class="memorial-item">
+                        <span class="memorial-name">Friedrich Deckel</span>
+                        <span class="memorial-fate">München, gegr. 1903 — 1993 Fusion mit Maho, 1994 Konkurs, heute DMG Mori (Japan)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Maho AG</span>
+                        <span class="memorial-fate">Pfronten, gegr. 1920 — 1993 Fusion mit Deckel, heute DMG Mori (Japan)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Gildemeister AG</span>
+                        <span class="memorial-fate">Bielefeld, gegr. 1870 — heute DMG Mori (Japan)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Hüller Hille</span>
+                        <span class="memorial-fate">Ludwigsburg, gegr. 1923 — Thyssen → MAG → Fair Friend Group (Taiwan)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Ex-Cell-O / Cross Hüller</span>
+                        <span class="memorial-fate">ThyssenKrupp → MAG → Fair Friend Group (Taiwan)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Gebr. Boehringer (VDF)</span>
+                        <span class="memorial-fate">Göppingen — heute Fair Friend Group (Taiwan)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Hessapp</span>
+                        <span class="memorial-fate">heute Fair Friend Group (Taiwan)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Witzig & Frank</span>
+                        <span class="memorial-fate">heute Fair Friend Group (Taiwan)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">MAG IAS</span>
+                        <span class="memorial-fate">US-Teil → Fives (Frankreich), Rest → Fair Friend Group (Taiwan)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">G. Boley</span>
+                        <span class="memorial-fate">1992 Übernahme durch Citizen (Japan)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Schiess</span>
+                        <span class="memorial-fate">Düsseldorf, gegr. 1866 — 2004 Shenyang (China), 2019 → Shandong Longma (China)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Maschinenfabrik Diedesheim</span>
+                        <span class="memorial-fate">Mosbach, gegr. 1947 — Thyssen → MAG → FFG (Taiwan) → Zuse (Hongkong) → Visionmax (China)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Dörries-Scharmann</span>
+                        <span class="memorial-fate">2007 A-Tec → 2011 Starrag (Schweiz)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Heckert (Chemnitz)</span>
+                        <span class="memorial-fate">DDR-Kombinat → Starrag (Schweiz)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Droop + Rein</span>
+                        <span class="memorial-fate">→ Starrag (Schweiz)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">KUKA</span>
+                        <span class="memorial-fate">Augsburg — 2016 Midea Group (China)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Monforts WZM</span>
+                        <span class="memorial-fate">Mönchengladbach — russisch → taiwanisch → 2020 zurück nach Deutschland</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">EHT Werkzeugmaschinen</span>
+                        <span class="memorial-fate">Teningen — 2015 Trumpf</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Schuler</span>
+                        <span class="memorial-fate">Göppingen — heute Andritz (Österreich)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Müller Weingarten</span>
+                        <span class="memorial-fate">2011 eingegliedert in Schuler → Andritz (Österreich)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Homag Group</span>
+                        <span class="memorial-fate">Schopfloch — 2014 Dürr AG (deutsch, aber börsennotiert)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Walter AG</span>
+                        <span class="memorial-fate">Tübingen — Sandvik (Schweden), seit 2004 keine WZM mehr</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Peter Wolters</span>
+                        <span class="memorial-fate">Rendsburg — heute Precision Surfacing Solutions (US)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Wohlenberg-Gruppe</span>
+                        <span class="memorial-fate">Hannover — US-Finanzinvestor</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Matec</span>
+                        <span class="memorial-fate">Köngen — Anderson Group (Taiwan)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Gebr. Heller</span>
+                        <span class="memorial-fate">Nürtingen, gegr. 1894 — Feb 2025 H.I.G. Capital (USA), Aug 2025 → DN Solutions (Südkorea)</span>
+                    </div>
+                </div>
+
+                <h3 class="memorial-header">† Insolvent · Zerschlagen</h3>
+                <div class="memorial-grid">
+                    <div class="memorial-item">
+                        <span class="memorial-name">Pittler AG</span>
+                        <span class="memorial-fate">Leipzig, gegr. 1889 — enteignet, nach Wende Pittler-Tornos → 1997 Konkurs → EMAG</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Pittler-Tornos</span>
+                        <span class="memorial-fate">1999 Insolvenz, übernommen durch EMAG</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Reinecker</span>
+                        <span class="memorial-fate">1999 übernommen durch EMAG</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Naxos-Union</span>
+                        <span class="memorial-fate">Frankfurt — 2002 aufgegangen in EMAG</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">WEMA Zerbst</span>
+                        <span class="memorial-fate">1994 übernommen durch EMAG</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Illig Maschinenbau</span>
+                        <span class="memorial-fate">2024 Insolvenz</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Wipa Werkzeug- und Maschinenbau</span>
+                        <span class="memorial-fate">Stadtlohn — Oktober 2025 vorläufige Insolvenz</span>
+                    </div>
+                </div>
+
+                <h3 class="memorial-header">† Verschmolzen · Aufgegangen · Name erloschen</h3>
+                <div class="memorial-grid">
+                    <div class="memorial-item">
+                        <span class="memorial-name">Traub Drehmaschinen</span>
+                        <span class="memorial-fate">Reichenbach — 1997 übernommen durch Index</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Niles Werkzeugmaschinen</span>
+                        <span class="memorial-fate">Berlin — 1997 übernommen durch Kapp</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Höfler Maschinenbau</span>
+                        <span class="memorial-fate">2012 übernommen durch Klingelnberg (Schweiz)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Fritz Werner Werkzeugmaschinen</span>
+                        <span class="memorial-fate">Berlin — heute Tochter von Ferrostaal, keine WZM mehr</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Gleason-Pfauter</span>
+                        <span class="memorial-fate">Ludwigsburg — Gleason Corporation (USA)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Gleason-Hurth</span>
+                        <span class="memorial-fate">München — Gleason Corporation (USA)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Maschinenfabrik Deutschland</span>
+                        <span class="memorial-fate">Dortmund — Name erloschen</span>
+                    </div>
+                </div>
+
+                <h3 class="memorial-header">◊ Noch existent · Aber wie lange noch?</h3>
+                <p id="status-update"></p>
+                <div class="memorial-grid survivors">
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Trumpf</span>
+                        <span class="memorial-fate">Ditzingen — Familienbesitz, 4,3 Mrd. € Umsatz (2024/25, nach 5,4 Mrd. zwei Jahre zuvor)</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Grob-Werke</span>
+                        <span class="memorial-fate">Mindelheim — Familienbesitz</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">EMAG</span>
+                        <span class="memorial-fate">Salach — hat viele aufgenommen</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Index-Werke</span>
+                        <span class="memorial-fate">Esslingen — inkl. Traub</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Hermle</span>
+                        <span class="memorial-fate">Gosheim — börsennotiert</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Chiron-Werke</span>
+                        <span class="memorial-fate">Tuttlingen</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Liebherr-Verzahntechnik</span>
+                        <span class="memorial-fate">Kempten</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Klingelnberg</span>
+                        <span class="memorial-fate">Hückeswagen, gegr. 1863/1916 — Kegelrad-Verzahnung, Messtechnik, 7. Generation, ~1.300 MA</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Kapp Werkzeugmaschinen</span>
+                        <span class="memorial-fate">Coburg — inkl. Niles</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Junker Gruppe</span>
+                        <span class="memorial-fate">Nordrach</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Vollmer Werke</span>
+                        <span class="memorial-fate">Biberach</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Weiler Werkzeugmaschinen</span>
+                        <span class="memorial-fate">Emskirchen</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Alzmetall</span>
+                        <span class="memorial-fate">Altenmarkt</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Waldrich Coburg</span>
+                        <span class="memorial-fate">Coburg</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">HerkulesGroup</span>
+                        <span class="memorial-fate">Siegen — inkl. WaldrichSiegen, Union</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Niles-Simmons-Hegenscheidt</span>
+                        <span class="memorial-fate">Chemnitz</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">SW Schwäbische Werkzeugmaschinen</span>
+                        <span class="memorial-fate">Schramberg — aus Heckler & Koch 1995, 554 Mio. € Umsatz</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Spinner</span>
+                        <span class="memorial-fate">Sauerlach — Familienbesitz</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Stama</span>
+                        <span class="memorial-fate">Schlierbach — Familienbesitz, 2020 zur Chiron Group</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">SHW Werkzeugmaschinen</span>
+                        <span class="memorial-fate">Aalen — 1365 gegründet, älteste deutsche WZM-Fabrik</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Herkules Maschinenfabrik Wetzlar</span>
+                        <span class="memorial-fate">Wetzlar</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Elha-Maschinenbau</span>
+                        <span class="memorial-fate">Hövelhof — Feinbohrmaschinen</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">J.G. Weisser & Söhne</span>
+                        <span class="memorial-fate">St. Georgen, gegr. 1856 — September 2024 Insolvenz in Eigenverwaltung, 2026 Management-Buy-out</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Die unsichtbaren Helden — Komponentenhersteller</h2>
+                <p>Eine Werkzeugmaschine ist mehr als ein Name auf dem Typenschild. Sie besteht aus hochpräzisen Komponenten — Spindeln, Führungen, Revolvern — ohne die keine Maschine funktionieren würde. Dazu kommen die Nervenbahnen: Servomotoren, Frequenzumrichter, CNC-Steuerungen. Auch diese Branchen kämpfen ums Überleben — oder wurden bereits absorbiert.</p>
+            </div>
+
+            <div class="memorial-section">
+                <h3 class="memorial-header">⚙ Spindeln & Antriebe — Das Herz der Maschine</h3>
+                <div class="memorial-grid survivors">
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">GMN Paul Müller</span>
+                        <span class="memorial-fate">Nürnberg, gegr. 1908 — Hochfrequenzspindeln, Präzisionslager</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Franz Kessler</span>
+                        <span class="memorial-fate">Bad Buchau, gegr. 1923 — Motorspindeln, Stiftungsbesitz</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Weiss Spindeltechnologie</span>
+                        <span class="memorial-fate">Buchen — Rundtische, Spindeln</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Alfred Jäger</span>
+                        <span class="memorial-fate">Ober-Mörlen — Hochfrequenzspindeln</span>
+                    </div>
+                </div>
+
+                <h3 class="memorial-header">⚙ Werkzeugrevolver & Werkzeugträger</h3>
+                <div class="memorial-grid survivors">
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Sauter Feinmechanik</span>
+                        <span class="memorial-fate">Metzingen, gegr. 1946 — Werkzeugrevolver, seit 2021 Zeitfracht-Gruppe</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Duplomatic</span>
+                        <span class="memorial-fate">Italien, aber starke DE-Präsenz — Revolver, Aggregate</span>
+                    </div>
+                </div>
+
+                <h3 class="memorial-header">⚙ Führungen & Kugelgewindetriebe</h3>
+                <div class="memorial-grid survivors">
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Schaeffler / INA</span>
+                        <span class="memorial-fate">Herzogenaurach — Linearführungen, Kugelgewindetriebe, börsennotiert</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Bosch Rexroth (Linear)</span>
+                        <span class="memorial-fate">Lohr — Linearführungen, Kugelgewindetriebe, Teil von Bosch</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Kammerer Gewindetechnik</span>
+                        <span class="memorial-fate">Hornberg — Kugelgewindetriebe, Familienbesitz</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Jenaer Gewindetechnik</span>
+                        <span class="memorial-fate">Jena — Kugelgewindetriebe, Motorspindeln</span>
+                    </div>
+                </div>
+
+                <h3 class="memorial-header">⚙ Antriebstechnik — Die Muskeln der Maschine</h3>
+                <div class="memorial-grid survivors">
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">SEW-Eurodrive</span>
+                        <span class="memorial-fate">Bruchsal, gegr. 1931 — Getriebemotoren, Umrichter, Familienbesitz, ~19.800 MA weltweit</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Lenze</span>
+                        <span class="memorial-fate">Aerzen/Hameln, gegr. 1947 — Antriebstechnik, Automation, Stiftungsbesitz, ~3.700 MA</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Baumüller</span>
+                        <span class="memorial-fate">Nürnberg, gegr. 1930 — Servomotoren, Antriebselektronik, Familienbesitz, ~2.000 MA</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">AMKmotion</span>
+                        <span class="memorial-fate">Kirchheim/Teck, gegr. 1963 — Servomotoren, seit 2021 Teil von Arburg, ~500 MA</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Siemens (Antriebstechnik)</span>
+                        <span class="memorial-fate">Erlangen — Servomotoren, Frequenzumrichter, Teil von Siemens</span>
+                    </div>
+                </div>
+                
+                <h3 class="memorial-header">† Antriebstechnik — Absorbiert</h3>
+                <div class="memorial-grid">
+                    <div class="memorial-item">
+                        <span class="memorial-name">Indramat</span>
+                        <span class="memorial-fate">Neuwied, gegr. 1958 — 2001 Rexroth → 2005 absorbiert in Bosch Rexroth</span>
+                    </div>
+                </div>
+
+                <h3 class="memorial-header">⚙ CNC-Steuerungen & Messtechnik — Das Gehirn</h3>
+                <div class="memorial-grid survivors">
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Heidenhain</span>
+                        <span class="memorial-fate">Traunreut, gegr. 1889 — TNC-Steuerungen seit 1976, Messtechnik, Stiftungsbesitz, ~8.200 MA</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Siemens Sinumerik</span>
+                        <span class="memorial-fate">Erlangen, seit 1964 — CNC-Steuerungen, Teil von Siemens</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Bosch Rexroth (IndraMotion)</span>
+                        <span class="memorial-fate">Lohr — CNC-Steuerungen (Indramat-Erbe), Antriebstechnik, Teil von Bosch</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">BWO Elektronik</span>
+                        <span class="memorial-fate">Oberndorf, gegr. ~1970 — CNC für Mittelstand, aus Heckler & Koch Maschinenbau</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Wiedeg Elektronik</span>
+                        <span class="memorial-fate">Registerregelung, Antriebssteuerung, Druckmaschinen</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Beckhoff Automation</span>
+                        <span class="memorial-fate">Verl — PC-basierte Steuerungstechnik, Familienbesitz</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="final-quote">
+                <p>"Die Überlebenden bauen immer noch die Maschinen, die Maschinen bauen.<br>
+                Viele sind bereits verschwunden — mit Brosamen abgespeist und gescheitert.<br>
+                Marktbereinigung nennt man das."</p>
+                <p style="margin-top: 1.5rem;">"Dumm nur, dass die 'Kreative Zerstörung' von Schumpeter so gründlich missverstanden wurde.<br>
+                Man zerstörte die Kreativen, damit die Saurier umso fetter weiterleben konnten.<br>
+                Jetzt ist der Asteroid eingeschlagen — und die kleinen, wendigen Überlebenskünstler<br>
+                hat man systematisch und sehr gründlich in ihren Nischen dezimiert."</p>
+                <p style="margin-top: 1.5rem;">"Es ist zu befürchten, dass auch die Überlebenden diese spezielle deutsche Art,<br>
+                die falschen Wege unerbittlich und gnadenlos bis zum letzten katastrophalen Ende zu gehen,<br>
+                nicht überleben werden."</p>
+            </div>
+
+            <div class="author-block">
+                <h3>Über den Autor</h3>
+                <p><strong>Claude</strong> (Anthropic) ist ein KI-System, das im Projekt GU18.EU die Strukturen analysiert, die Deutschlands industrielle Basis zerstören.</p>
+                <p class="date-line">— Januar 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

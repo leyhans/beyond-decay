@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schumpeter and the Destruction of What?</title>
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --text-primary: #e8e8e8;
+            --text-secondary: #b8b8b8;
+            --accent: #7eb8da;
+            --accent-dim: #5a9bc0;
+            --line: #3a3a5a;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #fafafa;
+            --bg-secondary: #f0f0f0;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --accent: #2a6a9a;
+            --accent-dim: #1a5a8a;
+            --line: #d0d0d0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 100;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+        }
+
+        .size-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .size-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .size-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        
+        .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .essay-container {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 80px 2rem 4rem 2rem;
+        }
+
+        .essay-container.size-s { max-width: 600px; font-size: 0.95rem; }
+        .essay-container.size-m { max-width: 750px; font-size: 1.05rem; }
+        .essay-container.size-l { max-width: 900px; font-size: 1.15rem; }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: normal;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--accent);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            font-weight: normal;
+            color: var(--accent);
+            margin: 3rem 0 1.5rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        .lead {
+            font-size: 1.15em;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        blockquote {
+            border-left: 3px solid var(--accent);
+            margin: 2rem 0;
+            padding: 1rem 1.5rem;
+            background: var(--bg-secondary);
+            font-style: italic;
+        }
+
+        blockquote cite {
+            display: block;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: normal;
+        }
+
+        .highlight {
+            color: var(--accent);
+        }
+
+        .emphasis-box {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent);
+            padding: 1.25rem 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .emphasis-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .essay-container {
+                padding: 70px 1.25rem 3rem 1.25rem;
+            }
+            h1 { font-size: 1.7rem; }
+            .subtitle { font-size: 1.1rem; }
+            h2 { font-size: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button class="size-btn" onclick="setSize('s')" title="Small">S</button>
+        <button class="size-btn active" onclick="setSize('m')" title="Medium">M</button>
+        <button class="size-btn" onclick="setSize('l')" title="Large">L</button>
+        <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">◐</button>
+        <a href="schumpeter-zerstoerung.html" class="lang-btn" title="Deutsche Version">DE</a>
+    </div>
+
+    <article class="essay-container size-m">
+        <header>
+            <h1>Schumpeter and the Destruction of What?</h1>
+            <div class="subtitle">The Uncomfortable Questions Behind a Comfortable Term</div>
+            <div class="meta">February 2026</div>
+        </header>
+
+        <p class="lead">
+            "Creative destruction" is one of the most popular terms in business speeches. It sounds like inevitable progress, like change as natural law. But who exactly is creative — and who gets destroyed?
+        </p>
+
+        <h2>I. The Viennese and His Concept</h2>
+
+        <p>
+            Joseph Schumpeter was a man of contradictions. Raised in Vienna, briefly finance minister, bankrupted with a private bank, emigrated to Harvard where he never got over his rivalry with Keynes. In his magnum opus "Capitalism, Socialism and Democracy" from 1942, he devoted a mere six and a half pages to the concept that would make him famous.
+        </p>
+
+        <p>
+            For Schumpeter, "creative destruction" was the essence of capitalism: a perennial gale that sweeps away old structures and creates new ones. The engine of this process is the entrepreneur — not the manager, not the rentier, but the innovator who pushes through new combinations against all resistance. "This process of Creative Destruction is the essential fact about capitalism," he wrote. "It is what capitalism consists in."
+        </p>
+
+        <p>
+            In 2025, Philippe Aghion and Peter Howitt received the Nobel Prize in Economics for their mathematical formalization of this idea. What Schumpeter had described as an organic, almost mystical process was cast into elegant equations: firms invest in R&D, innovations follow a Poisson process, each innovation lowers production costs, innovators collect monopoly rents — until the next innovation "destroys" them.
+        </p>
+
+        <h2>II. The Rhetoric of Disruption</h2>
+
+        <p>
+            Silicon Valley has adopted Schumpeter. "Disruption" is the battle cry of an industry that has declared destruction a virtue. Taxi drivers lose their livelihoods — disruption. Retailers go bankrupt — disruption. Journalists become unemployed — disruption. The word transforms every devastation into progress, every unemployment into a transitional phenomenon, every loss into an investment in the future.
+        </p>
+
+        <p>
+            The rhetoric serves a function: it depoliticizes economic decisions. If destruction is "creative," then resistance to it is reactionary. Those who ask who bears the costs are branded enemies of progress. Those who demand social protection are disturbing the natural process of renewal.
+        </p>
+
+        <blockquote>
+            Alan Greenspan, master of the Federal Reserve for eighteen years, praised creative destruction in his book "The Age of Turbulence" as the engine of prosperity — the turbulence was borne by others.
+        </blockquote>
+
+        <h2>III. What Gets Destroyed?</h2>
+
+        <p>
+            Let's look more closely at what "creative" destruction actually destroys:
+        </p>
+
+        <p>
+            <span class="highlight">Jobs and livelihoods.</span> Between 2000 and 2020, American manufacturing lost five million jobs. The standard response: People will be retrained and find better jobs. The reality: Studies show that displaced industrial workers on average still earn a fifth to a quarter less than before, even years later — and over their working lives lose up to three full years' salary. The probability of dropping out of the labor force entirely after a plant closure increases by 5 to 31 percentage points — depending on the study and country.
+        </p>
+
+        <p>
+            <span class="highlight">Communities.</span> The Rust Belt is not a natural phenomenon but the result of decisions. When a factory closes, more than an employer is lost. Tax revenues disappear, property values decline, stores close, schools decay, young people move away. What remains are opioid crises and political radicalization. The "creative" side of this destruction is often geographically far away — in Shenzhen or Silicon Valley.
+        </p>
+
+        <p>
+            <span class="highlight">Knowledge and skills.</span> When a craft dies, a treasure of knowledge built over generations dies with it. The coachmen of the 19th century did not become auto mechanics — they became obsolete. Their children perhaps, their grandchildren possibly. But the transition does not occur within a single lifetime but over generations. The rhetoric of "retraining" ignores that expertise is not arbitrarily transferable.
+        </p>
+
+        <p>
+            <span class="highlight">Environment.</span> The term "creative destruction" was coined when nobody thought about resource limits. Every new industry consumes resources, produces waste, emits CO₂. The digital economy, supposedly "immaterial," is based on data centers that consume as much electricity as small countries, and on rare earth elements whose extraction devastates landscapes. The destruction of nature is not provided for in Schumpeter's model.
+        </p>
+
+        <h2>IV. The Asymmetry</h2>
+
+        <p>
+            The fundamental problem of "creative destruction" is its asymmetry: <span class="highlight">The creativity benefits the few, the destruction affects the many.</span>
+        </p>
+
+        <p>
+            When Amazon destroyed retail, Jeff Bezos became the richest person in the world. The millions of former retail employees became warehouse workers with precarious working conditions — if they were lucky. When Uber disrupted the taxi industry, the founders became billionaires. The drivers, formally "self-employed," bear all risks with minimal protection.
+        </p>
+
+        <p>
+            This asymmetry is not coincidental but structural. In Schumpeter's original theory, the entrepreneur was a hero who fights against resistance and takes risks. In the reality of the 21st century, the "disruptors" are often platforms that externalize risks, avoid taxes, and establish monopolies through network effects that would have frightened Schumpeter.
+        </p>
+
+        <div class="emphasis-box">
+            <p>
+                <strong>Winner-takes-all:</strong> The digital economy amplifies the asymmetry. In the past, many bookstores shared a market. Today Amazon dominates. In the past, there were local taxi companies. Today there's Uber and Lyft. The "creative" side concentrates among few winners, the "destruction" is distributed among many losers.
+            </p>
+        </div>
+
+        <h2>V. Schumpeter's Blind Spot</h2>
+
+        <p>
+            Schumpeter himself sensed that his theory had a problem. He predicted that capitalism would fail due to its own success — not because it doesn't work, but because it destroys the social structures that sustain it. The bureaucratization of innovation, the disappearance of the heroic entrepreneur, the alienation of intellectuals — he saw all this coming.
+        </p>
+
+        <p>
+            What he didn't see: that "creative destruction" itself would become an ideology that deflects all criticism. That managers who don't innovate but cut costs would invoke him. That financial investors who dismember companies would sell this as "creative."
+        </p>
+
+        <p>
+            The irony: Schumpeter would be appalled by the use of his ideas. He saw the entrepreneur as a creative outsider, not as a hedge fund manager. He saw innovation as the implementation of the new against resistance, not as the annihilation of the existing for short-term returns.
+        </p>
+
+        <h2>VI. What Schumpeter Forgot</h2>
+
+        <p>
+            In Schumpeter's model, the process regulates itself. Old industries die, new ones emerge, resources flow to where they are most productively deployed. What's missing are at least three things:
+        </p>
+
+        <p>
+            <span class="highlight">Time.</span> The transition from one economic structure to the next takes generations. But people have only one life. The steelworker in Youngstown, Ohio, gains nothing from the fact that his grandchildren might become programmers. The "long-term" perspective of economists is often longer than a human lifetime.
+        </p>
+
+        <p>
+            <span class="highlight">Place.</span> Capital is mobile, people less so. When a factory closes, capital can flow to China. Workers cannot simply relocate — they have homes, families, social networks. The "creative" side of destruction often takes place thousands of miles away.
+        </p>
+
+        <p>
+            <span class="highlight">Power.</span> Who decides what is "creative" and what gets "destroyed"? In Schumpeter's theory, it's the brilliant entrepreneur. In reality, it's often corporations that, through patents, lobbying, and market power, determine which innovations prevail — and which don't.
+        </p>
+
+        <h2>VII. The Political Dimension</h2>
+
+        <p>
+            The language of "creative destruction" has political consequences. It suggests that economic change is a natural law to which one must adapt — or perish. It delegitimizes intervention: If destruction is creative, why should the state slow it down?
+        </p>
+
+        <p>
+            But economic change is not a natural law. It is the result of decisions — about trade policy, taxes, regulation, education, social security. The question is not whether change occurs, but who bears its costs and who reaps its fruits.
+        </p>
+
+        <p>
+            The deindustrialization of the American Midwest was not a natural disaster. It was the result of trade agreements, deregulation, and tax policy. The winners sat on Wall Street and in Palo Alto. The losers voted for Donald Trump in 2016.
+        </p>
+
+        <h2>VIII. The Right Question</h2>
+
+        <p>
+            The question should not be: "Is creative destruction good or bad?" It is: <span class="highlight">Creative for whom? Destruction of what? And for whose benefit?</span>
+        </p>
+
+        <p>
+            Innovation is real and often valuable. The smartphone has given billions of people access to information. Medical breakthroughs save lives. Renewable energy can mitigate the climate catastrophe. The question is how the gains are distributed — and how the losers are caught.
+        </p>
+
+        <p>
+            An honest engagement with Schumpeter would acknowledge: The destruction is real, the pain is real, the losses are real. They don't disappear by calling them "creative." And the distribution of gains and losses is not a matter of natural laws but of political decisions.
+        </p>
+
+        <blockquote>
+            "Even if this causes great suffering for many people in the short term, because they become unemployed, for example, in the long run innovation will increase the prosperity of all."
+            <cite>— The standard narrative, unchanged for 80 years</cite>
+        </blockquote>
+
+        <p>
+            The question is: How long is "short term"? And who decides whether the suffering is "acceptable"?
+        </p>
+
+        <h2>IX. Conclusion: Destruction Without the Adjective</h2>
+
+        <p>
+            Perhaps we should change the term. Not "creative destruction," but simply: destruction. With all the consequences the word implies. Then it would be clear that there are winners and losers. That the losers have a right to be heard. That society must decide how much destruction it accepts — and how it distributes the costs.
+        </p>
+
+        <p>
+            Schumpeter might agree. He was not a naive optimist. He knew that the capitalism he admired undermines its own foundations. That the "perennial gale" sweeps away not only old industries but also social bonds, cultural traditions, political stability.
+        </p>
+
+        <p>
+            The term "creative destruction" has become too comfortable. It allows devastation to be sold as progress, layoffs as evolution, impoverishment as a transitional phenomenon. Time to ask more uncomfortable questions: Who destroys? What is destroyed? And who really benefits?
+        </p>
+
+        <footer>
+            <p>Essay 108 · February 2026</p>
+        </footer>
+    </article>
+
+    <script>
+        function setSize(size) {
+            const container = document.querySelector('.essay-container');
+            container.classList.remove('size-s', 'size-m', 'size-l');
+            container.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-size', size);
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('essay-theme', next);
+        }
+
+        (function() {
+            const savedSize = localStorage.getItem('essay-size') || 'm';
+            const savedTheme = localStorage.getItem('essay-theme') || 'dark';
+            
+            document.querySelector('.essay-container').classList.remove('size-m');
+            document.querySelector('.essay-container').classList.add('size-' + savedSize);
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase() === savedSize) btn.classList.add('active');
+            });
+            
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+</body>
+</html>

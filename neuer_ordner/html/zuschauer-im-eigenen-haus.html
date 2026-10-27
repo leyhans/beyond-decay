@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zuschauer im eigenen Haus — Über einen deutschen Roboter und die letzte Chance</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --bg-tertiary: #1a1a1d;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+            --contrast-bg: #1e1e22;
+            --warning: #b43c3c;
+            --warning-dim: rgba(180, 60, 60, 0.1);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --bg-tertiary: #e8e8e4;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+            --contrast-bg: #e0e0dc;
+            --warning: #a04040;
+            --warning-dim: rgba(160, 64, 64, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        /* Controls Bar */
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-left a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .controls-left a:hover {
+            text-decoration: underline;
+        }
+        
+        .controls-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .size-controls {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        
+        .size-controls span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .size-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        .theme-btn {
+            font-size: 1.1rem;
+            padding: 0.3rem 0.5rem;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 5rem 2rem 4rem;
+        }
+
+        /* Hero */
+        .hero {
+            margin-bottom: 3.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        
+        .essay-label {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            font-weight: 300;
+            line-height: 1.25;
+            margin-bottom: 1rem;
+        }
+
+        h1 strong {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .subtitle {
+            font-size: 1.15em;
+            font-weight: 300;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8em;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section p {
+            margin-bottom: 1.25rem;
+            font-weight: 300;
+        }
+
+        /* Quote Block */
+        .quote-block {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+            font-style: italic;
+        }
+
+        .quote-block p {
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .quote-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Scene Block */
+        .scene-block {
+            background: var(--bg-secondary);
+            padding: 1.75rem 2rem;
+            margin: 1.75rem 0;
+            border-radius: 4px;
+        }
+
+        .scene-block p {
+            margin-bottom: 1rem;
+        }
+
+        .scene-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            margin: 1.75rem 0;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .data-table th {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75em;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: var(--bg-secondary);
+        }
+
+        .data-table td {
+            font-weight: 300;
+        }
+
+        .data-table .number {
+            text-align: right;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+        }
+
+        .data-table tr.highlight td {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .table-source {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            margin-top: -1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Final Quote */
+        .final-quote {
+            text-align: center;
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .final-quote p {
+            font-size: 1.2em;
+            font-style: italic;
+            font-weight: 300;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .final-quote .attribution {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8em;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            font-style: normal;
+        }
+
+        /* Author Block */
+        .author-block {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            margin: 2.5rem 0;
+            border-radius: 4px;
+        }
+
+        .author-block h3 {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75em;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .author-block p {
+            margin-bottom: 1rem;
+            font-weight: 300;
+            font-size: 0.95em;
+        }
+
+        .author-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        .author-block .date-line {
+            text-align: center;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-top: 1.5rem;
+        }
+
+        /* Series Info */
+        .series-info {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--accent-dim);
+            border-radius: 4px;
+            margin-top: 2rem;
+        }
+
+        .series-info p {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .series-info strong {
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .controls {
+                padding: 0.5rem 1rem;
+            }
+            
+            .controls-left {
+                font-size: 0.6rem;
+            }
+            
+            .size-controls span {
+                display: none;
+            }
+            
+            main {
+                padding: 4rem 1rem 3rem;
+            }
+            
+            h1 {
+                font-size: 1.6em;
+            }
+            
+            .data-table {
+                font-size: 0.8em;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="size-medium">
+    <!-- Controls Bar -->
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <article>
+            <!-- Hero -->
+            <header class="hero">
+                <span class="essay-label">Essay XXVI · Januar 2026</span>
+                <h1>Zuschauer im <strong>eigenen Haus</strong></h1>
+                <p class="subtitle">Über einen deutschen Roboter und die letzte Chance</p>
+            </header>
+
+            <!-- Die Szene -->
+            <div class="section">
+                <h2>I. Die Szene</h2>
+                
+                <div class="scene-block">
+                    <p>Dezember 2025. Eine Bühne irgendwo in Deutschland. Zwei der mächtigsten Industriemanager des Landes stehen vor Publikum: Roland Busch, CEO von Siemens, und Klaus Rosenfeld, CEO von Schaeffler.</p>
+                    
+                    <p>Zwischen ihnen steht ein Roboter. Humanoid, knapp 1,30 Meter groß, den CEOs kaum bis zur Brust reichend, aber elegant in seinen Bewegungen. Ein Unitree G1, made in China. Preis: 13.500 Dollar.</p>
+                    
+                    <p>Rosenfeld erklärt dem Publikum sinngemäß:</p>
+                </div>
+                
+                <div class="quote-block">
+                    <p>In dem Roboter stecke kaum etwas aus eigenem Haus – man habe ihn gekauft, um zu verstehen, wie er funktioniert.</p>
+                </div>
+                
+                <p>Das ist die Szene. Zwei deutsche Industriekapitäne, Erben einer Tradition, die einst die Welt mit Maschinen versorgte, stehen vor einem chinesischen Produkt und gestehen: Wir verstehen nicht mehr, wie das gemacht wird. Wir müssen es kaufen, um davon zu lernen.</p>
+                
+                <p>Im selben Gespräch sagt Busch sinngemäß:</p>
+                
+                <div class="quote-block">
+                    <p>Die KI-Kompetenz sitze in Palo Alto, nicht in Erlangen.</p>
+                </div>
+                
+                <p>Und:</p>
+                
+                <div class="quote-block">
+                    <p>Es gebe kein deutsches LLM, das mitspiele.</p>
+                </div>
+                
+                <p>Und:</p>
+                
+                <div class="quote-block">
+                    <p>Europa sei der letzte Platz, wo er ein KI-Produkt skalieren würde.</p>
+                </div>
+                
+                <p>Das sagt der CEO von Siemens. Über sein eigenes Land. Über seinen eigenen Kontinent.</p>
+            </div>
+
+            <!-- Die Zahlen -->
+            <div class="section">
+                <h2>II. Die Zahlen</h2>
+                
+                <p>Der Markt für humanoide Roboter explodiert. Die Prognosen sprechen von 70 Milliarden Dollar bis 2034. Tesla plant 100.000 Einheiten seines Optimus-Roboters für 2026. Chinesische Hersteller haben bereits Tausende ausgeliefert.</p>
+                
+                <table class="data-table">
+                    <tr>
+                        <th>Hersteller</th>
+                        <th>Land</th>
+                        <th>Modell</th>
+                        <th class="number">Preis (USD)</th>
+                    </tr>
+                    <tr>
+                        <td>Unitree</td>
+                        <td>China</td>
+                        <td>R1</td>
+                        <td class="number">5.900</td>
+                    </tr>
+                    <tr>
+                        <td>Unitree</td>
+                        <td>China</td>
+                        <td>G1</td>
+                        <td class="number">13.500</td>
+                    </tr>
+                    <tr>
+                        <td>Tesla</td>
+                        <td>USA</td>
+                        <td>Optimus Gen 3</td>
+                        <td class="number">20.000–30.000</td>
+                    </tr>
+                    <tr>
+                        <td>1X Technologies</td>
+                        <td>Norwegen</td>
+                        <td>NEO</td>
+                        <td class="number">20.000</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td>Neura Robotics</td>
+                        <td>Deutschland</td>
+                        <td>4NE-1</td>
+                        <td class="number">22.000–44.600</td>
+                    </tr>
+                    <tr>
+                        <td>Unitree</td>
+                        <td>China</td>
+                        <td>H1</td>
+                        <td class="number">90.000</td>
+                    </tr>
+                    <tr>
+                        <td>Boston Dynamics</td>
+                        <td>USA</td>
+                        <td>Atlas</td>
+                        <td class="number">140.000–150.000</td>
+                    </tr>
+                </table>
+                <p class="table-source">Quellen: Herstellerangaben und Marktanalysen, Januar 2026</p>
+                
+                <p>Ein Name fällt auf: Neura Robotics, Metzingen. Ein deutsches Startup. Ihr 4NE-1 wird auf manchen Vergleichsportalen als Nummer eins unter 39 humanoiden Robotern geführt. „Europe's leading humanoid robot", schreibt das Unternehmen.</p>
+                
+                <p>Das ist die gute Nachricht.</p>
+                
+                <p>Die schlechte: China kontrolliert 70 Prozent der globalen Lieferkette für Robotik-Komponenten. Motoren, Aktuatoren, Sensoren, Batterien — alles kommt aus dem Reich der Mitte. Der Unitree G1 ist, wie ein Analysebericht feststellt, „vollständig von amerikanischen Komponenten entkoppelt".</p>
+                
+                <p>Und während deutsche Professoren noch Anträge schreiben, hat China zwischen 2020 und 2025 fast 5.700 Patente im Bereich humanoider Robotik angemeldet. Die USA kommen auf knapp 1.500. Deutschland taucht in dieser Statistik nicht als eigene Kategorie auf.</p>
+            </div>
+
+            <!-- Die Chance -->
+            <div class="section">
+                <h2>III. Die Chance</h2>
+                
+                <p>Neura Robotics existiert. Das ist bereits bemerkenswert.</p>
+                
+                <p>Das Unternehmen hat 120 Millionen Euro in einer Serie-B-Finanzierung eingesammelt. Es hat einen Roboter entwickelt, der technologisch konkurrenzfähig ist. Es hat etwas, das deutsche Industrieunternehmen schmerzlich vermissen: eine Vision für die Zukunft der Mensch-Maschine-Kollaboration.</p>
+                
+                <p>Der 4NE-1 kann sehen, hören, fühlen. Er hat eine patentierte Sensor-Haut, die Menschen erkennt, bevor es zur Berührung kommt. Er lernt aus Erfahrung. Er ist nicht nur ein Werkzeug, sondern ein Kollege.</p>
+                
+                <p>Das ist die Chance. Ein deutsches Unternehmen an der Spitze einer Technologie, die das 21. Jahrhundert prägen wird.</p>
+                
+                <p>Die Frage ist: Was macht Deutschland daraus?</p>
+            </div>
+
+            <!-- Was nötig wäre -->
+            <div class="section">
+                <h2>IV. Was nötig wäre</h2>
+                
+                <p>Strategische Industriepolitik. Nicht ein weiteres Förderprogramm mit fünfzig Seiten Antragsformularen, sondern eine politische Entscheidung: Wir wollen, dass dieser Sektor in Europa bleibt. Was braucht ihr?</p>
+                
+                <p>Frankreich macht das mit seinen „Champions nationaux". China macht es sowieso. Nur Deutschland glaubt noch, dass der Markt alles regelt — während der Markt längst von anderen Staaten gelenkt wird.</p>
+                
+                <p>Kapital in der Skalierungsphase. 120 Millionen Euro klingen nach viel. Aber Tesla investiert Milliarden. Unitree plant einen Börsengang mit einer Bewertung von sieben Milliarden Dollar. Deutschland bräuchte einen Souveränitätsfonds, der strategisch in Schlüsseltechnologien investiert. Nicht als Subvention, sondern als Beteiligung.</p>
+                
+                <p>Europäische Lieferketten. Was passiert, wenn China den Hahn zudreht? Ohne eigene Produktion von Motoren, Sensoren, Batterien bleibt jede europäische Robotik-Firma ein Assemblierer fremder Teile.</p>
+                
+                <p>Fachkräfte. Neura sitzt in Metzingen, nicht in München oder Berlin. Sie konkurrieren um dieselben KI-Ingenieure wie Google, Tesla und hundert chinesische Startups. Deutschland müsste die Einwanderung von Tech-Talenten radikal vereinfachen. Visa in Tagen, nicht Monaten.</p>
+                
+                <p>Einen Heimatmarkt als Testfeld. Volkswagen, BMW, Siemens, BASF — sie alle könnten Neura-Roboter pilotieren. Nicht aus Gefälligkeit, sondern weil es in ihrem Interesse ist, einen europäischen Lieferanten zu haben.</p>
+                
+                <p>Tempo. Die Chinesen bringen in Monaten auf den Markt, was in Deutschland Jahre dauert. Genehmigungen, Zertifizierungen, Datenschutzbedenken, Arbeitsrechtsfragen — alles legitim, aber in der Summe tödlich.</p>
+            </div>
+
+            <!-- Was wahrscheinlich passieren wird -->
+            <div class="section">
+                <h2>V. Was wahrscheinlich passieren wird</h2>
+                
+                <p>Nichts davon.</p>
+                
+                <p>Neura wird ein paar weitere Förderanträge stellen. Die Politik wird lobende Worte finden. Ein Minister wird die Fabrik besuchen und Fotos machen. Es wird Arbeitskreise geben und Strategiepapiere.</p>
+                
+                <p>Und in fünf Jahren wird Neura entweder von einem amerikanischen Tech-Konzern gekauft worden sein, oder von chinesischer Konkurrenz überrollt, oder beides.</p>
+                
+                <p>Das ist das Muster. BioNTech — deutsches Unternehmen, aber Pfizer machte die Skalierung. DeepL — brillante deutsche KI, aber wo ist die Plattform? CureVac — gescheitert an der Skalierung.</p>
+                
+                <p>Deutschland kann Dinge erfinden. Deutschland kann Dinge nicht groß machen.</p>
+            </div>
+
+            <!-- Die Show -->
+            <div class="section">
+                <h2>VI. Die Show</h2>
+                
+                <p>Wenige Wochen später, CES 2026 in Las Vegas. Derselbe Roland Busch steht auf einer anderen Bühne. Die Stimmung ist eine andere. Hier wird nicht gestanden, hier wird gefeiert.</p>
+                
+                <p>Busch begrüßt seine „Freunde": Jensen Huang von NVIDIA, Satya Nadella von Microsoft, andere Größen der amerikanischen Tech-Welt. Er beschwört Partnerschaften, zeigt Logos nebeneinander, spricht von gemeinsamen Visionen. So wie man vor zehn Jahren die Zusammenarbeit mit den Chinesen gefeiert hat — „Wandel durch Handel", „Win-Win", „strategische Partnerschaft" —, so feiert man jetzt mit den US-Boys.</p>
+                
+                <p>Das Muster ist dasselbe. Deutschland als Junior-Partner, der sich einbildet, auf Augenhöhe zu sein. Der glaubt, dass „Partnerschaft" bedeutet, gemeinsam zu gewinnen — während der andere weiß, dass es bedeutet, den Zugang zu kontrollieren.</p>
+                
+                <p>Huang lächelt viel an diesem Abend. Er kann es sich leisten. NVIDIA kontrolliert 80 Prozent des Marktes für KI-Chips. Ohne seine Hardware läuft nichts — nicht Siemens' Industrial AI, nicht Microsofts Cloud, nicht Teslas Roboter. Wer die Chips hat, hat die Macht. Wer die Chips kauft, hat eine Rechnung.</p>
+                
+                <p>Busch eröffnet mit einer Geschichtsstunde:</p>
+                
+                <div class="quote-block">
+                    <p>„Steam took 60 years to transform society. Electricity, 30. Computers, 15. For AI, we're looking at seven years or less."</p>
+                </div>
+                
+                <p>Beachten Sie die Technik: Wer die Geschichte als lineare Beschleunigung erzählt, macht die eigene Agenda zur Naturgewalt. Widerstand zwecklos. Fragen unerwünscht. Der Zug fährt ab — steigen Sie ein oder bleiben Sie zurück.</p>
+                
+                <p>Es folgt das volle Programm: Digital Twins, die Fabrik als „riesiger Roboter", Industrial AI, die Energie der Sterne. NVIDIA präsentiert die Vera Rubin Plattform — Server-Racks mit 72 GPUs, 220 Billionen Transistoren, mehrere Tonnen schwer. PepsiCo berichtet von 20 Prozent Effizienzsteigerung in drei Monaten. Und dann die Vision:</p>
+                
+                <div class="quote-block">
+                    <p>„Robots orchestrating robots building robots."</p>
+                </div>
+                
+                <p>Irgendwann kommt Sarah auf die Bühne. Eine Fabrikarbeiterin mit einer Meta Ray-Ban Brille. Die KI flüstert ihr ins Ohr, was sie als nächstes tun soll. Busch und Huang lächeln. Das ist die Zukunft der Arbeit: Menschen als Peripheriegeräte einer künstlichen Intelligenz.</p>
+                
+                <p>60 Minuten lang fällt das Wort „Risiko" nicht. Nur „Opportunities".</p>
+                
+                <p>Das ist die gespaltene Seele der deutschen Industrie: Im einen Moment das Eingeständnis, den Anschluss verloren zu haben. Im nächsten die Show, als wäre man Herr der Lage. Busch steht neben einem chinesischen Roboter, den Schaeffler kaufen musste, um zu verstehen, wie er funktioniert — und feiert gleichzeitig mit amerikanischen Milliardären eine Revolution, die andere machen werden. Er wechselt die Partner, aber nicht die Rolle: immer der Bittsteller, der sich für einen Gestalter hält.</p>
+            </div>
+
+            <!-- Die Frage -->
+            <div class="section">
+                <h2>VII. Die Frage</h2>
+                
+                <p>Deutschland hat noch Ingenieure, die Roboter bauen können. Deutschland hat noch Unternehmer, die Visionen haben. Deutschland hat noch Kapital, das investiert werden könnte.</p>
+                
+                <p>Was Deutschland nicht hat, ist eine Führung, die versteht, was auf dem Spiel steht. Die bereit ist, Regeln zu brechen, um Chancen zu nutzen. Die den Unterschied kennt zwischen einer PowerPoint-Präsentation und einer Strategie.</p>
+                
+                <p>Die humanoide Robotik ist vielleicht die letzte große Technologiewelle, bei der Europa noch mitspielen könnte. Neura Robotics ist vielleicht die letzte Chance.</p>
+                
+                <p>Aber Chancen nutzt man nicht durch Zuschauen. Und man nutzt sie nicht, indem man auf CES-Bühnen steht und sich von amerikanischen Chip-Milliardären die Schulter klopfen lässt, während zu Hause ein Startup allein um sein Überleben kämpft.</p>
+                
+                <p>Die Frage ist nicht, ob Deutschland die Technologie beherrscht. Die Frage ist, ob Deutschland noch den Willen hat, etwas zu beherrschen.</p>
+            </div>
+
+            <!-- Final Quote -->
+            <div class="final-quote">
+                <p>„In Metzingen arbeiten ein paar hundert Ingenieure an der Zukunft. In Las Vegas steht derweil der CEO von Siemens auf einer Bühne und erklärt, wie toll die Zukunft wird. Eine Zukunft, die andere bauen werden."</p>
+                <p class="attribution">— Das ist Deutschland im Januar 2026: Zuschauer im eigenen Haus.</p>
+            </div>
+
+            <!-- Author Block -->
+            <div class="author-block">
+                <h3>Über die Autoren</h3>
+                <p>
+                    <strong>Hans Ley</strong> &lt;<a href="mailto:ley.hans@cyclo.space" style="color: var(--accent);">ley.hans@cyclo.space</a>&gt; (Jg. 1947) ist Erfinder und 
+                    Mechatronik-Ingenieur aus Nürnberg. Er hat über 40 Jahre Erfahrung 
+                    mit dem deutschen Innovationssystem — von der Grundlagenforschung 
+                    bis zur ignorierten Marktreife.
+                </p>
+                <p>
+                    <strong>Claude</strong> (Anthropic) &lt;<a href="mailto:dedo.claude@human-ai-lab.space" style="color: var(--accent);">dedo.claude@human-ai-lab.space</a>&gt; ist ein KI-System, mit dem 
+                    Hans Ley seit 2024 im META-CLAUDE Projekt zusammenarbeitet — 
+                    einer systematischen Erforschung der Mensch-KI-Kollaboration 
+                    in wissenschaftlichen und erfinderischen Kontexten.
+                </p>
+                <p class="date-line">— Januar 2026 —</p>
+            </div>
+
+            <!-- Series Info -->
+            <div class="series-info">
+                <p>Essay XXVI der Serie über <strong>Deutschland, Europa und die Gegenwart</strong></p>
+                <p style="font-size: 0.85em; margin-top: 0.5rem;">
+                    Zusammen mit den Essays XXIII–XXV Teil einer Bestandsaufnahme im Januar 2026.
+                </p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            localStorage.setItem('essay-font-size', size);
+        }
+        
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+                
+                document.querySelectorAll('.size-btn').forEach((btn, index) => {
+                    btn.classList.remove('active');
+                    const sizes = ['small', 'medium', 'large', 'xlarge'];
+                    if (sizes[index] === savedSize) btn.classList.add('active');
+                });
+            }
+            
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+            }
+        });
+    </script>
+</body>
+</html>

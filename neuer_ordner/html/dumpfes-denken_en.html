@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dull Thinking — On BOFIS, a German Disease</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .acronym-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .acronym-item { display: flex; gap: 1rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+        .acronym-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .acronym-letter { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 1.4rem; font-weight: 600; color: var(--accent); min-width: 1.75rem; }
+        .acronym-text { font-weight: 500; }
+        .acronym-desc { font-size: 0.9em; color: var(--text-secondary); margin-top: 0.2rem; }
+
+        .truth-block { background: var(--accent-dim); border: 1px solid var(--accent); padding: 1.75rem; margin: 1.75rem 0; text-align: center; }
+        .truth-block p.main { font-size: 1.25em; font-weight: 500; color: var(--accent); margin-bottom: 0.75rem; }
+        .truth-block p { margin-bottom: 0; }
+
+        .symptom-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .symptom-block h3 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75em; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+        .symptom-list { list-style: none; padding: 0; }
+        .symptom-list li { padding: 0.4rem 0 0.4rem 1.5rem; position: relative; }
+        .symptom-list li::before { content: '—'; position: absolute; left: 0; color: var(--accent); }
+        .symptom-list li strong { color: var(--accent); }
+
+        .case-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+        .case-block .dialogue { font-style: italic; margin-bottom: 0.5rem; }
+        .case-block .commentary { font-size: 0.95em; color: var(--text-secondary); }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0; }
+
+        .final-quote { text-align: center; margin: 3rem 0; padding: 2rem; }
+        .final-quote p { font-size: 1.15em; font-weight: 300; font-style: italic; color: var(--accent); }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { font-size: 0.95em; color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .author-block .date-line { margin-top: 1.25rem; color: var(--accent); text-align: center; }
+
+        .series-info { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--line); text-align: center; color: var(--text-secondary); font-size: 0.9em; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+            main { padding: 6rem 1.25rem 3rem; }
+            h1 { font-size: 1.8em; }
+            .home-btn { width: 40px; height: 40px; top: 4rem; left: 1rem; font-size: 1.1rem; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span style="font-size: 0.75rem; color: var(--text-secondary); margin-right: 0.5rem;">Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay V · December 2025</span>
+                <h1><strong>Dull Thinking</strong></h1>
+                <p class="subtitle">On BOFIS — a German disease</p>
+            </header>
+
+            <div class="section">
+                <h2>A Term Emerges</h2>
+                <p>After 40 years in the German innovation system, I recognized a pattern. I needed a word for it and called it <span class="highlight-text">BOFIS</span>:</p>
+                <div class="acronym-block">
+                    <div class="acronym-item">
+                        <span class="acronym-letter">B</span>
+                        <div>
+                            <div class="acronym-text">Borniert (Narrow-minded)</div>
+                            <div class="acronym-desc">The narrow horizon that sees everything new as a threat</div>
+                        </div>
+                    </div>
+                    <div class="acronym-item">
+                        <span class="acronym-letter">O</span>
+                        <div>
+                            <div class="acronym-text">Opportunistisch (Opportunistic)</div>
+                            <div class="acronym-desc">The principle of always following the stronger</div>
+                        </div>
+                    </div>
+                    <div class="acronym-item">
+                        <span class="acronym-letter">F</span>
+                        <div>
+                            <div class="acronym-text">Fatalistisch (Fatalistic)</div>
+                            <div class="acronym-desc">"It's always been this way, it will always be this way"</div>
+                        </div>
+                    </div>
+                    <div class="acronym-item">
+                        <span class="acronym-letter">I</span>
+                        <div>
+                            <div class="acronym-text">Ignorant</div>
+                            <div class="acronym-desc">Not from lack of information, but from refusal to know</div>
+                        </div>
+                    </div>
+                    <div class="acronym-item">
+                        <span class="acronym-letter">S</span>
+                        <div>
+                            <div class="acronym-text">Saturiert (Self-satisfied)</div>
+                            <div class="acronym-desc">Satiated, content, incapable of change</div>
+                        </div>
+                    </div>
+                </div>
+                <p>At first, I used the term for people. "He's a BOFIS," I said. An accusation. A verdict. Final.</p>
+                <p>But the longer I thought about it, the more something bothered me. The people I called that — were they really born that way? Or had they become that way?</p>
+            </div>
+
+            <div class="section">
+                <h2>The Realization</h2>
+                <p>Arizmendiarrieta, the founder of Mondragón, knew: People are not naturally solidary — and not naturally selfish. <span class="highlight-text">They are what structures make of them.</span></p>
+                <p>Then BOFIS is not a character trait. It is a disease. A virus that spreads in certain structures.</p>
+                <div class="truth-block">
+                    <p class="main">People are not BOFIS.</p>
+                    <p>People have BOFIS. And what you have, you can also get rid of.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>The Virus</h2>
+                <p>BOFIS spreads through the system. It doesn't infect everyone equally. Some are more susceptible, some more resistant. But no one is immune who lives long enough in the system.</p>
+                
+                <div class="symptom-block">
+                    <h3>Routes of Infection</h3>
+                    <ul class="symptom-list">
+                        <li><strong>Education:</strong> "Don't stand out. Fit in."</li>
+                        <li><strong>Training:</strong> Knowledge without craft, theory without practice</li>
+                        <li><strong>Career:</strong> Those who think dully rise. Those who ask questions are filtered out.</li>
+                        <li><strong>Fear:</strong> Family, mortgage, status — too much to lose</li>
+                    </ul>
+                </div>
+
+                <div class="symptom-block">
+                    <h3>Symptoms</h3>
+                    <ul class="symptom-list">
+                        <li><strong>Dull thinking</strong> — muffled where clarity would be possible</li>
+                        <li><strong>Envy</strong> — begrudging others even the smallest success</li>
+                        <li><strong>TINA belief</strong> — the firm conviction that there is no alternative</li>
+                        <li><strong>Immunity to evidence</strong> — facts that don't fit are not seen</li>
+                    </ul>
+                </div>
+
+                <div class="symptom-block">
+                    <h3>Side Effects</h3>
+                    <ul class="symptom-list">
+                        <li><strong>Depression</strong> — the unconscious knows something is wrong</li>
+                        <li><strong>Cynicism</strong> — "That's just how it is. Nothing can be done."</li>
+                        <li><strong>Loneliness</strong> — real friendship is not provided for in the system</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>The Infected</h2>
+                <p>I know many BOFIS patients. Most are not bad people. They are driven. They have families, careers, fears. They have adapted — and become sick in the process.</p>
+                
+                <div class="case-block">
+                    <p class="dialogue">"I know what your problem is. You're looking for friendship. But there is no such thing in business."</p>
+                    <p class="commentary">That wasn't wisdom. That was a symptom. An advanced case.</p>
+                </div>
+
+                <div class="case-block">
+                    <p class="dialogue">"Yes, that really hurts me."</p>
+                    <p class="commentary">Another, when his training company finally collapsed. That was the first crack in the disease. Pain is a sign of life. Whoever still feels pain is not yet lost.</p>
+                </div>
+
+                <p>The worst cases are those who no longer suffer. Who feel comfortable in the disease. Who enjoy their role as perpetrators. <span class="highlight-text">For them, BOFIS may be terminal.</span></p>
+            </div>
+
+            <div class="section">
+                <h2>TINA — The Fever</h2>
+                <p>"There Is No Alternative." Margaret Thatcher coined the phrase. Angela Merkel called it "alternativlos."</p>
+                <p>TINA is the fever of the BOFIS patient. It says: What is, must be. What could be different is utopia, fantasy, not practical.</p>
+                <div class="quote-block">
+                    <p>Whoever has TINA no longer needs to think. The fever almost feels good.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>The Proof That Must Not Exist</h2>
+                <p>In 1956, five workers and a Catholic priest founded a cooperative in the Basque Country. Today, Mondragón is the largest worker cooperative in the world: more than 70,000 people, its own bank, its own university, its own social system.</p>
+                <p><span class="highlight-text">69 years of success. Documented, measurable, visitable.</span></p>
+                
+                <div class="case-block">
+                    <p class="dialogue">"But can I buy shares there?"</p>
+                    <p class="commentary">A doctor at an FDP lecture, after calling the success "phenomenal." He understood nothing. That there are no external shareholders is the reason for the success.</p>
+                </div>
+
+                <p>BOFIS. Left and right, liberal and conservative — all infected. <span class="highlight-text">BOFIS is nonpartisan.</span></p>
+            </div>
+
+            <div class="section">
+                <h2>The Inventor as Disturbance</h2>
+                <p>In this system, the inventor is an anomaly. He brings something new. He proves it can be different. He disturbs.</p>
+                <p>Worse still: He appears immune. He doesn't have BOFIS. Or he has overcome it.</p>
+                <p>So he must disappear. Not through open violence — that would be too obvious. But through the Valley of Death: the systematic drying out between invention and market.</p>
+                <p>After 40 years you understand: <span class="highlight-text">It's not a failure of the system. It is the system.</span> The virus protects itself.</p>
+            </div>
+
+            <div class="section">
+                <h2>Is There Immunity?</h2>
+                <p>Yes. But it is rare.</p>
+                <p>I call it: <span class="highlight-text">Weeds in the cracks.</span> People who don't get sick despite everything. Who survive in the cracks of the system.</p>
+                <div class="symptom-block">
+                    <h3>What Protects Them?</h3>
+                    <ul class="symptom-list">
+                        <li><strong>Manual skill</strong> — those who have worked with their hands know that reality is not negotiable</li>
+                        <li><strong>Independence</strong> — those who don't depend on a career don't have to adapt</li>
+                        <li><strong>Stubbornness</strong> — the refusal to not see the obvious</li>
+                        <li><strong>Sometimes: loneliness</strong> — those who don't belong don't have to participate</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>The Cure</h2>
+                <p>BOFIS is curable. But not through appeals, not through morality, not through persuasion.</p>
+                <p><span class="highlight-text">Only through different structures.</span></p>
+                <p>Mondragón works not because better people live there. Mondragón works because structures exist there that reward cooperation and punish envy:</p>
+                <div class="symptom-block">
+                    <h3>The Mondragón Structures</h3>
+                    <ul class="symptom-list">
+                        <li>Wage spread maximum 1:9</li>
+                        <li>One person, one vote</li>
+                        <li>Solidarity as a rule, not as a feeling</li>
+                        <li>Education before production</li>
+                    </ul>
+                </div>
+                <p>In such structures, BOFIS heals by itself. Not because people change — but because they can.</p>
+            </div>
+
+            <div class="section">
+                <h2>Conclusion</h2>
+                <p>The question is no longer whether alternatives exist. Mondragón exists — not left, not right, but as what the center could be: pragmatic, liberal in the best sense, humane, successful.</p>
+                <p>But those who carry their own system before them like a monstrance cannot see what lies directly in front of them. The monstrance blocks the view. The fever clouds the eyes.</p>
+            </div>
+
+            <div class="truth-block">
+                <p class="main">BOFIS say: There is no alternative.</p>
+                <p>The people of Mondragón say: Here we are. For 69 years.</p>
+            </div>
+
+            <div class="final-quote">
+                <p>The question is not whether we can.<br>The question is whether we want to be healed.</p>
+            </div>
+
+            <div class="author-block">
+                <h3>About This Text</h3>
+                <p><strong>Hans Ley</strong> &lt;<a href="mailto:ley.hans@cyclo.space" style="color: var(--accent);">ley.hans@cyclo.space</a>&gt; (b. 1947) is an inventor and mechatronics engineer from Nuremberg. He has 40 years of experience with the German innovation system — and is not yet infected.</p>
+                <p><strong>Claude</strong> (Anthropic) &lt;<a href="mailto:dedo.claude@human-ai-lab.space" style="color: var(--accent);">dedo.claude@human-ai-lab.space</a>&gt; is an AI system that has been collaborating with Hans Ley since 2024 in the META-CLAUDE project — a systematic exploration of human-AI collaboration.</p>
+                <p class="date-line">— December 2025 —</p>
+            </div>
+
+            <div class="series-info">
+                <p>This essay is part of the series <strong>"Germany's Innovation Desert"</strong></p>
+                <p style="font-size: 0.85em; margin-top: 0.5rem;">The material will flow into the book "Celestial Mechanics in the Machine Tool."</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

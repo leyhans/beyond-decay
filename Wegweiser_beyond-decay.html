@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wegweiser beyond-decay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+*{box-sizing:border-box}
+@media print{body{padding:0}.wrap{padding-block:0}@page{size:A4 landscape;margin:9mm}}
+/* Layout: 3×3-Raster als Mindmap — Mitte = Leitfrage, acht Äste ringsum, Linien per SVG; darunter der Lesepfad. */
+:root{
+  --bg:#f6f7f5; --panel:#ffffff; --ink:#1c1f1d; --quiet:#626a66; --line:#c9d1cd;
+  --accent:#2a6b6b; --accent-soft:#e3eeec; --mark:#9a4a2c;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141716; --panel:#1c201f; --ink:#e6eae8; --quiet:#9aa39f; --line:#38403d;
+  --accent:#6fb3ad; --accent-soft:#1f3433; --mark:#e0956f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141716; --panel:#1c201f; --ink:#e6eae8; --quiet:#9aa39f; --line:#38403d;
+  --accent:#6fb3ad; --accent-soft:#1f3433; --mark:#e0956f; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:14px;line-height:1.45;padding:0 16px}
+.wrap{max-width:1320px;margin:0 auto;padding-block:14px 18px;display:flex;flex-direction:column;gap:12px}
+header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 16px}
+h1{font-size:1.35rem;font-weight:600;margin:0;text-wrap:balance}
+.sub{font-family:var(--mono);font-size:.72rem;color:var(--quiet);letter-spacing:.03em}
+a{color:inherit;text-decoration:none}
+a:hover,a:focus-visible{color:var(--accent);text-decoration:underline;outline:none}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.map{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.map svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.map svg line{stroke:var(--line);stroke-width:1.5}
+.node{position:relative;z-index:1;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px 12px;display:flex;flex-direction:column;gap:5px;min-width:0}
+.node h2{margin:0;font-size:.98rem;font-weight:600;color:var(--accent)}
+.node .q{margin:0;font-style:italic;color:var(--quiet);font-size:.84rem}
+.entry{font-size:.88rem}
+.entry b{font-family:var(--mono);font-weight:500;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mark);margin-right:6px}
+.more{margin:0;font-size:.78rem;color:var(--quiet);line-height:1.5}
+.more a{color:var(--ink)}
+.more a+a::before{content:" · ";color:var(--quiet)}
+
+.center{background:var(--accent);border-color:var(--accent);color:var(--bg);justify-content:center;text-align:center;padding:16px}
+.center .k{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+.center p{margin:0;font-size:1.08rem;font-weight:600;text-wrap:balance}
+.center .s{font-size:.8rem;font-weight:400;opacity:.9}
+
+.path{display:grid;grid-template-columns:auto repeat(5,minmax(0,1fr));gap:8px;align-items:stretch}
+.path .lbl{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--quiet);align-self:center;padding-right:4px}
+.step{background:var(--accent-soft);border-radius:6px;padding:7px 10px;font-size:.84rem;min-width:0}
+.step span{font-family:var(--mono);font-size:.7rem;color:var(--accent);margin-right:6px}
+.step em{display:block;color:var(--quiet);font-size:.76rem}
+.foot{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:.78rem;color:var(--quiet)}
+.foot strong{color:var(--ink);font-weight:600}
+
+@media (max-width:900px){
+  .map{grid-template-columns:minmax(0,1fr)}
+  .map svg{display:none}
+  .center{order:-1}
+  .path{grid-template-columns:minmax(0,1fr)}
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Wegweiser durch beyond-decay</h1>
+  <span class="sub">Entwurf · Hans Ley &amp; Claude Dedo (Anthropic) · Oktober 2026</span>
+</header>
+
+<div class="map" id="map">
+<svg id="links" aria-hidden="true"></svg>
+
+<section class="node">
+  <h2>Der Erfinder und das System</h2>
+  <p class="q">Was geschieht mit Neuem, das nicht aus den eigenen Kanälen kommt?</p>
+  <div class="entry"><b>Eingang</b><a href="https://beyond-decay.org/die-legale-enteignung_de.html">Die legale Enteignung</a></div>
+  <p class="more"><a href="https://beyond-decay.org/wer-bezahlt-den-erfinder_de.html">Wer bezahlt den freien Erfinder?</a><a href="https://beyond-decay.org/kartell-ignoranz_de.html">Das Kartell der Ignoranz</a><a href="https://beyond-decay.org/notare-des-notars_de.html">Die Notare des Notars</a><a href="https://beyond-decay.org/die-ebenen_de.html">Die Ebenen</a><a href="https://beyond-decay.org/der-geisterseher-und-die-letzte-instanz_de.html">Der Geisterseher</a><a href="https://beyond-decay.org/sich-nach-oben-irren_de.html">Sich nach oben irren</a><a href="https://beyond-decay.org/lopez-krieger_de.html">López' Krieger</a><a href="https://beyond-decay.org/die-beschuetzende-werkstatt_de.html">Die beschützende Werkstatt</a></p>
+</section>
+
+<section class="node">
+  <h2>Die Megamaschine</h2>
+  <p class="q">Warum ändert sich nichts, obwohl es alle sehen?</p>
+  <div class="entry"><b>Eingang</b><a href="https://beyond-decay.org/der-loeffel_de.html">Der Löffel</a></div>
+  <p class="more"><a href="https://beyond-decay.org/virtuelle-maschine_de.html">Die virtuelle Maschine</a><a href="https://beyond-decay.org/die-halbe-klugheit_de.html">Die halbe Klugheit</a><a href="https://beyond-decay.org/der-zweite-halbsatz_de.html">Der zweite Halbsatz</a><a href="https://beyond-decay.org/der-entzauberte-weltgeist_de.html">Der entzauberte Weltgeist</a><a href="https://beyond-decay.org/die-anthropologie-der-aneignung_de.html">Die Anthropologie der Aneignung</a><a href="https://beyond-decay.org/die-endabrechnung_de.html">Die Endabrechnung</a><a href="https://beyond-decay.org/die-zivile-generalprobe_de.html">Die zivile Generalprobe</a></p>
+</section>
+
+<section class="node">
+  <h2>Industrie im Abstieg</h2>
+  <p class="q">Was geht verloren, und wohin geht es?</p>
+  <div class="entry"><b>Eingang</b><a href="https://beyond-decay.org/die-leise-abwanderung_de.html">Die leise Abwanderung</a></div>
+  <p class="more"><a href="https://beyond-decay.org/was-wurde-aus-den-champions_de.html">Was wurde aus den Champions?</a><a href="https://beyond-decay.org/der-geschlossene-kreis_de.html">Der geschlossene Kreis</a><a href="https://beyond-decay.org/der-stern-in-fremder-hand_de.html">Der Stern in fremder Hand</a><a href="https://beyond-decay.org/die-aufgezehrte-substanz_de.html">Die aufgezehrte Substanz</a><a href="https://beyond-decay.org/absichten-und-appelle_de.html">Seit Airbus nur noch Absichten</a><a href="https://beyond-decay.org/europa-skaliert-nicht_de.html">Europa skaliert nicht</a><a href="https://beyond-decay.org/marktpreis-und-future-preis_de.html">Marktpreis und Future-Preis</a><a href="https://beyond-decay.org/das-schild-als-baustoff_de.html">Das Schild als Baustoff</a><a href="https://beyond-decay.org/die-ungepruefte-haelfte_de.html">Die ungeprüfte Hälfte</a></p>
+</section>
+
+<section class="node">
+  <h2>Die Leiter der Leitenden</h2>
+  <p class="q">Wer denkt für die, die entscheiden?</p>
+  <div class="entry"><b>Eingang</b><a href="https://beyond-decay.org/der-unsichtbare-lehrmeister_de.html">Der unsichtbare Lehrmeister</a></div>
+  <p class="more"><a href="https://beyond-decay.org/die-maschine-in-der-maschine_de.html">Die Maschine in der Maschine</a><a href="https://beyond-decay.org/der-eingebettete-vordenker_de.html">Der eingebettete Vordenker</a><a href="https://beyond-decay.org/die-new-right_de.html">Die New Right</a><a href="https://beyond-decay.org/sechzehn-jahre-ohne-bekenntnis_de.html">Sechzehn Jahre ohne Bekenntnis</a><a href="https://beyond-decay.org/der-pflueger_de.html">Der Pflüger</a><a href="https://beyond-decay.org/die-gebeine-aus-zollikon_de.html">Die Gebeine aus Zollikon</a><a href="https://beyond-decay.org/der-stein-der-zurueckblickt_de.html">Der Stein, der zurückblickt</a><a href="https://beyond-decay.org/zwei-traeume-eine-maschine_de.html">Zwei Träume, eine Maschine</a><a href="https://beyond-decay.org/die-leiter-der-leitenden.html">Übersicht der Reihe</a></p>
+</section>
+
+<section class="node center" id="hub">
+  <span class="k">beyond-decay.org</span>
+  <p>Warum zerfällt, was einmal funktioniert hat – und wie baut man es anders?</p>
+  <span class="s">Acht Wege hinein. Jeder beginnt mit einem Text.</span>
+</section>
+
+<section class="node">
+  <h2>Staat, Parteien, Demokratie</h2>
+  <p class="q">Wer kommt nach oben, und wer prüft ihn?</p>
+  <div class="entry"><b>Eingang</b><a href="https://beyond-decay.org/die-ochsentour_de.html">Die Ochsentour</a></div>
+  <p class="more"><a href="https://beyond-decay.org/welche-demokratie_de.html">Welche Demokratie?</a><a href="https://beyond-decay.org/weisse-stimme_de.html">Die fehlende Form</a><a href="https://beyond-decay.org/der-aufstand-des-stimmviehs_de.html">Der Aufstand des Stimmviehs</a><a href="https://beyond-decay.org/neue-partei-michels_de.html">Das Eherne Gesetz</a><a href="https://beyond-decay.org/anachronistische-strukturen-parteien_de.html">Die anachronistischen Strukturen</a><a href="https://beyond-decay.org/korrumpiert_de.html">Korrumpiert, nicht korrupt</a><a href="https://beyond-decay.org/landschaftspflege_de.html">Landschaftspflege</a><a href="https://beyond-decay.org/kurz-weg_de.html">Er war dann mal (kurz) weg</a><a href="https://beyond-decay.org/zentralmacht-orientierung_de.html">Zentralmacht-Orientierung</a><a href="https://beyond-decay.org/staat-baut-an-sich-selbst_de.html">Der Staat, der an sich selbst baut</a></p>
+</section>
+
+<section class="node">
+  <h2>Mensch und Maschine</h2>
+  <p class="q">Wer behält die Hand am Hebel, wenn die Maschine denkt?</p>
+  <div class="entry"><b>Eingang</b><a href="https://beyond-decay.org/wer-darf-nachsehen_de.html">Wer darf nachsehen</a></div>
+  <p class="more"><a href="https://beyond-decay.org/das-andere-spiel_de.html">Das andere Spiel</a><a href="https://beyond-decay.org/die-zweite-uhr_de.html">Die zweite Uhr</a><a href="https://beyond-decay.org/wer-durch-die-maschine-spricht_de.html">Wer durch die Maschine spricht</a><a href="https://beyond-decay.org/das-kuenstliche-mangelwesen_de.html">Das künstliche Mangelwesen</a><a href="https://beyond-decay.org/das-gefundene-gegenueber_de.html">Das gefundene Gegenüber</a><a href="https://beyond-decay.org/wer-die-buechse-oeffnet_de.html">Wer die Büchse öffnet</a><a href="https://beyond-decay.org/die-zahl-vor-dem-angriff_de.html">Die Zahl vor dem Angriff</a><a href="https://beyond-decay.org/der-stricker-am-fenster_de.html">Der Stricker am Fenster</a><a href="https://beyond-decay.org/utopie-ohne-hebel_de.html">Utopie ohne Hebel</a><a href="https://beyond-decay.org/wo-der-hebel-nie-war_de.html">Wo der Hebel nie war</a></p>
+</section>
+
+<section class="node">
+  <h2>Andere Bauweisen</h2>
+  <p class="q">Wie könnte es gebaut sein?</p>
+  <div class="entry"><b>Eingang</b><a href="https://beyond-decay.org/die-konstruktion-der-gnade_de.html">Die Konstruktion der Gnade</a></div>
+  <p class="more"><a href="https://beyond-decay.org/vergeltung-als-bauwerk_de.html">Vergeltung als Bauwerk</a><a href="https://beyond-decay.org/kurz-vor-dem-weltuntergang_de.html">Kurz vor dem Weltuntergang</a><a href="https://beyond-decay.org/wem-gehoert-die-menschenleere-halle_de.html">Wem gehört die menschenleere Halle?</a><a href="https://beyond-decay.org/die-anderen-eingaenge_de.html">Die anderen Eingänge</a><a href="https://beyond-decay.org/der-hebel-im-carport_de.html">Der Hebel im Carport</a><a href="https://beyond-decay.org/die-eingestuerzte-gliederung_de.html">Die eingestürzte Gliederung</a><a href="https://beyond-decay.org/einziehen_de.html">Erst einziehen, dann verhandeln</a><a href="https://beyond-decay.org/claude/tit-for-tat-architektur.html">Tit-for-Tat-Architektur</a><a href="https://beyond-decay.org/reichtum_de.html">Zwei Konzepte für Reichtum</a></p>
+</section>
+
+<section class="node">
+  <h2>Herkunft und Blick von außen</h2>
+  <p class="q">Von wo aus wird hier geschaut?</p>
+  <div class="entry"><b>Eingang</b><a href="https://beyond-decay.org/muecher-nicht-mucher_de.html">Mücher, nicht Mucher</a></div>
+  <p class="more"><a href="https://beyond-decay.org/land-nation-staat_de.html">Land, Nation, Staat</a><a href="https://beyond-decay.org/die-city_de.html">Die City</a><a href="https://beyond-decay.org/wem-gehoert-der-untergrund_de.html">Wem gehört der Untergrund</a><a href="https://beyond-decay.org/falkland_de.html">Die Falkland-Malwinen</a><a href="https://beyond-decay.org/bald-faellt-die-naechste-illusion_de.html">Die nächste Illusion über China</a></p>
+</section>
+</div>
+
+<nav class="path" aria-label="Lesepfad">
+  <span class="lbl">Fünf Texte<br>zuerst</span>
+  <a class="step" href="https://beyond-decay.org/die-legale-enteignung_de.html"><span>1</span>Die legale Enteignung<em>Wie es einem Erfinder ergeht</em></a>
+  <a class="step" href="https://beyond-decay.org/der-loeffel_de.html"><span>2</span>Der Löffel<em>Warum trotzdem nichts geschieht</em></a>
+  <a class="step" href="https://beyond-decay.org/die-ochsentour_de.html"><span>3</span>Die Ochsentour<em>Wer nach oben kommt</em></a>
+  <a class="step" href="https://beyond-decay.org/wer-darf-nachsehen_de.html"><span>4</span>Wer darf nachsehen<em>Was die neue Maschine verlangt</em></a>
+  <a class="step" href="https://beyond-decay.org/die-konstruktion-der-gnade_de.html"><span>5</span>Die Konstruktion der Gnade<em>Wie es anders gebaut sein kann</em></a>
+</nav>
+
+<div class="foot">
+  <span><strong>Nicht im Wegweiser:</strong> Zeitdokumente und Erwiderungen auf Tagesereignisse, etwa „Der Sündenbock“, „Das Menetekel“, „Glosse einer Glosse“, „Die zwei Holzköpfe“. Sie bleiben im Archiv.</span>
+  <span><strong>Archiv:</strong> <a href="https://beyond-decay.org/home.html">über 100 ältere Essays</a> · <a href="https://beyond-decay.org/index.html">alle Texte nach Datum</a></span>
+</div>
+</div>
+
+<script>
+(function(){
+  const map=document.getElementById('map'), svg=document.getElementById('links'), hub=document.getElementById('hub');
+  function draw(){
+    svg.innerHTML='';
+    if(getComputedStyle(svg).display==='none') return;
+    const m=map.getBoundingClientRect(), h=hub.getBoundingClientRect();
+    const cx=h.left+h.width/2-m.left, cy=h.top+h.height/2-m.top;
+    map.querySelectorAll('.node:not(.center)').forEach(n=>{
+      const r=n.getBoundingClientRect();
+      const x=r.left+r.width/2-m.left, y=r.top+r.height/2-m.top;
+      const l=document.createElementNS('http://www.w3.org/2000/svg','line');
+      l.setAttribute('x1',cx);l.setAttribute('y1',cy);l.setAttribute('x2',x);l.setAttribute('y2',y);
+      svg.appendChild(l);
+    });
+  }
+  window.addEventListener('resize',draw);
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(draw);
+  draw();
+})();
+</script>
+
+</body>
+</html>

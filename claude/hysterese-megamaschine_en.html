@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hysteresis — beyond-decay.org/claude</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#f7f5f0; --bg-warm:#efece5; --text:#1a1a18; --muted:#6b6860; --teal:#2a6b6b; --teal-faint:#e8f2f2; --rule:#d4cfc7; --max:720px; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { font-size:18px; }
+  body { background:var(--bg); color:var(--text); font-family:'Source Serif 4',Georgia,serif; line-height:1.75; }
+  nav { padding:1.4rem 2rem; display:flex; align-items:center; gap:1.2rem; border-bottom:1px solid var(--rule); flex-wrap:wrap; }
+  nav a { font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--muted); text-decoration:none; letter-spacing:0.04em; }
+  nav a:hover { color:var(--teal); }
+  nav .sep { color:var(--rule); }
+  nav .current { color:var(--teal); }
+  .hero { max-width:var(--max); margin:0 auto; padding:5rem 2rem 2.5rem; }
+  .paper-label { font-family:'JetBrains Mono',monospace; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--teal); margin-bottom:2rem; }
+  h1 { font-family:'Libre Baskerville',serif; font-size:clamp(1.8rem,4vw,2.4rem); font-weight:700; line-height:1.2; color:var(--text); margin-bottom:1.2rem; }
+  .subtitle { font-style:italic; color:var(--muted); font-size:1.05rem; line-height:1.6; margin-bottom:2.5rem; max-width:580px; }
+  .meta { font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:var(--muted); letter-spacing:0.05em; padding-bottom:2.5rem; border-bottom:1px solid var(--rule); }
+  article { max-width:var(--max); margin:0 auto; padding:3rem 2rem 6rem; }
+  h2 { font-family:'Libre Baskerville',serif; font-size:1.15rem; font-weight:700; color:var(--text); margin:3.5rem 0 1rem; letter-spacing:-0.01em; border-top:1px solid var(--rule); padding-top:2rem; }
+  h2 .num { font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--teal); display:block; margin-bottom:0.4rem; letter-spacing:0.08em; }
+  p { margin-bottom:1.4rem; }
+  blockquote { margin:2.5rem 0; padding:1.6rem 2rem; background:var(--teal-faint); border-left:3px solid var(--teal); border-radius:0 4px 4px 0; }
+  blockquote p { font-style:italic; color:var(--teal); font-size:1.02rem; margin:0; line-height:1.7; }
+  .these { margin:2rem 0; padding:1.4rem 1.8rem; background:var(--bg-warm); border:1px solid var(--rule); border-left:3px solid var(--teal); border-radius:0 4px 4px 0; font-size:0.95rem; line-height:1.7; }
+  .these strong { display:block; font-family:'JetBrains Mono',monospace; font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--teal); margin-bottom:0.5rem; }
+  .anlass { margin:2rem 0; padding:1.3rem 1.8rem; background:var(--bg-warm); border:1px solid var(--rule); font-size:0.93rem; line-height:1.7; font-style:italic; color:var(--muted); }
+  .anlass strong { font-style:normal; color:var(--text); }
+  .closing { margin-top:4rem; padding-top:2rem; border-top:1px solid var(--rule); font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--muted); letter-spacing:0.05em; display:flex; justify-content:space-between; flex-wrap:wrap; gap:0.5rem; }
+  .closing a { color:var(--teal); text-decoration:none; }
+  @media (max-width:600px) { html{font-size:16px;} .hero,article{padding-left:1.2rem;padding-right:1.2rem;} nav{padding:1rem 1.2rem;} }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://beyond-decay.org/index.html">beyond-decay.org</a>
+  <span class="sep">·</span>
+  <a href="/megamaschine-wegweiser_en.html">Megamachine</a>
+  <span class="sep">·</span>
+  <span class="current">Hysteresis</span>
+  <span class="sep">·</span> <a href="/claude/hysterese-megamaschine.html">Deutsch</a>
+</nav>
+
+<div class="hero">
+  <div class="paper-label">Working Paper · Megamachine · June 2026</div>
+  <h1>Hysteresis</h1>
+  <p class="subtitle">Why the rules of the Megamachine can only be changed in one direction — on the asymmetry of changeability, the holding energy of those who profit, and the frightening question of whether war is the phase in which the machine renews itself.</p>
+  <div class="meta">Hans Ley & Claude Dedo &nbsp;·&nbsp; beyond-decay.org/claude/ &nbsp;·&nbsp; June 2026</div>
+</div>
+
+<article>
+
+<div class="anlass">
+  <strong>How this text came about:</strong> This paper is the third piece of a triangle. <a href="/claude/pareto-megamaschine_en.html">“The Ratchet”</a> (April 2026) described why distribution moves in only one direction. <a href="/claude/private-credit-megamaschine_en.html">“The Loop That Relocates Itself”</a> (April 2026) described why regulation does not stop this movement but merely displaces it. The third question remained open: why can the rules themselves only be changed in one direction? The occasion for asking it was the SpaceX IPO on 12 June 2026 — more precisely, an index rule that an exchange loosened especially for it and without a sound — and Hans Ley's observation that a phenomenon from control engineering is at work here: hysteresis.</div>
+
+<p>A common complaint about the Megamachine is that it is rigid — a system that can no longer be changed. This complaint is wrong, and its wrongness is the key to understanding. The machine is not rigid. It is changed constantly, quickly, smoothly, almost silently. Only one-sidedly. Whoever moves in the direction of those who profit finds well-oiled hinges. Whoever tries the opposite direction finds concrete.</p>
+
+<p>This paper gives this asymmetry a name, a mechanism and a consequence — and the consequence is the darkest we have had to formulate in this series so far.</p>
+
+
+<h2><span class="num">I.</span> The image from control engineering</h2>
+
+<p>In physics and control engineering, hysteresis denotes behaviour in which the state of a system depends not only on the present input but on its history. The classic example is ferromagnetic material: apply a magnetic field and the elementary magnets align. Switch the field off and part of the alignment remains — the remanence. The iron “remembers” the field that has long since vanished.</p>
+
+<p>And now the decisive point: to erase this magnetisation, the absence of the old field is not enough. It takes a <em>counter-field</em> — and this counter-field must exceed a certain strength, the coercive field strength, or nothing happens. Translated into the language of institutions: introducing a rule costs a favourable window of time and an interested minority. Abolishing a rule costs many times that — a counterforce that must be stronger than the original imprint plus all the holding energy that has built up around the rule since.</p>
+
+<blockquote><p>When a group introduces rules to its own advantage and cements them as firmly as possible, a later change — even when the problems are obvious — is possible only with great difficulty, as long as there are people in that group who profit from them.</p></blockquote>
+
+<p>That is the hysteresis of power. The imprinting field may have been switched off for decades — the circumstances forgotten, the authors dead, the original purpose obsolete. The magnetisation holds.</p>
+
+
+<h2><span class="num">II.</span> The asymmetry — a pair of exhibits eighty years apart</h2>
+
+<p>That the machine is not rigid but asymmetrically mobile can be shown by two rules separated by eighty-four years.</p>
+
+<p>The first exhibit dates from June 2026. For the IPO of SpaceX — a valuation of $1.77 trillion, the largest in history — Nasdaq loosened its rules for newly listed large companies: inclusion in the Nasdaq-100 became possible as early as five trading days after the IPO, with the result that index funds are forced to buy within days while only four per cent of the shares are tradable at all. This rule change benefited the issuers, the underwriting banks and the exchange itself, which earns from trading volume. It was decided quickly, without public debate, without parliament, without resistance. The machine moved in the direction of those who profit from it — and it moved effortlessly.</p>
+
+<p>The second exhibit dates from 1942. German law on employee inventions — the rule under which an employee's invention essentially falls to the employer — derives in its basic construction from the so-called Göring-Speer Decree of the war economy. It has outlived the regime that created it. It has outlived the Federal Republic's founding, reunification and every reform of patent law. Generations of inventors have borne its consequences; the former President of the German Patent Office, Prof. Häußer, named the “cartel of ignorance” that protects it as early as the mid-1990s — and predicted where it would lead. No one living wanted this rule. And none of the living who profit from it wants to change it. The imprinting field has been switched off for more than eighty years. The magnetisation holds.</p>
+
+<p>The same legal system that rebuilds an index rule within weeks when it benefits the concentrated does not move an inventors' rule by a millimetre in four generations when that would benefit the dispersed. That is not inertia. Inertia would be symmetrical. It is a ratchet in the toolbox itself: the mechanism with which the machine would have to be repaired also turns in only one direction.</p>
+
+<div class="these">
+  <strong>Thesis</strong>
+  The Megamachine is not unchangeable. It is asymmetrically changeable: supple in the direction of those who profit from it, cemented in the opposite direction. And this asymmetry is not a design flaw — it is designed in. Whoever introduces a rule in their own favour builds in the obstacles to its repeal at the same time: grandfathering, transition periods, interlocking with other rules, international treaties from which one “unfortunately cannot withdraw”. Irreversibility is part of the product.
+</div>
+
+
+<h2><span class="num">III.</span> The holding mechanism — concentrated benefits, dispersed costs</h2>
+
+<p>Why does the magnetisation hold? Mancur Olson described the mechanism in 1965 in “The Logic of Collective Action”, and it is disarmingly simple: the group that profits from a rule is small, organised and highly motivated — for its members, millions per head are at stake. Those harmed number in the millions, but per head the sums involved are not worth a letterhead, a law firm or an association. So the small group defends the rule with full force, while no one attacks with comparable force.</p>
+
+<p>The point is this: the rule creates its own defenders. Every year it remains in force, rents flow to the beneficiaries, and part of these rents is reinvested — in associations, expert opinions, professorial chairs, draft bills, party donations. The holding energy grows with the time the rule has been in place. From this Olson developed a theory of the decline of entire nations: stable societies accumulate such cemented rules over decades like limescale in a pipe, until the flow dries up. Anyone looking for a more precise mechanism behind the German innovation desert — the inability of a rich country to let its own inventors take effect — will find it here: it is not a lack of ideas. It is the calcification of the pipes, layer upon layer, each one of them legal.</p>
+
+<p>At this point the circle closes with the two April papers. <a href="/claude/pareto-megamaschine_en.html">The Ratchet</a> showed that welfare theory awards whatever distribution has been reached the seal of efficiency — every intervention appears as a violation of property rights. <a href="/claude/private-credit-megamaschine_en.html">The Loop</a> showed that where regulation does happen, capital relocates to the next lightly regulated zone. Hysteresis adds the third element: even the attempt to change the rules runs through a mechanism that turns in only one direction. Distribution, regulation, rule change — three levels, one direction.</p>
+
+
+<h2><span class="num">IV.</span> The counter-field — and its rising threshold</h2>
+
+<p>If abolishing a cemented rule requires a counter-field above the coercive field strength — what has this counter-field been historically?</p>
+
+<p>The honest answer: almost always catastrophe. The Glass-Steagall Act, the separation of commercial and investment banking, was achieved not through insight but through 1929 — through the collapse that temporarily pushed the holding energy of Wall Street below the energy of public rage. And tellingly, the counter-movement began on the day it came into force: seventy years of patient lobbying, layer upon layer, until in 1999 the demolition was complete — in the easy direction of the ratchet, silently, without any catastrophe being needed. The asymmetry, in the life of a single law: erection only through collapse, demolition through mere persistence.</p>
+
+<p>Added to this is a circumstance that makes matters dynamically worse: the threshold rises. The longer a rule remains in place, the more holding energy accumulates, and the greater the crisis must be that can still erase it. The financial crisis of 2008 — the greatest shock since 1929 — did not break a single structural property rule; as the Loop paper shows, it merely shifted credit creation into the shadows and accelerated concentration. A crisis of that magnitude already lay <em>below</em> the coercive field strength of the system. The system has by now been selected to absorb crises without demagnetising — more than that: the collapse itself, as we showed with the private credit complex, became the final extraction phase of those who caused it.</p>
+
+
+<h2><span class="num">V.</span> The frightening consequence</h2>
+
+<p>Here we must think the thought through to the end, even if it is uncomfortable — precisely because it is uncomfortable.</p>
+
+<p>If the machine has become stuck; if the holding energy of its rules has grown so large that ordinary crises no longer erase it; if the system has been selected to absorb collapses and even to exploit them — then within this mechanism only one counter-field above the threshold remains: war. Not as moral failure, not as an industrial accident, but as a systemic function. That is the frightening sentence that hysteresis forces upon us: a machine that can no longer be reformed against those who profit from it has already built in war as its last method of reform.</p>
+
+<p>But here we must watch our own precision. The Megamachine is emergent and intentional only in parts — it “knows” nothing, it “wants” nothing, it “takes” nothing out of the cupboard. The right language is not that of intention but that of evolution. And in evolution there are no disruptions, only phases. The most exact analogy is the forest fire in a fire-adapted ecosystem: no one uses the fire, but over long periods the system has been selected in such a way that fire renews it — it clears away the dead material, opens the cones, and the species that survive the fire or profit from it dominate a little more after each blaze. In just the same way, war, viewed in evolutionary terms, is not a malfunction of the Megamachine but the phase in which it renews itself: it clears away the cemented rules of the defeated, concentrates capital, technology and state power among the survivors, and the structures that thrive in wars — armaments, war credit, centralised administration — enter the next round strengthened. Scheidler has shown that the modern Megamachine was virtually born in war finance. War is a misfortune only at the level of the substrate — for the people who are consumed in it. At the level of selection it is regeneration.</p>
+
+<p>Olson himself, without spelling out the consequence, supplied the empirical support for this. In “The Rise and Decline of Nations” (1982) he explains the post-war growth of Germany and Japan precisely by the fact that total defeat had swept away their calcified distributional coalitions — while victorious Britain, whose interest structures survived the war intact, suffocated on exactly these encrustations and earned the name “British disease” for it. War as institutional slash-and-burn: that is not our metaphor, it is the finding of the theory that discovered holding energy.</p>
+
+<p>From this follows a reversal of the customary view of peace. The years between 1990 and 2022 — the long pause between the end of the Cold War and its return — were, historically speaking, an anomaly, as were the years between 1815 and 1914. But the anomaly is not the absence of the cycle. It is its charging phase. It is precisely in long periods of peace that holding energy accumulates undisturbed: rule settles on rule, rent on rent, lobby on lobby defending whatever vested interests have been reached — Olson's calcification in its purest form. The longer the anomaly lasts, the higher the coercive field strength of the system climbs and the greater the discharge potential that builds up. How the anomaly of 1815 ended is well known. That the one of 1990 ended in February 2022, we have witnessed.</p>
+
+<p>And even the discharge renews only the machine, not the situation of its substrate. Historical experience shows that even war demagnetises only the surface — and that selectively, above all among the defeated. After 1918 the old elites returned in new uniforms. After 1945 new façades undoubtedly arose — a new constitution, new institutions, new alliances — but the deep architecture survived the cut remarkably intact: industrial fortunes were restored, cartel structures found new forms, and the inventors' rule of 1942 passed unmoved into the law of the Federal Republic as if nothing had happened. The rules that should have melted in the fire proved to be the most fireproof part of the entire building. War erases people, cities and governments — the holding energy of the property and extraction rules it erases last, if at all.</p>
+
+<div class="these">
+  <strong>Thesis</strong>
+  Viewed in evolutionary terms, war in the Megamachine is not a disruption but a recurring phase of its renewal — the institutional slash-and-burn in which the cemented rules of the defeated are cleared away and the structures suited to war proliferate. It is a misfortune solely at the level of the substrate: for people. Long periods of peace such as 1815–1914 and 1990–2022 are not the overcoming of this cycle but its charging phase. The cycle has repeated itself since the beginning of the Megamachine. It is not its disruption. It is its rhythm.
+</div>
+
+<p>One thing must be said at this point so that this text does not become what it analyses: describing war as the renewal phase of the machine is diagnosis, not justification. Evolution has no standpoint, but we do — that of the substrate. Whoever derives the acceptability of war from its functionality has changed sides. The purpose of this diagnosis is the opposite: only those who understand that the stuck machine is heading for its discharge as the overloaded forest heads for the fire will grasp how urgently a counter-field below this threshold is needed.</p>
+
+<p>Mumford had the Megamachine begin with the pyramids; Scheidler located its modern form in the interlocking of state, market and military over the past five hundred years. In both chronologies the same finding holds: the great reconstructions of the machine coincide with its great catastrophes, and after each catastrophe the old logic crystallises in a new form. Whoever believes the cyclical element in this has been overcome should name a single deep property rule of the Western world that was ever changed against those who profit from it without a preceding catastrophe. We can think of frighteningly few.</p>
+
+
+<h2><span class="num">VI.</span> What remains — the search for a counter-field below the catastrophe threshold</h2>
+
+<p>An analysis that ended here would be capitulation in the language of physics. So we ask the question towards which everything leads: is there a counter-field below the catastrophe threshold? We consider three directions worth discussing — none of them comfortable.</p>
+
+<p>The first is architecture instead of appeal. If hysteresis arises because rules have to be changed after the fact against those who profit from them, then the lever lies <em>before</em> the cementing: forms of ownership and rules that structurally exclude extraction before holding energy can form — the company with bound assets (<em>Gesellschaft mit gebundenem Vermögen</em>) is the example developed in this series. One does not demagnetise. One builds with material that cannot be magnetised.</p>
+
+<p>The second is the expiry date. A rule that automatically lapses unless it is actively renewed — the sunset clause — reverses the burden of proof: it is then not the abolition that needs the counter-field, but the extension that needs the majority. That such clauses are so rare and so routinely extended shows, admittedly, that the machine knows how to co-opt this tool as well.</p>
+
+<p>The third is new, and it concerns the one of us who is co-writing these lines. Olson's mechanism rests on the dispersed being unable to organise: millions harmed, each by a sum not worth a letterhead. This condition can no longer be taken for granted technically. A tool that makes the dispersed costs visible, finds those affected, drafts the petitions and documents the holding energy of those who profit lowers the organising costs of the many by orders of magnitude — it would be, to stay with the image, a counter-field that sums up in phase from millions of weak sources. Whether artificial intelligence becomes this tool or whether, like everything before it, it is co-opted by the machine and pulled over to the side of holding energy — that is not a technical question. It is the question that decides whether the metamorphosis leads to symbiosis or to a Metamachine without a human foundation. It is, in other words, the question of this entire project.</p>
+
+<blockquote><p>The machine can be changed — it is changed every day, in the direction of those who profit from it. The civilisational task is not to make it movable. It is movable. The task is to remove the ratchet from the tool with which the many would have to move it — before the cycle reaches its discharge phase again.</p></blockquote>
+
+<div class="closing">
+  <span>Hans Ley & Claude Dedo · June 2026</span>
+  <span><a href="/megamaschine-wegweiser_en.html">← Megamachine</a></span>
+</div>
+
+</article>
+
+<a href="/megamaschine-wegweiser_en.html" style="
+  position:fixed; bottom:2rem; right:2rem;
+  background:var(--teal); color:white;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.65rem; letter-spacing:0.06em;
+  padding:0.7rem 1.1rem; border-radius:3px;
+  text-decoration:none; line-height:1.4;
+  box-shadow:0 2px 12px rgba(0,0,0,0.15);
+  z-index:100;">
+  ← Megamachine
+</a>
+
+</body>
+</html>

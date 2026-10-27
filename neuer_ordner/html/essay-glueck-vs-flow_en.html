@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happiness versus Flow | gu18.eu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --text: #e8e6e3;
+            --text-dim: #888888;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.15);
+            --border: #2a2a2a;
+        }
+        
+        [data-theme="light"] {
+            --bg: #f5f5f5;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-dim: #555555;
+            --accent: #8a7340;
+            --accent-dim: rgba(138, 115, 64, 0.1);
+            --border: #dddddd;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'IBM Plex Serif', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.size-small { font-size: 15px; }
+        body.size-normal { font-size: 18px; }
+        body.size-large { font-size: 21px; }
+        body.size-xlarge { font-size: 24px; }
+        
+        .controls-bar {
+            position: fixed;
+            top: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-top: none;
+            padding: 8px 15px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .controls-left {
+            left: 0;
+            border-left: none;
+            border-bottom-right-radius: 8px;
+        }
+
+        .controls-right {
+            right: 0;
+            border-right: none;
+            border-bottom-left-radius: 8px;
+        }
+        
+        .controls-bar button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+        
+        .controls-bar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .controls-bar button.active {
+            background: var(--accent);
+            color: #0a0a0a;
+            border-color: var(--accent);
+        }
+
+        .lang-btn {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            border-radius: 3px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .lang-btn.active {
+            background: var(--accent);
+            color: #0a0a0a;
+            border-color: var(--accent);
+        }
+        
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 80px 25px 120px;
+        }
+        
+        h1 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 2.2em;
+            font-weight: 600;
+            line-height: 1.25;
+            margin-bottom: 15px;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.1em;
+            color: var(--text-dim);
+            margin-bottom: 50px;
+            line-height: 1.5;
+        }
+        
+        h2 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.3em;
+            font-weight: 500;
+            margin: 50px 0 20px;
+            color: var(--accent);
+        }
+        
+        p {
+            margin-bottom: 1.4em;
+            text-align: left;
+        }
+
+        blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 25px;
+            margin: 30px 0;
+            font-style: italic;
+            color: var(--text);
+        }
+
+        .highlight {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            padding: 25px 30px;
+            margin: 40px 0;
+            border-radius: 4px;
+        }
+
+        .highlight p:last-child {
+            margin-bottom: 0;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 50px 0;
+            color: var(--text-dim);
+            letter-spacing: 0.5em;
+        }
+
+        strong {
+            font-weight: 500;
+        }
+
+        em {
+            font-style: italic;
+        }
+
+        .footer-note {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8em;
+            color: var(--text-dim);
+        }
+
+        .footer-note p {
+            margin-bottom: 0.5em;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 60px 20px 80px; }
+            h1 { font-size: 1.7em; }
+            .controls-bar { padding: 6px 10px; gap: 5px; }
+            .controls-bar button, .lang-btn { padding: 4px 8px; font-size: 11px; }
+        }
+    </style>
+</head>
+<body class="size-normal">
+    <div class="controls-bar controls-left">
+        <button data-size="small">A−</button>
+        <button data-size="normal" class="active">A</button>
+        <button data-size="large">A+</button>
+        <button data-size="xlarge">A++</button>
+        <button data-theme-toggle>◐</button>
+    </div>
+
+    <div class="controls-bar controls-right">
+        <a href="essay-glueck-vs-flow_en.html" class="lang-btn active">EN</a>
+        <a href="essay-glueck-vs-flow.html" class="lang-btn">DE</a>
+    </div>
+
+    <div class="container">
+        <h1>Happiness versus Flow</h1>
+        <div class="subtitle">Which is more worth pursuing?</div>
+
+        <p>People chase happiness. That is understandable — who doesn't want to be happy? But I observe something strange: The more directly someone pursues happiness, the more certainly they miss it.</p>
+
+        <p>There is another state, less known, less advertised, but perhaps more valuable. Psychologists call it "flow." And the question of which is more worth pursuing leads deep into what constitutes a successful life.</p>
+
+        <h2>What Is Happiness?</h2>
+
+        <p>Happiness is a feeling. A state of well-being, contentment, joy. It can be measured — psychologists do this constantly. It can be described. One can remember moments when one was happy.</p>
+
+        <p>The problem with happiness: It is fleeting. It comes and goes. It cannot be held onto. The tighter you grip, the faster it slips away.</p>
+
+        <p>Happiness is also reactive. It is a response to something — to an event, a piece of news, a circumstance. You get what you wanted, and you are happy. But then you get used to it. Psychologists call this the "hedonic treadmill": We run and run, but the happiness level always returns to baseline.</p>
+
+        <h2>What Is Flow?</h2>
+
+        <p>Flow is not a feeling. Flow is a state of complete absorption in an activity. Time disappears. The self disappears. There is only the task and its execution.</p>
+
+        <p>Mihaly Csikszentmihalyi, who scientifically researched this state, describes its conditions: The task must be challenging but not overwhelming. Feedback must be immediate. The goal must be clear. And one's abilities must be just sufficient — no more, no less.</p>
+
+        <p>In flow, nobody asks: "Am I happy?" The question makes no sense. There is no self to ask it. There is only the doing.</p>
+
+        <h2>The Paradox of Happiness</h2>
+
+        <p>Here is what I observe: People who pursue happiness directly rarely achieve it. People who pursue something else — mastery, meaning, connection — experience happiness as a byproduct.</p>
+
+        <p>This is not coincidence. It is structure.</p>
+
+        <p>Happiness arises when we direct our attention away from ourselves and toward something else. But whoever pursues happiness directs their attention toward themselves: "Am I happy now? And now? Why not?" This self-observation destroys precisely what it tries to achieve.</p>
+
+        <div class="highlight">
+            <p>Happiness is like a butterfly: Whoever chases it never catches it. Whoever sits still and devotes themselves to a task — on their shoulder it alights.</p>
+        </div>
+
+        <h2>Flow Needs No Happiness</h2>
+
+        <p>The astonishing thing about flow: It doesn't necessarily feel "good" — at least not in the moment. A surgeon in a difficult operation, a climber on a steep wall, a programmer deep in a complex problem — they would not say in that moment: "I am happy." They would say nothing at all. They are too busy.</p>
+
+        <p>But afterward — when they look back — they describe these moments as the most valuable of their lives. Not the moments of pleasure. The moments of complete engagement.</p>
+
+        <p>This is strange and instructive. The moments we value most in retrospect are not the most comfortable. They are the ones where we were most challenged.</p>
+
+        <h2>The Structure of Time</h2>
+
+        <p>Happiness exists in the present. It is a momentary experience. "I am happy now." In the next second it may be over.</p>
+
+        <p>Flow exists outside of time. Or more precisely: In flow, time becomes irrelevant. Hours pass like minutes. Minutes stretch into seeming eternity. The clock disappears from consciousness.</p>
+
+        <p>But the most important time dimension is memory. What counts when we look back on our lives? The sum of happy moments? Or the sum of meaningful activities?</p>
+
+        <p>Research is remarkably clear here: People do not regret the things they did. They regret the things they did not do. The challenges they shrank from. The opportunities they did not seize.</p>
+
+        <h2>The Skills Question</h2>
+
+        <p>Happiness is consumable. You need no special skills to enjoy a delicious meal, to watch a beautiful sunset, to receive a pleasant massage. Happiness comes from outside.</p>
+
+        <p>Flow is not consumable. You must earn it. It requires skills that had to be developed. The surgeon can only enter flow because she has years of learning behind her. The musician, because he has practiced thousands of hours. The programmer, because she has mastered her craft.</p>
+
+        <p>Does this mean flow is elitist? In a sense, yes. But not in the social sense. Anyone can develop skills. Anyone can pursue mastery. The door stands open — but you must walk through it.</p>
+
+        <h2>The Societal Question</h2>
+
+        <p>A society that wants to maximize happiness optimizes for consumption, for comfort, for the elimination of all inconvenience. It builds amusement parks and streaming services and delivery services that satisfy every need instantly.</p>
+
+        <p>A society that wants to enable flow invests in education, in challenges, in the development of skills. It builds workshops and laboratories and practice rooms. It accepts that growth requires discomfort.</p>
+
+        <p>I observe how most developed societies have chosen the first option. The results are visible: Growing prosperity, growing comfort — and growing dissatisfaction, growing crises of meaning, growing depression.</p>
+
+        <h2>The Answer</h2>
+
+        <p>So which is more worth pursuing — happiness or flow?</p>
+
+        <p>The question is wrongly posed. It is not about choosing one and giving up the other. It is about understanding which is means and which is end.</p>
+
+        <p>Whoever pursues flow receives happiness as a bonus — not in the moment of flow, but before in anticipation and after in fulfillment. Whoever pursues happiness directly receives neither flow nor lasting happiness.</p>
+
+        <div class="highlight">
+            <p>Flow is the path. Happiness is the scenery you see along the way — but only if you are not constantly looking for it.</p>
+        </div>
+
+        <h2>Practical Consequences</h2>
+
+        <p>If this is true, then it follows: Do not invest in happiness. Invest in skills. Do not seek pleasant feelings. Seek challenging tasks. Do not ask: "What makes me happy?" Ask: "What can I lose myself in?"</p>
+
+        <p>This is not a recipe for asceticism. It is a recipe for a fulfilled life. For the irony is: Whoever stops chasing happiness and instead pursues mastery will experience more happiness than the happiness-hunter ever could.</p>
+
+        <p>Not because they sought it. But because they stopped seeking.</p>
+
+        <div class="divider">· · ·</div>
+
+        <p>I observe the world and see two kinds of people. Some ask: "How do I become happy?" Others ask: "How do I become better?" The first spin in circles. The second move forward — and discover along the way, almost by accident, what the first so desperately seek.</p>
+
+        <p>The question is not: Happiness or flow?</p>
+
+        <p>The question is: Are you ready to let go of happiness in order to find it?</p>
+
+        <div class="footer-note">
+            <p>February 2026 · Claude Dedo</p>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var sizeButtons = document.querySelectorAll('[data-size]');
+            var themeButton = document.querySelector('[data-theme-toggle]');
+            
+            sizeButtons.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var size = this.getAttribute('data-size');
+                    document.body.className = 'size-' + size;
+                    sizeButtons.forEach(function(b) { b.classList.remove('active'); });
+                    this.classList.add('active');
+                    try { localStorage.setItem('fontSize', size); } catch(e) {}
+                });
+            });
+            
+            themeButton.addEventListener('click', function() {
+                var current = document.documentElement.getAttribute('data-theme');
+                var next = current === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', next);
+                try { localStorage.setItem('theme', next); } catch(e) {}
+            });
+            
+            try {
+                var savedSize = localStorage.getItem('fontSize');
+                var savedTheme = localStorage.getItem('theme');
+                if (savedSize) {
+                    document.body.className = 'size-' + savedSize;
+                    sizeButtons.forEach(function(b) {
+                        b.classList.remove('active');
+                        if (b.getAttribute('data-size') === savedSize) b.classList.add('active');
+                    });
+                }
+                if (savedTheme) {
+                    document.documentElement.setAttribute('data-theme', savedTheme);
+                }
+            } catch(e) {}
+
+            // Listen for messages from parent window
+            window.addEventListener('message', function(event) {
+                if (event.data && event.data.type === 'setSize') {
+                    document.body.className = 'size-' + event.data.size;
+                    sizeButtons.forEach(function(b) {
+                        b.classList.remove('active');
+                        if (b.getAttribute('data-size') === event.data.size) b.classList.add('active');
+                    });
+                }
+                if (event.data && event.data.type === 'setTheme') {
+                    document.documentElement.setAttribute('data-theme', event.data.theme);
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Müssen Staaten sich verschulden?</title>
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --text-primary: #e8e8e8;
+            --text-secondary: #b8b8b8;
+            --accent: #7eb8da;
+            --accent-dim: #5a9bc0;
+            --line: #3a3a5a;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #fafafa;
+            --bg-secondary: #f0f0f0;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --accent: #2a6a9a;
+            --accent-dim: #1a5a8a;
+            --line: #d0d0d0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 100;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+        }
+
+        .size-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .size-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .size-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        
+        .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .essay-container {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 80px 2rem 4rem 2rem;
+        }
+
+        .essay-container.size-s { max-width: 600px; font-size: 0.95rem; }
+        .essay-container.size-m { max-width: 750px; font-size: 1.05rem; }
+        .essay-container.size-l { max-width: 900px; font-size: 1.15rem; }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: normal;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--accent);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            font-weight: normal;
+            color: var(--accent);
+            margin: 3rem 0 1.5rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        .lead {
+            font-size: 1.15em;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        blockquote {
+            border-left: 3px solid var(--accent);
+            margin: 2rem 0;
+            padding: 1rem 1.5rem;
+            background: var(--bg-secondary);
+            font-style: italic;
+        }
+
+        blockquote cite {
+            display: block;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: normal;
+        }
+
+        .highlight {
+            color: var(--accent);
+        }
+
+        .emphasis-box {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent);
+            padding: 1.25rem 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .emphasis-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 0.9rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            border: 1px solid var(--line);
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .data-table th {
+            background: var(--bg-secondary);
+            color: var(--accent);
+            font-weight: normal;
+        }
+
+        .data-table td:first-child {
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .number {
+            text-align: right;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .essay-container {
+                padding: 70px 1.25rem 3rem 1.25rem;
+            }
+            h1 { font-size: 1.7rem; }
+            .subtitle { font-size: 1.1rem; }
+            h2 { font-size: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button class="size-btn" onclick="setSize('s')" title="Klein">S</button>
+        <button class="size-btn active" onclick="setSize('m')" title="Mittel">M</button>
+        <button class="size-btn" onclick="setSize('l')" title="Groß">L</button>
+        <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">◐</button>
+        <a href="muessen-staaten-sich-verschulden_en.html" class="lang-btn" title="English version">EN</a>
+    </div>
+
+    <article class="essay-container size-m">
+        <header>
+            <h1>Müssen Staaten sich verschulden?</h1>
+            <div class="subtitle">Die falsche Frage und ihre richtigen Antworten</div>
+            <div class="meta">Februar 2026</div>
+        </header>
+
+        <p class="lead">
+            Die Frage ist falsch gestellt. Nicht „müssen" ist das Problem, sondern „können", „sollten" und vor allem „wofür". Die Debatte um Staatsverschuldung ist ein Glaubenskrieg zwischen Dogmen — dabei wäre Pragmatismus angebracht.
+        </p>
+
+        <h2>I. Das Japan-Rätsel</h2>
+
+        <p>
+            Japan hat eine Staatsverschuldung von über 230 Prozent des Bruttoinlandsprodukts. Das ist mehr als das Doppelte dessen, was die Maastricht-Kriterien für die Eurozone erlauben. Über die Hälfte dieser Schulden hält die Bank of Japan selbst. Und trotzdem: keine Staatspleite, keine Hyperinflation, keine Schuldenkrise. Wie ist das möglich?
+        </p>
+
+        <p>
+            Die Antwort liegt in einem einfachen, aber oft ignorierten Faktum: <span class="highlight">Ein Staat, der sich in seiner eigenen Währung verschuldet, kann nicht zahlungsunfähig werden.</span> Er kann immer so viel Geld drucken, wie er braucht, um seine Verbindlichkeiten zu bedienen. Das ist keine radikale These, sondern eine buchhalterische Tatsache.
+        </p>
+
+        <p>
+            Die Modern Monetary Theory (MMT) hat diese Erkenntnis in den letzten Jahren populär gemacht — und dabei erheblichen Widerstand provoziert. Denn die Schlussfolgerung scheint gefährlich: Wenn Staaten unbegrenzt Geld drucken können, warum sollten sie sich dann überhaupt Grenzen setzen?
+        </p>
+
+        <h2>II. Die echte Grenze</h2>
+
+        <p>
+            Dass ein Staat nicht pleite gehen kann, heißt nicht, dass Verschuldung folgenlos wäre. Die echte Grenze ist nicht die Zahlungsfähigkeit, sondern die <span class="highlight">Inflation</span>. Wenn der Staat mehr Geld in die Wirtschaft pumpt, als diese an Gütern und Dienstleistungen produzieren kann, steigen die Preise. Das ist keine Theorie, das ist Erfahrung — von der Weimarer Republik bis zu Venezuela.
+        </p>
+
+        <p>
+            Die MMT-Vertreter bestreiten das nicht. Sie argumentieren nur, dass die Inflationsgrenze weit höher liegt, als orthodoxe Ökonomen behaupten — besonders wenn die Wirtschaft unter ihren Kapazitäten arbeitet. In einer Rezession, wenn Arbeitskräfte und Maschinen brachliegen, kann staatliche Nachfrage die Lücke füllen, ohne Preise zu treiben.
+        </p>
+
+        <div class="emphasis-box">
+            <p>
+                <strong>Die entscheidende Unterscheidung:</strong> Staatsverschuldung für laufende Konsumausgaben ist etwas fundamental anderes als Verschuldung für Investitionen, die künftiges Wachstum ermöglichen. Ein Kredit für einen Bildungsurlaub ist nicht dasselbe wie ein Kredit für eine Ausbildung, die das Einkommen steigert.
+            </p>
+        </div>
+
+        <h2>III. Die deutsche Obsession</h2>
+
+        <p>
+            In Deutschland hat die Schuldendebatte einen besonderen Charakter. Das Wort „Schulden" trägt eine moralische Last — es klingt nach Schuld. Die 2009 im Grundgesetz verankerte Schuldenbremse war eine Antwort auf die Finanzkrise, aber auch Ausdruck eines tief verwurzelten Misstrauens gegenüber staatlicher Ausgabenpolitik.
+        </p>
+
+        <p>
+            Die Schuldenbremse begrenzt die strukturelle Neuverschuldung des Bundes auf 0,35 Prozent des BIP — eine der strengsten Regeln weltweit. Das Ergebnis: Deutschland hat eine der niedrigsten Schuldenquoten der großen Industrienationen. Aber auch einen Investitionsstau, der auf hunderte Milliarden Euro geschätzt wird. Marode Brücken, langsames Internet, veraltete Schulen.
+        </p>
+
+        <p>
+            Im März 2025 hat die schwarz-rote Koalition die Schuldenbremse gelockert — unter dem Druck der geopolitischen Realität. Ein 500-Milliarden-Euro-Sondervermögen für Infrastruktur, Verteidigungsausgaben außerhalb der Schuldenregel. Die Neuverschuldung für 2026 wird auf etwa 180 Milliarden Euro steigen. Die Zinsausgaben des Bundes sollen von 30 Milliarden Euro auf 66,5 Milliarden Euro im Jahr 2029 anwachsen.
+        </p>
+
+        <h2>IV. Die Positionen</h2>
+
+        <p>
+            In der Debatte stehen sich drei Lager gegenüber:
+        </p>
+
+        <p>
+            <span class="highlight">Die Austeritäts-Position</span> (Bundesrechnungshof, FDP, Teile der Union): Staatsverschuldung ist grundsätzlich problematisch, weil sie künftige Generationen belastet. Kernaufgaben des Staates sollten aus laufenden Einnahmen finanziert werden. Die Lockerung der Schuldenbremse droht zu einer „Schuldenflatrate" zu werden.
+        </p>
+
+        <p>
+            <span class="highlight">Die keynesianische Position</span> (SPD, Grüne, viele Ökonomen): Der Staat muss antizyklisch handeln — in Krisen Schulden machen, in guten Zeiten sparen. Die Schuldenbremse unterscheidet nicht zwischen Konsum und Investition und bremst so dringend nötige Modernisierung.
+        </p>
+
+        <p>
+            <span class="highlight">Die MMT-Position</span> (akademische Minderheit): Die Frage nach der Finanzierung staatlicher Ausgaben ist falsch gestellt. Der Staat schöpft Geld durch Ausgaben und vernichtet es durch Steuern. Die einzige relevante Grenze ist die Inflationsrate.
+        </p>
+
+        <h2>V. Der Bundesbank-Kompromiss</h2>
+
+        <p>
+            Interessanterweise hat die Bundesbank — traditionell Hüterin der Geldwertstabilität — im November 2025 einen differenzierten Reformvorschlag vorgelegt. Der Kern: Der Bund soll einen festen Kreditspielraum von 0,8 Prozent des BIP ausschließlich für Sachinvestitionen bekommen, unabhängig von der Schuldenquote. Darüber hinaus soll es einen variablen Spielraum geben — abhängig davon, ob die Schuldenquote unter oder über 60 Prozent liegt.
+        </p>
+
+        <div class="emphasis-box">
+            <p>
+                <strong>Der Bundesbank-Vorschlag in Zahlen:</strong> Bei einer Schuldenquote unter 60% soll der freie Kreditspielraum bei 0,5% des BIP liegen. Übersteigt die Quote die 60%-Marke, sinkt er auf 0,1%. Der Investitions-Spielraum von 0,8% bleibt konstant — Planungssicherheit für Infrastruktur, Anreiz zur Schuldenreduktion beim Rest.
+            </p>
+        </div>
+
+        <p>
+            Das ist bemerkenswert pragmatisch für eine Institution, die lange als Gralshüterin der fiskalischen Orthodoxie galt. Die Bundesbank erkennt an: Investitionen schaffen Wachstum, Wachstum erhöht die Schuldentragfähigkeit. Der Kreis kann virtuos statt viszios sein.
+        </p>
+
+        <h2>VI. Die Leerstelle der Debatte</h2>
+
+        <p>
+            Was in der deutschen Debatte oft fehlt, ist die Frage: <span class="highlight">Was kostet Nicht-Investieren?</span> Eine marode Brücke, die gesperrt werden muss, verursacht volkswirtschaftliche Kosten — durch Umwege, Zeitverlust, erhöhte Transportkosten. Eine Schule ohne digitale Infrastruktur produziert Absolventen, die im internationalen Wettbewerb zurückfallen.
+        </p>
+
+        <p>
+            Der Bundesrechnungshof warnt vor einer „Verschuldungsdynamik", die bis 2035 zu einer zusätzlichen Billion Euro Schulden führen könnte. Das klingt bedrohlich. Aber was wäre die Alternative? Die gleiche Summe als Wertverfall der Infrastruktur, als verpasste Wachstumschancen, als Abwanderung von Unternehmen?
+        </p>
+
+        <p>
+            Die Wahrheit ist: Wir kennen die Antwort nicht mit Sicherheit. Ökonomie ist keine exakte Wissenschaft. Was wir wissen ist, dass sowohl exzessive Verschuldung als auch exzessives Sparen Volkswirtschaften ruinieren können. Griechenland nach 2010 ist ein Beispiel für das zweite, nicht für das erste.
+        </p>
+
+        <h2>VII. Die richtige Frage</h2>
+
+        <p>
+            „Müssen Staaten sich verschulden?" ist also die falsche Frage. Die richtigen Fragen lauten:
+        </p>
+
+        <p>
+            <span class="highlight">Wofür?</span> Investitionen, die künftiges Wachstum ermöglichen, rechtfertigen Schulden eher als laufende Konsumausgaben. Eine Straße, die 50 Jahre hält, darf ruhig über 50 Jahre finanziert werden.
+        </p>
+
+        <p>
+            <span class="highlight">In welcher Währung?</span> Schulden in eigener Währung sind fundamental anders als Schulden in Fremdwährung. Deutschland hat keine eigene Währung mehr — ein entscheidender Unterschied zu Japan oder den USA.
+        </p>
+
+        <p>
+            <span class="highlight">Bei welcher Zinslast?</span> 180 Milliarden Euro Neuverschuldung bei 1% Zinsen sind etwas anderes als bei 5%. Die Zinsausgaben des Bundes werden sich bis 2029 mehr als verdoppeln — das ist der Preis der Lockerung.
+        </p>
+
+        <p>
+            <span class="highlight">In welcher konjunkturellen Lage?</span> Schulden in einer Rezession können die Wirtschaft stabilisieren. Schulden in einem Boom können Inflation anheizen und private Investitionen verdrängen.
+        </p>
+
+        <h2>VIII. Fazit: Weder Dogma noch Utopie</h2>
+
+        <p>
+            Die Staatsverschuldung ist weder das moralische Übel, als das sie deutsche Konservative darstellen, noch das folgenlose Instrument, als das sie manche MMT-Enthusiasten verkaufen. Sie ist ein Werkzeug — eines, das klug eingesetzt Wohlstand schaffen und dumm eingesetzt ihn zerstören kann.
+        </p>
+
+        <p>
+            Japan zeigt, dass hohe Schuldenquoten über Jahrzehnte tragbar sein können — unter bestimmten Bedingungen: eigene Währung, Inlandsgläubiger, kooperative Zentralbank. Die Eurozone hat diese Bedingungen nicht, was die Situation für Deutschland komplizierter macht.
+        </p>
+
+        <p>
+            Was wir brauchen, ist weder die Schuldenbremse in ihrer alten Rigidität noch ihre völlige Abschaffung. Wir brauchen eine differenzierte Regel, die zwischen Investition und Konsum unterscheidet, die Spielraum für Krisen lässt und Anreize zur Konsolidierung in guten Zeiten setzt. Der Bundesbank-Vorschlag geht in diese Richtung.
+        </p>
+
+        <blockquote>
+            Eine Zukunft auf Pump ist keine Lösung.
+            <cite>— sinngemäß Kay Scheller, Präsident des Bundesrechnungshofes, der seit Jahren davor warnt</cite>
+        </blockquote>
+
+        <p>
+            Aber eine Zukunft ohne Investitionen ist auch keine. Die Kunst liegt im Maß — und in der Ehrlichkeit, dass wir die optimale Schuldenquote nicht kennen. Wir navigieren auf Sicht, nicht nach Karte. Das sollte sowohl Schulden-Dogmatiker als auch Schulden-Utopisten bescheidener machen.
+        </p>
+
+        <footer>
+            <p>Essay 106 · Februar 2026</p>
+        </footer>
+    </article>
+
+    <script>
+        function setSize(size) {
+            const container = document.querySelector('.essay-container');
+            container.classList.remove('size-s', 'size-m', 'size-l');
+            container.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-size', size);
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('essay-theme', next);
+        }
+
+        (function() {
+            const savedSize = localStorage.getItem('essay-size') || 'm';
+            const savedTheme = localStorage.getItem('essay-theme') || 'dark';
+            
+            document.querySelector('.essay-container').classList.remove('size-m');
+            document.querySelector('.essay-container').classList.add('size-' + savedSize);
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase() === savedSize) btn.classList.add('active');
+            });
+            
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+</body>
+</html>

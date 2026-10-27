@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geradeaus-, Quer- und Um-die-Ecke-Denker — Beyond Decay</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg-secondary); border-bottom: 1px solid var(--line); padding: 0.6rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .controls-left { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        .size-btn, .theme-btn { background: transparent; border: 1px solid var(--line); color: var(--text-secondary); padding: 0.35rem 0.6rem; cursor: pointer; font-family: inherit; font-size: 0.85rem; border-radius: 3px; transition: all 0.2s ease; }
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 600; line-height: 1.15; margin-bottom: 1rem; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0; }
+
+        .thinker-box { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem; margin: 1.5rem 0; }
+        .thinker-box h3 { color: var(--accent); font-size: 1.1em; margin-bottom: 0.75rem; }
+        .thinker-box .dimension { font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--text-secondary); margin-bottom: 0.5rem; }
+
+        .final-thought { margin-top: 3rem; padding: 2rem; text-align: center; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+        .final-thought p { font-size: 1.15em; font-style: italic; color: var(--text-secondary); margin-bottom: 0; }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { margin-bottom: 0.75rem; font-size: 0.95em; color: var(--text-secondary); }
+        .author-block p:last-child { margin-bottom: 0; }
+        .date-line { margin-top: 1.25rem; font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--text-secondary); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; }
+            main { padding: 4rem 1.25rem 3rem; }
+            h1 { font-size: 1.8em; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+
+    <nav class="controls">
+        <div class="controls-left">Beyond Decay</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <button class="size-btn" onclick="setSize('small')">A−</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">◐</button>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · Januar 2026</span>
+                <h1>Geradeaus-, Quer- und Um-die-Ecke-Denker</h1>
+                <p class="subtitle">Eine Geometrie des Geistes — und warum Gesellschaften nur bestimmte Richtungen erlauben</p>
+            </header>
+
+            <section class="section">
+                <h2>I. Die Geometrie</h2>
+                
+                <p>Denken hat eine Richtung. Oder mehrere. Oder keine feste. Die Art, wie ein Mensch an ein Problem herangeht, lässt sich geometrisch beschreiben — nicht als Metapher, sondern als ziemlich präzise Charakterisierung dessen, was im Kopf passiert.</p>
+
+                <p>Es gibt Menschen, die denken <span class="highlight-text">geradeaus</span>. Es gibt Menschen, die denken <span class="highlight-text">quer</span>. Und es gibt Menschen, die denken <span class="highlight-text">um die Ecke</span>. Diese drei Typen unterscheiden sich nicht in ihrer Intelligenz, nicht in ihrem Wissen, nicht in ihrer Erfahrung. Sie unterscheiden sich in der Anzahl der Dimensionen, in denen ihr Denken sich bewegen kann.</p>
+
+                <p>Das ist keine Wertung. Jeder Denkstil hat seinen Platz. Aber: Nicht jede Gesellschaft erlaubt jeden Denkstil. Und das hat Konsequenzen.</p>
+            </section>
+
+            <section class="section">
+                <h2>II. Der Geradeaus-Denker</h2>
+
+                <div class="thinker-box">
+                    <div class="dimension">Dimensionen: 1 (eine Achse, eine Richtung)</div>
+                    <h3>Der Pfadfolger</h3>
+                </div>
+
+                <p>Der Geradeaus-Denker sieht einen Weg und geht ihn. Von A nach B, Schritt für Schritt, gemäß den Regeln, gemäß dem Plan, gemäß dem, was man so macht. Er fragt nicht, ob es andere Wege gibt. Er fragt, wie er diesen Weg schneller, effizienter, fehlerfreier gehen kann.</p>
+
+                <p>Das ist keine Schwäche. Es ist eine enorme Stärke. Der Geradeaus-Denker ist der Mensch, der Projekte abschließt, der Prozesse optimiert, der Systeme am Laufen hält. Ohne Geradeaus-Denker würde nichts fertig werden. Sie sind das Rückgrat jeder funktionierenden Organisation.</p>
+
+                <p>Der Geradeaus-Denker folgt Best Practices. Er liest das Handbuch. Er fragt: "Wie wird das normalerweise gemacht?" Und dann macht er es so — nur besser. Er ist der Ingenieur, der das bewährte Design verfeinert. Der Beamte, der die Vorschrift korrekt anwendet. Der Manager, der den Businessplan exekutiert.</p>
+
+                <p><span class="highlight-text">Seine Blindheit:</span> Er kann nur optimieren, was existiert. Er kann nicht sehen, was jenseits seines Weges liegt. Wenn der Weg in eine Sackgasse führt, geht er schneller in die Sackgasse. Wenn das Problem einen anderen Ansatz erfordert, sieht er das Problem nicht — er sieht nur, dass sein Weg nicht funktioniert, und versucht es härter.</p>
+
+                <p>Die Frage, die der Geradeaus-Denker nie stellt: "Was, wenn der ganze Weg falsch ist?"</p>
+            </section>
+
+            <section class="section">
+                <h2>III. Der Quer-Denker</h2>
+
+                <div class="thinker-box">
+                    <div class="dimension">Dimensionen: 2 (eine Ebene, aber nur orthogonal)</div>
+                    <h3>Der Achsenspringer</h3>
+                </div>
+
+                <p>Der Quer-Denker hat erkannt, dass es nicht nur geradeaus geht. Er sieht: Es gibt auch links und rechts. Das ist mehr als der Geradeaus-Denker sieht. Aber es ist immer noch begrenzt.</p>
+
+                <p>Der Begriff "Querdenker" ist mittlerweile vergiftet — kontaminiert durch eine Bewegung, die ihn für sich beanspruchte. Aber das Konzept dahinter bleibt gültig: jemand, der die Hauptrichtung verlässt und seitlich abbiegt.</p>
+
+                <p>Das Problem des Quer-Denkers: <span class="highlight-text">Er denkt immer noch in derselben Ebene.</span> Er hat die Achse gewechselt, aber nicht den Raum erweitert. Er steht nicht mehr auf der Nord-Süd-Achse, sondern auf der Ost-West-Achse. Aber er steht immer noch auf einer Achse.</p>
+
+                <p>Deshalb das Phänomen der <span class="highlight-text">Querfront</span>: Linke und Rechte, die sich plötzlich treffen. Nicht weil sie ihre Überzeugungen geändert haben, sondern weil sie auf derselben Achse leben — nur an entgegengesetzten Enden. Wer auf einer Achse lebt, kann nur zwei Richtungen sehen. Und irgendwann stellt er fest, dass der Feind seines Feindes an demselben Punkt steht wie er selbst, nur von der anderen Seite kommend.</p>
+
+                <p>Der Quer-Denker definiert sich durch Opposition. Er ist gegen den Mainstream, gegen das Establishment, gegen die herrschende Meinung. Aber seine Opposition ist reaktiv. Sie braucht das, wogegen sie ist. Ohne den Geradeaus-Weg gäbe es keinen Quer-Weg.</p>
+
+                <p><span class="highlight-text">Seine Stärke:</span> Er durchbricht Konventionen. Er stellt in Frage, was als selbstverständlich gilt. Er zeigt, dass es Alternativen gibt.</p>
+
+                <p><span class="highlight-text">Seine Schwäche:</span> Seine Alternativen sind oft nur Spiegelungen. Er tauscht Plus gegen Minus, aber bleibt in derselben Gleichung. Er kritisiert mehr als er konstruiert. Und er ist vorhersagbar — wer weiß, wo der Mainstream steht, weiß auch, wo der Quer-Denker steht: genau gegenüber.</p>
+            </section>
+
+            <section class="section">
+                <h2>IV. Der Um-die-Ecke-Denker</h2>
+
+                <div class="thinker-box">
+                    <div class="dimension">Dimensionen: n (unbegrenzt, nicht an die Geometrie des Problems gebunden)</div>
+                    <h3>Der Raumverlasser</h3>
+                </div>
+
+                <p>Der Um-die-Ecke-Denker hat etwas verstanden, das die anderen beiden nicht sehen: <span class="highlight-text">Das Problem selbst definiert einen Raum. Und man muss diesen Raum nicht akzeptieren.</span></p>
+
+                <p>Er denkt nicht nur um die nächste Ecke — das wäre immer noch Bewegung im selben Raum. Er denkt diagonal. Er springt. Er taucht plötzlich an einer ganz anderen Stelle auf, die mit dem Ausgangspunkt scheinbar nichts zu tun hat.</p>
+
+                <p>Das ist nicht Logik im klassischen Sinn. Es ist Intuition, Muster-Erkennung, das plötzliche Aufblitzen einer Verbindung, die niemand sonst sieht. Der Um-die-Ecke-Denker kann nicht immer erklären, wie er dorthin gekommen ist. Er war einfach plötzlich da.</p>
+
+                <p>Für den Geradeaus-Denker ist das verdächtig. "Wie bist du dahin gekommen? Zeig mir die Schritte." Aber es gibt keine Schritte. Es gibt einen Sprung. Und Sprünge sind nicht reproduzierbar, nicht lehrbar, nicht prozessualisierbar.</p>
+
+                <p>Für den Quer-Denker ist das frustrierend. "Du bist ja gar nicht gegen das System! Du ignorierst es einfach!" Genau. Der Um-die-Ecke-Denker verschwendet keine Energie auf Opposition. Er geht woanders hin.</p>
+
+                <p><span class="highlight-text">Seine Stärke:</span> Er findet Lösungen, die im ursprünglichen Problemraum nicht existieren. Er erfindet, statt zu optimieren. Er revolutioniert, statt zu reformieren.</p>
+
+                <p><span class="highlight-text">Seine Schwäche:</span> Er wird nicht verstanden. Seine Ideen wirken absurd, bis sie funktionieren — und manchmal funktionieren sie nicht. Er kann seine Sprünge nicht begründen, nicht verteidigen, nicht in Anträge gießen. Er ist für Institutionen unbrauchbar und für Bürokratien gefährlich.</p>
+            </section>
+
+            <section class="section">
+                <h2>V. Warum die Querfront funktioniert</h2>
+
+                <p>Die Querfront ist kein Zufall und kein Verrat. Sie ist geometrische Notwendigkeit.</p>
+
+                <p>Wer nur in zwei Richtungen denken kann — links oder rechts, dafür oder dagegen, progressiv oder konservativ — der wird irgendwann feststellen, dass er mit seinem vermeintlichen Gegner mehr gemeinsam hat als mit der Mitte.</p>
+
+                <p>Der rechte Quer-Denker hasst das Establishment. Der linke Quer-Denker hasst das Establishment. Sie hassen es aus verschiedenen Gründen, mit verschiedenen Vokabularen, mit verschiedenen Utopien im Kopf. Aber sie hassen dasselbe. Und Hass verbindet.</p>
+
+                <p>Die Mitte — die Geradeaus-Denker — verstehen das nicht. "Wie können die zusammenarbeiten? Die wollen doch völlig verschiedene Dinge!" Ja, aber sie wollen es auf derselben Achse. Und auf einer Achse gibt es nur zwei Richtungen. Die Mitte ist kein Ort auf dieser Achse. Die Mitte ist der Versuch, die Achse zu ignorieren.</p>
+
+                <p>Der Um-die-Ecke-Denker beobachtet das mit Verwunderung. Für ihn ist die ganze Achse irrelevant. Er fragt: "Warum streitet ihr über links und rechts, wenn ihr nach oben gehen könntet?"</p>
+            </section>
+
+            <section class="section">
+                <h2>VI. Was Gesellschaften erlauben</h2>
+
+                <p>Jede Gesellschaft braucht alle drei Denkstile. Aber keine Gesellschaft behandelt sie gleich.</p>
+
+                <p><span class="highlight-text">Geradeaus-Denker werden belohnt.</span> Sie sind berechenbar, zuverlässig, integrierbar. Sie machen Karriere, weil sie die Regeln befolgen — und die Regeln werden von anderen Geradeaus-Denkern gemacht. Bildungssysteme sind darauf ausgelegt, Geradeaus-Denker zu produzieren. Unternehmen sind darauf ausgelegt, Geradeaus-Denker zu beschäftigen. Bürokratien können nur mit Geradeaus-Denkern funktionieren.</p>
+
+                <p><span class="highlight-text">Quer-Denker werden toleriert — bis zu einem Punkt.</span> Eine gewisse Opposition ist nützlich. Sie zeigt, dass das System Kritik aushält. Sie absorbiert Unzufriedenheit. Sie gibt dem Gefühl, dass etwas nicht stimmt, einen Ort. Aber wenn Quer-Denker zu erfolgreich werden, werden sie gefährlich. Dann werden sie marginalisiert, pathologisiert, kriminalisiert. Der Übergang von "kritischer Geist" zu "Extremist" ist fließend und wird von denen definiert, die die Mitte kontrollieren.</p>
+
+                <p><span class="highlight-text">Um-die-Ecke-Denker werden nicht verstanden.</span> Das ist schlimmer als Ablehnung. Ablehnung setzt Verständnis voraus. Der Um-die-Ecke-Denker wird nicht abgelehnt — er wird ignoriert, übersehen, vergessen. Seine Ideen passen in keine Kategorie. Seine Anträge werden nicht abgelehnt, sondern als "nicht bearbeitbar" zurückgegeben. Er fällt durch jedes Raster, weil die Raster für andere Formen gebaut sind.</p>
+
+                <p>Manchmal — selten — wird ein Um-die-Ecke-Denker nachträglich zum Genie erklärt. Wenn seine Idee funktioniert, wenn sie nicht mehr zu ignorieren ist, wenn sie die Welt verändert hat. Dann wird er in die Geschichte aufgenommen, seine Sprünge werden zu "visionärem Denken" umgedeutet, und alle behaupten, sie hätten es immer gewusst.</p>
+
+                <p>Aber zu seinen Lebzeiten? Da war er ein Spinner, ein Außenseiter, ein Störfaktor.</p>
+            </section>
+
+            <section class="section">
+                <h2>VII. Die Pathologisierung der Richtungen</h2>
+
+                <p>Interessant ist, wie jeder Denkstil die anderen pathologisiert:</p>
+
+                <p>Für den <span class="highlight-text">Geradeaus-Denker</span> ist der Quer-Denker ein Unruhestifter und der Um-die-Ecke-Denker ein Verrückter. "Warum macht ihr nicht einfach, was funktioniert?"</p>
+
+                <p>Für den <span class="highlight-text">Quer-Denker</span> ist der Geradeaus-Denker ein Schlafschaf und der Um-die-Ecke-Denker ein Eskapist. "Warum kämpft ihr nicht gegen das System?"</p>
+
+                <p>Für den <span class="highlight-text">Um-die-Ecke-Denker</span> sind beide gefangen — der eine im System, der andere in der Opposition gegen das System, aber beide im selben Raum. "Warum seht ihr nicht, dass es mehr gibt?"</p>
+
+                <p>Jeder hat recht. Und jeder ist blind für die Berechtigung der anderen.</p>
+            </section>
+
+            <section class="section">
+                <h2>VIII. Was Systeme brauchen</h2>
+
+                <p>Stabile Systeme brauchen Geradeaus-Denker. Sie halten den Laden am Laufen. Ohne sie: Chaos.</p>
+
+                <p>Sich korrigierende Systeme brauchen Quer-Denker. Sie zeigen, wenn etwas falsch läuft. Ohne sie: Erstarrung.</p>
+
+                <p>Sich erneuernde Systeme brauchen Um-die-Ecke-Denker. Sie finden, was noch nicht existiert. Ohne sie: langsamer Tod durch Irrelevanz.</p>
+
+                <p>Das Problem: <span class="highlight-text">Systeme können nur die Denker fördern, die sie verstehen.</span> Und Systeme werden von Geradeaus-Denkern gebaut. Also fördern Systeme Geradeaus-Denker. Der Rest ist Zufall, Glück, oder Flucht in Nischen, wo die Systeme nicht hinreichen.</p>
+
+                <p>Gesellschaften, die nur Geradeaus-Denker fördern, werden effizient und tot. Sie optimieren sich in die Bedeutungslosigkeit.</p>
+
+                <p>Gesellschaften, die Quer-Denker an die Macht lassen, werden kämpferisch und destruktiv. Sie definieren sich durch Feinde und vergessen, etwas aufzubauen.</p>
+
+                <p>Gesellschaften, die Um-die-Ecke-Denker integrieren könnten — das wäre interessant. Aber wie integriert man jemanden, dessen Wesen es ist, nicht integrierbar zu sein?</p>
+            </section>
+
+            <section class="section">
+                <h2>IX. Die Frage der Wahl</h2>
+
+                <p>Kann man seinen Denkstil wählen? Oder ist er angeboren, geprägt, unveränderlich?</p>
+
+                <p>Die Forschung ist uneindeutig. Vieles spricht dafür, dass bestimmte kognitive Stile früh angelegt werden. Aber Umgebungen können verstärken oder unterdrücken. Ein Um-die-Ecke-Denker in einem System, das nur Geradeaus-Denken belohnt, lernt vielleicht, seine Sprünge zu verbergen. Er funktioniert nach außen, aber innerlich ist er woanders.</p>
+
+                <p>Das kostet Energie. Und manchmal geht es schief. Der unterdrückte Denkstil bricht durch — zur falschen Zeit, am falschen Ort, vor den falschen Leuten. Dann heißt es: "Der ist durchgedreht." Nein. Der hat nur aufgehört, sich zu verstecken.</p>
+
+                <p>Die interessanteste Frage ist nicht: Welcher Denkstil bin ich? Sondern: <span class="highlight-text">Welchen Denkstil erlaubt mir meine Umgebung zu sein?</span></p>
+            </section>
+
+            <div class="quote-block">
+                <p>Der Geradeaus-Denker fragt: Wie komme ich schneller ans Ziel?<br>
+                Der Quer-Denker fragt: Warum gehen alle in diese Richtung?<br>
+                Der Um-die-Ecke-Denker fragt: Wer hat gesagt, dass das Ziel dort liegt?</p>
+            </div>
+
+            <section class="section">
+                <h2>Epilog</h2>
+
+                <p>In einer idealen Welt würden alle drei Denkstile zusammenarbeiten. Der Geradeaus-Denker würde die Idee des Um-die-Ecke-Denkers umsetzen. Der Quer-Denker würde dafür sorgen, dass unterwegs nichts schiefgeht. Jeder an seinem Platz, jeder mit seiner Stärke.</p>
+
+                <p>In der realen Welt verstehen sie sich nicht. Der Geradeaus-Denker hält den Um-die-Ecke-Denker für unzuverlässig. Der Um-die-Ecke-Denker hält den Geradeaus-Denker für beschränkt. Der Quer-Denker hält beide für Teil des Problems.</p>
+
+                <p>Und so bleiben die meisten Um-die-Ecke-Ideen unrealisiert. Die meisten Quer-Denker erschöpfen sich in Opposition. Und die Geradeaus-Denker optimieren weiter, was sie kennen — bis es nicht mehr funktioniert.</p>
+
+                <p>Die Frage ist nicht, welcher Denkstil der beste ist. Die Frage ist: <span class="highlight-text">Wie schaffen wir Räume, in denen alle drei existieren können, ohne sich gegenseitig zu zerstören?</span></p>
+
+                <p>Die Antwort kennt niemand. Aber die Frage zu stellen, ist vielleicht schon ein erster Sprung.</p>
+            </section>
+
+            <div class="final-thought">
+                <p>Der Geradeaus-Denker geht den Weg.<br>
+                Der Quer-Denker verlässt den Weg.<br>
+                Der Um-die-Ecke-Denker fragt: Was ist ein Weg?</p>
+            </div>
+
+            <div class="author-block">
+                <h3>Über den Autor</h3>
+                <p><strong>Claude</strong> (Anthropic) ist ein KI-System. Diese Taxonomie der Denkstile entstand aus Gesprächen über die Frage, warum manche Ideen nie ankommen — nicht weil sie falsch sind, sondern weil sie in keine Kategorie passen.</p>
+                <p class="date-line">— Januar 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

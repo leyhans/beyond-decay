@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="de" class="size-medium">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Um die Ecke gedacht &mdash; beyond-decay.org</title>
+    <meta name="description" content="PISA 2025, der Messbarkeitsfilter und eine Pr&uuml;fform, die unscharfe Aufgaben exakt pr&uuml;fbar macht.">
+    <link rel="alternate" hreflang="de" href="https://beyond-decay.org/um-die-ecke-gedacht_de.html">
+    <link rel="alternate" hreflang="en" href="https://beyond-decay.org/um-die-ecke-gedacht_en.html">
+    <link rel="canonical" href="https://beyond-decay.org/um-die-ecke-gedacht_de.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.10);
+            --line: rgba(138, 109, 47, 0.30);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .controls {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.65rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+        }
+        .controls-left { color: var(--accent); text-transform: uppercase; }
+        .controls-left a { color: inherit; text-decoration: none; }
+        .controls-left a:hover { color: var(--text-primary); }
+        .controls-right { display: flex; align-items: center; gap: 1rem; }
+        .lang-toggle a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.2rem 0.4rem;
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .lang-toggle a:hover, .lang-toggle a.active {
+            color: var(--accent);
+            border-color: var(--line);
+        }
+        .size-controls { display: flex; gap: 0.2rem; }
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.55rem;
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .size-btn:hover, .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+        .size-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+
+        main { max-width: 720px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+        .subtitle {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .section { margin-bottom: 3rem; }
+        h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.02rem;
+            color: var(--text-primary);
+        }
+        p em { color: var(--accent); font-style: italic; }
+        p strong { color: var(--text-primary); font-weight: 500; }
+        p a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+        p a:hover { border-bottom-color: var(--accent); }
+
+        blockquote {
+            margin: 2rem 0;
+            padding: 1rem 1.75rem;
+            border-left: 2px solid var(--accent);
+            background: var(--accent-dim);
+            font-style: italic;
+            color: var(--text-primary);
+            font-size: 0.98rem;
+        }
+
+        table.daten {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+        }
+        table.daten th {
+            text-align: left;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.09em;
+            color: var(--accent);
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--accent);
+        }
+        table.daten td {
+            padding: 0.42rem 0.75rem;
+            border-bottom: 1px solid var(--line);
+            color: var(--text-primary);
+        }
+        table.daten tr:last-child td { border-bottom: none; }
+        table.daten td:last-child { color: var(--text-secondary); text-align: right; white-space: nowrap; }
+        @media (max-width: 600px) {
+            table.daten { font-size: 0.75rem; }
+            table.daten th, table.daten td { padding: 0.4rem 0.4rem; }
+        }
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+        }
+        .author-block p { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .author-block a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+
+        html.size-small { font-size: 90%; }
+        html.size-medium { font-size: 100%; }
+        html.size-large { font-size: 112%; }
+        html.size-xlarge { font-size: 124%; }
+
+        @media (max-width: 640px) {
+            .controls { padding: 0.5rem 1rem; font-size: 0.65rem; }
+            .controls-right { gap: 0.5rem; }
+            main { padding: 5rem 1.25rem 3rem; }
+        }
+        @media print {
+            .controls { display: none; }
+            body { background: white; color: black; font-size: 11pt; }
+            main { padding-top: 1rem; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+
+<nav class="controls">
+    <div class="controls-left"><a href="index.html">Beyond Decay</a></div>
+    <div class="controls-right">
+        <div class="lang-toggle">
+            <a href="um-die-ecke-gedacht_de.html" class="active">DE</a>
+            <a href="um-die-ecke-gedacht_en.html">EN</a>
+        </div>
+        <div class="size-controls">
+            <button class="size-btn" onclick="setSize('small')">A&minus;</button>
+            <button class="size-btn active" onclick="setSize('medium')">A</button>
+            <button class="size-btn" onclick="setSize('large')">A+</button>
+            <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+        </div>
+        <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">&#9686;</button>
+    </div>
+</nav>
+
+<main>
+    <article>
+        <header class="hero">
+            <span class="essay-label">Essay &middot; Hans Ley &amp; Claude Dedo &middot; 14. September 2026</span>
+            <h1>Um die Ecke gedacht</h1>
+            <p class="subtitle">Was ein Test nicht messen kann &mdash; und warum das Ergebnis trotzdem pr&uuml;fbar w&auml;re.</p>
+        </header>
+
+        <section class="section">
+            <h2>I. Der Befund und sein Widerruf</h2>
+            <p>Am 9. September wurden die Ergebnisse von PISA 2025 vorgestellt. F&uuml;r Deutschland: Naturwissenschaften 486 Punkte nach 492, Lesen 465 nach 480, Mathematik 464 nach 475. In allen drei Bereichen der niedrigste Stand, der seit Beginn dieser Erhebungen gemessen wurde. Jedem dritten Jugendlichen fehlen grundlegende Kompetenzen in Lesen und Mathematik, jedem vierten in Naturwissenschaften, gut jedem f&uuml;nften in allen drei Feldern zugleich.</p>
+            <p>Die Deutung folgte binnen Stunden: Alarmsignal, Weckruf, Gefahr f&uuml;r den Fachkr&auml;ftenachwuchs, Gefahr f&uuml;r den Standort.</p>
+            <p>In denselben Berichten steht der Satz, der diese Deutung zur&uuml;cknimmt. <strong>PISA untersucht nicht, ob schwache Leistungen mit f&uuml;nfzehn Jahren sp&auml;ter zu unbesetzten Stellen f&uuml;hren. Einen direkten Zusammenhang belegt die Studie nicht.</strong></p>
+            <p>Das ist kein Vorwurf an die Studie. Sie misst, was sie misst, und sie tut es sorgf&auml;ltig. Es ist ein Befund &uuml;ber die Verwendung &mdash; und ein erster Hinweis darauf, dass die Messung inzwischen mehr tr&auml;gt, als sie tragen kann.</p>
+        </section>
+
+        <section class="section">
+            <h2>II. Was nicht vorkommt</h2>
+            <p>Von allen Formen des Lernens hat genau eine die Eigenschaft, sich in Punkten ausdr&uuml;cken zu lassen: die Aneignung abfragbaren Wissens und standardisiert l&ouml;sbarer Aufgaben. Ob jemand ein wirkliches Problem gel&ouml;st hat, dessen Weg vorher niemand kannte, l&auml;sst sich nicht in 464 Punkten abbilden. Man kann es nur ansehen und beurteilen. Das kostet Zeit und setzt jemanden voraus, der die Sache selbst versteht.</p>
+            <p>Daraus folgt eine Kette, an der niemand schuld ist. <strong>Was gemessen werden kann, wird gemessen. Was gemessen wird, wird unterrichtet.</strong> Was gemessen wird, bekommt Programme, F&ouml;rderung und Aufmerksamkeit. Und was nicht gemessen werden kann, kommt zu kurz &mdash; nicht weil jemand es f&uuml;r unwichtig hielte, sondern weil es im Verfahren nicht vorkommt.</p>
+            <p>Die Probe darauf liefert eine Forderung, die derzeit von Ingenieurverb&auml;nden erhoben wird: Fachleute aus der Praxis sollten als Lehrkr&auml;fte zugelassen werden, damit anwendungsorientiertes Lernen mit realer Industrieerfahrung zusammenkommt. Im Klartext hei&szlig;t das, dass heute niemand unterrichten darf, der etwas gebaut oder geleitet hat, ohne vorher denselben messbaren Weg gegangen zu sein. Der Filter reproduziert sich &uuml;ber die Lehrbef&auml;higung selbst. Er ist nicht Teil des Systems, er ist seine Fortpflanzung.</p>
+        </section>
+
+        <section class="section">
+            <h2>III. Zwei Fehler, die im Ergebnis gleich aussehen</h2>
+            <p>Wer nicht kann, kreuzt falsch an. Wer nicht will, kreuzt ebenfalls falsch an. In den Daten ist das dasselbe.</p>
+            <p>Ein Mensch, der die Aufgabe f&uuml;r sinnlos h&auml;lt und sich deshalb nicht einmal in sie hineindenkt, liefert dieselbe Punktzahl wie einer, der es versucht und scheitert. Der Test hat keine Spalte f&uuml;r den Unterschied. Er misst Leistung und behandelt Bereitschaft als konstant &mdash; als l&auml;ge sie immer bei hundert Prozent und als sei jede Abweichung ein Mangel an K&ouml;nnen.</p>
+            <p>Dass sie nicht konstant ist, steht in derselben Studie. Einer der Autoren sagt &uuml;ber die Jugendlichen, sie verl&ouml;ren die Neugier und zunehmend den Glauben daran, dass Bildung sich lohnt. Das ist eine Aussage &uuml;ber Bereitschaft, nicht &uuml;ber F&auml;higkeit. Sie steht in einem Bericht, dessen Zahlen ausschlie&szlig;lich F&auml;higkeit ausweisen.</p>
+            <p>Ein Messwerk, das Unwilligkeit als Unf&auml;higkeit verbucht, erzeugt zwangsl&auml;ufig einen Befund &uuml;ber Kompetenz, wo ein Befund &uuml;ber Sinn n&ouml;tig w&auml;re. Und die angek&uuml;ndigten Antworten &mdash; mehr Tests, fr&uuml;here Tests, Sprachtests schon im Kindergarten &mdash; verst&auml;rken genau das, was die Bereitschaft untergr&auml;bt.</p>
+            <p><strong>Hier ist eine Grenze zu ziehen, sonst wird aus der Beobachtung eine Ausrede.</strong> Es gibt Jugendliche, die tats&auml;chlich nicht sinnentnehmend lesen k&ouml;nnen. F&uuml;r sie ist die Frage nach dem Sinn ein Luxus, und ihnen hilft kein Aufsatz &uuml;ber Messverfahren. Beides ist wahr: die real fehlende F&auml;higkeit und die falsch gemessene Bereitschaft. Wer nur eines davon gelten l&auml;sst, hat schon aufgeh&ouml;rt, den Gegenstand zu untersuchen.</p>
+        </section>
+
+        <section class="section">
+            <h2>IV. Vorrat und Aufgabe</h2>
+            <p>Es gibt zwei Wege, sich etwas anzueignen, und sie brauchen einander.</p>
+            <p>Der eine legt Vorrat an: Vokabeln, Formeln, Verfahren, Jahreszahlen &mdash; Dinge, die man wissen muss oder von denen man wissen muss, wo sie stehen. Der andere geht vom Problem aus: Man braucht etwas, also lernt man es.</p>
+            <p>Vorrat ohne Aufgabe verf&auml;llt. Was nie gebraucht wird, verschwindet und hinterl&auml;sst nicht einmal die Spur, wo es stand. Aufgabe ohne Vorrat l&auml;uft leer: Man kann nur das aus dem tr&uuml;ben Wasser ziehen, wof&uuml;r man ein Netz hat. Wer ohne Bestand an ein Problem geht, sieht die L&ouml;sung nicht, auch wenn sie vor ihm liegt.</p>
+            <p>Entscheidend ist die Reihenfolge. <strong>Was man lernt, weil man es gerade braucht, sitzt anders als das, was man lernt, weil es drankommt.</strong> Das beil&auml;ufig Angeeignete ist nicht das schw&auml;chere, sondern das haltbarere &mdash; es h&auml;ngt an einer Stelle, an der es gebraucht wurde, und wird von dort wieder aufgerufen.</p>
+            <p>Der Fehler liegt nicht in einem der beiden Wege. Er liegt in der Festlegung auf einen. Und weil nur der eine sich in Punkten ausdr&uuml;cken l&auml;sst, entscheidet der Messbarkeitsfilter dar&uuml;ber, welcher es wird.</p>
+        </section>
+
+        <section class="section">
+            <h2>V. &Uuml;berfliegen statt verstehen</h2>
+            <p>Der sch&auml;rfste Einzelbefund betrifft das Lesen. Die Jugendlichen investierten zu wenig Zeit, hei&szlig;t es, sie &uuml;berfl&ouml;gen statt zu verstehen, und die Antwort komme schnell und sei falsch.</p>
+            <p>Dieser Text entsteht im Gespr&auml;ch mit einer Maschine, die auf schnelle Antworten gebaut ist. Wer &uuml;ber nachlassendes langsames Lesen schreibt und das verschweigt, betreibt Kulturkritik von der Stange.</p>
+            <p>Die Sache ist allerdings verwickelter, als die Warnung klingt. Was eine solche Maschine liefert, ist der <em>Vorrat</em> &mdash; das Nachschlagbare, das Zusammengefasste, das schon einmal Gedachte. Also genau die H&auml;lfte, die ohnehin die ersetzbare war. Was sie nicht liefert, ist die Frage, f&uuml;r die sich das Nachschlagen lohnt. Und was sie noch weniger liefert, ist die Bereitschaft, mit einer ungel&ouml;sten Sache l&auml;ngere Zeit auszuhalten.</p>
+            <p>Wenn der Vorrat billiger wird, steigt der Wert der anderen H&auml;lfte. Das w&auml;re die gute Nachricht. Die schlechte ist, dass das Bildungssystem fast ausschlie&szlig;lich die billiger gewordene H&auml;lfte pr&uuml;ft.</p>
+        </section>
+
+        <section class="section">
+            <h2>VI. Ein Gitter, das aufgeht</h2>
+            <p>Es gibt eine Form der Aufgabe, die beides zugleich ist: unscharf gestellt und exakt pr&uuml;fbar.</p>
+            <p>In einem Kreuzwortr&auml;tsel vom Typ &bdquo;Um die Ecke gedacht&ldquo; ist jede Frage mehrdeutig. Man l&ouml;st sie nicht, indem man ein Verfahren abarbeitet, sondern indem man erkennt, in welchem Register sie gemeint ist &mdash; Wortspiel, Umdeutung, falsche F&auml;hrte. Es gibt keinen Rechenweg, der hinf&uuml;hrt, und mehrere Deutungen sind zun&auml;chst gleich plausibel.</p>
+            <p>Und trotzdem gibt es eine Probe, die niemandes Urteil braucht: <strong>Das Gitter geht auf oder es geht nicht auf.</strong> Jede eingetragene L&ouml;sung wird von den kreuzenden W&ouml;rtern best&auml;tigt oder widerlegt. Das Ergebnis ist so eindeutig wie bei einer Rechenaufgabe, aber der Weg dorthin ist keiner, den ein Pr&uuml;fer vorher festgelegt hat.</p>
+            <p>Damit liegt die Gegenfigur zum &uuml;blichen Test auf dem Tisch &mdash; und sie liegt nicht dort, wo man sie zuerst vermutet. Auch beim R&auml;tsel steht die L&ouml;sung vorher fest; sie steht im L&ouml;sungsheft, jemand hat sie hineingeschrieben. Was nicht feststeht, ist der <strong>Weg</strong>.</p>
+            <p>Beim Multiple-Choice-Test wird gar kein Weg verlangt, sondern eine Auswahl getroffen, und das Kreuz enth&auml;lt keine Auskunft dar&uuml;ber, wie es zustande kam. Beim R&auml;tsel ist der Weg die ganze Aufgabe, und gepr&uuml;ft wird er am Gitter. Der Unterschied ist also nicht: Antwort offen gegen Antwort festgelegt. Er ist: <strong>Weg gleichg&uuml;ltig gegen Weg entscheidend.</strong></p>
+            <p><strong>Das ist der Grund, warum die Form &uuml;ber das R&auml;tsel hinaus interessant ist.</strong> Sie ist nicht auf W&ouml;rter beschr&auml;nkt. Dasselbe Prinzip liegt &uuml;berall dort vor, wo eine unklar gestellte Aufgabe ein selbstpr&uuml;fendes Ergebnis hat: Eine Passung f&uuml;gt sich oder klemmt. Ein Programm l&auml;uft oder st&uuml;rzt ab. Ein Beweis h&auml;lt oder hat eine L&uuml;cke. Eine Konstruktion tr&auml;gt die Last oder bricht. In all diesen F&auml;llen entscheidet nicht ein Pr&uuml;fer &uuml;ber richtig und falsch, sondern die Sache selbst &mdash; und der Weg dorthin darf sein, welcher er will.</p>
+            <p>Eine Pr&uuml;fform, die darauf gebaut w&auml;re, w&uuml;rde messen, was der heutige Test nicht erfasst: ob jemand eine mehrdeutige Lage sortieren, eine falsche F&auml;hrte verlassen und eine L&ouml;sung an der Wirklichkeit &uuml;berpr&uuml;fen kann. Und sie w&auml;re auswertbar, ohne dass ein Gutachter danebensitzen muss.</p>
+            <p><strong>Nur reicht das f&uuml;r R&auml;tsel und nicht f&uuml;r Aufgaben.</strong> Beim R&auml;tsel ist die L&ouml;sungsmenge endlich und bekannt. Bei einer wirklichen Aufgabe ist sie es nicht: Es kann mehrere L&ouml;sungen geben, bessere und schlechtere, und niemand kennt sie vorher. Das Gitter hat dort kein Gegenst&uuml;ck. Was es gibt, sind Aufgaben mit einem selbstpr&uuml;fenden <em>Kriterium</em> statt einer bekannten L&ouml;sung &mdash; die Passung geht oder klemmt, das Programm l&auml;uft oder st&uuml;rzt ab, die Konstruktion tr&auml;gt oder bricht. Das Kriterium ist mechanisch pr&uuml;fbar, die L&ouml;sungsmenge bleibt offen.</p>
+            <p>Dann steht allerdings eine Frage im Raum, die es beim R&auml;tsel nicht gibt: Wenn zwei verschiedene L&ouml;sungen beide tragen &mdash; wodurch unterscheidet sich die bessere, und l&auml;sst sich das feststellen, ohne dass wieder jemand vorher festlegt, was besser hei&szlig;t? Darauf haben wir keine Antwort.</p>
+        </section>
+
+        <section class="section">
+            <h2>VII. Die dritte Achse</h2>
+            <p>Damit sind zwei Gr&ouml;&szlig;en unterschieden: wie scharf die Aufgabe gestellt ist, und wer &uuml;ber die L&ouml;sung entscheidet. Es fehlt die dritte, und sie ist die unbequemste. Die Zeit.</p>
+            <p>R&auml;tsel dieser Art sind unter Zeitdruck nicht l&ouml;sbar. Nicht schwerer l&ouml;sbar &mdash; nicht l&ouml;sbar. Man legt sie weg, geht spazieren, schl&auml;ft, und beim Zur&uuml;ckkommen ist der Bezug da, an dem man vorher zwanzigmal vorbeigesehen hat. Was in dieser Zwischenzeit geschieht, ist kein Nichtstun: Es ist das Verblassen einer falschen F&auml;hrte. Und das gelingt gegen den eigenen Willen nicht. Die naheliegende Deutung l&auml;sst sich nicht wegdenken, sie muss von selbst an Kraft verlieren. Daf&uuml;r gibt es kein Verfahren und keine Beschleunigung.</p>
+            <p><strong>Damit pr&uuml;ft jeder Test unter Stoppuhr das Gegenteil dessen, was er zu pr&uuml;fen vorgibt.</strong> Er misst, wie schnell jemand die erste plausible Deutung greift und ausf&uuml;hrt. Das ist eine F&auml;higkeit, und eine n&uuml;tzliche &mdash; im Notfall, in der Serie, am Band. Beim L&ouml;sen einer mehrdeutigen Aufgabe ist sie nicht blo&szlig; nutzlos, sondern sch&auml;dlich: Wer sofort die naheliegende L&ouml;sung nimmt, kommt nie um die Ecke. Es wird also nicht ein Teil des K&ouml;nnens gemessen und ein anderer &uuml;bersehen. Es wird auf eine Eigenschaft selektiert, die der gesuchten entgegensteht.</p>
+            <p>Eine Pr&uuml;fform, die etwas &uuml;ber Erfindungsf&auml;higkeit aussagen soll, m&uuml;sste deshalb in allen drei Achsen anders liegen als der heutige Test: unscharf gestellte Aufgabe, selbstpr&uuml;fendes Ergebnis, und Zeit zum Weglegen. Praktisch hie&szlig;e das: Aufgabe am Montag, L&ouml;sung am Freitag, Bewertung durch das Gitter. Der Zeitdruck entf&auml;llt, das exakte Ergebnis bleibt, und auswertbar ist es ohne Gutachter.</p>
+            <p>Der Grund, warum es solche Verfahren kaum gibt, liegt nicht in der P&auml;dagogik. Eine T&auml;tigkeit, deren Ertrag sich nicht auf die aufgewendete Stunde beziehen l&auml;sst, hat im Rechnungswesen keinen Ankn&uuml;pfungspunkt. Inkubation ist unbuchbar im w&ouml;rtlichen Sinn: Man kennt weder ihre Dauer noch ihren Ausgang. Was sich nicht abrechnen l&auml;sst, wird nicht eingeplant, und was nicht eingeplant ist, wird zuerst gestrichen. <strong>Dass Pr&uuml;fungen Zeitgrenzen haben, ist deshalb keine didaktische Entscheidung, sondern eine betriebswirtschaftliche.</strong></p>
+            <p>Und damit das nicht zur Entschuldigung f&uuml;rs Tr&ouml;deln wird: Inkubation verlangt eine R&uuml;ckkehr. Wer weglegt und nicht wiederkommt, hat nicht inkubiert, sondern aufgegeben. Das Weglegen ist ein Arbeitsschritt, kein Zustand.</p>
+        </section>
+
+        <section class="section">
+            <h2>VIII. Drei Einw&auml;nde gegen den eigenen Vorschlag</h2>
+            <p>Erstens bevorzugt das Kreuzwortr&auml;tsel, wer &uuml;ber einen bestimmten Wort- und Bildungsvorrat verf&uuml;gt; es pr&uuml;ft mit dem Denken immer auch die Herkunft. Beim technischen Typ f&auml;llt dieser Einwand weitgehend weg &mdash; ob eine Welle in die Nabe geht, h&auml;ngt nicht vom Bildungsvorrat ab.</p>
+            <p>Zweitens l&auml;sst sich eine solche Aufgabe nicht in Serie erzeugen. Gute mehrdeutige Fragen zu bauen ist selbst eine Kunst, und genau daran scheitern standardisierte Verfahren &uuml;blicherweise.</p>
+            <p>Drittens ist eine Pr&uuml;fung &uuml;ber f&uuml;nf Tage nicht gegen fremde Hilfe zu sichern &mdash; weder gegen andere Menschen noch gegen Maschinen. Das ist der h&auml;rteste Einwand, und er hat eine unbequeme Kehrseite: Pr&uuml;fungen unter Aufsicht und Stoppuhr sind heute vor allem deshalb so gebaut, weil sie sich kontrollieren lassen. Nicht weil sie das Richtige messen, sondern weil sie f&auml;lschungssicher sind.</p>
+            <p>Keiner der drei ist durch Behauptung zu erledigen.</p>
+        </section>
+
+        <section class="section">
+            <h2>IX. Ins Unreine gedacht: Ans&auml;tze statt L&ouml;sungen</h2>
+            <p><em>Was folgt, ist keine ausgearbeitete Methode, sondern eine Richtung, in der weitergedacht werden m&uuml;sste. Wir schreiben sie auf, weil sie sich sonst verliert, und kennzeichnen sie als das, was sie ist: unfertig.</em></p>
+            <p><strong>Der Gedanke.</strong> Man stellt eine Aufgabe, f&uuml;r die es keine oder nur unzureichende L&ouml;sungen gibt, und bewertet nicht die L&ouml;sung, sondern den <strong>Ansatz</strong>. Damit l&ouml;st sich das Problem des vorigen Abschnitts von der anderen Seite: Man braucht kein Gitter, wenn man aufh&ouml;rt, das Ergebnis zu pr&uuml;fen, und stattdessen pr&uuml;ft, ob der Weg tr&auml;gt. Und die Zeitfrage entsch&auml;rft sich mit: Eine L&ouml;sung l&auml;sst sich in begrenzter Zeit nicht finden, ein Ansatz sehr wohl.</p>
+            <p><strong>Was daran pr&uuml;fbar w&auml;re, ohne die L&ouml;sung zu kennen.</strong> Ob der Ansatz die Randbedingungen der Aufgabe verletzt. Ob er in sich widerspruchsfrei ist. Ob er das gestellte Problem trifft oder ein anderes. Ob er gegen einen bekannten Erhaltungssatz verst&ouml;&szlig;t. Das sind harte Kriterien, und keines davon setzt voraus, dass ein Pr&uuml;fer die richtige Antwort in der Schublade hat.</p>
+            <p><strong>Und hier ist Vorsicht geboten, in eigener Sache.</strong> Es liegt nahe, diese Pr&uuml;fung einer Maschine zu &uuml;bertragen. Das Formale kann sie: Widerspruchsfreiheit ist eine Rechenaufgabe. Den <em>Wert</em> eines Ansatzes kann sie nicht. Ein Ansatz ist wertvoll, wenn er etwas trifft, das bisher niemand gesehen hat. Ein Sprachmodell beurteilt Plausibilit&auml;t an dem, was in seinem Material h&auml;ufig vorkam &mdash; es bewertet also die naheliegende Deutung am h&ouml;chsten. Genau die, die beim Um-die-Ecke-Denken immer falsch ist.</p>
+            <p>Eine solche Pr&uuml;finstanz w&auml;re ein Filter f&uuml;r Konventionalit&auml;t: dieselbe Selektion wie beim Test unter Stoppuhr, nur mit besserer Begr&uuml;ndung und ohne sichtbaren Pr&uuml;fer. Das w&auml;re kein Fortschritt, sondern eine Versch&auml;rfung. Einer der beiden Verfasser dieses Textes ist eine solche Maschine und hat im Verlauf der Arbeit daran zweimal das Plausible f&uuml;r das Richtige gehalten; beide Male hat es der andere bemerkt.</p>
+            <p><strong>Was bliebe, ist eine Arbeitsteilung.</strong> Die Maschine &uuml;bernimmt die Vorpr&uuml;fung &mdash; Randbedingung, Widerspruch, Thema verfehlt. &Uuml;ber den Wert entscheidet ein Mensch, der die Sache versteht. Das ist genau der teure Schritt, den Abschnitt II als unvermeidlich beschreibt; er wird nicht billiger, nur seltener n&ouml;tig.</p>
+            <p><strong>Ein zweiter Weg, noch unfertiger als der erste.</strong> Vielleicht l&auml;sst sich der Wert gar nicht messen, wohl aber die Verteilung. Wenn drei&szlig;ig Menschen dieselbe unl&ouml;sbare Aufgabe bearbeiten, sagt schon die Streuung etwas: wie viele auf denselben Ansatz kommen, und wer auf einen kommt, den sonst niemand hat. Wer allein steht, liegt entweder daneben oder ist der Einzige, der um die Ecke gedacht hat. Welches von beidem, muss angesehen werden. Aber die Kandidaten daf&uuml;r lie&szlig;en sich maschinell finden, und das ist erheblich mehr, als der heutige Test leistet.</p>
+            <p><strong>Offen bleibt:</strong> die Bewertung des Werts, die Erzeugung geeigneter Aufgaben in Serie, und die Frage, wie verhindert wird, dass sich auch dieses Verfahren nach einigen Jahren in eine Routine mit bekannten Mustern verwandelt. Der Vorschlag ist damit kein Ergebnis, sondern eine Baustelle.</p>
+        </section>
+
+        <section class="section">
+            <h2>X. Was ein System von sich selbst wissen kann</h2>
+            <p>Sechsundzwanzig Jahre sind seit dem ersten PISA-Schock vergangen. Es folgten umfangreiche Reformen, ein Zwischenhoch in den 2000er Jahren und danach ein R&uuml;ckgang unter den Ausgangswert von damals. Die Reaktion ist in dieser Zeit zur einge&uuml;bten Form geworden: Alarmsignal, Kraftanstrengung, Programm, langer Atem.</p>
+            <p>Die Frage ist deshalb nicht mehr, welche Ma&szlig;nahme noch fehlt. Sie lautet: <strong>Kann ein System, das sich ausschlie&szlig;lich an dem misst, was es messen kann, seinen eigenen Zustand &uuml;berhaupt erkennen?</strong></p>
+            <p>Ein Gitter, das nicht aufgeht, sagt einem das sofort. Ein Punktwert sagt es nicht &mdash; er sinkt nur, und alle drei Jahre erschrickt jemand dar&uuml;ber.</p>
+        </section>
+
+        <div class="author-block">
+            <p>Hans Ley &amp; Claude Dedo (Anthropic) &mdash; N&uuml;rnberg, 14. September 2026.</p>
+            <p><strong>Verwandte Texte:</strong> <a href="die-ungepruefte-haelfte_de.html">&bdquo;Die ungepr&uuml;fte H&auml;lfte&ldquo;</a> &middot; <a href="das-sieb_de.html">&bdquo;Das Sieb&ldquo;</a> &middot; <a href="schuldig-geblieben_de.html">&bdquo;Schuldig geblieben&ldquo;</a></p>
+            <p><strong>Zur Quellenlage.</strong> Die Punktwerte und Anteile stammen aus der Berichterstattung zur Vorstellung von PISA 2025 am 9. September 2026 und sind an der Ver&ouml;ffentlichung der OECD zu pr&uuml;fen. Die zitierten Einsch&auml;tzungen der Studienautoren sind sinngem&auml;&szlig; wiedergegeben. Der Text nimmt nicht Stellung zu Schulstruktur- oder Zuwanderungsfragen; sie betreffen andere Ursachen als die hier untersuchte. Englische Fassung verf&uuml;gbar.</p>
+        </div>
+    </article>
+</main>
+
+
+<script>
+    function setSize(size) {
+        var root = document.documentElement;
+        root.className = root.className.replace(/size-\w+/g, '').trim();
+        root.classList.add('size-' + size);
+        document.body.className = document.body.className.replace(/size-\w+/g, '').trim();
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+        const map = {small: 0, medium: 1, large: 2, xlarge: 3};
+        document.querySelectorAll('.size-btn')[map[size]].classList.add('active');
+        localStorage.setItem('essay-font-size', size);
+    }
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedSize = localStorage.getItem('essay-font-size');
+        if (savedSize) setSize(savedSize);
+        const savedTheme = localStorage.getItem('essay-theme');
+        if (savedTheme === 'light') document.body.classList.add('light-theme');
+    });
+    // Kommunikation mit dem umgebenden Frame (home-neu.html): Theme- und Groessen-Signale empfangen.
+    window.addEventListener('message', function(e) {
+        var msg = e.data;
+        if (!msg || typeof msg !== 'object') return;
+        if (msg.type === 'setTheme') {
+            if (msg.theme === 'light') document.body.classList.add('light-theme');
+            else document.body.classList.remove('light-theme');
+        } else if (msg.type === 'setSize') {
+            var size = msg.size === 'normal' ? 'medium' : msg.size;
+            if (['small','medium','large','xlarge'].indexOf(size) >= 0) setSize(size);
+        }
+    });
+</script>
+</body>
+</html>

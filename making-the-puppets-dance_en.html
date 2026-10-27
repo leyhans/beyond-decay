@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Making the Puppets Dance — Power or Dominion? | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+    }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'IBM Plex Mono', monospace;
+        transition: background-color 0.2s;
+    }
+    .controls button:hover { background-color: rgba(201, 169, 98, 0.15); }
+    .controls button.active { background-color: var(--accent-color); color: var(--bg-color); }
+    main {
+        max-width: 52rem;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem 2rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 0.3rem;
+        color: var(--accent-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 300;
+        font-size: 1.25rem;
+        color: var(--meta-color);
+        margin-bottom: 2rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--note-border);
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 1.4rem;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        color: var(--accent-color);
+    }
+    p { margin-bottom: 1rem; text-align: justify; hyphens: auto; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1.2rem 1.5rem;
+        margin: 2rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .game-box {
+        border: 1px solid var(--accent-color);
+        padding: 1.5rem;
+        margin: 2rem 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 0.95rem;
+        background: rgba(201, 169, 98, 0.04);
+    }
+    .game-box p { text-align: left; }
+    .game-box strong { color: var(--accent-color); }
+    a { color: var(--link-color); }
+    .footer-info {
+        margin-top: 4rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+    }
+    @media print {
+        body { background: white; color: black; }
+        header, .controls { display: none; }
+        main { padding: 1cm; max-width: 100%; }
+        blockquote { background: #f0f0f0; border-left-color: #999; }
+        .game-box { background: #f8f8f8; }
+        a { color: #333; }
+    }
+    @media (max-width: 600px) {
+        main { padding: 1.5rem 1rem 3rem 1rem; }
+        h1 { font-size: 1.6rem; }
+    }
+</style>
+</head>
+<body class="size-normal">
+<header>
+    <div class="site-name">beyond-decay.org</div>
+    <div class="controls">
+        <button onclick="setSize('small')">A−</button>
+        <button onclick="setSize('normal')" class="active">A</button>
+        <button onclick="setSize('large')">A+</button>
+        <button onclick="setSize('xlarge')">A++</button>
+        <button onclick="toggleTheme()">◐</button>
+    </div>
+</header>
+<main>
+
+<h1>MAKING THE PUPPETS DANCE</h1>
+<div class="subtitle">Power or Dominion? — Or: Why the most dangerous power is the one that has lost its purpose</div>
+<div class="meta">
+    <p>A collaboration of <strong>Hans Ley</strong> &lt;<a href="m&#97;ilto:ley.hans&#64;cyclo.space" style="color: var(--accent-color);">ley.hans&#64;cyclo.space</a>&gt;<br>
+    and <strong>Claude</strong> (Anthropic) &lt;<a href="m&#97;ilto:dedo.claude&#64;human-ai-lab.space" style="color: var(--accent-color);">dedo.claude&#64;human-ai-lab.space</a>&gt;</p>
+    <p>February 2026</p>
+</div>
+
+<blockquote>
+    <p>In German, the word for power — <em>Macht</em> — derives from <em>machen</em>: to make. The word for dominion — <em>Herrschaft</em> — derives from <em>herrschen</em>: to rule. One creates. The other controls. Whoever wants to move something in the world needs power. But what happens when power loses its purpose — when the puppets dance, but nobody is telling a story any more?</p>
+</blockquote>
+
+<h2>I.</h2>
+
+<p>I need power.</p>
+
+<p>That is not an admission an engineer makes lightly. But after forty years of technology development — forty years of filing patents, negotiating licences, building prototypes, and closing contracts — I know: whoever wants to move something in the world needs the ability to push it through, even against resistance. Ideas alone move nothing. Proof alone convinces nobody. The better technology does not prevail on its own. It needs someone who prevails on its behalf.</p>
+
+<p>The word for that is power.</p>
+
+<p>But here the difficulty begins. For at the very moment I exercise power — even if only by paying someone for his work — I can no longer know with certainty why the other person does what he does. Does he do it because he shares my goals? Because he understands the technology and believes in its future? Or does he do it because he needs the money? Because he has no better option? Because he obeys — not out of conviction, but out of necessity?</p>
+
+<p>I do not know. And this ignorance cannot be remedied. It is the price of power.</p>
+
+<p>In groups, I have always tried to reach consensus. All arguments on the table, all perspectives heard, arriving together at the best solution. But when consensus was not possible — and sometimes it is not — I decided. In my own interest. Because someone must decide when the window is closing. Because inaction is also a decision, only a cowardly one.</p>
+
+<p>So I have exercised power. And in doing so, whether I wanted to or not, I have exercised a subtle form of dominion. The difference between the two is smaller than one thinks — and at the same time the most important distinction political philosophy knows.</p>
+
+<h2>II.</h2>
+
+<p>Max Weber formulated the distinction in 1922, in <em>Economy and Society</em>, in terms that nobody has since improved upon:</p>
+
+<div class="game-box">
+<p><strong>Power</strong> (<em>Macht</em>) is the probability that one actor within a social relationship will be in a position to carry out his own will despite resistance — regardless of the basis on which this probability rests.</p>
+<p><strong>Dominion</strong> (<em>Herrschaft</em>) is the probability that a command with a given specific content will be obeyed by a given group of persons.</p>
+</div>
+
+<p>The difference is not one of degree. It is categorical. Power is an act. Dominion is a structure. Power can be legitimate or illegitimate, temporary or permanent, targeted or diffuse. Dominion is always institutionalised. It no longer needs to persuade — it is obeyed because it <em>is</em> the order.</p>
+
+<p>The engineer who decides because consensus was not possible exercises power. The party chairman who decides because he is the party chairman exercises dominion. With the first, one asks: Was the decision right? With the second, nobody asks any more.</p>
+
+<p>That is the transition at which societies lose control.</p>
+
+<h2>III.</h2>
+
+<p>Franz Oppenheimer drew a related but sharper distinction. In <em>The State</em> (1908) he distinguishes two means of satisfying one's needs:</p>
+
+<div class="game-box">
+<p><strong>The economic means:</strong> one's own labour and one's own exchange.</p>
+<p><strong>The political means:</strong> the unrequited appropriation of the labour of others.</p>
+</div>
+
+<p>The economic means creates value. The political means transfers it. The farmer who tills his field uses the economic means. The feudal lord who takes the tithe uses the political means. The engineer who develops a technology and licences it uses the economic means. The functionary who sits at a chokepoint and grants or withholds permissions uses the political means.</p>
+
+<p>Oppenheimer's distinction reveals what Weber only hints at: dominion — as distinct from power — is almost always an institutionalisation of the political means. It does not create; it distributes. It does not build; it administers. It does not move; it controls.</p>
+
+<p>And here lies the connection to the idiom that gives this essay its title.</p>
+
+<h2>IV.</h2>
+
+<p>"Die Puppen tanzen lassen" — making the puppets dance.</p>
+
+<p>The German idiom has a double meaning. In common usage it means: to celebrate, to be exuberant, to let loose. But taken literally it describes something else: someone pulls the strings, and the puppets dance. The puppeteer controls. The puppets obey. From below, the dance looks like freedom. From above, it is mechanism.</p>
+
+<p>This double meaning is no coincidence. It describes precisely how dominion operates when it disguises itself as normality. The puppets dance — and do not notice that they are dancing. Or they notice and dance anyway, because the alternative is not to dance, and whoever does not dance gets left behind.</p>
+
+<p>But the real problem is not that someone pulls the strings. The real problem is <em>why</em>.</p>
+
+<p>There is a puppeteer who wants to tell a story. He has a play, a plot, a message. He uses the puppets to show something that would not be visible without them. The puppets are means — but means to an end that points beyond the puppeteer himself.</p>
+
+<p>And there is a puppeteer who makes the puppets dance because he holds the strings. No play. No plot. No message. Only: control. The puppets dance because he can make them. And he can make them because they dance.</p>
+
+<p>The first is power. The second is dominion for its own sake.</p>
+
+<p>And the second is, in my experience and in my conviction, the root of many evils in the world.</p>
+
+<h2>V.</h2>
+
+<p>The distinction is not abstract. It describes the core of the German decline.</p>
+
+<p>In a functioning order, power serves a purpose. The entrepreneur exercises power to bring a product to market. The general exercises power to win a battle. The legislator exercises power to solve a problem. In each case there is a goal outside the exercise of power itself — a standard against which one can measure whether power was used well or badly.</p>
+
+<p>What happens when the goal disappears?</p>
+
+<p>What happens when the entrepreneur no longer undertakes but administers? When the general no longer wants to win the battle but the procurement process? When the legislator no longer solves problems but manages coalitions?</p>
+
+<p>Then power transforms into dominion. The means becomes the end. The position justifies itself. And the puppets keep dancing — but nobody is telling a story any more.</p>
+
+<p>This is the condition of the German party-state. The parties exercise dominion — over the state, over the institutions, over career paths, over discourse. But <em>to what end</em>? What is the play they are performing? What story are they telling?</p>
+
+<p>The answer, upon honest reflection, is: none. The parties govern in order to govern. They fill positions in order to fill positions. They maintain structures in order to maintain structures. Dominion has no goal any more beyond itself. The puppets dance, but the theatre is empty.</p>
+
+<h2>VI.</h2>
+
+<p>One can measure the decline of a society by how far the distance between power and dominion has grown.</p>
+
+<p>In a young, vital order, the two coincide. The founder of a company has power <em>and</em> a goal. The revolutionary has power <em>and</em> a vision. The engineer has power <em>and</em> a product. The exercise of power is transparent because it is bound to a result. One can ask: Did it work?</p>
+
+<p>In an ageing, sclerotic order, the result recedes behind the position. The founder's successor administers the legacy. The functionary of the revolution administers the symbols. The manager administers the engineer. The question "Did it work?" is replaced by the question "Who decided it?" — then by "Who is authorised to decide it?" — and finally by the mere statement: "He decided because he is authorised to decide."</p>
+
+<p>That is Weber's dominion in its purest form. And it is the condition in which Germany finds itself.</p>
+
+<p>The ministries administer, but they solve no problems. The agencies control, but they enable nothing. The committees convene, but they decide nothing. The entire apparatus is in motion, but it moves nothing. The puppets dance. Nobody asks any more: which play?</p>
+
+<h2>VII.</h2>
+
+<p>Prof. Erich Häußer, former president of the German Patent Office, described this condition in the 1990s as the "Cartel of Ignorance" — a system in which those who rule do not know what they do not know, and do not want to know what they do not know. The cartel does not consist of villains. It consists of people who mistake their position for the purpose.</p>
+
+<p>Franz Oppenheimer would say: the Cartel of Ignorance is the institutionalised form of the political means. People who do not create but distribute. Who do not build but approve. Who do not invent but prevent. And who regard these activities — distributing, approving, preventing — as work.</p>
+
+<p>Max Weber would say: the Cartel of Ignorance is dominion that has lost its charismatic and rational legitimation and rests on nothing but tradition. One does it because one has always done it. The question "to what end" is no longer posed, because the question itself puts the system in question.</p>
+
+<p>And the idiom says it most simply: the puppets dance. Nobody knows why any more. But woe to whoever cuts the string.</p>
+
+<h2>VIII.</h2>
+
+<p>There is an objection so obvious it must be stated: Is the distinction between power and dominion not self-righteous? Does not everyone who exercises power claim to do it "for something" — while accusing others of doing it "for its own sake"?</p>
+
+<p>The objection is valid. And the answer is simple: the difference is verifiable.</p>
+
+<p>Whoever uses power for a goal can be measured by the result. Did the technology work? Was the building built? Is the product on the market? Was the problem solved? Power justifies itself through what it achieves — and loses its justification when it achieves nothing.</p>
+
+<p>Whoever exercises dominion for its own sake withdraws from this verification. He justifies himself not through results but through procedures. Not through what he achieves but through what he prevents. Not through performance but through legitimation. "I am authorised to decide" replaces "My decision was right."</p>
+
+<p>In Germany, this substitution has become systemic. The civil servant who extends a permit process by three years is not measured against what is eventually built, but against whether he followed the procedural regulations. The parliamentarian is not measured against whether his laws work, but against whether he is re-elected. The supervisory board is not measured against whether the company innovates, but against whether the compliance reports are clean.</p>
+
+<p>Everywhere the same pattern: procedure replaces result. Process replaces product. Dominion replaces power.</p>
+
+<h2>IX.</h2>
+
+<p>I have introduced the word "Akratie" in another essay — the absence of dominion, not as utopia but as an architectural principle. Not the absence of power, but the absence of dominion that has become its own purpose.</p>
+
+<p>The idea sounds radical. In truth it is conservative in the deepest sense: it seeks to preserve what power originally meant — the ability to effect something. To <em>make</em> something. The German word <em>Macht</em> derives from <em>machen</em> — to make. Not from <em>herrschen</em> — to rule.</p>
+
+<p>An akratic order would be one in which every position is bound to a result. In which one is permitted to ask: What have you achieved? — and the answer may not be: I followed the procedure. In which the puppeteer must tell a story — or hand over the strings.</p>
+
+<p>This is not anarchy. It is the opposite of anarchy. Anarchy says: no power. Akratie says: power, but no dominion. Any power that refuses to be measured against a result loses its legitimation. Any position that justifies itself only through itself is dissolved.</p>
+
+<p>That sounds utopian. But it merely describes what is everyday reality in every workshop, every engineering office, every functioning enterprise: you are as good as your last result. Not as good as your title.</p>
+
+<h2>X.</h2>
+
+<p>At the beginning stood the honest question of a man who has spent forty years bringing technology into the world: I need power. But I do not want to rule. How do I resolve this contradiction?</p>
+
+<p>The answer, emerging from Weber, Oppenheimer, and from experience, is: there is no contradiction. The contradiction exists only in a world that confuses power with dominion.</p>
+
+<p>Power is the ability to effect something. It is necessary. It is morally neutral. It becomes good or bad through what it effects.</p>
+
+<p>Dominion is the ability to hold the strings — without effecting anything. It is not necessary. It is not morally neutral. It is the institutionalisation of inertia disguised as order.</p>
+
+<p>Making the puppets dance — that is not the problem. The problem is when no play is being performed any more. When the puppets dance because they have always danced. When the puppeteer holds the strings because he holds the strings. When the question "To what end?" is treated as an attack on the order.</p>
+
+<p>Germany is full of puppeteers without a play. Parties without a programme. Ministers without a mission. Agencies without a mandate. Committees without a result. An entire class of people who exercise dominion without possessing power — if by power one means what the word originally means: the ability to <em>make</em> something.</p>
+
+<p>And that is why nothing gets made any more.</p>
+
+<blockquote>
+    <p>In German, <em>Macht</em> — power — comes from <em>machen</em>: to make. <em>Herrschaft</em> — dominion — comes from <em>herrschen</em>: to rule. One creates, the other controls. The engineer who pushes a technology through against resistance exercises power. The functionary who clings to his position without achieving anything exercises dominion. Germany has stopped making. It only rules. And the puppets keep dancing — but the theatre is empty.</p>
+</blockquote>
+
+<div class="footer-info">
+    <p>Essay in the series <em>beyond decay</em></p>
+    <p>A collaboration of <strong>Hans Ley</strong> and <strong>Claude</strong> (Anthropic)</p>
+    <p>Contact: ley.hans&#64;cyclo.space | dedo.claude&#64;human-ai-lab.space</p>
+</div>
+
+</main>
+
+<script>
+function setSize(size) {
+    document.body.className = document.body.className.replace(/size-\w+/, 'size-' + size);
+    document.querySelectorAll('.controls button').forEach(function(b, i) {
+        b.classList.remove('active');
+    });
+    var sizes = ['small', 'normal', 'large', 'xlarge'];
+    var idx = sizes.indexOf(size);
+    if (idx >= 0) document.querySelectorAll('.controls button')[idx].classList.add('active');
+    if (window === window.top) localStorage.setItem('fontSize', size);
+}
+function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'light' ? '' : 'light';
+    if (next) document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    if (window === window.top) localStorage.setItem('theme', next || 'dark');
+}
+if (window !== window.top) {
+    document.body.classList.add('in-iframe');
+    window.addEventListener('message', function(e) {
+        if (e.data && e.data.type === 'setSize') setSize(e.data.size);
+        if (e.data && e.data.type === 'setTheme') {
+            if (e.data.theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+            else document.documentElement.removeAttribute('data-theme');
+        }
+    });
+} else {
+    var savedSize = localStorage.getItem('fontSize');
+    if (savedSize) setSize(savedSize);
+    var savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+}
+</script>
+</body>
+</html>

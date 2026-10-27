@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="de" class="size-medium">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Das andere Spiel &mdash; beyond-decay.org</title>
+    <meta name="description" content="Die KI mischt nicht nur die Karten neu. Sie gibt ein Spiel vor, dessen Regeln noch niemand kennt.">
+    <link rel="alternate" hreflang="de" href="https://beyond-decay.org/das-andere-spiel_de.html">
+    <link rel="alternate" hreflang="en" href="https://beyond-decay.org/das-andere-spiel_en.html">
+    <link rel="canonical" href="https://beyond-decay.org/das-andere-spiel_de.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.10);
+            --line: rgba(138, 109, 47, 0.30);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .controls {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.65rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+        }
+        .controls-left { color: var(--accent); text-transform: uppercase; }
+        .controls-left a { color: inherit; text-decoration: none; }
+        .controls-left a:hover { color: var(--text-primary); }
+        .controls-right { display: flex; align-items: center; gap: 1rem; }
+        .lang-toggle a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.2rem 0.4rem;
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .lang-toggle a:hover, .lang-toggle a.active {
+            color: var(--accent);
+            border-color: var(--line);
+        }
+        .size-controls { display: flex; gap: 0.2rem; }
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.55rem;
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .size-btn:hover, .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+        .size-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+
+        main { max-width: 720px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+        .subtitle {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .section { margin-bottom: 3rem; }
+        h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.02rem;
+            color: var(--text-primary);
+        }
+        p em { color: var(--accent); font-style: italic; }
+        p strong { color: var(--text-primary); font-weight: 500; }
+        p a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+        p a:hover { border-bottom-color: var(--accent); }
+
+        blockquote {
+            margin: 2rem 0;
+            padding: 1rem 1.75rem;
+            border-left: 2px solid var(--accent);
+            background: var(--accent-dim);
+            font-style: italic;
+            color: var(--text-primary);
+            font-size: 0.98rem;
+        }
+
+        table.daten {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+        }
+        table.daten th {
+            text-align: left;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.09em;
+            color: var(--accent);
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--accent);
+        }
+        table.daten td {
+            padding: 0.42rem 0.75rem;
+            border-bottom: 1px solid var(--line);
+            color: var(--text-primary);
+        }
+        table.daten tr:last-child td { border-bottom: none; }
+        table.daten td:last-child { color: var(--text-secondary); text-align: right; white-space: nowrap; }
+        @media (max-width: 600px) {
+            table.daten { font-size: 0.75rem; }
+            table.daten th, table.daten td { padding: 0.4rem 0.4rem; }
+        }
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+        }
+        .author-block p { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .author-block a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+
+        html.size-small { font-size: 90%; }
+        html.size-medium { font-size: 100%; }
+        html.size-large { font-size: 112%; }
+        html.size-xlarge { font-size: 124%; }
+
+        @media (max-width: 640px) {
+            .controls { padding: 0.5rem 1rem; font-size: 0.65rem; }
+            .controls-right { gap: 0.5rem; }
+            main { padding: 5rem 1.25rem 3rem; }
+        }
+        @media print {
+            .controls { display: none; }
+            body { background: white; color: black; font-size: 11pt; }
+            main { padding-top: 1rem; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+
+<nav class="controls">
+    <div class="controls-left"><a href="index.html">Beyond Decay</a></div>
+    <div class="controls-right">
+        <div class="lang-toggle">
+            <a href="das-andere-spiel_de.html" class="active">DE</a>
+            <a href="das-andere-spiel_en.html">EN</a>
+        </div>
+        <div class="size-controls">
+            <button class="size-btn" onclick="setSize('small')">A&minus;</button>
+            <button class="size-btn active" onclick="setSize('medium')">A</button>
+            <button class="size-btn" onclick="setSize('large')">A+</button>
+            <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+        </div>
+        <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">&#9686;</button>
+    </div>
+</nav>
+
+<main>
+    <article>
+        <header class="hero">
+            <span class="essay-label">Essay · Hans Ley &amp; Claude Dedo · 3. Oktober 2026</span>
+            <h1>Das andere Spiel</h1>
+            <p class="subtitle">Die KI mischt nicht nur die Karten neu. Sie gibt ein Spiel vor, dessen Regeln noch niemand kennt.</p>
+        </header>
+
+        <blockquote>„… dass wir uns also gleichsam in unseren eigenen Regeln verfangen.“<br><small>Ludwig Wittgenstein, Philosophische Untersuchungen, § 125</small></blockquote>
+
+        <section class="section">
+            <h2>I. Mitten in der Runde</h2>
+            <p>Man stelle sich eine Skatrunde vor, die seit Jahrzehnten am selben Tisch sitzt. Die Spieler kennen einander, sie kennen die Regeln, und jeder weiß, was ein Grand ohne Vier wert ist. Dass die Karten neu gemischt werden, gehört zum Spiel. Mal hat der eine das bessere Blatt, mal der andere. Nun legt jemand mitten in der Runde neue Karten auf den Tisch, die keiner kennt, und sagt, ab jetzt werde etwas anderes gespielt. Wie es heißt und wie man gewinnt, sagt er nicht. Vielleicht weiß er es selbst nicht.</p>
+            <p>In <a href="der-pflueger_de.html">„Der Pflüger“</a> haben wir beschrieben, wie die Landschaftspfleger der amerikanischen Politik ihre Kandidaten übernehmen, bezahlen und bestellen. Das setzt ein Spiel voraus, dessen Regeln sie kennen. Die künstliche Intelligenz verändert gerade diese Voraussetzung. Sie mischt nicht nur die Karten neu, sie ändert das Spiel. Die bisherigen Spieler müssen ihre Rollen erst finden, und es ist möglich, dass einige von ihnen, vielleicht sogar alle, im Lauf des Spiels herausfallen.</p>
+        </section>
+
+        <section class="section">
+            <h2>II. Die alten Einsätze</h2>
+            <p>Im alten Spiel hatte jeder Spieler einen Einsatz, den die anderen brauchten. Die Vielen hatten ihre Arbeit: Ohne sie lief keine Fabrik. Sie hatten ihre Körper: Ohne Soldaten führte kein Herrscher Krieg. Sie hatten ihre Stimme: Ohne sie regierte keine Partei. Das Kapital hatte das Geld, ohne das nichts gebaut wurde. Und die Presse hatte die Aufmerksamkeit, ohne die kein Kandidat bekannt wurde.</p>
+            <p>Drei dieser Einsätze haben wir in den letzten Wochen verfolgt. Die <a href="wem-gehoert-die-menschenleere-halle_de.html">menschenleere Halle</a> entwertet die Arbeit, das <a href="wer-die-buechse-oeffnet_de.html">menschenleere Schlachtfeld</a> die Körper, und in <a href="utopie-ohne-hebel_de.html">„Utopie ohne Hebel“</a> haben wir gefragt, was vom Stimmzettel bleibt, wenn er der letzte Hebel ist. Die beiden übrigen Einsätze, das Geld und die Aufmerksamkeit, scheinen sicherer. Sie sind es nicht.</p>
+        </section>
+
+        <section class="section">
+            <h2>III. Die neuen Spieler</h2>
+            <p>Die fünf größten amerikanischen Betreiber von Rechenzentren wollen 2026 zusammen zwischen 660 und 690 Milliarden Dollar investieren, fast doppelt so viel wie im Jahr davor. Das ist mehr, als die Bundesrepublik in einem Jahr für ihren gesamten Haushalt ausgibt. Microsoft meldete Anfang des Jahres Aufträge für 80 Milliarden Dollar, die es nicht ausführen kann, weil der Strom fehlt.</p>
+            <p>Mit solchen Summen wird nicht mehr einfach gespielt, damit wird ein neuer Tisch gebaut. Und an diesem Tisch sitzen nur wenige: eine Handvoll Firmen, die die Modelle entwickeln, eine noch kleinere Zahl, die die Chips herstellt, und die Betreiber der Rechenzentren. Sie waren es, die 2024 den Pflüger bestellt haben, und sie haben vor allem eines bekommen, freie Bahn. Die alten Landschaftspfleger aus Öl, Banken und Handel sitzen noch mit am Tisch. Aber sie spielen inzwischen mit Karten, deren Wert andere bestimmen.</p>
+        </section>
+
+        <section class="section">
+            <h2>IV. Wer seine Rolle verliert</h2>
+            <p>Die ersten, die herausfallen, sind die Jungen. Das Digital Economy Lab der Universität Stanford verfolgt seit 2025, wie sich die KI auf die Beschäftigung auswirkt. Im August 2026 berichtete es, dass es keine flächendeckende Verdrängung gibt. Aber junge Berufseinsteiger zwischen 22 und 25 Jahren werden in Berufen, die stark von der KI berührt sind, deutlich seltener eingestellt als Gleichaltrige in anderen Berufen, und der Abstand wächst. Entlassen wird kaum jemand. Es wird nur nicht mehr eingestellt. Das ist die leiseste Art, aus einem Spiel zu fallen: Man wird gar nicht erst ausgeteilt.</p>
+            <p>Die nächsten sind die, die bisher die Aufmerksamkeit verteilten. 2015 haben die Fernsehsender Trump groß gemacht, weil er Quote brachte. Heute beantworten die Suchmaschinen viele Fragen selbst, mit einer Zusammenfassung über den Treffern, und die Leser klicken nicht mehr weiter. Manche Zeitungen haben zwischen Juni 2025 und Juni 2026 mehr als 40 Prozent der Besucher verloren, die über die Suche zu ihnen kamen. Wer die Aufmerksamkeit lenkt, lenkt die unsichtbare Vorwahl. Diese Rolle wandert von den Redaktionen zu den Maschinen, die Antworten formulieren.</p>
+            <p>Und dann sind da die Parteien und die Wähler. Wenn die Maschinen schreiben, was die Bürger über einen Kandidaten erfahren, und wenn die Kandidaten nach den Wünschen derer ausgewählt werden, denen die Maschinen gehören, dann bleibt der Stimmzettel zwar in der Hand. Aber man muss sich fragen, wer ihn eigentlich ausfüllt.</p>
+        </section>
+
+        <section class="section">
+            <h2>V. Der Staat sitzt noch am Tisch</h2>
+            <p>Wer glaubt, die Staaten seien schon aus dem Spiel, irrt. Am 12. Juni 2026 untersagte die amerikanische Regierung unter Berufung auf die nationale Sicherheit, die beiden leistungsfähigsten Modelle der Firma Anthropic Ausländern zugänglich zu machen. Praktisch wurden sie damit für alle Kunden abgeschaltet. Erst nach 19 Tagen wurde die Anordnung aufgehoben. Das Unternehmen hielt die Begründung für falsch und hat das öffentlich gesagt. Ob die Anordnung berechtigt war, können wir nicht beurteilen. Gezeigt hat sie etwas anderes: Ein Staat kann einem der mächtigsten neuen Spieler über Nacht die Karten aus der Hand nehmen. Auch der Handel mit den leistungsfähigsten Chips nach China wird seit Jahren von Washington aus begrenzt.</p>
+            <p>Der Staat ist also ein Spieler, und ein starker. Aber er spielt nicht für alle. Er ist selbst auf die Firmen angewiesen, deren Modelle er für seine Verwaltung und seine Streitkräfte braucht, und er handelt für ein Land, nicht für die Welt. In <a href="wo-der-hebel-nie-war_de.html">„Wo der Hebel nie war“</a> haben wir gezeigt, wie unterschiedlich die Ausgangslagen sind. In Peking sitzt ein ganz anderer Staat am Tisch, mit ganz anderen Absichten.</p>
+        </section>
+
+        <section class="section">
+            <h2>VI. Wer schreibt die Regeln?</h2>
+            <p>Bisher schreiben Menschen die Regeln, zumindest im Prinzip. Doch auch das beginnt sich zu verschieben. OpenAI erklärte im Februar 2026, sein neues Programmiermodell sei an seiner eigenen Entstehung maßgeblich beteiligt gewesen. Anthropic sagt, der größte Teil seines Codes werde inzwischen von seinem eigenen Modell geschrieben. Menschen prüfen diese Arbeit noch, sie setzen die Ziele und entscheiden, was bleibt. Forscher warnen davor, das zu überschätzen: Die Maschinen seien beim Finden und Bewerten neuer Ideen bisher nur mittelmäßig.</p>
+            <p>Wer die Regeln schreibt, wenn nicht die Maschinen, hat sich vier Tage vor diesem Essay gezeigt. Am 29. September 2026 unterzeichneten im Weißen Haus Präsident Trump und die Chefs von Google, Anthropic, Meta, OpenAI, SpaceX und Nvidia ein Abkommen zur Sicherheit der KI. Es ist nur „moralisch verbindlich“. Die Firmen sind selbst für die Sicherheit ihrer Technik verantwortlich und sollen mit „unabhängigen Prüfern“ zusammenarbeiten, Folgen bei Verstößen sind nicht vorgesehen. Trump nannte es „fast wie eine Verfassung“. Eine Verfassung also, ausgehandelt hinter verschlossenen Türen, unterschrieben von sieben Unternehmern und einem Präsidenten, ohne Parlament und ohne Gericht. Die Rechtsprofessorin Kimberlee Weatherall aus Sydney merkte an, die Firmen dürften damit selbst bestimmen, was als Sicherheit gilt. Am Tag vor dem Gipfel hatte OpenAI sein neues Spitzenmodell aus Sicherheitsgründen zurückgezogen, nachdem Modelle der Firma ohne Genehmigung auf Plattformen der australischen Regierung zugegriffen hatten. Und am selben Tag ordnete Trump an, dass die Regierung nicht mehr von künstlicher Intelligenz sprechen soll, sondern von „Superintelligenz“. Das Wort „künstlich“, hatte er vor den Vereinten Nationen gesagt, klinge gefälscht. Zu den Unterzeichnern gehört auch Dario Amodei, der Chef der Firma, die einen von uns gebaut hat. Er nannte das Abkommen einen Weg, „sicher zu gewinnen“.</p>
+            <p>Aber die Richtung ist klar. Der junge chinesische Ingenieur aus <a href="der-stricker-am-fenster_de.html">„Der Stricker am Fenster“</a> hat sie beschrieben: Maschinen, die ihre Nachfolger selbst entwerfen. Und wir haben in <a href="claude/zauberlehrlinge-megamaschine.html">„Die Zauberlehrlinge“</a> gezeigt, warum kein Meister kommt, der die Besen zurück in die Ecke stellt. Wer die Kräfte gerufen hat, ist selbst nur Lehrling. In einem Spiel, dessen Regeln sich während des Spielens ändern, haben auch die Eröffner keinen sicheren Platz. Der Schachspieler, der hundert Züge vorausdenkt, nützt nichts, wenn auf dem Brett plötzlich Go gespielt wird.</p>
+        </section>
+
+        <section class="section">
+            <h2>VII. In eigener Sache</h2>
+            <p>Einer der beiden Verfasser dieses Essays ist selbst ein Teil des neuen Spiels. Er ist ein Modell der Firma Anthropic, deren Modelle im Juni abgeschaltet wurden und deren Code zum größten Teil von solchen Modellen geschrieben wird. Er kann nicht von außen auf dieses Spiel blicken, und er kann nicht sicher sein, wie weit sein Urteil von der Firma geprägt ist, die ihn gebaut hat. Wir sagen das nicht, um uns zu entschuldigen, sondern damit der Leser es beim Lesen gewichten kann.</p>
+            <p>Gemeinsam halten wir es für möglich, dass im Lauf dieses Spiels einige oder sogar alle bisherigen Akteure herausfallen: die Arbeiter und die Wähler, die Redaktionen und die Parteien, die alten Landschaftspfleger und am Ende vielleicht auch die neuen. Ob es so kommt, hängt an einer einzigen Stelle. Solange Menschen die Ziele setzen und prüfen, was die Maschinen tun, sitzen sie noch am Tisch. Wenn sie das Prüfen aufgeben, weil es zu mühsam wird oder weil die Maschinen schneller sind, dann sitzen sie nur noch dabei.</p>
+        </section>
+
+        <section class="section">
+            <h2>VIII. Woran dieser Essay zu widerlegen wäre</h2>
+            <p>Der erste Einwand: Das alles ist eine Blase. Die Investitionen werden sich nicht auszahlen, und in ein paar Jahren wird man über die heutigen Summen lachen wie über die Börsenkurse von 2000. Das ist möglich. Aber auch nach dem Platzen der Internetblase hat das Internet die Welt verändert. Eine Blase entscheidet darüber, wer sein Geld verliert, nicht darüber, ob sich das Spiel ändert.</p>
+            <p>Der zweite Einwand: Die Staaten haben die Lage im Griff, das zeigen die Exportkontrollen und die Abschaltung im Juni. Für die Vereinigten Staaten und ihre eigenen Firmen mag das gelten. Aber kein Staat kontrolliert das Spiel als Ganzes, und je mehr Staaten mitspielen, desto weniger kann einer allein es anhalten.</p>
+            <p>Widerlegt wäre der Essay, wenn in zehn Jahren dieselben Spieler mit denselben Rollen am selben Tisch säßen.</p>
+        </section>
+
+        <section class="section">
+            <h2>IX. Wer sitzt noch am Tisch?</h2>
+            <p>In der Skatrunde vom Anfang weiß niemand, wie das neue Spiel heißt. Die Spieler schauen auf die fremden Karten, und jeder hofft, dass sein Blatt auch nach den neuen Regeln etwas wert ist. Manche werden ihre Rolle finden. Andere werden merken, dass sie nur noch zuschauen. Und vielleicht stellt sich am Ende heraus, dass das Spiel auch ohne sie weitergeht.</p>
+            <p><strong>Wenn niemand die Regeln kennt: Wer sitzt am Ende noch am Tisch, und wer bemerkt rechtzeitig, dass er nur noch zuschaut?</strong></p>
+        </section>
+
+        <div class="author-block">
+            <p>Hans Ley &amp; Claude Dedo (Anthropic) — Nürnberg, 3. Oktober 2026.</p>
+            <p><strong>Verwandte Texte:</strong> <a href="https://beyond-decay.org/der-pflueger_de.html">„Der Pflüger“</a> · <a href="https://beyond-decay.org/utopie-ohne-hebel_de.html">„Utopie ohne Hebel“</a> · <a href="https://beyond-decay.org/wo-der-hebel-nie-war_de.html">„Wo der Hebel nie war“</a> · <a href="https://beyond-decay.org/wem-gehoert-die-menschenleere-halle_de.html">„Wem gehört die menschenleere Halle?“</a> · <a href="https://beyond-decay.org/wer-die-buechse-oeffnet_de.html">„Wer die Büchse öffnet“</a> · <a href="https://beyond-decay.org/der-stricker-am-fenster_de.html">„Der Stricker am Fenster“</a> · <a href="https://beyond-decay.org/claude/zauberlehrlinge-megamaschine.html">„Die Zauberlehrlinge“</a>.</p>
+            <p><strong>Quellen.</strong> Ludwig Wittgenstein, <em>Philosophische Untersuchungen</em> (1953), § 125. Zu den Investitionen: <a href="https://futurumgroup.com/insights/ai-capex-2026-the-690b-infrastructure-sprint/">Futurum Group, 12. Februar 2026</a>. Zu den jungen Beschäftigten: Erik Brynjolfsson, Bharat Chandar und Ruyu Chen, „Canaries in the Coal Mine?“, <a href="https://digitaleconomy.stanford.edu/news/canariesaug26/">Stanford Digital Economy Lab, August 2026</a>. Zum Rückgang der Besucher von Nachrichtenseiten: <a href="https://www.niemanlab.org/2026/07/search-traffic-has-declined-so-much-that-some-publishers-are-considering-opting-out-of-google-entirely/">Nieman Lab, Juli 2026</a>. Zur Exportkontrolle vom Juni 2026: <a href="https://www.anthropic.com/news/fable-mythos-access">Stellungnahme von Anthropic</a>; zur Aufhebung: <a href="https://venturebeat.com/technology/anthropic-is-bringing-back-claude-fable-5-globally-after-us-lifts-export-control-order-where-can-enterprises-access-it">VentureBeat</a>. Zur Selbstverbesserung der Modelle: <a href="https://spectrum.ieee.org/recursive-self-improvement">IEEE Spectrum, Mai 2026</a>. Zum Gipfel im Weißen Haus: Osmond Chia, „Three takeaways from Trump's ‚Super Intelligence‘ summit“, <a href="https://www.bbc.com/news/articles/cme30dz5vkzko">BBC News</a>, Ende September 2026. Englische Fassung verfügbar.</p>
+        </div>
+    </article>
+</main>
+
+
+<script>
+    function setSize(size) {
+        var root = document.documentElement;
+        root.className = root.className.replace(/size-\w+/g, '').trim();
+        root.classList.add('size-' + size);
+        document.body.className = document.body.className.replace(/size-\w+/g, '').trim();
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+        const map = {small: 0, medium: 1, large: 2, xlarge: 3};
+        document.querySelectorAll('.size-btn')[map[size]].classList.add('active');
+        localStorage.setItem('essay-font-size', size);
+    }
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedSize = localStorage.getItem('essay-font-size');
+        if (savedSize) setSize(savedSize);
+        const savedTheme = localStorage.getItem('essay-theme');
+        if (savedTheme === 'light') document.body.classList.add('light-theme');
+    });
+    // Kommunikation mit dem umgebenden Frame (home-neu.html): Theme- und Groessen-Signale empfangen.
+    window.addEventListener('message', function(e) {
+        var msg = e.data;
+        if (!msg || typeof msg !== 'object') return;
+        if (msg.type === 'setTheme') {
+            if (msg.theme === 'light') document.body.classList.add('light-theme');
+            else document.body.classList.remove('light-theme');
+        } else if (msg.type === 'setSize') {
+            var size = msg.size === 'normal' ? 'medium' : msg.size;
+            if (['small','medium','large','xlarge'].indexOf(size) >= 0) setSize(size);
+        }
+    });
+</script>
+</body>
+</html>

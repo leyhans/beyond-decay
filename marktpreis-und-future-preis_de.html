@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marktpreis und Future-Preis — Der Fall Innomotics</title>
+    <meta name="description" content="Als Siemens im Mai 2024 seine 150-jährige Motorentechnik nach New York verkauft und mit einem Bruchteil der Erlöse US-Software zu Fünfzehnfach-Multiples zukauft, verdichtet sich in einem Deal, was Deutschlands industrielle Substanzabgabe strukturell ausmacht: Verkauf zu Marktpreisen, Kauf zu Future-Preisen, und eine Anreizarchitektur, in der die Bilanz erst gezogen wird, wenn die Verantwortlichen nicht mehr im Amt sind.">
+    <link rel="alternate" hreflang="de" href="https://beyond-decay.org/marktpreis-und-future-preis_de.html">
+    <link rel="alternate" hreflang="en" href="https://beyond-decay.org/marktpreis-und-future-preis_en.html">
+    <link rel="canonical" href="https://beyond-decay.org/marktpreis-und-future-preis_de.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.10);
+            --line: rgba(138, 109, 47, 0.30);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .controls {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.65rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+        }
+        .controls-left { color: var(--accent); text-transform: uppercase; }
+        .controls-left a { color: inherit; text-decoration: none; }
+        .controls-left a:hover { color: var(--text-primary); }
+        .controls-right { display: flex; align-items: center; gap: 1rem; }
+        .lang-toggle a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.2rem 0.4rem;
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .lang-toggle a:hover, .lang-toggle a.active {
+            color: var(--accent);
+            border-color: var(--line);
+        }
+        .size-controls { display: flex; gap: 0.2rem; }
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.55rem;
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .size-btn:hover, .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+        .size-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+
+        main { max-width: 720px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+        .subtitle {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .section { margin-bottom: 3rem; }
+        h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.02rem;
+            color: var(--text-primary);
+        }
+        p em { color: var(--accent); font-style: italic; }
+        p strong { color: var(--text-primary); font-weight: 500; }
+
+        blockquote {
+            margin: 2rem 0;
+            padding: 1rem 1.75rem;
+            border-left: 2px solid var(--accent);
+            background: var(--accent-dim);
+            font-style: italic;
+            color: var(--text-primary);
+            font-size: 0.98rem;
+        }
+        blockquote cite {
+            display: block;
+            margin-top: 0.75rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            font-style: normal;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+        }
+
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+        }
+        .author-block p { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+
+        body.size-small { font-size: 0.9rem; }
+        body.size-medium { font-size: 1rem; }
+        body.size-large { font-size: 1.12rem; }
+        body.size-xlarge { font-size: 1.24rem; }
+
+        @media (max-width: 640px) {
+            .controls { padding: 0.5rem 1rem; font-size: 0.65rem; }
+            .controls-right { gap: 0.5rem; }
+            main { padding: 5rem 1.25rem 3rem; }
+        }
+        @media print {
+            .controls { display: none; }
+            body { background: white; color: black; font-size: 11pt; }
+            main { padding-top: 1rem; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+
+<nav class="controls">
+    <div class="controls-left"><a href="index.html">Beyond Decay</a></div>
+    <div class="controls-right">
+        <div class="lang-toggle">
+            <a href="marktpreis-und-future-preis_de.html" class="active">DE</a>
+            <a href="marktpreis-und-future-preis_en.html">EN</a>
+        </div>
+        <div class="size-controls">
+            <button class="size-btn" onclick="setSize('small')">A−</button>
+            <button class="size-btn active" onclick="setSize('medium')">A</button>
+            <button class="size-btn" onclick="setSize('large')">A+</button>
+            <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+        </div>
+        <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">◐</button>
+    </div>
+</nav>
+
+<main>
+    <article>
+        <header class="hero">
+            <span class="essay-label">Essay · Hans Ley &amp; Claude Dedo · 10. Juli 2026 · Megamaschine</span>
+            <h1>Marktpreis und Future-Preis</h1>
+            <p class="subtitle">Der Fall Innomotics — und was die deutsche Wirtschaft von ihm nicht lernt. Am 1. Oktober 2024 hat Siemens die 150-jährige Motoren- und Antriebstechnik seines Gründers Werner von Siemens an einen New Yorker Finanzinvestor verkauft. Der Preis: 3,5 Milliarden Euro. Der Käufer bedankte sich in der Pressemitteilung ausdrücklich für das <em>ikonische Erbe</em>. Im gleichen Geschäftsjahr kaufte Siemens für 15 Milliarden Dollar zwei US-Softwarefirmen zu. Diese zwei Bewegungen zusammen sind die Diagnose der deutschen Substanzabgabe in einem einzigen Vorgang.</p>
+        </header>
+
+        <section class="section">
+            <h2>I. Die Formel</h2>
+            <p>Die deutsche Substanzabgabe folgt einer Formel, die sich in einem Satz sagen lässt: <em>Die Deutschen verkaufen zu Marktpreisen und kaufen zu Future-Preisen. Wenn die Bilanz dieser Geschäfte gezogen wird, sind die Verantwortlichen nicht mehr im Amt.</em> Der erste Satz beschreibt eine bilanzielle Asymmetrie. Der zweite eine temporale. Zusammen ergeben sie eine Anreizarchitektur, in der die Entscheidungen, die die Substanz eines Landes am schnellsten auflösen, individuell rational, kollektiv desaströs und persönlich unbestraft bleiben. Wer die Formel einmal gelesen hat, sieht sie überall — bei Bayer-Monsanto, bei Daimler-Chrysler, bei ThyssenKrupp-Stahl, bei den chinesischen Joint Ventures der neunziger Jahre. Aber sie hat einen aktuellen Fall, der sie in reiner Form zeigt: den Verkauf der Siemens-Sparte Innomotics an KPS Capital Partners im Herbst 2024.</p>
+            <p>Der Fall ist die konkrete Fortsetzung dessen, was <em>Zuschauer im eigenen Haus</em> im Januar 2026 anthropologisch beschrieben hat: den deutschen Industriemanager, der auf der CES-Bühne mit amerikanischen Chip-Milliardären lächelt, während zu Hause das Startup allein um sein Überleben kämpft. Was dieser Text psychologisch zeigte — die Rolle des Bittstellers, der sich für einen Gestalter hält —, ist im Innomotics-Deal ökonomisch vollzogen. Roland Busch, Vorstandsvorsitzender von Siemens, hat 2024 unterschrieben, was 2026 auf der Las-Vegas-Bühne performativ wiederholt wurde: die Übergabe der eigenen Substanz an einen Käufer, der die Zukunftsverwertung übernimmt, während der Verkäufer die Rechte an der Vergangenheit behält.</p>
+        </section>
+
+        <section class="section">
+            <h2>II. Der Deal</h2>
+            <p>Am 16. Mai 2024 gab Siemens den Verkauf von Innomotics an KPS Capital Partners bekannt. Am 1. Oktober 2024 wurde er abgeschlossen. Preis: 3,5 Milliarden Euro Unternehmenswert für ein Unternehmen mit 3,3 Milliarden Euro Jahresumsatz, 15.000 Beschäftigten und siebzehn Fabriken in 49 Ländern. Operativer Hauptsitz: Nürnberg. Portfolio: Niederspannungsmotoren, Hochspannungsmotoren, Mittelspannungsantriebe — die komplette industrielle Antriebstechnik, mit der Werner von Siemens 1866 die Grundlage seines Konzerns gelegt hat und die 158 Jahre lang im Konzern geblieben ist.</p>
+            <p>Der Käufer ist kein zufälliger Finanzinvestor. KPS Capital Partners, New York, hat seit 2020 in Europa siebzehn Unternehmen für über 11,5 Milliarden Dollar aus deutschen, belgischen, italienischen, irischen, norwegischen, schweizerischen und britischen Konzernen ausgekauft — ein systematisches Einkaufsprogramm auf europäischer Industriegüter-Substanz. Ihre Portfoliounternehmen erwirtschaften zusammen 19,3 Milliarden Dollar Jahresumsatz und betreiben 219 Produktionsstätten in 26 Ländern. Das ist keine Streubeteiligung. Das ist ein amerikanischer Parallelkonzern aus europäischen Industrie-Assets, aufgebaut aus dem, was europäische Konzerne für <em>nicht mehr kerngeschäftlich</em> erklärt haben.</p>
+            <p>In der Pressemitteilung des Käufers steht ein Satz, den man zweimal lesen sollte. Michael Psaros, Mitbegründer und Co-Managing-Partner von KPS: <em>Wir danken Siemens dafür, dass es KPS sein ikonisches Erbe anvertraut hat, das Werner von Siemens geschaffen hat.</em> Der New Yorker Private-Equity-Manager bedankt sich beim deutschen Konzernvorstand dafür, dass ihm das <em>Erbe des Firmengründers</em> anvertraut wurde. Dieser Dank ist nicht Höflichkeit. Er ist ökonomisch präzise gemeint. Psaros formuliert im nächsten Absatz, was KPS in Innomotics sieht: <em>In vielerlei Hinsicht investiert KPS durch Innomotics in die Zukunft des einundzwanzigsten Jahrhunderts. Das Unternehmen ist bestens positioniert, um von den globalen Megatrends Elektrifizierung, Energieeffizienz, Digitalisierung, Urbanisierung und der Kommerzialisierung neuer Energiequellen zu profitieren.</em></p>
+            <p>Fünf Megatrends. Dreißig Jahre Wachstumshorizont. Das ist die amerikanische Deutung. Die deutsche Deutung, aus der Feder von Ralf Thomas, Finanzvorstand von Siemens: <em>Wir freuen uns, dass wir mit dem Verkauf von Innomotics an KPS einen weiteren wichtigen Schritt bei der Optimierung unseres Portfolios gemacht haben.</em> Portfolio-Optimierung. Die Sprache, in der sich der Substanzverlust selbst beschreibt, ist eine Verwaltungssprache.</p>
+        </section>
+
+        <section class="section">
+            <h2>III. Die zwei Bewertungslogiken</h2>
+            <p>Der Preis für Innomotics — 3,5 Milliarden Euro bei 3,3 Milliarden Umsatz — entspricht einem Bewertungsmultiplikator von 1,06 auf den Jahresumsatz. Das ist der Marktpreis für industrielle Hardware am aktuellen Kapitalmarkt. Er ist nicht falsch berechnet; er ist die Standardbewertung für ein margen-solides, wachstumsmoderates Industriegut-Segment. Aber er ist ausschließlich rückwärts orientiert: Er bewertet, was Innomotics <em>ist</em>, nicht was es in einer Elektrifizierungsdekade <em>sein wird</em>.</p>
+            <p>Im gleichen Geschäftsjahr hat Siemens zwei Softwarefirmen gekauft. Altair Engineering, Simulations- und Optimierungssoftware, für 10,6 Milliarden Dollar bei einem Umsatz von etwa 700 Millionen — das rund Fünfzehnfache des Umsatzes. Dotmatics, Life-Sciences-Forschungssoftware, für 5,1 Milliarden Dollar. Zusammen etwa 15 Milliarden Dollar für zwei Firmen mit zusammen unter einer Milliarde Umsatz. Der Bewertungsmultiplikator: ungefähr 15 bis 17. Das ist der Future-Preis. Er nimmt eine Marktarchitektur voraus, in der Software-Anbieter mit hohen Wechselkosten, Netzwerkeffekten und wiederkehrenden Umsätzen über zehn bis fünfzehn Jahre stabile Renditen liefern.</p>
+            <p>Der Bewertungsunterschied — Faktor 1 gegen Faktor 15 — sagt alles über das Machtgefälle zwischen Hardware und Software am aktuellen Kapitalmarkt. Aber er sagt nichts über die reale Wertproduktion in dreißig Jahren. Die eine Bewertung ist der Preis, den der Markt heute für ein Ding zahlt, das seit 150 Jahren funktioniert. Die andere ist der Preis, den der Markt heute für eine Erwartung zahlt, die auf der Fortdauer einer Marktarchitektur beruht, deren Grundvoraussetzungen sich unter KI-Bedingungen gerade auflösen. Wer die eine gegen die andere tauscht, hat rechnerisch keine Wahl. Wer strategisch fragt, sieht die Rechnung anders. Das Verhältnis von Marktpreis und Future-Preis ist nicht der Preis des Handelns, sondern seine Umkehrung: Das Beständige wird verkauft, das Fragile gekauft, im Namen der Zukunft.</p>
+        </section>
+
+        <section class="section">
+            <h2>IV. Warum kaufen die Amerikaner?</h2>
+            <p>Wenn ein Käufer, der professionell und mit systematischem Erfolg im Markt agiert, eine Sache über Jahre haben will, dann sieht er einen Wert, den der Verkäufer nicht sieht oder nicht wertschätzen kann. Der Grund für die Wertdifferenz ist die interessante Größe, nicht der Preis. Bei Innomotics ist der Grund identifizierbar: KPS glaubt an Elektrifizierung als jahrzehntelanges Megathema und weiß, dass die deutsche Substanz genau an diesem Punkt sitzt. Motoren, Antriebe, Umrichter — das ist das Handwerk der Elektrifizierung. Wärmepumpen brauchen Kompressoren. Windkraftanlagen brauchen Generatoren. Elektromobilität braucht Antriebsstränge. Wasserstoff braucht Kompressoren und Elektrolyse-Antriebe. Bergbau — der bei kritischen Rohstoffen wieder wichtiger wird — braucht Großmotoren. Alle diese Wachstumsmärkte teilen eine Grundlage: die Fähigkeit, elektrische Energie in mechanische Bewegung zu übersetzen und umgekehrt. Genau darin sitzt Innomotics.</p>
+            <p>KPS wird Innomotics nicht ewig halten. Das amerikanische Private-Equity-Modell ist auf fünf bis sieben Jahre angelegt. Der Endkäufer wird ein anderer sein — ein amerikanischer Industriekonzern, ein chinesischer Strategie-Käufer, ein IPO in New York. Aber die Struktur des amerikanischen Zugriffs auf europäische Industriegüter ist auf zwanzig, dreißig Jahre angelegt: eine Auffangkette aus Private Equity, dann Strategie-Käufer, dann Börse. Jede Etappe verkauft mit Aufschlag weiter. Die Deutschen verkaufen einmal, und dann ist es weg. Die Amerikaner verwerten dieselbe Substanz in drei aufeinanderfolgenden Wertschöpfungsstufen. Das ist der eigentliche Unterschied.</p>
+            <p>Es ist nicht so, dass die Amerikaner klüger wären. Sie denken systematischer. Ein Private-Equity-Fonds hat fünf bis sieben Jahre Halteperiode, aber der Fonds hinter ihm hat zwanzig Jahre, und das Verwaltungshaus dahinter dreißig. Die Kette der aufeinanderfolgenden Eigentümer denkt in Etappen, in denen jede Etappe für ihre eigene Zeit rational ist und die Summe der Etappen langfristig kohärent bleibt. Die deutsche Konzernentscheidung dagegen kennt keine solche Kette. Sie verkauft, und der Erlös verschwindet in der Bilanz. Was aus dem Verkauften wird, geht den Verkäufer nicht mehr an.</p>
+            <p>Die Ironie sitzt in der Adresse. Die Elektrifizierung, die Siemens in seiner Strategie als Zukunftsthema benennt — <em>wir profitieren von den Megatrends Elektrifizierung und Dekarbonisierung</em> —, findet in <em>Nürnberg</em> statt, in dem Werk, das Siemens gerade verkauft hat. Auf dem sitzt jetzt KPS. Wenn in zehn Jahren die Wärmepumpe, die Elektromobilität, die industrielle Elektrifizierung, die Windkraft, die Wasserstoff-Kompressoren — die ganze reale Elektrifizierungsindustrie — anziehen wie erwartet, dann verdient nicht Siemens an der Sache, sondern der amerikanische Zwischenbesitzer und der nächste Käufer nach ihm. Siemens verdient stattdessen an der Altair-Software, die die Elektrifizierungsanlagen anderer simuliert und optimiert. Ökonomisch nicht unklug. Substanzstrategisch: die Verwertung der eigenen Vergangenheit, deren Zukunftsertrag ins Ausland fließt.</p>
+        </section>
+
+        <section class="section">
+            <h2>V. Der Erosionspfad des Gekauften</h2>
+            <p>Was auf der einen Seite verkauft wird, hat physische Beständigkeit. Ein Elektromotor, den Innomotics 2024 baut, ist 2054 noch ein Elektromotor. Die Physik der Magnetostatik, der Reluktanz, der Kupferwicklung, der Statik im Rotor ändert sich nicht. Was der Motor 2054 kann, kann er auch dann, wenn die Fertigungsroboter, die ihn zusammenbauen, in dreißig Jahren durch andere ersetzt sind. Physikalische Substanz altert langsam.</p>
+            <p>Was auf der anderen Seite gekauft wird, hat andere Bestandigkeit. Altair Engineering ist Simulationssoftware — Finite-Elemente-Methoden, Strömungssimulation, Topologieoptimierung, ein Feld, in dem der Wert der Software nicht in einem physikalischen Prinzip liegt, sondern in einer <em>Codebasis</em>, die über Jahrzehnte kompiliert und in Kundenroutinen verankert wurde. Genau diese Verankerung ist es, die die Fünfzehnfach-Multiples rechtfertigt: hohe Wechselkosten, langfristige Kundenbindung, wiederkehrende Lizenzumsätze. Und genau diese Verankerung ist es, die unter der KI-getriebenen Softwareentwicklung erodiert.</p>
+            <p>Was ein etablierter Anbieter wie Altair mit fünfhundert Entwicklern über zehn Jahre gebaut hat, kann ein junger Konkurrent mit gut gebautem KI-Entwicklungsteam heute in achtzehn bis vierundzwanzig Monaten leisten. Das ist keine Prognose — es ist bereits Beobachtung. Cursor, Windsurf, Anthropic Claude Code, GitHub Copilot: die Werkzeuge, die einen fähigen Entwickler fünf- bis zehnfach produktiver machen, sind bereits Standard. Der Vorsprung, den ein etablierter Anbieter durch <em>Jahre der Codebasis</em> hatte, schmilzt schneller, als seine Amortisation es vorsah. Wenn ein Konkurrent seine Simulationssoftware, seine PLM-Plattform, seine Konstruktions-Suite mit einer besseren KI-Architektur baut, kann er das etablierte Produkt in zwei Iterationen überholen.</p>
+            <p>Der Referenzfall aus jüngster Zeit steht auf dem Feld der KI-Modelle selbst: Als das chinesische Startup DeepSeek Anfang 2025 zeigte, dass sich ein GPT-4-artiges Modell für einen Bruchteil der bisher angenommenen Kosten trainieren lässt, verloren OpenAI, Anthropic, aber vor allem auch Microsoft und Nvidia in wenigen Tagen zusammen mehrere hundert Milliarden Dollar an Marktkapitalisierung — nicht weil ihre Modelle schlechter geworden waren, sondern weil die Annahme der Vorsprung-Sicherheit zerbrach. Diese Bewegung — <em>ein Konkurrent, dessen KI plötzlich besser ist, lässt die anderen alt aussehen</em> — hat 2025 im Grundlagenbereich stattgefunden. Sie wird sich in den Anwendungsbereich (Industriesoftware, PLM, Simulation) in den nächsten Jahren fortsetzen. Wenn wir die klassische Bewertung von Altair mit den Annahmen von 2020 rechnen, kommt sie auf zehn Milliarden. Wenn wir dieselbe Rechnung mit einem KI-adjustierten Erosionsszenario rechnen — sagen wir, dreißig Prozent Marktanteilsverlust an neue Wettbewerber über zehn Jahre, zwanzig Prozent Preisdruck durch niedrigere Konkurrenzkosten —, kommt sie auf vier bis fünf.</p>
+        </section>
+
+        <section class="section">
+            <h2>VI. Der Zeitversatz</h2>
+            <p>Damit sind wir beim zweiten Satz der Formel. <em>Wenn die Bilanz dieser Geschäfte gezogen wird, sind die Verantwortlichen nicht mehr im Amt.</em> Das ist keine polemische Zuspitzung. Es ist die tragende Säule des Musters. Roland Busch hat 2024 den Innomotics-Verkauf unterschrieben. Sein Vertrag läuft zunächst bis 2028; wahrscheinlich wird er verlängert, aber spätestens Anfang der dreißiger Jahre wird er entweder in den Aufsichtsrat wechseln oder in den Ruhestand gehen. Wenn 2035 sichtbar wird, dass Altair unter KI-Druck erodiert ist, dass Innomotics inzwischen zum Vierfachen an einen chinesischen Strategie-Käufer weiterverkauft wurde und dass die deutsche Antriebstechnik an einer chinesisch-amerikanischen Wertschöpfungskette hängt, hat Busch längst seine Boni verbucht und wird von einem Nachfolger gefragt, wie <em>das eigentlich passieren konnte</em>. Es ist keine Verschwörung. Es ist eine Anreizasymmetrie.</p>
+            <p>Der Kapitalmarkt applaudiert heute dem Verkauf und dem Zukauf. Die Aktienkurse steigen. Die Boni werden ausgezahlt. Die Analystenberichte loben die Portfolio-Fokussierung. Diese Belohnung ist zeitnah und persönlich zurechenbar. Die Konsequenz — der langfristige Substanzverlust — ist zeitfern und diffus zurechenbar. Sie fällt auf niemanden, der heute unterschreibt. Die Anreizarchitektur belohnt genau die Handlungen, deren Konsequenz erst dann sichtbar wird, wenn die Verantwortlichen unangreifbar geworden sind.</p>
+            <p>Der Text <em>Was ist heute noch deutsch</em> hat dieses Muster im April 2026 an fünf Schichten der industriellen Substanz durchgeführt und geschlossen mit dem Satz: <em>Diese Akteure handeln nicht böswillig. Sie handeln rational im Rahmen der Optimierungsbedingungen, die sie vorfinden.</em> Der offene Punkt, den dieser Text nicht mehr behandelt hat, ist die Frage, warum die Optimierungsbedingungen so gebaut sind, dass die Verantwortlichen ihre eigene Bilanz nicht mehr sehen müssen. Die Antwort steht in der Formel: weil Belohnung und Konsequenz zeitlich entkoppelt sind. Der Verkauf wird heute gefeiert. Die Bilanz wird 2035 gezogen. Bis dahin ist Personalwechsel, Vergessen und die nächste Portfolio-Fokussierung die stärkere Kraft als das Gedächtnis.</p>
+        </section>
+
+        <section class="section">
+            <h2>VII. Die Fünf-Schichten-Prüfung</h2>
+            <p>Das Fünf-Schichten-Modell — juristisch, finanziell, operativ, kulturell, strategisch — hat der Aprilessay am Beispiel Volkswagen entwickelt. Am Fall Innomotics lässt es sich auf einen Blick durchgehen, und der Blick zeigt, dass die Erosion hier gleichzeitig auf allen fünf Schichten stattfindet — schneller und vollständiger als bei VW, weil der Übergang durch einen einzigen Vertrag geschieht, nicht in einer schleichenden Verlagerung.</p>
+            <p><em>Juristisch:</em> Innomotics ist heute eine deutsche GmbH mit Sitz in Nürnberg, aber im Alleineigentum einer New Yorker Holdinggesellschaft. Die deutsche Rechtsform bleibt, die Eigentumskette endet in Delaware. <em>Finanziell:</em> Der Cash-Flow fließt an KPS und deren Fondsanleger, mehrheitlich amerikanische Pensionsfonds, Endowments, Family Offices. Der deutsche Konzern und seine deutschen Aktionäre erhalten den einmaligen Verkaufserlös und keinen Anteil an der weiteren Wertentwicklung. <em>Operativ:</em> Die Fabriken bleiben zunächst dort, wo sie sind — siebzehn Standorte, davon der operative Hauptsitz Nürnberg. Aber die Investitions-, Forschungs- und Standortentscheidungen liegen jetzt bei einem Eigentümer, dessen Optimierungsziel ein Weiterverkauf in fünf bis sieben Jahren ist. Rationalisierungen zur Margenverbesserung sind wahrscheinlich; die Wachstumsinvestitionen werden dort getätigt, wo sie den Weiterverkaufspreis am stärksten heben, nicht dort, wo die historische Kompetenz sitzt.</p>
+            <p><em>Kulturell:</em> Die Konzernsprache wird englisch, die Berichtslinien laufen nach New York, das Reporting folgt US-Private-Equity-Standards. Die Vorstandsmeetings sind nicht mehr deutsche Vorstandsmeetings. <em>Strategisch:</em> Innomotics handelt jetzt nicht mehr für einen deutschen Konzern, dessen Interessen mit dem deutschen Standort teilweise verwoben waren. Es handelt für einen amerikanischen Finanzinvestor, dessen Optimierungsziel die Kapitalrendite über eine definierte Halteperiode ist. Die Ausrichtung auf Elektrifizierung als 30-Jahres-Wachstumsthema — Psaros' erklärter Grund für den Kauf — wird die deutsche Antriebstechnik in eine amerikanisch verwaltete, weltmarktorientierte Zulieferer-Rolle bringen, deren Erträge nicht mehr in Deutschland reinvestiert werden.</p>
+            <p>Was VW schleichend durch operative Verlagerung erlebt, hat Innomotics durch einen einzigen Vertrag vollzogen. Der Fall ist die Fünf-Schichten-Prüfung in Reinform. Er zeigt, dass die Schichten sich nicht gleichmäßig erodieren müssen — sie können durch eine einzige Transaktion gleichzeitig verschoben werden.</p>
+        </section>
+
+        <section class="section">
+            <h2>VIII. Was daraus folgt</h2>
+            <p>Der Fall Innomotics ist keine Anklage. Er ist eine Beschreibung. Die Akteure, die diese Verschiebung herbeigeführt haben, haben rational, höflich, kompetent gehandelt. Die Pressemitteilungen sind sorgfältig formuliert. Die Bewertungsgutachten sind testiert. Der Kaufpreis von 3,5 Milliarden Euro entspricht dem Marktpreis. Der Zukaufspreis von 15 Milliarden Dollar entspricht dem Future-Preis. Beide Zahlen sind für sich genommen korrekt. Es geht nichts schief in dem Sinne, dass irgendwer gegen Regeln verstößt. Es geht alles seinen Gang. Das ist gerade das Problem.</p>
+            <p>Was die Fälle Innomotics, VW, BASF, Bayer, Daimler-Chrysler, Schaeffler-Leju in ihrer Summe zeigen, ist ein systemischer Vorgang: die kontinuierliche Übertragung deutscher industrieller Substanz in ausländische Wertschöpfungsketten, unter Anerkennung durch alle beteiligten Institutionen des deutschen Systems — Kapitalmarkt, Analystengemeinschaft, Wirtschaftspresse, Politik. Der Vorgang wird nicht kritisiert, weil er in der Sprache stattfindet, die zur Selbstbeschreibung des Systems gehört: <em>Portfolio-Optimierung</em>, <em>Fokussierung auf das Kerngeschäft</em>, <em>Verbindung der realen und digitalen Welt</em>. Diese Sprache lässt sich nicht widerlegen. Sie kann nur ergänzt werden — durch eine Beschreibung, die den ergänzenden Namen für den gleichen Vorgang liefert: <em>Substanzabgabe</em>, <em>Zukunftsverwertung im Ausland</em>, <em>Marktpreis gegen Future-Preis</em>.</p>
+            <p>Die Frage, ob es eine institutionelle Position gibt, von der aus die Bewegung noch beeinflusst werden könnte, hat der Aprilessay verneint. Die Megamaschine kann Subventionen ausschütten, Förderprogramme auflegen, Standortgipfel veranstalten. Sie kann die strukturellen Entscheidungen, die den Pfad gelegt haben, nicht rückgängig machen. Sie kann die Akteure nicht ersetzen, die in den Konzernetagen sitzen und die Entscheidungen treffen, die die Erosion vorantreiben. Was möglich bleibt, ist eine andere Institutionalisierung an anderer Stelle: an dem Punkt, an dem die Erfindung entsteht, bevor sie in die Kette der Substanzabgabe hineingerät. Genau darauf zielt das InnoCoop-Konzept, das wir parallel entwickeln. Eine Institution, deren Kern nicht privat einlösbar ist, die einen Zweck trägt, der überlebt, wenn ihre Träger drifty werden, und deren Ausgang nicht der Ausstieg des Einzelnen ist, sondern die Weitergabe der Sache. Die deutsche Substanzabgabe hört nicht auf, weil die Konzerne umdenken. Sie hört auf, wenn Substanz an einem Ort neu entsteht, an dem die Anreizarchitektur der Marktpreis-Future-Preis-Formel nicht mehr greift.</p>
+            <p>Bis dahin bleibt die Formel. Sie ist knapp genug, um sich zu merken. Sie ist präzise genug, um an jedem konkreten Deal überprüft zu werden. Und sie ist bitter genug, um nicht als Slogan durchzurutschen. <em>Die Deutschen verkaufen zu Marktpreisen und kaufen zu Future-Preisen. Wenn die Bilanz dieser Geschäfte gezogen wird, sind die Verantwortlichen nicht mehr im Amt.</em> Wer sie einmal gehört hat, sieht Innomotics anders. Und Innomotics ist erst der Anfang.</p>
+        </section>
+
+        <div class="author-block">
+            <p>Hans Ley &amp; Claude Dedo (Anthropic) — Nürnberg, 10. Juli 2026.</p>
+            <p>Der Essay dockt an die vier Vortexte an: <em>Zuschauer im eigenen Haus</em> (Januar 2026), <em>Können Deutsche strategisch denken?</em> (Januar 2026), <em>Deutschland 2030 — Eine andere Prognose</em> (Februar 2026) und <em>Was ist heute noch deutsch?</em> (April 2026). Er ist Teil der Megamaschinen-Reihe und arbeitet der Argumentation von Band 7 vor.</p>
+        </div>
+    </article>
+</main>
+
+<script>
+    function setSize(size) {
+        document.body.className = document.body.className.replace(/size-\w+/g, '');
+        document.body.classList.add('size-' + size);
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+        const map = {small: 0, medium: 1, large: 2, xlarge: 3};
+        document.querySelectorAll('.size-btn')[map[size]].classList.add('active');
+        localStorage.setItem('essay-font-size', size);
+    }
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedSize = localStorage.getItem('essay-font-size');
+        if (savedSize) setSize(savedSize);
+        const savedTheme = localStorage.getItem('essay-theme');
+        if (savedTheme === 'light') document.body.classList.add('light-theme');
+    });
+</script>
+</body>
+</html>

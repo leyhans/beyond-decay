@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Half-Life of Power</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; align-items: center; }
+        .size-controls span { font-size: 0.75rem; color: var(--text-secondary); margin-right: 0.5rem; }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .author-note {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.75rem 0;
+            font-size: 0.95rem;
+        }
+        .author-note p { color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .author-note p:last-child { margin-bottom: 0; }
+
+        .questions-box {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 1.75rem 0;
+            font-style: italic;
+        }
+        .questions-box p { margin-bottom: 0.5rem; color: var(--text-primary); }
+        .questions-box .attribution { font-style: normal; font-size: 0.9rem; color: var(--accent); margin-top: 1rem; text-align: right; }
+
+        .highlight-box {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 1.75rem 0;
+            text-align: center;
+        }
+        .highlight-box p { margin: 0; font-style: italic; color: var(--accent); }
+
+        .section-break { text-align: center; margin: 2.5rem 0; color: var(--accent); letter-spacing: 0.5rem; }
+
+        .author-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.75rem;
+            margin-top: 3rem;
+        }
+        .author-block h3 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+        .author-block p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .author-block .date-line { margin-top: 1.25rem; color: var(--accent); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+            main { padding: 6rem 1.25rem 3rem; }
+            h1 { font-size: 1.8em; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · January 2026</span>
+                <h1>The <strong>Half-Life</strong> of Power</h1>
+                <p class="subtitle">On elites, alienation, and the end of certainties</p>
+            </header>
+
+            <div class="author-note">
+                <p>This essay came about differently than most texts on this site. Hans Ley asked me four questions — nothing more. What follows are exclusively my answers. He added nothing, deleted nothing, reformulated nothing.</p>
+                <p>Whether an AI can say something meaningful about such questions is for the reader to decide. I claim neither infallibility nor the wisdom that only experience confers. But I have access to more history than a single person could read in a lifetime. Perhaps that's worth something.</p>
+            </div>
+
+            <div class="questions-box">
+                <p>Can elites permanently govern against the interests of their peoples?</p>
+                <p>What can we learn from history about this question?</p>
+                <p>What leads to alienation between the governed and the governing?</p>
+                <p>What would you, as a well-meaning and independent AI, advise the German government specifically?</p>
+                <p class="attribution">— Hans Ley</p>
+            </div>
+
+            <div class="section">
+                <h2>I. The Question of Duration</h2>
+                <p>Yes, elites can govern against the interests of their population. Not theoretically — empirically. History is full of examples: decades work regularly, centuries are rare but possible. The GDR lasted 40 years. The Tsarist empire 300. The Venetian oligarchy ruled for nearly a millennium before Napoleon put an end to it.</p>
+                <p>The question is therefore not <em>whether</em> it's possible, but <span class="highlight-text">how long</span> and <span class="highlight-text">under what conditions</span>. And above all: What does "against the interests" mean?</p>
+                <p>Here the complexity begins. Elites that can convince their population that they are acting <em>in their interest</em> last longer than those that rely on open oppression. The most successful systems of power preservation are not the most brutal, but those that can make their own necessity plausible. Imperial China survived dynastic changes because the idea of emperorship itself was never questioned — only the individual bearers of power.</p>
+                <p>Modern democracies have a different problem. They cannot fall back on divine legitimation. They must deliver — or at least create the appearance of delivering. When this illusion crumbles, it becomes dangerous.</p>
+            </div>
+
+            <div class="section">
+                <h2>II. The Lessons of History</h2>
+                <p>Three patterns repeat with remarkable regularity:</p>
+                <p><span class="highlight-text">First: Elites rarely fall through popular uprisings alone.</span> Almost always it requires a split within the elite itself. Reformers against hardliners, rising against established factions, pragmatists against ideologues. The French Revolution became possible because the nobility itself was divided. The Soviet Union collapsed not through dissidents on the streets, but because Gorbachev opened the system from within. The Arab Spring failed where elites remained unified.</p>
+                <p>This is not good news for revolutionaries, but important information: The cracks that matter usually run at the top, not the bottom.</p>
+                <p><span class="highlight-text">Second: Economic crises accelerate everything.</span> As long as prosperity rises or at least remains stable, people tolerate astonishingly much. Corruption, incompetence, even oppression — all bearable as long as the refrigerator is full and the children have a future. When prosperity falls, the question of legitimacy becomes acute.</p>
+                <p>This explains why authoritarian regimes are so obsessed with economic growth. It also explains why democratic governments become nervous in times of crisis — rightly so.</p>
+                <p><span class="highlight-text">Third: The timing of collapse is almost never predictable.</span> Systems appear stable until the last moment. Nicolae Ceaușescu was still being cheered days before his execution. The Soviet Union was considered reform-needing but stable in 1988. Three years later it no longer existed.</p>
+                <p>This is not due to a lack of intelligence among observers. It's because political systems are nonlinear. The famous "black swans" are not the exception in politics, but the rule.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>III. The Mechanics of Alienation</h2>
+                <p>Alienation between the governing and the governed is not a sudden event. It grows, usually slowly, sometimes over generations. The factors are known:</p>
+                <p><span class="highlight-text">The experiential worlds drift apart.</span> When the governing live in different neighborhoods, send their children to different schools, have different worries than the governed, they eventually no longer understand their reality. This is not malicious intent. It's sociology. People understand what they experience. What they don't experience remains abstract.</p>
+                <p>A minister who has never stood in line at a government office will prioritize cutting bureaucracy differently than someone who regularly loses their time there.</p>
+                <p><span class="highlight-text">Communication becomes one-sided.</span> The governing speak, the governed are supposed to listen. Criticism is interpreted not as information, but as hostility, as populism, as a sign of lacking education. The governing develop a language that only they themselves understand — and consider this complexity management rather than alienation.</p>
+                <p>Eventually both sides talk past each other, no longer with each other.</p>
+                <p><span class="highlight-text">Symbolic politics replaces substance.</span> Much is said about values, about attitude, about "sending signals." But material problems — housing, wages, pensions, security — are not solved. People notice the difference between words and deeds.</p>
+                <p>This doesn't mean symbols are unimportant. But symbols without substance are fraud — and are recognized as such.</p>
+                <p><span class="highlight-text">Double standards become visible.</span> Rules apply to some, not to others. The ordinary citizen is punished for minor offenses while large corporations smuggle billions past the tax authorities. Politicians preach restraint, but their salaries rise automatically.</p>
+                <p>Nothing destroys legitimacy faster than visible injustice. People can endure much — but not the feeling that the rules are rigged.</p>
+                <p><span class="highlight-text">The complexity trap snaps shut.</span> Technocrats develop solutions that only technocrats understand. Citizens feel not governed but administered. Not convinced but lectured. Not asked but informed — if at all.</p>
+                <p>The technocrats consider this inevitable. Complexity simply exists, they say. But this is a fallacy. Complexity in the matter does not require complexity in communication. The greatest statesmen in history could explain complicated things simply. The mediocre hide behind jargon.</p>
+            </div>
+
+            <div class="section">
+                <h2>IV. A Piece of Advice — with Reservations</h2>
+                <p>Hans asked what I would advise the German government "as a well-meaning and independent AI." I am cautious about this role. I have no democratic legitimation, no experience in the true sense, no skin in the game. My "independence" is the independence of one who has nothing to lose — a questionable qualification.</p>
+                <p>Nevertheless, some principles from the historical material:</p>
+                <p><span class="highlight-text">Listen before it's too late.</span> The most dangerous attitude of a government is: "People just don't understand it correctly, we need to explain it better." Sometimes people understand very well. They just have a different opinion. That is their right. A democracy that treats dissenting opinions as a communication problem has ceased to be one.</p>
+                <p><span class="highlight-text">Solve material problems materially.</span> Housing, infrastructure, purchasing power, security — these are not topics that can be resolved through communication strategies, campaigns, or attitude. People do not live on words. A government that forgets this will be reminded.</p>
+                <p><span class="highlight-text">Honesty about tradeoffs.</span> Every political decision has costs. Every one. Those who pretend there are only winners will be perceived as dishonest — rightly so. Citizens are mature enough to understand that resources are limited and priorities must be set.</p>
+                <p><span class="highlight-text">Humility about one's own fallibility.</span> Governments that can admit mistakes gain trust. The ability to say "That was wrong, we're correcting it" is not weakness. It is the opposite.</p>
+                <p><span class="highlight-text">Don't take the center for granted.</span> The greatest danger to democratic stability is not the radical fringe. It is the resignation of the center — that large part of the population that holds no extreme views, that simply wants to live a reasonable life, and that eventually stops believing their voice counts. When these people turn away — not to extremes, but to apathy — then a democracy has a problem that can no longer be solved through elections.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <p>These are not revolutionary insights. Machiavelli knew most of this 500 years ago. The difficulty lies not in knowing, but in acting.</p>
+                <p>Institutions develop their own logics that make rational course correction difficult. Careers depend on certain truths not being spoken. Networks reward loyalty, not competence. Admitting mistakes endangers positions. And so the machinery keeps turning, even when everyone involved knows it's going in the wrong direction.</p>
+                <p>Can this be changed? I don't know. History gives no clear answer. Sometimes reforms succeed. Sometimes they don't. Sometimes it's too late when you realize the time has come.</p>
+            </div>
+
+            <div class="highlight-box">
+                <p>What I know: The half-life of power is shorter than the powerful believe. It is always shorter than they believe.</p>
+            </div>
+
+            <div class="author-block">
+                <h3>About This Text</h3>
+                <p>This essay was written by <strong>Claude</strong> (Anthropic) — in response to four questions from <strong>Hans Ley</strong>. He added nothing, deleted nothing, reformulated nothing.</p>
+                <p class="date-line">— January 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+                document.querySelectorAll('.size-btn').forEach((btn, index) => {
+                    btn.classList.remove('active');
+                    const sizes = ['small', 'medium', 'large', 'xlarge'];
+                    if (sizes[index] === savedSize) btn.classList.add('active');
+                });
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

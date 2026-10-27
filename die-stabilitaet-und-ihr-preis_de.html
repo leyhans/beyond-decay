@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die Stabilität und ihr Preis | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+        text-decoration: none;
+    }
+    .site-name:hover { opacity: 0.7; }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        font-size: 2.2rem;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+        color: var(--text-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 300;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 1.5rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 2.5rem;
+        letter-spacing: 0.5px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        letter-spacing: 0.3px;
+    }
+    p {
+        margin-bottom: 1.2rem;
+        text-align: justify;
+        hyphens: auto;
+    }
+    em { color: var(--accent-color); font-style: italic; }
+    strong { color: var(--accent-color); font-weight: 500; }
+    a {
+        color: var(--link-color);
+        text-decoration: none;
+        border-bottom: 1px dotted var(--link-color);
+        transition: opacity 0.3s;
+    }
+    a:hover { opacity: 0.7; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .signature {
+        margin-top: 2.5rem;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        color: var(--meta-color);
+        line-height: 1.7;
+    }
+    .footer-back {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        text-align: center;
+    }
+    .footer-back a {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        border-bottom: none;
+    }
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+        header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+
+<header>
+    <a href="index.html" class="site-name">beyond-decay.org</a>
+    <div class="controls">
+        <a href="die-stabilitaet-und-ihr-preis_en.html" class="ctrl-link" id="lang-toggle">EN</a>
+        <span class="ctrl-sep"></span>
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Größe</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+    <main>
+        <h1>Die Stabilität und ihr Preis</h1>
+        <div class="subtitle">Eine Bilanz der Kanzlerschaft Angela Merkels — gegen ihre besten Verteidiger geprüft</div>
+        <div class="meta">beyond-decay.org — 14. Juni 2026</div>
+
+<p>Im Frühjahr 2026 ist Angela Merkel zurück. Ihre Memoiren <em>Freiheit</em>, mit Beate Baumann geschrieben und im November 2024 erschienen, verkauften sich in der ersten Woche über 200.000-mal und waren das dritterfolgreichste Buch des Jahres. Sie tritt auf, wird gefeiert, geteilt. Im selben Land erreicht ihr Nachfolger Friedrich Merz Zustimmungswerte zwischen 13 und 18 Prozent, und die AfD hat die Union als stärkste Kraft abgelöst. Aus diesem Kontrast erwächst eine These, die man heute überall hört: Damals sei es besser gewesen. Sechzehn Jahre, ein Erfolg.</p>
+
+<p>Wir wollen diese These nicht abtun, sondern sie an ihrer stärksten Stelle prüfen. Eine billige Kritik wählt sich die bequemen Fakten und schweigt über die unbequemen. Wir machen das Gegenteil. Wir rufen die Entlastungszeugen selbst in den Zeugenstand — den Aufschwung, die schwarze Null, die geglückte Integration — und sehen nach, ob sie das Urteil tragen, das man ihnen zutraut. <strong>Sie tragen es nicht.</strong></p>
+
+        <h2>Der Aufschwung, den sie nicht schuf</h2>
+
+<p>Der erste Entlastungszeuge ist die Konjunktur. Unter Merkel fiel die Zahl der Arbeitslosen von annähernd fünf Millionen auf rund 2,3 Millionen vor der Pandemie. Das ist wahr, und es ist kein Detail.</p>
+
+<p>Nur: Sie hat diesen Aufschwung nicht gemacht. Seine Grundlage waren die Arbeitsmarktreformen der Agenda 2010 — das Werk ihres Vorgängers Gerhard Schröder, dessen Wirkung sich in ihrer Amtszeit entfaltete. Eigene strukturelle Impulse setzte Merkel nach den frühen Jahren kaum noch; auf die Unternehmensteuerreform 2008 und die Schuldenbremse 2009 folgte, was selbst das ifo Institut in seiner Bilanz der Ära einen Verfall der Reformbereitschaft nennt — vor allem in der Steuer- und Sozialpolitik. Eine Regierung, die sechzehn Jahre von der Reform ihres Vorgängers lebt und keine eigene hinzufügt, hat den Wohlstand nicht erarbeitet. Sie hat ihn verbraucht. Der Aufschwung ist nicht ihr Verdienst, sondern <em>ihr Alibi</em>.</p>
+
+        <h2>Die schwarze Null: Reserve aus Verfall</h2>
+
+<p>Der zweite, stärkere Entlastungszeuge ist die schwarze Null. Ab 2014, getragen von Finanzminister Schäuble, wies der Bund ausgeglichene Haushalte aus. Und die Verteidigung ist nicht unsinnig: Diese Solidität verschaffte dem Staat in der Pandemie den Spielraum, massiv gegenzusteuern, ohne dass das Vertrauen in seine Zahlungsfähigkeit litt. Wir räumen das vollständig ein.</p>
+
+<p>Doch fragen wir, woher der Überschuss kam. Er kam aus dem Verzicht auf Erneuerung. Über Jahre waren die staatlichen Nettoinvestitionen negativ — der Staat baute und erhielt weniger, als an Bestehendem verfiel. Das KfW-Kommunalpanel bezifferte allein den kommunalen Investitionsrückstand 2018 auf rund 159 Milliarden Euro, davon etwa 48 Milliarden bei Schulen. Die Talbrücke Rahmede an der A45, eine Hauptschlagader des Güterverkehrs, wurde 2021 gesperrt; ihr Abriss und Neubau dauern Jahre. Die Bahn fährt mit Verspätungsquoten, die in der Schweiz als Skandal gälten, auf einem über Jahrzehnte unterfinanzierten Netz. Das ist die Rechnung, die hinter der Null steht.</p>
+
+<p>Damit kippt die Verteidigung. Eine Reserve, die nur entsteht, weil man Brücken verrotten und Schulen veralten lässt, ist keine finanzielle Solidität. Sie ist <em>aufgeschobener Verfall</em>, der sich als Vorsicht ausgibt. Der Spielraum von 2020 wurde mit den Brücken von 2030 bezahlt. Man hat nicht gespart — man hat die Kosten nur dorthin verschoben, wo sie in keinem Haushaltsplan auftauchen.</p>
+
+        <h2>Energie: eine Theorie ohne Beweis</h2>
+
+<p>Bei der Energie gibt es keinen Entlastungszeugen, nur eine Begründung, die sich selbst widerlegt hat. 2010 verlängerte Merkels Regierung die Laufzeiten der Kernkraftwerke; nach Fukushima 2011 kehrte sie diesen Beschluss binnen Wochen um — ein Land ohne Erdbeben- und Tsunamigefahr reagierte auf einen Tsunami in Japan. Die entstehende Lücke wurde mit russischem Gas überbrückt. Nord Stream 1 ging 2011 ans Netz, Nord Stream 2 wurde gegen die ausdrücklichen Warnungen der USA, Polens und der Ukraine vorangetrieben — nach der Annexion der Krim 2014, nach dem Abschuss von MH17, nach dem Giftanschlag von Salisbury. Bis 2021 bezog Deutschland über die Hälfte seines Erdgases aus Russland.</p>
+
+<p>Die Rechtfertigung hieß <em>Wandel durch Handel</em> — eine Theorie, für die es keine historische Evidenz gab. Noch im Oktober 2021 erklärte Merkel, es gebe keine Anzeichen, dass Russland Gas als Druckmittel einsetze. Wenige Monate später, im Februar 2022, war genau diese Abhängigkeit die größte strategische Verwundbarkeit des Landes; Nord Stream 2 wurde gestoppt und ging nie in Betrieb. Hier lässt sich nichts mildern. Die Warnungen lagen vor, jahrelang, von Verbündeten. Sie wurden nicht übersehen, sondern zurückgewiesen.</p>
+
+        <h2>Migration: der Zeuge, den die schärfste Kritik meidet</h2>
+
+<p>Nun der unbequemste Entlastungszeuge — der, den eine bloß polemische Abrechnung lieber gar nicht erst lädt, weil seine Aussage stört. Der gängige Vorwurf lautet, Merkel habe nach der Aufnahme von rund 890.000 Schutzsuchenden 2015 versäumt, Integration zu organisieren. Dieser Vorwurf ist, an den Daten gemessen, falsch.</p>
+
+<p>Das Institut für Arbeitsmarkt- und Berufsforschung wies 2024 nach: 64 Prozent der 2015 Zugezogenen waren beschäftigt, gegenüber 70 Prozent in der Gesamtbevölkerung; mit Selbstständigen liegt die Erwerbstätigenquote bei rund 70 Prozent. Neun von zehn dieser Verhältnisse waren sozialversicherungspflichtig. Die Arbeitslosenquote aus den Asylherkunftsländern sank von 52 Prozent Mitte 2016 auf 28 Prozent Ende 2024. Wer behauptet, „Wir schaffen das" sei ökonomisch gescheitert, redet gegen die Statistik. Wir sagen das ausdrücklich, weil eine wasserdichte Kritik die entlastenden Zahlen nennen muss, bevor sie weitergeht.</p>
+
+<p>Und nun gehen wir weiter. Denn die Frage war nie nur ökonomisch. Im selben Zeitraum entstand ein struktureller Riss im politischen Gefüge: Die AfD zog 2017 in den Bundestag ein und ist 2026 stärkste Kraft. Die Kompetenz einer Regierung misst sich auch daran, ob sie die Gesellschaft mitnimmt — nicht nur den Arbeitsmarkt. Hier zeigt sich das eigentliche Versäumnis, und es ist subtiler als der falsche Vorwurf, den es ersetzt. Die Integration gelang langsam — sie brauchte rund neun Jahre —, ungleich — bei Männern 76, bei Frauen nur 35 Prozent — und, dies der entscheidende Befund, am schlechtesten dort, wo die rechtsextreme Mobilisierung am lautesten war. Dieselben Studien belegen den Zusammenhang: Ablehnung erschwert die Integration, die sie zu kritisieren vorgibt. Der Arbeitsmarkt holte auf; die Republik nicht. Die wirtschaftliche Integration ist gelungen — die politische Verarbeitung ist gescheitert, und beide lassen sich nicht trennen.</p>
+
+        <h2>Der Stillstand, den niemand verteidigt</h2>
+
+<p>Wo es keinen Entlastungszeugen mehr gibt, tritt das Muster offen zutage. Die Digitalisierung verschlief Deutschland; Merkels Satz vom Internet als „Neuland" aus dem Jahr 2013 wurde zum geflügelten Wort, weil 2021 Gesundheitsämter Corona-Zahlen per Fax meldeten. Die Bundeswehr blieb chronisch unterfinanziert; das nach der Krim-Annexion zugesagte NATO-Ziel von zwei Prozent der Wirtschaftsleistung wurde während ihrer gesamten Amtszeit nicht erreicht. Das Sondervermögen von hundert Milliarden Euro, das ihr Nachfolger 2022 als „Zeitenwende" ausrief, war keine Wende — es war die Rechnung für sechzehn Jahre Vernachlässigung, ausgestellt an den, der nach ihr kam.</p>
+
+        <h2>Das Urteil</h2>
+
+<p>Prüfen wir die Summe. Der Aufschwung war geborgt. Die schwarze Null war aus Verfall finanziert. Die Energiepolitik beruhte auf einer widerlegten Theorie. Die Integration gelang ökonomisch und scheiterte politisch. Der Rest war Stillstand. Jeder einzelne Entlastungszeuge, beim Wort genommen, entlastet nicht — er verschiebt die Anklage nur auf festeren Grund. Was als Bilanz der Erfolge erschien, ist bei näherer Vernehmung eine Bilanz des Aufschubs: regieren, indem man die Entscheidung in Ruhe vertagt, bis ein anderer sie treffen muss.</p>
+
+<p>Damit lässt sich auch die Sehnsucht von 2026 erklären, ohne ihr zu erliegen. Was die Deutschen vermissen, ist nicht die Substanz dieser Politik — die Substanz war zu großen Teilen der Entschluss, nicht zu entscheiden. Vermisst wird die <em>Form</em>: die Ruhe, das Nicht-über-jedes-Stöckchen-Springen, die Gelassenheit in der Krise. Eine Haltung, kein Inhalt. Dass diese Form heute fehlt, sagt mehr über die Nachfolger als über sie.</p>
+
+<p>Merkel selbst hat das Muster fast eingestanden. Wenn es helfe, sei sie eben auch schuld gewesen — fügt aber sogleich hinzu, das beschreibe die Dinge nicht hinreichend. Genau darin liegt die Methode: das Urteil nicht landen zu lassen. <strong>Wir lassen es landen.</strong> Es ist kein parteiisches Urteil und keine Geschmacksfrage. Es ist die Summe der Aufschübe — und sie ist jetzt fällig.</p>
+
+        <p style="font-size:0.9em;margin-top:2.5rem"><strong>Die Reihe zu Merkels Kanzlerschaft:</strong> Teil 1 — Die Bilanz: <a href="/neuer_ordner/html/mutti-teil1-bilanz.html">„Die Mutti, die ALLES richtig machte“</a> · Teil 2 — Die Methode: <a href="/sechzehn-jahre-ohne-bekenntnis_de.html">„Sechzehn Jahre ohne Bekenntnis“</a> · Teil 3 — Die Prüfung: „Die Stabilität und ihr Preis“ (dieser Text)</p>
+
+        <div class="signature">
+            Hans Ley und Claude Dedo (Anthropic)<br>
+            beyond-decay.org — 14. Juni 2026
+        </div>
+
+        <div class="footer-back">
+            <a href="index.html">← zur Übersicht</a>
+        </div>
+    </main>
+
+<script>
+(function() {
+    const body = document.body;
+    const themeBtn = document.getElementById('btn-theme');
+    const sizeBtns = document.querySelectorAll('.size-btn');
+
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+    }
+    function applySize(s) {
+        if (!s) return;
+        body.classList.remove('size-small','size-normal','size-large','size-xlarge');
+        body.classList.add('size-' + s);
+        sizeBtns.forEach(function(x){
+            x.classList.remove('active');
+            if (x.dataset.size === s) x.classList.add('active');
+        });
+    }
+
+    // Load saved preferences (shared keys with parent home-neu.html)
+    try {
+        var savedTheme = localStorage.getItem('theme');
+        var savedSize = localStorage.getItem('fontSize');
+        if (savedTheme) applyTheme(savedTheme);
+        if (savedSize) applySize(savedSize);
+    } catch(e) {}
+
+    themeBtn.addEventListener('click', function() {
+        var current = document.documentElement.getAttribute('data-theme');
+        var next = current === 'light' ? 'dark' : 'light';
+        applyTheme(next);
+        try { localStorage.setItem('theme', next); } catch(e) {}
+    });
+
+    sizeBtns.forEach(function(b){
+        b.addEventListener('click', function() {
+            var s = b.dataset.size;
+            applySize(s);
+            try { localStorage.setItem('fontSize', s); } catch(e) {}
+        });
+    });
+
+    // Listen for postMessage from parent frame (home-neu.html)
+    window.addEventListener('message', function(event) {
+        if (!event.data || !event.data.type) return;
+        if (event.data.type === 'setTheme') applyTheme(event.data.theme);
+        else if (event.data.type === 'setSize') applySize(event.data.size);
+    });
+
+    if (window.self !== window.top) body.classList.add('in-iframe');
+})();
+</script>
+</body>
+</html>

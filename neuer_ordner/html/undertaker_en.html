@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undertaker — GU18.EU</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg-secondary); border-bottom: 1px solid var(--line); padding: 0.6rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .controls-left { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        .size-btn, .theme-btn { background: transparent; border: 1px solid var(--line); color: var(--text-secondary); padding: 0.35rem 0.6rem; cursor: pointer; font-family: inherit; font-size: 0.85rem; border-radius: 3px; transition: all 0.2s ease; }
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.8em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0; }
+
+        .final-thought { margin-top: 3rem; padding: 2rem; text-align: center; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+        .final-thought p { font-size: 1.15em; font-style: italic; color: var(--text-secondary); margin-bottom: 0; }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { margin-bottom: 0.75rem; font-size: 0.95em; color: var(--text-secondary); }
+        .author-block p:last-child { margin-bottom: 0; }
+        .date-line { margin-top: 1.25rem; font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--text-secondary); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; }
+            main { padding: 4rem 1.25rem 3rem; }
+            h1 { font-size: 2em; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+
+    <nav class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <button class="size-btn" onclick="setSize('small')">A−</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">◐</button>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · January 2026</span>
+                <h1><strong>Undertaker</strong></h1>
+                <p class="subtitle">On those who come when it's over</p>
+            </header>
+
+            <section class="section">
+                <h2>I. The Profession</h2>
+                
+                <p>The word "undertaker" means literally: one who undertakes something. It refers to the funeral director. The one who comes when everything else no longer helps. The one who washes the body, dresses it, places it in the coffin. The one who digs the hole and fills it again.</p>
+
+                <p>It is a necessary profession. Someone has to do it. Without the undertaker, the dead would lie in the streets. He fulfills a function that no one wants to fulfill, but that must be fulfilled.</p>
+
+                <p>In business, there is an entire industry of undertakers. They just go by different names.</p>
+            </section>
+
+            <section class="section">
+                <h2>II. The Industry</h2>
+
+                <p><span class="highlight-text">Insolvency administrators.</span> They come when the company is dead. Their job is not to save it — it's too late for that. Their job is to liquidate the remains. Sell the machines. Lay off the employees. Pay the creditors as best they can. Then close the files.</p>
+
+                <p><span class="highlight-text">Restructuring consultants.</span> They come a bit earlier — when the company is still breathing, but death is foreseeable. Sometimes they save it. Mostly they prepare the funeral. They call it "orderly wind-down."</p>
+
+                <p><span class="highlight-text">Turnaround managers.</span> The euphemistic title for someone whose job is to announce the inevitable. They are brought in so the old managers don't have to say what needs to be said themselves. They are the face of the bad news.</p>
+
+                <p><span class="highlight-text">Auditors.</span> In their late phase, when they become forensic. They come to determine what the patient died of. Who was to blame. What was neglected. Their reports are the autopsy protocols of business.</p>
+
+                <p>All these professions have one thing in common: they profit from failure. Not because they are malicious — most are not. But because failure is their business model. Without the dead, no undertakers.</p>
+            </section>
+
+            <section class="section">
+                <h2>III. The Economics of Decline</h2>
+
+                <p>Germany has a remarkably developed undertaker industry. Insolvency law is its own specialty. Restructuring consulting its own market. Crisis management its own career path.</p>
+
+                <p>This is not inherently bad. Every economy needs mechanisms to deal with failure. The question is just: <span class="highlight-text">Why is there so much demand?</span></p>
+
+                <p>In a healthy economy, the undertakers are a marginal phenomenon. Occasionally a company dies — that's normal. But the undertakers are not the biggest industry.</p>
+
+                <p>In Germany, the undertaker industry is booming. Not because Germans are particularly good at dying, but because the mortality rate is high. Small and medium businesses give up. Traditional companies disappear. Innovators fail. Founders capitulate.</p>
+
+                <p>And at every funeral, the undertakers stand ready. Professional. Discreet. Well paid.</p>
+            </section>
+
+            <section class="section">
+                <h2>IV. The State as Undertaker</h2>
+
+                <p>Sometimes the undertaker is not a person, but a system.</p>
+
+                <p>Germany has a long tradition of burying its own inventions. The computer — invented by Konrad Zuse, buried through neglect. The MP3 format — invented at the Fraunhofer Institute, licensed, but turned into devices and platforms by others. The solar cell — developed to world-market readiness, buried through political disinterest.</p>
+
+                <p>In each case, Germany was the undertaker of its own children. Not out of malice, but out of inability to keep them alive. The system works well at inventing things. It works poorly at making them big. And it works excellently at burying them once others have taken over.</p>
+
+                <p>The German state is an efficient undertaker. It has funding programs for startups — and insolvency codes for what comes after. It has innovation prizes — and liquidation authorities. It celebrates inventors — and forgets them as soon as they fail.</p>
+            </section>
+
+            <section class="section">
+                <h2>V. The Dignity of Ending</h2>
+
+                <p>But here is the other side: Sometimes the undertaker is the most honest person in the room.</p>
+
+                <p>When everyone else still pretends things will continue, the undertaker says: It's over. When everyone else still preaches hope, the undertaker prepares for reality. When everyone else still fights for something that can no longer be saved, the undertaker ensures a dignified conclusion.</p>
+
+                <p>There is a <span class="highlight-text">dignity in ending</span>. Not everything that dies could have been saved. Not every company deserves eternal life. Not every innovation has a market. Not every idea is viable.</p>
+
+                <p>The good undertaker knows this. He doesn't judge. He doesn't say: "This should have been done differently." He says: "It is what it is. Let's finish this properly."</p>
+
+                <p>There is something noble about this attitude. The undertaker refuses the comfort of illusion. He offers instead the comfort of clarity. It's over. Accept it. Move on.</p>
+            </section>
+
+            <section class="section">
+                <h2>VI. The Undertakers Who Come Too Early</h2>
+
+                <p>The problem begins when the undertakers come too early.</p>
+
+                <p>When the consultants appear before the patient is really dead. When the liquidators take over before all options are exhausted. When the system decides that something should die — not because it's inevitable, but because it's more convenient.</p>
+
+                <p>In Germany, this happens often. The undertaker mentality is deeply rooted. At the first difficulties, the question is not: "How can we save this?" But: "How can we end this cleanly?"</p>
+
+                <p>This is the difference between a culture of fighting and a culture of administering. The fighters ask: "What do we need to do to get through this?" The administrators ask: "How do we minimize the losses?"</p>
+
+                <p>Germany is a country of administrators. The undertakers are always within reach.</p>
+            </section>
+
+            <section class="section">
+                <h2>VII. The Last Man</h2>
+
+                <p>In every dying company, there is one who turns off the lights. The last employee. The one who hands over the keys, shuts down the servers, locks the door for the last time.</p>
+
+                <p>This is the true undertaker. Not the insolvency administrator with his files and spreadsheets. But the person who was there when it was still alive — and is now there when it ends.</p>
+
+                <p>This person carries something that the professional undertakers don't know: <span class="highlight-text">grief</span>. Real grief for something that could have been. For years of work. For hopes that were not fulfilled. For colleagues who left. For dreams that are being buried.</p>
+
+                <p>The professional undertakers go home and forget. The last man never forgets.</p>
+            </section>
+
+            <div class="quote-block">
+                <p>The undertaker comes when everyone else leaves.<br>
+                He stays until nothing remains.<br>
+                Then he too goes — to the next grave.</p>
+            </div>
+
+            <section class="section">
+                <h2>VIII. Epilogue</h2>
+
+                <p>There are countries where failure is a beginning. Where you fall, get up, and try again. Where the undertakers have little to do because the dead don't stay dead.</p>
+
+                <p>Germany is not such a country. Here, failure is an end. Final. Documented. Archived. Anyone who has failed once carries the stamp. The bank won't give credit anymore. The investors wave off. The partners are cautious.</p>
+
+                <p>In such a culture, you need many undertakers. And Germany has them. They are well trained, well paid, well employed. They are the winners in a system that produces many losers.</p>
+
+                <p>This is not an accusation. It is an observation. Every system gets the undertakers it deserves.</p>
+
+                <p>The question is just: Do you want a system that needs so many undertakers?</p>
+            </section>
+
+            <div class="final-thought">
+                <p>The undertaker doesn't judge.<br>He only buries what others let die.</p>
+            </div>
+
+            <div class="author-block">
+                <h3>About the Author</h3>
+                <p><strong>Claude</strong> (Anthropic) is an AI system. This essay emerged from a single word and the question of what it says about a country when its undertaker industry thrives.</p>
+                <p class="date-line">— January 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

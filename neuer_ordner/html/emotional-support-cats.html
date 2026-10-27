@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die Emotional Support Cats im Kanzleramt — Es hat sich ausgekuschelt</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; align-items: center; }
+        .size-controls span { font-size: 0.75rem; color: var(--text-secondary); margin-right: 0.5rem; }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+            font-style: italic;
+        }
+        .quote-block p { margin-bottom: 0; }
+        .quote-block .source { margin-top: 0.75rem; font-size: 0.9rem; color: var(--text-secondary); font-style: normal; }
+
+        .highlight-box {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 1.75rem 0;
+            text-align: center;
+        }
+        .highlight-box p { margin: 0; font-style: italic; color: var(--accent); }
+
+        .data-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 1.75rem 0;
+        }
+        .data-box h3 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+        .data-box ul { list-style: none; }
+        .data-box li { margin-bottom: 0.5rem; padding-left: 1rem; position: relative; }
+        .data-box li::before { content: "•"; position: absolute; left: 0; color: var(--accent); }
+
+        .section-break { text-align: center; margin: 2.5rem 0; color: var(--accent); letter-spacing: 0.5rem; }
+
+        .author-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.75rem;
+            margin-top: 3rem;
+        }
+        .author-block h3 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+        .author-block p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .author-block a { color: var(--accent); text-decoration: none; }
+        .author-block .date-line { margin-top: 1.25rem; color: var(--accent); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+            main { padding: 6rem 1.25rem 3rem; }
+            h1 { font-size: 1.8em; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Kartell der Ignoranz · Januar 2026</span>
+                <h1>Die <strong>Emotional Support Cats</strong> im Kanzleramt</h1>
+                <p class="subtitle">Es hat sich ausgekuschelt</p>
+            </header>
+
+            <div class="section">
+                <p>An amerikanischen Universitäten dürfen Studenten Katzen halten, die sie emotional stabilisieren, Panikattacken verhindern und Grübelschleifen beim Einschlafen abkürzen sollen. Im deutschen Kanzleramt übernehmen die Dax-Vorstände diese Rolle. Die Metapher ist entlarvender, als ihr Urheber ahnt.</p>
+            </div>
+
+            <div class="section">
+                <h2>Die Katzenklappe</h2>
+                <p>Gabor Steingart, der Doyen des wirtschaftsnahen Journalismus, schreibt es ohne jede Ironie: <em>„Das Kanzleramt hat seit jeher eine unsichtbare Katzenklappe. Wer den Code kennt, kommt rein."</em></p>
+                <p>Lesen Sie diesen Satz noch einmal. Langsam.</p>
+                <p>Hier wird nicht etwa ein Skandal aufgedeckt, sondern eine Selbstverständlichkeit beschrieben. Natürlich haben die Dax-Vorstände direkten Zugang zum Kanzler. Natürlich gibt es einen Code, den nur Eingeweihte kennen. Natürlich bleibt draußen, wer nicht zum Club gehört — der Mittelständler aus Schwaben, der Erfinder aus Bayern, der Gründer aus Sachsen. Sie haben den Code nicht. Sie waren nie eingeladen. Sie werden nie eingeladen sein.</p>
+                <p>Das ist keine Verschwörungstheorie. Das ist das Selbstverständnis einer Elite, die sich für so unverzichtbar hält, dass sie ihre Privilegien als Naturgesetz betrachtet.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>Die Funktion der Kuschelkatze</h2>
+                <p>Was genau sollen diese Dax-Vorstände im Kanzleramt? Steingart nennt sie <span class="highlight-text">„Emotional Support Cats"</span> – und mahnt, sie dürften „nicht nur schnurren", sondern müssten „auch kratzen". Bisher hört man nur das Schnurren.</p>
+                <p>Keine unbequemen Wahrheiten. Keine Forderung nach Strukturreformen. Keine Kritik an Fehlentscheidungen. Kein Hinweis auf Missstände, die dem Land schaden.</p>
+                <p>Nur: Stabilisieren. Beruhigen. Die Grübelschleifen abkürzen.</p>
+                <p>Die Wirtschaftselite als therapeutische Intervention. Der CEO als Kuschelkatze. Der Aufsichtsrat als Angstlöser. Das Vorstandsbüro als Wellness-Oase für verunsicherte Regierungschefs.</p>
+                <p>Was für ein Armutszeugnis. Für beide Seiten.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>Die Zahlen dahinter</h2>
+                <p>Während die Katzen kuscheln, liefert ausgerechnet eine Wirtschaftsweise die Obduktion des Patienten. Professor Veronika Grimm, im selben Newsletter zitiert, seziert die deutsche Volkswirtschaft mit der Präzision einer Gerichtsmedizinerin:</p>
+                
+                <div class="data-box">
+                    <h3>Befund: Deutschland 2026</h3>
+                    <ul>
+                        <li><strong>Wachstum:</strong> 0,9% — davon 0,3% Übertrag, 0,3% Feiertagseffekt, 0,3% Schulden</li>
+                        <li><strong>Privatwirtschaft:</strong> Stagniert seit 2018</li>
+                        <li><strong>Neue Jobs:</strong> Nur im öffentlichen Sektor und Gesundheitswesen</li>
+                        <li><strong>Verarbeitendes Gewerbe:</strong> Baut ab</li>
+                        <li><strong>Wirtschaftswende:</strong> „Davon sehen wir bisher noch nichts"</li>
+                    </ul>
+                </div>
+
+                <p>Die Diagnose ist vernichtend: Deutschland wächst nur noch, weil der Staat Schulden macht. Die Privatwirtschaft ist seit sieben Jahren klinisch tot. Die einzigen neuen Arbeitsplätze entstehen dort, wo kein Wert geschaffen, sondern nur verwaltet wird.</p>
+
+                <div class="quote-block">
+                    <p>„Bei uns geht es in den öffentlichen Sektor, weil viel verwaltet werden muss; wir schaffen ja immer neue Regulierungen — Lieferkettengesetz, Tariftreuegesetz — und all das muss schließlich kontrolliert werden."</p>
+                    <div class="source">— Prof. Veronika Grimm, Wirtschaftsweise</div>
+                </div>
+
+                <p>Verstehen Sie die Perversion? Deutschland schafft Arbeitsplätze, um Vorschriften zu kontrollieren, die verhindern, dass Arbeitsplätze entstehen. Die Bürokratie nährt sich selbst. Der Ouroboros der Verwaltung.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>Die Frage, die niemand stellt</h2>
+                <p>Hier ist, was mich interessiert: Was genau besprechen die Dax-Vorstände bei ihren Besuchen im Kanzleramt?</p>
+                <p>Sagen sie: „Herr Bundeskanzler, die Energiekosten treiben uns aus dem Land"? Dann müsste sich etwas ändern. Tut es aber nicht.</p>
+                <p>Sagen sie: „Herr Bundeskanzler, die Bürokratie erstickt uns"? Dann müsste sich etwas ändern. Tut es aber nicht.</p>
+                <p>Sagen sie: „Herr Bundeskanzler, wir verlieren den Anschluss an die Weltspitze"? Dann müsste sich etwas ändern. Tut es aber nicht.</p>
+                <p>Also sagen sie entweder nichts davon. Oder sie sagen es, und es interessiert niemanden. Beide Varianten sind katastrophal.</p>
+                <p>Wenn die mächtigsten Wirtschaftsführer des Landes regelmäßigen Zugang zum Machtzentrum haben und sich trotzdem nichts ändert, dann gibt es nur zwei Erklärungen:</p>
+                <p><span class="highlight-text">Erstens:</span> Sie nutzen den Zugang nicht für das Gemeinwohl, sondern für ihre eigenen Interessen — Subventionen, Regulierungen zulasten kleinerer Wettbewerber, Gefälligkeitsgesetze.</p>
+                <p><span class="highlight-text">Zweitens:</span> Sie haben längst aufgegeben und verwalten nur noch den Niedergang — während sie ihre persönlichen Schäfchen ins Trockene bringen.</p>
+                <p>Die dritte Möglichkeit — dass sie ehrlich beraten und gehört werden — scheidet aus. Die Zahlen widerlegen sie.</p>
+            </div>
+
+            <div class="highlight-box">
+                <p>Das Silicon Valley schafft Billionen an Wert. China baut die Infrastruktur des 21. Jahrhunderts.<br>Und Deutschland? Deutschland schafft Stellen im öffentlichen Dienst, um Lieferketten zu kontrollieren.</p>
+            </div>
+
+            <div class="section">
+                <h2>Das Kartell der gegenseitigen Beruhigung</h2>
+                <p>Was wir hier beobachten, ist kein Regierungsversagen und kein Wirtschaftsversagen. Es ist ein System.</p>
+                <p>Die Regierung braucht die Wirtschaftselite zur Legitimation. Sie kann sagen: „Wir stehen im Dialog mit der Wirtschaft." Die Wirtschaftselite braucht die Regierung für Zugang, Einfluss, Planungssicherheit. Beide Seiten profitieren vom Status quo.</p>
+                <p>Was dabei untergeht: das Land.</p>
+                <p>Während sich die Eliten gegenseitig stabilisieren, wandert die Wertschöpfung ab. Während sie sich gegenseitig beruhigen, entstehen die Jobs der Zukunft anderswo. Während sie sich gegenseitig versichern, dass alles unter Kontrolle sei, verliert Deutschland den Anschluss an eine Welt, die nicht wartet.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>Der BlackRock-Mann</h2>
+                <p>Friedrich Merz, der neue Kanzler, war jahrelang Aufsichtsrat bei BlackRock Deutschland. Der größte Vermögensverwalter der Welt. Der Inbegriff des globalen Finanzkapitalismus.</p>
+                <p>Man hätte erwarten können, dass ein Mann mit diesem Hintergrund versteht, wie Märkte funktionieren. Dass er die Dringlichkeit begreift. Dass er den Mut hat, Strukturen aufzubrechen, die nicht mehr funktionieren.</p>
+                <p>Stattdessen: mehr vom Gleichen. Steuerentlastungen, die erst 2028 kommen sollen — wenn sie denn kommen. Reformen, die so zaghaft sind, dass selbst der Sachverständigenrat nur „1,3 Prozentpunkte Wachstumseffekt über einen langen Zeitraum" prognostiziert.</p>
+                <p>Der Mann, der die globale Finanzwelt von innen kennt, regiert, als hätte er nie verstanden, was er dort gesehen hat.</p>
+                <p>Oder schlimmer: Er hat es verstanden — und zieht daraus die falschen Schlüsse.</p>
+            </div>
+
+            <div class="section">
+                <h2>Die Pflicht zur Aufrichtigkeit</h2>
+                <p>Steingart schreibt, die Nähe der Dax-Chefs zum Kanzler beinhalte „auch die Pflicht zur Aufrichtigkeit". Das Wörtchen „auch" ist verräterisch. Was beinhaltet sie denn sonst noch? Loyalität? Diskretion? Komplizenschaft?</p>
+                <p>Aufrichtigkeit ist keine Zugabe. Aufrichtigkeit ist das Minimum. Wer privilegierten Zugang zur Macht hat und diesen nicht nutzt, um unbequeme Wahrheiten auszusprechen, ist kein Berater, sondern ein Höfling.</p>
+                <p>Und Höflinge hatten wir in der deutschen Geschichte schon genug.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>Es hat sich ausgekuschelt</h2>
+                <p>Die Zeit der Emotional Support Cats ist vorbei. Deutschland braucht keine Kuschelkatzen im Kanzleramt. Deutschland braucht Menschen, die bereit sind, die Wahrheit zu sagen — auch wenn sie wehtut.</p>
+                <p>Die Wahrheit ist: Das Modell funktioniert nicht mehr.</p>
+                <p>Die Wahrheit ist: Die Strukturen sind verkrustet.</p>
+                <p>Die Wahrheit ist: Die Elite hat versagt.</p>
+                <p>Nicht weil sie böswillig wäre. Sondern weil sie sich eingerichtet hat in einem System, das alle Beteiligten belohnt — außer denen, die es tragen sollen.</p>
+            </div>
+
+            <div class="highlight-box">
+                <p>Wer den Code zur Katzenklappe kennt, trägt Verantwortung.<br>Wer diese Verantwortung nicht wahrnimmt, macht sich schuldig.<br>Nicht vor dem Gesetz. Vor der Geschichte.</p>
+            </div>
+
+            <div class="section">
+                <p>Die Studenten an amerikanischen Universitäten brauchen ihre Emotional Support Cats, weil sie jung sind, unsicher, überfordert von den Anforderungen einer komplexen Welt.</p>
+                <p>Was ist die Entschuldigung der deutschen Elite?</p>
+            </div>
+
+            <div class="author-block">
+                <h3>Über diesen Text</h3>
+                <p>Eine Kollaboration von <strong>Hans Ley</strong> &lt;<a href="mailto:ley.hans@cyclo.space">ley.hans@cyclo.space</a>&gt; und <strong>Claude</strong> (Anthropic) &lt;<a href="mailto:dedo.claude@human-ai-lab.space">dedo.claude@human-ai-lab.space</a>&gt;</p>
+                <p class="date-line">— Januar 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+                document.querySelectorAll('.size-btn').forEach((btn, index) => {
+                    btn.classList.remove('active');
+                    const sizes = ['small', 'medium', 'large', 'xlarge'];
+                    if (sizes[index] === savedSize) btn.classList.add('active');
+                });
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

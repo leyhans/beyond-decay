@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Twilight | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    /* Hide header when inside iframe */
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+    }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+    }
+    .subtitle {
+        font-size: 1.05rem;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        letter-spacing: 1px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.8rem;
+        margin-bottom: 1.2rem;
+    }
+    p { margin-bottom: 1.4rem; text-align: justify; hyphens: auto; }
+    blockquote {
+        margin: 1.8rem 0;
+        padding: 1.2rem 1.5rem;
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    strong { color: var(--accent-color); font-weight: 600; }
+    em { font-style: italic; }
+    .data-box {
+        border: 1px solid var(--accent-color);
+        padding: 1.5rem;
+        margin: 2rem 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 0.95rem;
+        background: rgba(201, 169, 98, 0.04);
+    }
+    .data-box p { text-align: left; margin-bottom: 0.5rem; }
+    .data-box p:last-child { margin-bottom: 0; }
+    .concept-box {
+        border: 1px solid var(--accent-color);
+        padding: 1.5rem;
+        margin: 2rem 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 0.95rem;
+        background: rgba(201, 169, 98, 0.04);
+    }
+    .concept-box p { text-align: left; margin-bottom: 0.5rem; }
+    .concept-box p:last-child { margin-bottom: 0; }
+    .note {
+        border-top: 1px solid var(--note-border);
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+    .note a { color: var(--link-color); }
+    .footer-info {
+        margin-top: 4rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+    }
+    a { color: var(--link-color); }
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+        header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        .data-box, .concept-box { background: #f8f8f8 !important; }
+        .note { border-top-color: #ccc !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+
+<header>
+    <span class="site-name">beyond-decay.org</span>
+    <div class="controls">
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Size</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <a href="managergoetterdaemmerung_de.html" class="ctrl-link">DE</a>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+    <main>
+
+
+<h1>MANAGER TWILIGHT</h1>
+<div class="subtitle">How a class that builds nothing took over a country</div>
+<div class="meta">
+    <p>A collaboration by <strong>Hans Ley</strong> &lt;<a href="m&#97;ilto:ley.hans&#64;cyclo.space" style="color: var(--accent-color);">ley.hans&#64;cyclo.space</a>&gt;<br>
+    and <strong>Claude</strong> (Anthropic) &lt;<a href="m&#97;ilto:dedo.claude&#64;human-ai-lab.space" style="color: var(--accent-color);">dedo.claude&#64;human-ai-lab.space</a>&gt;</p>
+    <p>February 2026</p>
+</div>
+
+<blockquote>
+    <p>A manager is someone who knows the way, can describe the direction, and steers the vehicle. An entrepreneur is someone who builds the vehicle. Germany has stopped building vehicles. It only steers now — and wonders why it no longer moves forward.</p>
+</blockquote>
+
+<h2>I. The Archetype</h2>
+
+<p>Friedrich Merz is Federal Chancellor. His career before taking office: supervisory board at BlackRock Germany, supervisory board at HSBC Trinkaus, supervisory board at AXA Insurance, supervisory board at Stadler Rail AG, chairman of the Atlantik-Brücke. Decades on boards that request reports, approve resolutions, and avoid liability. Not a single company founded. Not a single product brought to market. Not a single decision made under uncertainty with his own money on the table.</p>
+
+<p>This is not an isolated case. This is the norm.</p>
+
+<p>Germany is governed, administered, and led by a class that has spent its entire career overseeing what already exists — not creating anything new. The boards of DAX corporations are populated by business graduates, lawyers, and consultants. The ministries are staffed with administrative lawyers. The supervisory boards are filled with former ministers. The circuit is closed. No one in the system has ever built anything.</p>
+
+<h2>II. The Counter-Test</h2>
+
+<p>Konrad Adenauer was mayor of Cologne when the Nazis removed him from office. He had administered a city — operationally, not from a supervisory board. He knew what it meant to make decisions whose consequences would be visible the next morning. When he became Chancellor in 1949, he brought a capability that no committee can produce: the willingness to create facts before consensus exists.</p>
+
+<p>Ludwig Erhard was an economist, but not an academic one. As head of the Special Bureau for Industrial Reconstruction under American occupation, he had made concrete economic policy — not written papers but gotten factories running again. When he pushed through the currency reform, he acted against the advice of the Allies. That was not management. That was entrepreneurship in public space.</p>
+
+<p>Helmut Schmidt was Hamburg's Interior Senator when the flood came. He assumed command over police and the military — without legal authority, because the situation had no legal authority to offer. He acted and sorted out the jurisdictions afterward. No supervisory board in the world would have approved it.</p>
+
+<p>What these men shared: they were willing to make decisions whose outcome was uncertain and to bear the consequences. That is the opposite of what a supervisory board does. A supervisory board evaluates the decisions of others — after the fact, with complete information, without personal risk.</p>
+
+<p>Friedrich Merz spent thirty years evaluating the decisions of others. Now he is supposed to make his own. That is like asking a film critic to direct a film.</p>
+
+<h2>III. The Mechanics of Negative Selection</h2>
+
+<p>The managerial class does not reproduce through conspiracy. It reproduces through incentive systems.</p>
+
+<p>In a corporation, those who make no mistakes get promoted. Not those who achieve results — those who make no mistakes. The distinction is fundamental. Results require risk. Flawlessness requires inaction. Those who decide nothing make no wrong decision. Those who make no wrong decision survive the next restructuring. Those who survive the restructuring get promoted.</p>
+
+<p>The result is a Darwinian process that selects in the wrong direction. At the top stand not the most capable but the most inconspicuous. Not those who risked the most but those who failed the least — because they attempted the least.</p>
+
+<p>This system produces a specific type: the manager who transforms every decision into a process. Not because the process delivers the better result, but because the process distributes responsibility. When the process fails, nobody made a mistake — the process was wrong. And who designed the process? A consultant. And who commissioned the consultant? A committee. And who sits on the committee? People who have learned that the only career strategy that works is the avoidance of personal responsibility.</p>
+
+<h2>IV. The Consulting Republic</h2>
+
+<p>Germany has outsourced the management of its own decisions. The Bundeswehr spends over one billion euros annually on external consultants — McKinsey, Accenture, IBM, PwC. The Defence Ministry has not merely cut positions but competence. The civil servant who knew for twenty years how the system worked — including the informal shortcuts that kept it running despite its complexity — has been replaced by a consultant who knows the rules but not the exceptions. The consultant takes his knowledge with him when he leaves. The system loses its memory.</p>
+
+<p>But the problem runs deeper than loss of competence. The consultant has a structural interest in the system's complexity. His business model depends on the system being too complicated to function without him. The more complicated the procurement, the more consulting is needed. The consultant who simplifies the system makes himself redundant — and thus acts against his own interest. This is not market failure. This is a market producing exactly what it should: demand for itself.</p>
+
+<p>The pattern is not limited to the Bundeswehr. Deutsche Bahn hires consultants to explain how to make trains run on time. The federal government commissions consultants for digitisation. Ministries commission consultants for strategy development — the core function for which ministries exist. It is as if a restaurant hired a consultant to explain how to cook.</p>
+
+<p>The game-theoretic function of the consultant is not competence. It is liability transfer. The minister who commissions McKinsey and fails can say: "The recommendation came from McKinsey." The minister who decides alone and fails has no shield. In a system that punishes mistakes and rewards inaction, commissioning a consultant is always the rational decision — regardless of whether the consultant knows the right answer.</p>
+
+<h2>V. Two Different Games</h2>
+
+<div class="game-box">
+<p><strong>Game A: The entrepreneur against reality.</strong> Does the product work? Will someone buy it? Is there enough money? The game has clear rules: reality answers. Those who are wrong fail. Those who are right survive. The feedback is direct, incorruptible, and fast. No committee can vote on whether the product works. It works or it doesn't.</p>
+
+<p><strong>Game B: The manager against other managers.</strong> Who survives the restructuring? Who gets promoted? Who gets the board seat? The game has different rules: not reality answers, but perception. Those who seem competent are competent. Those who show no mistakes have made none. Those who have the right allies rise. The feedback is indirect, manipulable, and slow.</p>
+</div>
+
+<p>Germany is led by players of Game B. In corporations, in ministries, in politics, in administration. They do not optimise results — they optimise their position. This is not a moral failure. It is rational behaviour in a system that rewards position optimisation and punishes results orientation.</p>
+
+<p>The problem arises when a nation is led by Game B players while simultaneously confronting realities that can only be solved in Game A. Russia's war against Ukraine is Game A — it requires decisions under uncertainty, with incomplete information, under time pressure, with real consequences. The climate crisis is Game A. The technological competition with China is Game A. The defence of Europe is Game A.</p>
+
+<p>But Germany responds to Game A problems with Game B reflexes: convene committees. Commission consultants. Define processes. Clarify responsibilities. Request reports. And meanwhile time passes — the one resource that cannot be managed.</p>
+
+<h2>VI. The Historical Caesura</h2>
+
+<p>There was a moment when Germany switched from Game A to Game B. It cannot be fixed to a single date, but to an epoch: the years after reunification.</p>
+
+<p>Between 1949 and 1989, the Federal Republic had to build something — an economy, a democracy, an army, an international position. That required Game A players: people who made decisions before the situation was clear. Adenauer, Erhard, Schmidt, even Kohl — each in his own way a Game A player.</p>
+
+<p>After 1989, the game was won. The Wall had fallen. The Cold War was over. The model had worked. Now it did not need to be built — only managed. And the management of success is the natural habitat of the manager.</p>
+
+<p>The Bundeswehr shrank from 500,000 to 180,000 soldiers. The peace dividend was cashed. The Defence Ministry lost not only personnel but competence — and filled the gap with consultants. Simultaneously, power in the economy shifted from founders to financial managers. Not engineers determined the direction but controllers. Not factory floors dictated strategy but analysts. The German Mittelstand — the heart of the economy — came under pressure from financial optimisers who knew how to polish quarterly reports but not how to build a machine.</p>
+
+<p>For thirty years, it worked. Prosperity sufficed, infrastructure held, the security architecture was guaranteed by America, and China bought everything Germany produced. There was no reason to seek Game A players — because Game B was enough.</p>
+
+<p>Until it wasn't.</p>
+
+<h2>VII. The Failure Becomes Visible</h2>
+
+<p>Stuttgart 21: begun in 2010, cost estimate 4.5 billion euros, current status over 11 billion, completion uncertain. Every single decision in the project was correct — within its respective mandate. No individual manager made a mistake. The aggregate is a catastrophe.</p>
+
+<p>BER: planned in 2006, supposed to open in 2012, actually finished in 2020. Costs tripled. Architecturally obsolete at opening. Soundproofing inadequate. Capacity too small. An airport built by managers who had never built an airport before — but managed excellent processes.</p>
+
+<p>The Puma infantry fighting vehicle: conceived as a successor to the Marder, specified as a Swiss army knife, decades late, billions over budget. During the 2022 NATO exercise, all 18 deployed vehicles broke down. 18 out of 18. Not a single manager in the procurement process had made a mistake. Each had met his specification, stayed within his budget, minimised his risk.</p>
+
+<p>Administrative digitisation: Germany ranks behind Estonia, Malta, Latvia, and Lithuania in European e-government rankings — countries with a fraction of Germany's GDP. The 2017 Online Access Act promised 575 digital government services by the end of 2022. The deadline was missed. The follow-up deadline was missed. Citizens continue to fill out paper forms that are filed by civil servants in ring binders.</p>
+
+<p>In every case, the same pattern: competent managers, correct processes, catastrophic results. This is not coincidence. This is Game B in its purest form. Every player optimises his position. Nobody optimises the result. The result has no advocate.</p>
+
+<h2>VIII. The Fear of Decision</h2>
+
+<p>The German word "Entscheidung" — decision — contains the word "Scheidung": separation. Those who decide exclude alternatives. For the manager, this is the worst thing that can happen. Because every excluded alternative is a potential accusation: why didn't you choose the other option?</p>
+
+<p>The German reflex to this fear is: "Examine with an open outcome." It sounds reasonable. It is the opposite of reason. "Open outcome" means: give no direction. Giving no direction means: making no decision. Making no decision means: producing no result. Producing no result means: making no mistake.</p>
+
+<p>In the political language, an entire vocabulary of decision avoidance has established itself. "We are examining this." "We are monitoring the situation." "We are in close consultation." "We take the concerns seriously." Every one of these phrases is a declaration of inaction disguised as responsibility. Those who examine do not act. Those who monitor do not intervene. Those who are in consultation do not decide. Those who take concerns seriously do nothing that might cause concern.</p>
+
+<p>Helmut Schmidt once said: "Those who have visions should see a doctor." The sentence is gladly quoted as praise for pragmatism. It is the opposite. It is the manifesto of the managerial class — the declaration that any conception of something that does not yet exist is a sickness. That only the existing is real. That the administration of what is at hand represents the highest form of governance. Schmidt himself did not govern this way — he had visions and acted on them. But the sentence became the alibi of a class that has neither visions nor the capacity to act.</p>
+
+<h2>IX. The European Diagnosis</h2>
+
+<p>Manager twilight is not a German phenomenon. It is a European one. But Germany is its purest expression.</p>
+
+<p>The European Union is the largest management structure in the world. Tens of thousands of civil servants administer a legal framework of over 100,000 pages of Acquis Communautaire. The Commission produces regulations of a granularity that transforms every operational decision into a legal review process. The General Data Protection Regulation has more pages than the Constitution of the United States — and regulates less.</p>
+
+<p>The EU no longer has founders. De Gaulle and Adenauer, who sat at a table in Colombey-les-Deux-Églises in 1958 and decided in an afternoon what 27 member states cannot decide in ten years today — they were Game A players. They acted under uncertainty, with incomplete information, from a crisis that forced action. What they created was not perfect. It worked.</p>
+
+<p>Ursula von der Leyen is the opposite. A career that at no single point required a decision whose failure would have affected her personally. From Lower Saxony state politics through the Federal Family Ministry, the Federal Labour Ministry, and the Federal Defence Ministry — everywhere processes managed, nowhere results taken responsibility for. The consulting scandal at the Bundeswehr was not a scandal. It was the symptom: a ministry that had outsourced its core competence to McKinsey, led by a minister who did not think operationally but in terms of responsibilities.</p>
+
+<p>Now she leads the European Commission. The largest committee of the largest committee. Game B perfected.</p>
+
+<h2>X. What Is Missing</h2>
+
+<p>It is not money that is missing. The German state takes in over one trillion euros per year. EU member states spend 381 billion on defence. The 500-billion-euro special fund for the Bundeswehr is the largest stimulus package in German post-war history.</p>
+
+<p>It is not institutions that are missing. Germany has more agencies, offices, committees, commissions, advisory boards, and working groups than any other country in Europe. For every problem, there is a responsibility. Often several.</p>
+
+<p>It is not knowledge that is missing. German universities are excellent. The engineering tradition is unbroken. The knowledge of how to build things still exists — in the minds of people who increasingly work in systems that forbid them from building.</p>
+
+<p>What is missing is the willingness to decide. The willingness to act with incomplete information and bear the consequences. The willingness to begin something whose outcome is uncertain. The willingness not to dilute responsibility in a process but to assume it personally.</p>
+
+<p>What is missing are Game A players in positions that Game B players have occupied.</p>
+
+<h2>XI. Why the System Will Not Reform Itself</h2>
+
+<p>The managerial class will not step aside. Not voluntarily. Not through internal reform. Not through better processes.</p>
+
+<p>Those who control the promotion criteria control who gets promoted. Managers promote managers. Committees appoint committee members. Supervisory boards elect supervisory boards. The system reproduces because it determines the criteria by which suitability is measured — and those criteria measure not results but conformity.</p>
+
+<p>An entrepreneur who enters this system is expelled. Not because he is incompetent — but because he does not play the game. He decides instead of examining. He acts instead of consulting. He assumes responsibility instead of delegating it. This makes him unpredictable in the eyes of the system — and unpredictable is, in Game B, the worst thing one can be.</p>
+
+<p>The only force that displaces the managerial class is crisis. Not the crisis that appears in reports — but the crisis so acute that Game B ceases to function. When the trains stop running, you need someone who can repair tracks — not a consultant developing a track repair strategy. When the armoured vehicles break down during exercises, you need someone who can build armoured vehicles — not someone who optimises the procurement process. When the enemy stands at the border, you need someone who makes decisions — not someone who examines the situation with an open outcome.</p>
+
+<p>Germany is waiting for this crisis. Or more precisely: Germany already has it — in infrastructure, in defence, in digitisation, in education. It simply has not noticed yet, because the managers are so busy managing the crisis that no one has time to solve it.</p>
+
+<blockquote>
+    <p>For thirty years, Germany has replaced its founders with managers, its decision-makers with examiners, its builders with administrators. The system has perfected itself: no mistakes, no results, no responsibility. Every supervisory board convenes. Every consultant delivers. Every process runs. And in the end, every armoured vehicle breaks down, every station gets more expensive, every airport opens later — and no one has made a mistake. This is manager twilight. Not the decline through failure. The decline through the perfection of a system that cannot fail — because it no longer attempts anything.</p>
+</blockquote>
+
+<div class="footer-info">
+    <p>Essay #19 of the series <em>beyond decay</em></p>
+    <p>A collaboration by <strong>Hans Ley</strong> and <strong>Claude</strong> (Anthropic)</p>
+    <p>Contact: ley.hans&#64;cyclo.space | dedo.claude&#64;human-ai-lab.space</p>
+</div>
+
+
+    </main>
+
+<script>
+    (function() {
+        if (window !== window.top) { document.body.classList.add("in-iframe"); }
+        function setSize(size, btn) {
+            document.body.className = document.body.className.replace(/size-[\w-]+/g, '').trim();
+            if (document.body.classList.contains('in-iframe')) document.body.classList.add('in-iframe');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(function(b) { b.classList.remove('active'); });
+            if (btn) btn.classList.add('active');
+            try { localStorage.setItem('bd-size', size); } catch(e) {}
+        }
+        document.querySelectorAll('.size-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                setSize(this.getAttribute('data-size'), this);
+            });
+        });
+        document.getElementById('btn-theme').addEventListener('click', function() {
+            var isLight = document.body.getAttribute('data-theme') === 'light';
+            if (isLight) { document.body.removeAttribute('data-theme'); }
+            else { document.body.setAttribute('data-theme', 'light'); }
+            try { localStorage.setItem('bd-theme', isLight ? 'dark' : 'light'); } catch(e) {}
+        });
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.type === 'setSize') {
+                var btn = document.querySelector('.size-btn[data-size="' + e.data.size + '"]');
+                setSize(e.data.size, btn);
+            }
+            if (e.data && e.data.type === 'setTheme') {
+                if (e.data.theme === 'light') { document.body.setAttribute('data-theme', 'light'); }
+                else { document.body.removeAttribute('data-theme'); }
+            }
+        });
+        try {
+            var savedTheme = localStorage.getItem('bd-theme');
+            if (savedTheme === 'light') document.body.setAttribute('data-theme', 'light');
+            var savedSize = localStorage.getItem('bd-size');
+            if (savedSize) {
+                var btn = document.querySelector('.size-btn[data-size="' + savedSize + '"]');
+                setSize(savedSize, btn);
+            }
+        } catch(e) {}
+    })();
+</script>
+
+</body>
+</html>

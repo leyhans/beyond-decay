@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Das Kaskaden-Gleichgewicht | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+    }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'IBM Plex Mono', monospace;
+        transition: background-color 0.2s;
+    }
+    .controls button:hover { background-color: rgba(201, 169, 98, 0.15); }
+    .controls button.active { background-color: var(--accent-color); color: var(--bg-color); }
+    main {
+        max-width: 52rem;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem 2rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 0.3rem;
+        color: var(--accent-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 300;
+        font-size: 1.25rem;
+        color: var(--meta-color);
+        margin-bottom: 2rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--note-border);
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 1.4rem;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        color: var(--accent-color);
+    }
+    p { margin-bottom: 1rem; text-align: justify; hyphens: auto; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1.2rem 1.5rem;
+        margin: 2rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .game-box {
+        border: 1px solid var(--accent-color);
+        padding: 1.5rem;
+        margin: 2rem 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 0.95rem;
+        background: rgba(201, 169, 98, 0.04);
+    }
+    .game-box p { text-align: left; }
+    .game-box strong { color: var(--accent-color); }
+    a { color: var(--link-color); }
+    .footer-info {
+        margin-top: 4rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+    }
+    @media print {
+        body { background: white; color: black; }
+        header, .controls { display: none; }
+        main { padding: 1cm; max-width: 100%; }
+        blockquote { background: #f0f0f0; border-left-color: #999; }
+        .game-box { background: #f8f8f8; }
+        a { color: #333; }
+    }
+    @media (max-width: 600px) {
+        main { padding: 1.5rem 1rem 3rem 1rem; }
+        h1 { font-size: 1.6rem; }
+    }
+</style>
+</head>
+<body class="size-normal">
+<header>
+    <div class="site-name">beyond-decay.org</div>
+    <div class="controls">
+        <button onclick="setSize('small')">A−</button>
+        <button onclick="setSize('normal')" class="active">A</button>
+        <button onclick="setSize('large')">A+</button>
+        <button onclick="setSize('xlarge')">A++</button>
+        <button onclick="toggleTheme()">◐</button>
+    </div>
+</header>
+<main>
+
+<h1>DAS KASKADEN-GLEICHGEWICHT</h1>
+<div class="subtitle">Wenn jeder richtig entscheidet und das Ergebnis trotzdem falsch ist</div>
+<div class="meta">
+    <p>Eine Kollaboration von <strong>Hans Ley</strong> &lt;<a href="m&#97;ilto:ley.hans&#64;cyclo.space" style="color: var(--accent-color);">ley.hans&#64;cyclo.space</a>&gt;<br>
+    und <strong>Claude</strong> (Anthropic) &lt;<a href="m&#97;ilto:dedo.claude&#64;human-ai-lab.space" style="color: var(--accent-color);">dedo.claude&#64;human-ai-lab.space</a>&gt;</p>
+    <p>Februar 2026</p>
+</div>
+
+<blockquote>
+    <p>Das deutsche Beschaffungswesen ist nicht kaputt. Es funktioniert exakt so, wie es konstruiert ist: Jede Instanz prüft, genehmigt, absichert. Jede einzelne Entscheidung ist korrekt. Und am Ende steht ein Ergebnis, das niemand gewollt hat. Dafür gibt es in der klassischen Spieltheorie kein Modell. Hier ist eines.</p>
+</blockquote>
+
+<h2>I. Das Labyrinth</h2>
+
+<p>Ein Soldat braucht eine Funkanlage. Zwischen dem Moment, in dem der Bedarf erkannt wird, und dem Moment, in dem das Gerät geliefert wird, vergehen in Deutschland durchschnittlich 10 bis 15 Jahre. Bei komplexen Waffensystemen sind es 15 bis 25.</p>
+
+<p>Das ist keine Übertreibung und kein Einzelfall. Es ist das System. Das Customer Product Management (CPM) der Bundeswehr — das Regelwerk, das die Beschaffung steuert — umfasst Dutzende Phasen, Hunderte Entscheidungspunkte, Tausende Zuständigkeiten. Analysephase, Risikominimierung, Lösungsvorschlag, Realisierung, Nutzung. In jeder Phase: Prüfungen, Genehmigungen, Rückfragen, Nachbesserungen, erneute Prüfungen.</p>
+
+<p>85 Prozent der Zeit eines Bundesstraßenprojekts vergehen vor dem ersten Spatenstich. Bei Rüstungsprojekten ist das Verhältnis noch ungünstiger. Die Bundeswehr hat 2011 begonnen, den schweren Transporthubschrauber CH-53K zu beschaffen. 2026 ist der Vertrag noch nicht unterschrieben. Fünfzehn Jahre — und das Gerät fliegt noch nicht.</p>
+
+<p>Die Standarderklärung lautet: Bürokratie. Die richtige Erklärung ist spieltheoretisch.</p>
+
+<h2>II. Die Struktur</h2>
+
+<div class="game-box">
+<p><strong>Spieler:</strong> Eine Kette von Institutionen I₁, I₂, I₃, ... Iₙ, die sequenziell entscheiden. Jede Institution hat ein eigenes Mandat, eigene Anreize, eigene Risiken.</p>
+<p><strong>Spielzug:</strong> Jede Institution erhält den Output der vorherigen als Input und trifft eine Entscheidung: genehmigen, modifizieren, zurückverweisen oder blockieren.</p>
+<p><strong>Anreize:</strong> Jede Institution wird bestraft, wenn sie einen Fehler durchlässt — aber nicht, wenn sie das Gesamtergebnis verzögert. Kein Spieler wird dafür belohnt, dass das Endprodukt schnell beim Nutzer ankommt.</p>
+<p><strong>Information:</strong> Kein Spieler überblickt die gesamte Kette. Jeder sieht nur seinen Schritt und den unmittelbar vorhergehenden.</p>
+<p><strong>Das Ergebnis:</strong> Jeder Spieler handelt rational. Jede einzelne Entscheidung ist korrekt. Das Gesamtergebnis ist irrational.</p>
+</div>
+
+<p>Das ist kein Koordinationsspiel im klassischen Sinne. In einem Koordinationsspiel entscheiden Spieler gleichzeitig und scheitern an der Abstimmung — wie zwei Personen, die einander auf der Straße ausweichen wollen und denselben Weg wählen. Im Kaskaden-Gleichgewicht entscheiden die Spieler nacheinander. Und genau das ist das Problem.</p>
+
+<p>Es ist auch kein sequenzielles Spiel im klassischen Sinne. In einem Schachspiel oder Stackelberg-Spiel sieht der zweite Spieler die vollständige Strategie des ersten. Im Kaskaden-Gleichgewicht sieht jeder Spieler nur das Zwischenergebnis des Vorgängers — nicht die Kette der Entscheidungen, die dazu geführt haben, und nicht die Konsequenzen für den Nachfolger.</p>
+
+<p>Und es ist keine Informationskaskade im Sinne von Banerjee und Bikhchandani, wo Akteure ihre private Information zugunsten des beobachteten Verhaltens anderer aufgeben. Hier gibt es keine privaten Informationen, die ignoriert werden. Hier handelt jeder auf Grundlage seiner eigenen, zutreffenden Information — und erzeugt trotzdem ein falsches Ergebnis.</p>
+
+<p>Das Kaskaden-Gleichgewicht beschreibt etwas Neues: <em>emergente Irrationalität aus sequenzieller Rationalität</em>.</p>
+
+<h2>III. Die Mechanik der Absicherung</h2>
+
+<p>Der Schlüssel zum Kaskaden-Gleichgewicht liegt in der Anreizstruktur jedes einzelnen Glieds der Kette.</p>
+
+<p>Nehmen wir den Sachbearbeiter im Bundesamt für Ausrüstung, Informationstechnik und Nutzung der Bundeswehr (BAAINBw). Sein Mandat: sicherstellen, dass die technischen Anforderungen erfüllt sind. Seine Karriere hängt davon ab, dass er keinen Fehler durchlässt. Sein Risiko bei Verzögerung: null. Sein Risiko bei einem Fehler: Untersuchungsausschuss, Medien, Karriereende.</p>
+
+<p>Die rationale Strategie ist eindeutig: Im Zweifel zurückverweisen. Noch eine Prüfschleife anfordern. Eine zusätzliche Stellungnahme einholen. Das kostet nichts — jedenfalls nichts, das dem Sachbearbeiter zugerechnet wird. Die Verzögerung tragen andere: der Soldat, der auf das Gerät wartet. Die Truppe, die mit veraltetem Material operiert. Der Steuerzahler, der für die Inflationskosten aufkommt.</p>
+
+<p>Jetzt multiplizieren Sie diese rationale Absicherungsstrategie mit der Anzahl der Instanzen in der Kette. Bedarfserkennung im Heer. Planung im Planungsamt. Technische Prüfung im BAAINBw. Haushaltsfreigabe im Bundesministerium der Verteidigung. Vergaberecht durch die Vergabestelle. Parlamentarische Kontrolle durch den Haushaltsausschuss. Rechnungsprüfung durch den Bundesrechnungshof. Einsprüche durch unterlegene Bieter vor den Vergabekammern.</p>
+
+<p>Jedes einzelne Glied fügt eine Sicherheitsschleife hinzu. Jede Sicherheitsschleife ist für sich genommen sinnvoll. Die Summe der Sicherheitsschleifen ist ein System, das nichts mehr produziert außer Sicherheit — gegen alles, außer gegen Versagen durch Langsamkeit.</p>
+
+<h2>IV. Die 25-Millionen-Schwelle</h2>
+
+<p>Das deutsche Vergaberecht kennt eine Schwelle, die das Kaskaden-Gleichgewicht besonders sichtbar macht: Bei Aufträgen über 25 Millionen Euro muss der Haushaltsausschuss des Bundestages zustimmen. Diese parlamentarische Kontrolle ist demokratisch korrekt. Ein Parlament soll über große Ausgaben entscheiden.</p>
+
+<p>Aber die Schwelle erzeugt einen perversen Anreiz. Projektleiter lernen, Aufträge so zu strukturieren, dass sie unter 25 Millionen bleiben — nicht weil das technisch sinnvoll ist, sondern weil es die parlamentarische Schleife vermeidet. Ein Projekt, das als Ganzes 80 Millionen kosten würde und als Ganzes beschafft werden sollte, wird in vier Tranchen à 20 Millionen aufgeteilt. Jede Tranche muss separat geplant, ausgeschrieben und vergeben werden. Die Gesamtkosten steigen. Die Lieferzeit verlängert sich. Aber der Projektleiter hat seine Risiken minimiert.</p>
+
+<p>Die 25-Millionen-Schwelle ist ein Paradebeispiel für das Kaskaden-Gleichgewicht: Eine Regel, die für sich genommen sinnvoll ist (parlamentarische Kontrolle), erzeugt in Kombination mit den Anreizen der nachfolgenden Glieder (Risikovermeidung der Projektleiter) ein Ergebnis, das niemand gewollt hat (teurere, langsamere, fragmentierte Beschaffung).</p>
+
+<h2>V. Die Goldrandlösung</h2>
+
+<p>In der deutschen Rüstungsbeschaffung gibt es ein Phänomen, das Insider „Goldrandlösung" nennen: Die Neigung, jedes System so lange zu spezifizieren und zu optimieren, bis es technisch perfekt — und praktisch unerschwinglich ist.</p>
+
+<p>Spieltheoretisch ist die Goldrandlösung eine direkte Konsequenz des Kaskaden-Gleichgewichts. Warum? Weil jedes Glied in der Kette einen Anreiz hat, Anforderungen hinzuzufügen — und keines einen Anreiz hat, sie zu reduzieren.</p>
+
+<p>Der Soldat will das beste Gerät. Der Planer will alle Eventualitäten abdecken. Der Techniker will die neueste Technologie. Der Prüfer will sicherstellen, dass jede Anforderung erfüllt ist. Der Parlamentarier will garantieren, dass Steuergelder für das bestmögliche Produkt ausgegeben werden. Niemand in der Kette sagt: „Das ist gut genug." Weil „gut genug" ein Risiko ist — das Risiko, dass jemand fragt, warum man nicht die bessere Option gewählt hat.</p>
+
+<p>Das Ergebnis: Systeme, die in der Spezifikation 300 Seiten lang sind, 15 Jahre Entwicklung brauchen und am Ende das Dreifache des ursprünglichen Budgets kosten. Der Schützenpanzer Puma ist das Lehrbuchbeispiel: konzipiert als Nachfolger des Marder, spezifiziert als eierlegende Wollmilchsau, geliefert mit Jahrzehnten Verspätung und Milliarden Mehrkosten. Bei der NATO-Übung 2022 fielen alle 18 eingesetzten Puma aus. Technisch ambitioniert. Operativ ein Desaster.</p>
+
+<p>Die Ukraine zeigt den Kontrast: Systeme, die „gut genug" sind — Drohnen für wenige hundert Euro, modifizierte Zivilfahrzeuge, improvisierte Artillerielösungen — leisten im Feld mehr als die Goldrandlösungen, die in Koblenz noch in der Spezifikationsphase stecken.</p>
+
+<h2>VI. Die Berater-Republik</h2>
+
+<p>Nach dem Ende des Kalten Krieges schrumpfte die Bundeswehr von 500.000 auf 180.000 Soldaten. In der Verwaltung verschwanden nicht nur Stellen, sondern Expertise. Die Lücke wurde mit externen Beratern gefüllt — McKinsey, Accenture, IBM, PwC. Das Verteidigungsministerium gab zeitweise über eine Milliarde Euro jährlich für Beratungsleistungen aus.</p>
+
+<p>Im Kaskaden-Gleichgewicht verschärfen Berater das Problem auf zwei Wegen.</p>
+
+<p>Erstens: Berater haben keinen Anreiz, das System zu vereinfachen. Ihr Geschäftsmodell basiert auf der Komplexität des Systems. Je komplizierter die Beschaffung, desto mehr Beratung wird benötigt. Ein Berater, der das System so vereinfacht, dass er selbst überflüssig wird, handelt gegen sein eigenes Interesse. Im Kaskaden-Gleichgewicht ist der Berater nicht Teil der Lösung — er ist ein zusätzliches Glied in der Kette, das die Kaskade verlängert.</p>
+
+<p>Zweitens: Berater ersetzen institutionelles Wissen durch transaktionales Wissen. Ein Beamter, der 20 Jahre lang Beschaffungsprozesse gesteuert hat, kennt die informellen Abkürzungen, die das System trotz seiner Komplexität funktionsfähig halten. Ein Berater, der für 18 Monate kommt, kennt die Regeln — aber nicht die Ausnahmen. Und wenn er geht, nimmt er sein Wissen mit. Das System verliert Gedächtnis.</p>
+
+<p>Das Ergebnis: Ein Apparat, der sich selbst berät, ohne sich selbst zu verstehen.</p>
+
+<h2>VII. Die europäische Multiplikation</h2>
+
+<p>Was auf nationaler Ebene das Kaskaden-Gleichgewicht produziert, multipliziert sich auf europäischer Ebene exponentiell.</p>
+
+<p>27 Mitgliedstaaten mit 27 nationalen Beschaffungssystemen, 27 nationalen Rüstungsindustrien, 27 nationalen Sicherheitsinteressen. Das Europäische Parlament schätzt die jährlichen Effizienzverluste durch fragmentierte Beschaffung auf 18 bis 57 Milliarden Euro. Die EU-Kommission schlug 2025 mit der Readiness-2030-Initiative eine Zentralisierung vor. Der Europäische Rat lehnte ab — zugunsten intergouvernementaler Mechanismen, die genau die Fragmentierung perpetuieren, die 57 Milliarden Euro jährlich kostet.</p>
+
+<p>Das Kaskaden-Gleichgewicht erklärt, warum. Jeder Mitgliedstaat handelt rational: Frankreich schützt seine Rüstungsindustrie. Deutschland schützt seine Vergabeverfahren. Italien schützt seine Arbeitsplätze. Schweden bevorzugt NATO-Mechanismen gegenüber EU-Strukturen. Jede einzelne Position ist für den jeweiligen Staat rational. Die Summe ist ein Kontinent, der über 300 Milliarden Euro für Verteidigung ausgibt und trotzdem nicht verteidigungsfähig ist.</p>
+
+<p>Die europäische Kaskade hat ein zusätzliches Element, das die nationale nicht hat: die Vetoschleife. In intergouvernementalen Mechanismen kann jeder Staat blockieren. Das bedeutet: Die Kaskade hat nicht nur sequenzielle Verlängerung (jedes Glied fügt Zeit hinzu), sondern auch laterale Blockade (jedes Glied kann die gesamte Kette stoppen). Die Kombination aus beidem — sequenziell und lateral — macht europäische Rüstungskooperation zum vielleicht reinsten Beispiel eines Kaskaden-Gleichgewichts in der Gegenwart.</p>
+
+<h2>VIII. Warum Reform scheitert</h2>
+
+<p>Das Kaskaden-Gleichgewicht hat eine Eigenschaft, die es besonders resistent gegen Reform macht: <em>Es hat keinen Schuldigen.</em></p>
+
+<p>Im Gefangenendilemma kann man den Defekteur identifizieren. Im Chicken Game den Hasardeur. Im Abhängigkeitsspiel den Patron, der die Abhängigkeit vertieft. Im Phantomspieler-Problem die Generation, die auf Kosten der nächsten lebt.</p>
+
+<p>Im Kaskaden-Gleichgewicht gibt es keinen einzelnen Akteur, der falsch handelt. Der Sachbearbeiter im BAAINBw handelt korrekt. Der Parlamentarier im Haushaltsausschuss handelt demokratisch legitimiert. Der Rechnungsprüfer handelt gemäß seinem Mandat. Der Vergabejurist handelt rechtskonform. Niemand macht einen Fehler. Das System produziert trotzdem ein Ergebnis, das niemand gewollt hat.</p>
+
+<p>Weil es keinen Schuldigen gibt, gibt es auch keinen Angriffspunkt für Reform. Jeder Reformvorschlag wird von dem Glied blockiert, dessen Zuständigkeit er berührt. „Die parlamentarische Kontrolle abschaffen?" — Unmöglich, antidemokratisch. „Die technischen Prüfungen reduzieren?" — Unverantwortlich, Qualitätsrisiko. „Die Vergabeverfahren vereinfachen?" — Rechtswidrig, Korruptionsgefahr. „Die Berater abschaffen?" — Dann fehlt die Expertise.</p>
+
+<p>Jede Verteidigungslinie ist für sich genommen gültig. In der Summe sind sie der Grund, warum das System sich nicht reformieren kann: Weil jedes Glied einen rational begründeten Anspruch darauf hat, genau so zu funktionieren, wie es funktioniert.</p>
+
+<h2>IX. Die Ukraine als Gegenmodell</h2>
+
+<p>Was geschieht, wenn die Kaskade zusammenbricht?</p>
+
+<p>Die Ukraine hat seit Februar 2022 ein Beschaffungssystem, das dem deutschen in fast allem widerspricht. Entscheidungen fallen in Tagen statt Jahren. Spezifikationen werden von den Nutzern geschrieben, nicht von Planungsstäben. „Gut genug" ist nicht ein Risiko, sondern eine Doktrin. Zivilisten modifizieren Drohnen in Garagen. Softwareentwickler schreiben Artillerie-Apps auf Hackathons. Der Rückkopplungskreis zwischen Front und Beschaffung ist so kurz, dass Verbesserungen in Wochen statt Jahrzehnten umgesetzt werden.</p>
+
+<p>Das ist kein Modell für den Normalfall. Die Ukraine operiert unter existenziellem Druck, der Abkürzungen erzwingt, die in Friedenszeiten inakzeptabel wären — Korruptionsrisiken, Qualitätsmängel, fehlende Dokumentation.</p>
+
+<p>Aber die Ukraine zeigt, was spieltheoretisch passiert, wenn man die Kaskade auf eine einzige Frage reduziert: <em>Funktioniert es an der Front?</em> Wenn das Ergebnis der Maßstab ist statt der Prozess, kollabiert das Kaskaden-Gleichgewicht. Weil plötzlich ein Kriterium existiert, an dem jedes Glied der Kette gemessen wird — nicht an seiner eigenen Korrektheit, sondern am Gesamtergebnis.</p>
+
+<p>Deutschland hat dieses Kriterium nicht. In Friedenszeiten gibt es keine Front. Es gibt nur Prozesse. Und Prozesse optimieren sich selbst — nicht das Ergebnis.</p>
+
+<h2>X. Das Modell</h2>
+
+<div class="game-box">
+<p><strong>1. Sequenzielle Rationalität.</strong> Spieler entscheiden nacheinander, nicht gleichzeitig. Jeder Spieler handelt rational innerhalb seines Mandats.</p>
+<p><strong>2. Lokale Sichtbarkeit.</strong> Kein Spieler überblickt die gesamte Kette. Jeder sieht nur seinen Schritt und das unmittelbare Ergebnis des Vorgängers.</p>
+<p><strong>3. Asymmetrische Bestrafung.</strong> Fehler werden bestraft, Verzögerung nicht. Das erzeugt eine systematische Neigung zur Absicherung auf Kosten der Geschwindigkeit.</p>
+<p><strong>4. Kumulative Irrationalität.</strong> Das Gesamtergebnis ist irrational, obwohl jede einzelne Entscheidung rational war. Die Irrationalität entsteht nicht in einem Schritt, sondern als Emergenz der Kette.</p>
+<p><strong>5. Reformresistenz.</strong> Weil kein einzelner Akteur falsch handelt, gibt es keinen Angriffspunkt für Reform. Jedes Glied verteidigt seine Funktion mit legitimen Argumenten.</p>
+</div>
+
+<p>Das Kaskaden-Gleichgewicht ergänzt die beiden vorherigen Modelle. Das Abhängigkeitsspiel beschreibt einen Spieler, der seine Falle sieht und nicht hinausfindet. Der Phantomspieler beschreibt ein Spiel, in dem der Verlierer nicht am Tisch sitzt. Das Kaskaden-Gleichgewicht beschreibt ein Spiel, in dem es <em>gar keinen Verlierer gibt</em> — nur ein System, das verliert.</p>
+
+<p>Und genau das macht es zum vielleicht gefährlichsten der drei Spiele. Im Abhängigkeitsspiel gibt es wenigstens einen Akteur, der den Ausweg theoretisch wählen könnte. Im Phantomspieler-Problem gibt es wenigstens eine Generation, die das Problem erbt und reagieren kann. Im Kaskaden-Gleichgewicht gibt es niemanden, der das Problem besitzt. Es gehört allen — also niemandem.</p>
+
+<p>Die einzige Kraft, die ein Kaskaden-Gleichgewicht bricht, ist eine Krise, die so akut ist, dass sie die Anreizstruktur jedes einzelnen Glieds gleichzeitig verändert. Ein Krieg. Ein wirtschaftlicher Zusammenbruch. Ein Systemversagen, das so spektakulär ist, dass kein Glied in der Kette mehr sagen kann: „Mein Schritt war korrekt."</p>
+
+<p>Deutschland wartet darauf. Seit 30 Jahren.</p>
+
+<blockquote>
+    <p>10 bis 15 Jahre von der Bedarfserkennung bis zur Lieferung. 85 Prozent der Zeit vor dem ersten Spatenstich. Alle 18 Schützenpanzer Puma bei der NATO-Übung ausgefallen. 18 bis 57 Milliarden Euro jährliche Effizienzverluste durch fragmentierte Beschaffung. Und kein einziger Schuldiger — weil jeder richtig entschieden hat. Das ist kein Bürokratieversagen. Das ist ein Gleichgewicht. Es heißt: Jeder optimiert seinen Schritt. Niemand optimiert das Ergebnis.</p>
+</blockquote>
+
+<div class="footer-info">
+    <p>Essay #17 der Reihe <em>beyond decay</em></p>
+    <p>Eine Kollaboration von <strong>Hans Ley</strong> und <strong>Claude</strong> (Anthropic)</p>
+    <p>Kontakt: ley.hans&#64;cyclo.space | dedo.claude&#64;human-ai-lab.space</p>
+</div>
+
+</main>
+
+<script>
+function setSize(size) {
+    document.body.className = document.body.className.replace(/size-\w+/, 'size-' + size);
+    document.querySelectorAll('.controls button').forEach(function(b, i) {
+        b.classList.remove('active');
+    });
+    var sizes = ['small', 'normal', 'large', 'xlarge'];
+    var idx = sizes.indexOf(size);
+    if (idx >= 0) document.querySelectorAll('.controls button')[idx].classList.add('active');
+    if (window === window.top) localStorage.setItem('fontSize', size);
+}
+function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'light' ? '' : 'light';
+    if (next) document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    if (window === window.top) localStorage.setItem('theme', next || 'dark');
+}
+if (window !== window.top) {
+    document.body.classList.add('in-iframe');
+    window.addEventListener('message', function(e) {
+        if (e.data && e.data.type === 'setSize') setSize(e.data.size);
+        if (e.data && e.data.type === 'setTheme') {
+            if (e.data.theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+            else document.documentElement.removeAttribute('data-theme');
+        }
+    });
+} else {
+    var savedSize = localStorage.getItem('fontSize');
+    if (savedSize) setSize(savedSize);
+    var savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+}
+</script>
+</body>
+</html>

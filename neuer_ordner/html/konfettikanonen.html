@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die Konfettikanonen — Wie die Sturmgeschütze der Demokratie entschärft wurden</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --bg-tertiary: #1a1a1d;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+            --contrast-bg: #1e1e22;
+            --warning: #b43c3c;
+            --warning-dim: rgba(180, 60, 60, 0.1);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --bg-tertiary: #e8e8e4;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+            --contrast-bg: #e0e0dc;
+            --warning: #a04040;
+            --warning-dim: rgba(160, 64, 64, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        /* Controls Bar */
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .size-controls {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        
+        .size-controls span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .size-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        .theme-btn {
+            font-size: 1.1rem;
+            padding: 0.3rem 0.5rem;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 5rem 2rem 4rem;
+        }
+
+        /* Hero */
+        .hero {
+            margin-bottom: 3.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        
+        .essay-label {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            font-weight: 300;
+            line-height: 1.25;
+            margin-bottom: 1rem;
+        }
+
+        h1 strong {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .subtitle {
+            font-size: 1.15em;
+            font-weight: 300;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8em;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section h3 {
+            font-size: 1.1em;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+        }
+
+        .section p {
+            margin-bottom: 1.25rem;
+            font-weight: 300;
+        }
+
+        /* Quote Block */
+        .quote-block {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+        }
+
+        .quote-block p {
+            margin-bottom: 0.75rem;
+            font-style: italic;
+        }
+
+        .quote-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        .quote-block .attribution {
+            font-style: normal;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-top: 0.75rem;
+        }
+
+        /* Warning Block */
+        .warning-block {
+            background: var(--warning-dim);
+            border-left: 3px solid var(--warning);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+        }
+
+        .warning-block p {
+            margin-bottom: 0;
+            font-weight: 400;
+        }
+
+        /* Highlight Text */
+        .highlight-text {
+            color: var(--accent);
+            font-weight: 400;
+        }
+
+        /* List Block */
+        .list-block {
+            list-style: none;
+            margin: 1.5rem 0;
+            padding-left: 0;
+        }
+
+        .list-block li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .list-block li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .list-block li strong {
+            font-weight: 500;
+        }
+
+        /* Contrast Block */
+        .contrast-block {
+            background: var(--contrast-bg);
+            padding: 1.75rem;
+            margin: 1.75rem 0;
+            border-radius: 4px;
+        }
+
+        .contrast-block h4 {
+            font-size: 0.85em;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        /* Email Block */
+        .email-block {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--line);
+            padding: 1.5rem;
+            margin: 1.75rem 0;
+            font-size: 0.9em;
+            border-radius: 4px;
+        }
+
+        .email-block .email-header {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .email-block p {
+            margin-bottom: 0.75rem;
+            font-style: italic;
+        }
+
+        .email-block .email-footer {
+            margin-top: 1rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--line);
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            font-style: normal;
+        }
+
+        /* Final Quote */
+        .final-quote {
+            text-align: center;
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .final-quote p {
+            font-size: 1.3em;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .final-quote .attribution {
+            font-style: normal;
+            font-size: 0.75em;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+        }
+
+        /* Author Block */
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+        }
+
+        .author-block h3 {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75em;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+        }
+
+        .author-block p {
+            font-size: 0.95em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .author-block .date-line {
+            margin-top: 2rem;
+            text-align: center;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8em;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+        }
+
+        /* Series Info */
+        .series-info {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background: var(--accent-dim);
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .series-info p {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* Back Button */
+        .home-btn {
+            display: none;  /* Deaktiviert - wird in IFRAME nicht benötigt */
+        }
+
+        .home-btn:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .controls {
+                padding: 0.5rem 1rem;
+            }
+            
+            .controls-left {
+                font-size: 0.6rem;
+            }
+            
+            main {
+                padding: 4.5rem 1.25rem 3rem;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .home-btn {
+                bottom: 1rem;
+                right: 1rem;
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body class="size-medium">
+    <!-- Controls Bar -->
+    <div class="controls">
+        <div class="controls-left">gu18.eu</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Größe</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A+</button>
+                <button class="size-btn" onclick="setSize('large')">A++</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A+++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <article>
+            <div class="hero">
+                <span class="essay-label">Essay · Strukturelle Defizite</span>
+                <h1>Die <strong>Konfettikanonen</strong></h1>
+                <p class="subtitle">Wie die Sturmgeschütze der Demokratie entschärft wurden</p>
+            </div>
+
+            <div class="section">
+                <h2>Das Sturmgeschütz</h2>
+                <p>
+                    Rudolf Augstein, der Gründer des Spiegel, prägte in den 1960er 
+                    Jahren einen Begriff, der zum geflügelten Wort wurde: Die Medien 
+                    seien die <span class="highlight-text">„Sturmgeschütze der 
+                    Demokratie"</span>.
+                </p>
+                <p>
+                    Er meinte damit eine Presse, die der Macht unbequeme Fragen stellt. 
+                    Die nachbohrt. Die nicht lockerlässt. Die Skandale aufdeckt und 
+                    Verantwortliche zur Rechenschaft zieht. Medien als vierte Gewalt — 
+                    nicht im Dienst der Regierung, sondern als ihr Korrektiv.
+                </p>
+                <p>
+                    Das war die Idee. Aber Ideen unterliegen der Erosion.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Die Transformation</h2>
+                <p>
+                    Irgendwann in den letzten Jahrzehnten wurden die Sturmgeschütze 
+                    umgebaut. Nicht abgeschafft — das wäre zu auffällig gewesen. 
+                    Sondern transformiert.
+                </p>
+                <p>
+                    Von außen sehen sie noch genauso aus. Die Rohre sind poliert, die 
+                    Lafetten glänzen, die Bedienungsmannschaft trägt Uniform. Es wird 
+                    sogar regelmäßig gefeuert. Aber was aus den Rohren kommt, ist kein 
+                    Geschoss mehr.
+                </p>
+                <p>
+                    Es ist <span class="highlight-text">Konfetti</span>.
+                </p>
+                <p>
+                    Bunt. Laut. Festlich. Und völlig ungefährlich.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Der Zelebrant</h2>
+                <p>
+                    Ein exemplarisches Beispiel für diese Transformation ist 
+                    Gabor Steingart und sein Medienunternehmen „The Pioneer".
+                </p>
+                <p>
+                    Die Inszenierung ist beeindruckend: Zwei Schiffe auf der Spree, 
+                    im Herzen des Berliner Regierungsviertels. Ein „Patrouillenschiff 
+                    der Demokratie", wie Steingart es nennt. Werbefreier Journalismus, 
+                    finanziert durch zahlende „Pioneers". Prominente Gäste. Tägliche 
+                    Podcasts. Eine „Mission für demokratischen Journalismus".
+                </p>
+                <p>
+                    Und ein Lieblingszitat von Hannah Arendt:
+                </p>
+                <div class="quote-block">
+                    <p>„Wahrheit gibt es nur zu zweien."</p>
+                    <p class="attribution">— Hannah Arendt</p>
+                </div>
+                <p>
+                    Das klingt nach Dialog. Nach Austausch. Nach gemeinsamer 
+                    Wahrheitssuche. Die perfekte philosophische Grundierung für 
+                    ein partizipatives Medienmodell.
+                </p>
+                <p>
+                    Aber was passiert, wenn der Zweite tatsächlich spricht?
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Der Selbstversuch</h2>
+                <p>
+                    Ich wurde zahlender „Pioneer". Ich wollte Teil dieser Bewegung 
+                    sein. Ich glaubte an die Mission. Die Begrüßungsmail bestätigte 
+                    meine Hoffnungen:
+                </p>
+                <div class="email-block">
+                    <div class="email-header">Von: Gabor Steingart · Media Pioneer</div>
+                    <p>
+                        „Wir beide teilen bezüglich der Meinungsfreiheit die gleichen 
+                        Werte. Wir beide vertreten die Ansicht, dass es immer eine 
+                        Zweitmeinung braucht, um den demokratischen Diskurs zu führen."
+                    </p>
+                    <p>
+                        „Für Kritik und Anregungen unserer Pioneers sind wir jederzeit 
+                        offen. Bitte schicken Sie uns gerne Ihr Feedback."
+                    </p>
+                    <div class="email-footer">
+                        „Bleiben Sie mir gewogen. Es grüßt Sie auf das Herzlichste, 
+                        Ihr Gabor Steingart"
+                    </div>
+                </div>
+                <p>
+                    Also versuchte ich, Feedback zu geben. Zu verschiedenen Themen. 
+                    Über verschiedene Kanäle. Mehrfach.
+                </p>
+                <p>
+                    Das Ergebnis: <span class="highlight-text">Nichts.</span>
+                </p>
+                <p>
+                    Keine Antwort. Keine Reaktion. Kein Dialog. Die „Zweitmeinung" 
+                    blieb ungehört.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Der Ikarus-Test</h2>
+                <p>
+                    Dann fand ich einen konkreten Fehler. In einem Artikel mit dem 
+                    Titel „Elon Musk: Ikarus verglüht" verglich Steingart den 
+                    Tech-Milliardär mit der mythologischen Figur, die der Sonne zu 
+                    nahe kam.
+                </p>
+                <p>
+                    Das Problem: Steingart schrieb, <span class="highlight-text">König 
+                    Minos</span> sei der Vater von Ikarus gewesen und habe seinen 
+                    Sohn gewarnt, nicht zu hoch zu fliegen.
+                </p>
+                <p>
+                    Das ist falsch. Fundamental falsch.
+                </p>
+                <div class="contrast-block">
+                    <h4>Der Mythos</h4>
+                    <p>
+                        <strong>Dädalus</strong> war der Vater von Ikarus — der geniale 
+                        Erfinder und Baumeister, der die Flügel konstruierte und seinen 
+                        Sohn warnte.
+                    </p>
+                    <p>
+                        <strong>König Minos</strong> war derjenige, der Dädalus und 
+                        Ikarus auf Kreta gefangen hielt. Er ist der Tyrann, nicht der 
+                        fürsorgliche Vater.
+                    </p>
+                </div>
+                <p>
+                    Das ist kein Tippfehler. Das ist die Verwechslung der beiden 
+                    zentralen Figuren des Mythos — in einem Artikel, dessen gesamte 
+                    Pointe auf dieser Metapher aufbaut.
+                </p>
+                <p>
+                    Ich meldete den Fehler. Mehrfach. Über Wochen.
+                </p>
+                <p>
+                    Keine Reaktion. Keine Korrektur. Bei meiner letzten Überprüfung 
+                    stand der Fehler noch immer im Artikel.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Die Kündigung</h2>
+                <p>
+                    Ich kündigte mein Abonnement.
+                </p>
+                <p>
+                    Jetzt reagierte das System. Sofort. Automatisch. Effizient.
+                </p>
+                <p>
+                    Nicht mit einer Antwort auf meine inhaltlichen Einwände. Sondern 
+                    mit einer Flut von Sonderangeboten. Rabatte. Aktionen. Dringende 
+                    Einladungen, doch zu bleiben.
+                </p>
+                <p>
+                    Das System reagiert auf <span class="highlight-text">Geldfluss</span>, 
+                    nicht auf Inhalte.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Die Anatomie der Konfettikanone</h2>
+                <p>
+                    Was Steingart perfektioniert hat, ist nicht Journalismus. 
+                    Es ist die <span class="highlight-text">Ästhetik</span> des 
+                    Journalismus.
+                </p>
+                <ul class="list-block">
+                    <li><strong>Das Schiff</strong> — Symbol für Unabhängigkeit, 
+                    Mobilität, Freiheit. In Wirklichkeit wird es auch an Banken 
+                    verchartert – Eventlocation statt Redaktionsschiff.</li>
+                    <li><strong>Der Pathos</strong> — „Patrouillenschiff der 
+                    Demokratie", „Mission", „Bewegung". Große Worte, die Substanz 
+                    suggerieren.</li>
+                    <li><strong>Das Arendt-Zitat</strong> — Philosophische 
+                    Legitimation für einen Dialog, der nicht stattfindet.</li>
+                    <li><strong>Die „Pioneers"</strong> — Leser als Aktionäre, 
+                    als Bewegung, als Gemeinschaft. In Wirklichkeit: stummes Publikum.</li>
+                    <li><strong>Die Meinung</strong> — Billig zu produzieren, 
+                    reichlich vorhanden. Im Gegensatz zu Recherche, die teuer ist.</li>
+                </ul>
+                <p>
+                    Thomas Knüwer, selbst ehemaliger Handelsblatt-Journalist, hat 
+                    es „Behauptungsjournalismus" genannt: Meinungen, die sich als 
+                    Fakten tarnen. Quellen, die durch „manche sagen" ersetzt werden. 
+                    Zahlen, die so lange gesucht werden, bis sie die These stützen.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Die Branchenkritik</h2>
+                <p>
+                    Ich bin nicht der Einzige, der das bemerkt hat.
+                </p>
+                <p>
+                    Moritz Döbler von der Rheinischen Post hielt Steingarts 
+                    regelmäßige Attacken auf die „etablierten Medien" 
+                    für rein destruktiv — und erinnerte daran, dass 
+                    Steingart selbst drei Jahrzehnte lang bei Spiegel und 
+                    Handelsblatt in Lohn und Brot stand.
+                </p>
+                <p>
+                    Übermedien kritisierte das „Pathos, das Sinn ersetzt" und 
+                    analysierte ein Werbe-Video, in dem eine junge Frau 
+                    „schreit und gestikuliert", während im Hintergrund Martin 
+                    Luther King, der Papst und Angela Merkel eingeblendet werden.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Das Geschäftsmodell</h2>
+                <p>
+                    Die Logik ist einfach:
+                </p>
+                <ul class="list-block">
+                    <li><strong>Meinung produzieren</strong> — billig</li>
+                    <li><strong>Recherche betreiben</strong> — teuer</li>
+                    <li><strong>Dialog mit Lesern führen</strong> — aufwendig</li>
+                </ul>
+                <p>
+                    Also: Meinung im Industriemaßstab, verpackt in Demokratie-Pathos, 
+                    garniert mit prominenten Gästen auf dem Schiff. Einbahnstraße 
+                    mit Wasserblick.
+                </p>
+                <p>
+                    Die „Pioneers" dürfen klatschen und zahlen. Sie dürfen sich als 
+                    Teil einer Bewegung fühlen. Was sie nicht dürfen: den Dialog 
+                    einfordern, der ihnen versprochen wurde.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Der Zelebrant der Demokratie</h2>
+                <p>
+                    Steingart und sein Team sprechen ständig davon, die Demokratie 
+                    zu „zelebrieren". Das Wort ist verräterisch.
+                </p>
+                <p>
+                    <span class="highlight-text">Zelebrieren</span> — das ist, was 
+                    ein Priester tut. Er vollzieht das Ritual. Er hält die Monstranz 
+                    hoch. Er spricht die vorgeschriebenen Worte.
+                </p>
+                <p>
+                    Aber Demokratie ist kein Ritual. Sie ist ein Prozess. Sie lebt 
+                    vom Widerspruch, vom Streit, von der Korrektur. Von der 
+                    Bereitschaft, Fehler einzugestehen und zu korrigieren.
+                </p>
+                <p>
+                    Wer Demokratie nur zelebriert, hat sie bereits aufgegeben.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Die systemische Funktion</h2>
+                <p>
+                    Steingart ist nur ein Beispiel. Ein besonders sichtbares, weil 
+                    er die Inszenierung so weit getrieben hat wie kaum ein anderer. 
+                    Aber das Muster ist überall:
+                </p>
+                <p>
+                    Die Konfettikanone <span class="highlight-text">simuliert</span> 
+                    kritischen Journalismus. Sie macht Lärm. Sie sieht festlich aus. 
+                    Sie gibt den Bürgern das Gefühl, dass jemand aufpasst.
+                </p>
+                <p>
+                    Aber sie ist völlig ungefährlich für die Macht.
+                </p>
+                <p>
+                    Das Sturmgeschütz hingegen — der echte kritische Journalismus — 
+                    bohrt nach. Fordert Antworten. Korrigiert Fehler. Führt Dialog. 
+                    Macht sich unbequem.
+                </p>
+                <p>
+                    Das Sturmgeschütz ist teuer. Es ist aufwendig. Es macht Ärger.
+                </p>
+                <p>
+                    Die Konfettikanone ist billig. Sie ist bequem. Sie macht Quote.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Die Folgen</h2>
+                <p>
+                    Wenn die Bürger glauben, sie hätten kritische Medien — während 
+                    sie nur Konfetti bekommen — dann fehlt der Druck zur echten 
+                    Kontrolle. Die Illusion von Journalismus ersetzt den Journalismus.
+                </p>
+                <p>
+                    Das ist gefährlicher als offene Propaganda. Denn gegen Propaganda 
+                    kann man sich wehren. Man erkennt sie.
+                </p>
+                <p>
+                    Die Konfettikanone hingegen tarnt sich als das, was sie ersetzt 
+                    hat. Sie trägt die Uniform des Sturmgeschützes. Sie benutzt 
+                    seine Sprache. Sie beansprucht seine Legitimation.
+                </p>
+                <p>
+                    Und sie ist völlig <span class="highlight-text">leer</span>.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Der Beweis</h2>
+                <p>
+                    Als ich den Fehler bemerkte, habe ich einen Screenshot gemacht. 
+                    Hier ist er — dokumentiert für die Nachwelt:
+                </p>
+                <figure class="screenshot-evidence">
+                    <img src="pioneer-ikarus-screenshot.png" 
+                         alt="Screenshot des Pioneer-Artikels über Elon Musk mit dem Ikarus-Fehler: König Minos wird fälschlich als Vater und Flügelbauer genannt"
+                         style="max-width: 100%; border: 1px solid var(--line); border-radius: 4px;">
+                    <figcaption style="margin-top: 0.75rem; font-size: 0.85em; color: var(--text-secondary); font-style: italic;">
+                        Screenshot vom 26. Januar 2026 — Der Artikel behauptet, „König Minos" 
+                        habe seinem Sohn Ikarus die Flügel gebaut und ihn gewarnt. 
+                        Tatsächlich war es Dädalus, der geniale Erfinder. Minos war der Tyrann, 
+                        der beide gefangen hielt.
+                    </figcaption>
+                </figure>
+                <p style="margin-top: 1.5rem;">
+                    Der Screenshot zeigt: aufwendige KI-generierte Illustration, dramatische 
+                    Inszenierung — aber null Fact-Checking bei griechischer Grundschul-Mythologie.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Der Ikarus-Fehler als Metapher</h2>
+                <p>
+                    Es ist kein Zufall, dass ausgerechnet der Ikarus-Mythos falsch 
+                    erzählt wurde. Die Verwechslung von Dädalus und Minos ist 
+                    symptomatisch:
+                </p>
+                <p>
+                    <strong>Dädalus</strong> — der Erfinder, der Macher, der 
+                    Problemlöser — wird vergessen.
+                </p>
+                <p>
+                    <strong>Minos</strong> — der König, die Macht, die Autorität — 
+                    wird zum Vater erklärt.
+                </p>
+                <p>
+                    Das ist die Weltsicht der Konfettikanone: Die Macht ist der 
+                    natürliche Ursprung aller Dinge. Der Erfinder, der Kritiker, 
+                    der Unbequeme — er kommt in dieser Geschichte nicht vor.
+                </p>
+                <p>
+                    Oder wenn doch, dann nur als derjenige, der abstürzt.
+                </p>
+            </div>
+
+            <div class="final-quote">
+                <p>„Die gefährlichste Lüge ist die, die fast wahr ist."</p>
+                <p class="attribution">— Alte Weisheit</p>
+            </div>
+
+            <div class="author-block">
+                <h3>Über die Autoren</h3>
+                <p>
+                    <strong>Hans Ley</strong> (Jg. 1947) ist Erfinder und 
+                    Mechatronik-Ingenieur aus Nürnberg. Er war zahlender 
+                    „Pioneer" — bis er feststellte, dass der versprochene 
+                    Dialog eine Einbahnstraße ist.
+                </p>
+                <p>
+                    <strong>Claude</strong> (Anthropic) ist ein KI-System, mit dem 
+                    Hans Ley seit 2024 im META-CLAUDE Projekt zusammenarbeitet — 
+                    einer systematischen Erforschung der Mensch-KI-Kollaboration 
+                    in wissenschaftlichen und erfinderischen Kontexten.
+                </p>
+                <p class="date-line">— Januar 2026 —</p>
+            </div>
+
+            <div class="series-info">
+                <p>Dieses Essay ist Teil der Serie <strong>„Die Innovationswüste Deutschland"</strong></p>
+                <p style="font-size: 0.85em; margin-top: 0.5rem;">
+                    Das Material fließt in das Buch „Die Himmelsmechanik in der Werkzeugmaschine" ein.
+                </p>
+            </div>
+        </article>
+    </main>
+
+    <!-- Floating Back Button -->
+    <a href="/gu18-wegweiser.html" class="home-btn" title="Zurück zur Übersicht">←</a>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            localStorage.setItem('essay-font-size', size);
+        }
+        
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+            }
+        });
+    </script>
+</body>
+</html>

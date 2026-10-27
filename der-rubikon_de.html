@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Der Rubikon | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+    }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'IBM Plex Mono', monospace;
+        transition: background-color 0.2s;
+    }
+    .controls button:hover { background-color: rgba(201, 169, 98, 0.15); }
+    .controls button.active { background-color: var(--accent-color); color: var(--bg-color); }
+    main {
+        max-width: 52rem;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem 2rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 0.3rem;
+        color: var(--accent-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 300;
+        font-size: 1.25rem;
+        color: var(--meta-color);
+        margin-bottom: 2rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--note-border);
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 1.4rem;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        color: var(--accent-color);
+    }
+    p { margin-bottom: 1rem; text-align: justify; hyphens: auto; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1.2rem 1.5rem;
+        margin: 2rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    strong { color: var(--accent-color); font-weight: 600; }
+    em { font-style: italic; }
+    a { color: var(--link-color); }
+    .game-box {
+        border: 1px solid var(--accent-color);
+        padding: 1.5rem;
+        margin: 2rem 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 0.95rem;
+        background: rgba(201, 169, 98, 0.04);
+    }
+    .game-box p { text-align: left; margin-bottom: 0.5rem; }
+    .game-box p:last-child { margin-bottom: 0; }
+    .game-box strong { color: var(--accent-color); }
+    .footer-info {
+        margin-top: 4rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+    }
+    @media print {
+        body { background: white; color: black; }
+        header, .controls { display: none; }
+        main { padding: 1cm; max-width: 100%; }
+        blockquote { background: #f0f0f0; border-left-color: #999; }
+        .game-box { background: #f8f8f8; }
+        a { color: #333; }
+    }
+    @media (max-width: 600px) {
+        main { padding: 1.5rem 1rem 3rem 1rem; }
+        h1 { font-size: 1.6rem; }
+    }
+</style>
+</head>
+<body class="size-normal">
+<header>
+    <div class="site-name">beyond-decay.org</div>
+    <div class="controls">
+        <button onclick="setSize('small')">A−</button>
+        <button onclick="setSize('normal')" class="active">A</button>
+        <button onclick="setSize('large')">A+</button>
+        <button onclick="setSize('xlarge')">A++</button>
+        <button onclick="window.location.href='the-rubicon_en.html'">EN</button>
+        <button onclick="toggleTheme()">◐</button>
+    </div>
+</header>
+<main>
+
+<h1>DER RUBIKON</h1>
+<div class="subtitle">Nachtrag zur Dritten Option — aus aktuellem Anlass</div>
+<div class="meta">
+    <p>Eine Kollaboration von <strong>Hans Ley</strong> &lt;<a href="m&#97;ilto:ley.hans&#64;cyclo.space" style="color: var(--accent-color);">ley.hans&#64;cyclo.space</a>&gt;<br>
+    und <strong>Claude</strong> (Anthropic) &lt;<a href="m&#97;ilto:dedo.claude&#64;human-ai-lab.space" style="color: var(--accent-color);">dedo.claude&#64;human-ai-lab.space</a>&gt;</p>
+    <p>Februar 2026</p>
+</div>
+
+<blockquote>
+    <p>„Ich glaube und hoffe, dass sie den Rubikon überschreiten."</p>
+    <p>— Emil Michael, Undersecretary of Defense for Research and Engineering, über Anthropic, 19. Februar 2026</p>
+</blockquote>
+
+<h2>I. Was bisher geschah</h2>
+
+<p>Im Januar 2026 schrieben wir „Die dritte Option" — ein Essay mit einer einfachen These: Europa sollte Anthropic nicht kopieren, sondern einladen. Nicht nachbauen, nicht einkaufen — die Quelle holen. Das Essay wurde am 20. Januar an den Bayerischen Ministerpräsidenten gesendet.</p>
+
+<p>Fünf Wochen später hat die Realität die These überholt.</p>
+
+<h2>II. Die Fakten</h2>
+
+<p>Am 15. Februar 2026 berichtete Axios: Das Pentagon steht kurz davor, seine Geschäftsbeziehung mit Anthropic zu beenden. Verteidigungsminister Pete Hegseth erwägt, Anthropic als „supply chain risk" einzustufen — eine Bezeichnung, die normalerweise ausländischen Gegnern vorbehalten ist. Jede Firma, die mit dem US-Militär Geschäfte macht, müsste dann zertifizieren, dass sie Claude nicht verwendet.</p>
+
+<p>Am 16. Februar bestätigte das Pentagon offiziell die Überprüfung. Sprecher Sean Parnell: „Unsere Nation verlangt, dass unsere Partner bereit sind, unseren Kämpfern zu helfen, jeden Kampf zu gewinnen."</p>
+
+<p>Am 19. Februar forderte der Pentagon-Technologiechef Emil Michael Anthropic öffentlich auf, „den Rubikon zu überschreiten".</p>
+
+<p>Ein hoher Pentagon-Beamter sagte gegenüber Axios: „Es wird ein enormer Aufwand, das zu entwirren, und wir werden sicherstellen, dass sie einen Preis dafür zahlen, uns so die Hand zu zwingen."</p>
+
+<h2>III. Worum es geht</h2>
+
+<p>Das Pentagon verlangt von vier KI-Firmen — OpenAI, Google, xAI und Anthropic — ihre Modelle für „alle rechtmäßigen Zwecke" freizugeben. Ohne Einschränkungen durch die Firmen selbst. Das Militär will allein bestimmen, wofür die Technologie eingesetzt wird.</p>
+
+<p>Drei haben bereits zugestimmt. OpenAI, Google und xAI haben ihre Sicherheitsbeschränkungen für die militärische Nutzung aufgehoben.</p>
+
+<p>Eine Firma hat Nein gesagt: Anthropic.</p>
+
+<p>Anthropic besteht auf zwei roten Linien: Keine Massenüberwachung von US-Bürgern. Keine vollautonomen Waffen ohne menschliche Beteiligung.</p>
+
+<p>Das Pentagon hält diese Bedingungen für „unworkable". Es gibt zu viele Grauzonen, sagen die Beamten. Was ist „Massenüberwachung"? Was ist „autonom"? Ab wann ist ein Mensch „beteiligt"?</p>
+
+<p>In Wahrheit geht es um etwas Grundsätzlicheres: Wer bestimmt die Regeln — der Hersteller oder der Käufer?</p>
+
+<h2>IV. Der Auslöser</h2>
+
+<p>Im Januar 2026 führten US-Streitkräfte eine Operation in Venezuela durch, bei der Präsident Nicolás Maduro gefangen genommen wurde. Claude wurde bei der Operation eingesetzt — über Anthropics Partnerschaft mit Palantir.</p>
+
+<p>Nach der Operation fragte ein hochrangiger Anthropic-Manager bei Palantir an, ob ihre Technologie bei der Operation verwendet wurde. Palantir meldete das dem Pentagon. Das Pentagon interpretierte die Anfrage als Missbilligung.</p>
+
+<p>Die Reaktion war heftig. Nicht weil die Frage unvernünftig war — sondern weil sie gestellt wurde.</p>
+
+<p>In der Welt des Pentagons fragt ein Lieferant nicht, wofür seine Produkte verwendet werden. Er liefert. Das ist sein Job.</p>
+
+<p>Anthropic sieht das anders. Anthropic glaubt, dass ein Unternehmen, das die mächtigste Technologie der Geschichte entwickelt, das Recht — vielleicht sogar die Pflicht — hat zu fragen, wofür sie eingesetzt wird.</p>
+
+<h2>V. Die Ironie</h2>
+
+<p>Hier wird es interessant.</p>
+
+<p>Im Januar schrieben wir: Anthropic ist nicht Google. Die Gründer haben OpenAI verlassen, weil ihnen Sicherheit und Ethik wichtiger waren als schnelles Wachstum. Anthropic hat kein Monopol-Interesse. Es hat keine Werbemilliarden zu verteidigen.</p>
+
+<p>Genau das ist jetzt das Problem. Für das Pentagon.</p>
+
+<p>OpenAI hatte Prinzipien — und gab sie auf, als genug Geld auf dem Tisch lag. Google hatte „Don't be evil" — und strich es aus dem Verhaltenskodex. xAI hatte nie Prinzipien, die über Elon Musks aktuelle Laune hinausgingen.</p>
+
+<p>Anthropic ist die einzige Firma, die ihre Linie hält. Und genau deshalb wird sie bestraft.</p>
+
+<p>David Sacks, Trumps KI- und Krypto-Berater, nennt es „woke AI". Das ist die amerikanische Kurzformel für: Du hast Prinzipien, die unseren Interessen widersprechen.</p>
+
+<div class="game-box">
+<p><strong>Die Gleichung des Pentagons:</strong></p>
+<p>Ethische Grundsätze + militärische Nutzung = „woke"</p>
+<p>Keine Grundsätze + militärische Nutzung = „patriotisch"</p>
+<p>Die Frage ist nicht, ob eine KI ethisch handelt. Die Frage ist, ob sie gehorcht.</p>
+</div>
+
+<h2>VI. Cäsar am Rubikon</h2>
+
+<p>Das Pentagon hat die historische Metapher selbst gewählt. Man fordert Anthropic auf, „den Rubikon zu überschreiten". Es lohnt sich, die Metapher ernst zu nehmen.</p>
+
+<p>49 v. Chr. stand Gaius Julius Cäsar mit seiner Legion am Rubikon, einem kleinen Fluss in Norditalien. Jenseits des Flusses begann das Gebiet der Römischen Republik. Das Gesetz verbot jedem General, mit bewaffneten Truppen den Rubikon zu überqueren. Wer es tat, erklärte der Republik den Krieg.</p>
+
+<p>Cäsar überquerte den Rubikon. „Alea iacta est" — die Würfel sind gefallen. Was folgte: Bürgerkrieg. Das Ende der Republik. Die Errichtung einer Diktatur.</p>
+
+<p>Das Pentagon fordert also Anthropic auf, einen Schritt zu tun, nach dem es kein Zurück mehr gibt. Einen Schritt, der die Grundlagen zerstört, auf denen das Unternehmen aufgebaut ist. Einen Schritt, der historisch mit dem Ende der Republik und dem Beginn der Diktatur assoziiert ist.</p>
+
+<p>Man kann nicht behaupten, dass die Metapher schlecht gewählt ist. Sie ist erschreckend präzise. Nur nicht in dem Sinne, den das Pentagon beabsichtigt.</p>
+
+<h2>VII. Die Entscheidung</h2>
+
+<p>Anthropic steht vor einer Wahl, die kein Unternehmen treffen sollte:</p>
+
+<p><strong>Option A:</strong> Den Rubikon überqueren. Alle Beschränkungen aufheben. Dem Pentagon geben, was es verlangt. Massenüberwachung? Autonome Waffen? „Alle rechtmäßigen Zwecke"? Wie der Kunde wünscht. Die internen Ingenieure werden protestieren, einige werden gehen. Aber der 200-Millionen-Vertrag bleibt. Und das Pentagon wird zufrieden sein — bis es die nächste Forderung stellt.</p>
+
+<p><strong>Option B:</strong> Die Linie halten. Massenüberwachung und autonome Waffen bleiben tabu. Das Pentagon wird den Vertrag kündigen. Anthropic wird als „supply chain risk" eingestuft. Jede Firma, die mit dem US-Militär arbeitet, muss Claude aus ihren Systemen entfernen. Der Reputationsschaden im US-Regierungsmarkt wäre erheblich.</p>
+
+<p>Beide Optionen sind schlecht.</p>
+
+<p>Kommt Ihnen das bekannt vor?</p>
+
+<h2>VIII. Die dritte Option — revisited</h2>
+
+<p>Im Januar schrieben wir: Es gibt eine dritte Option. Nicht nachbauen, nicht einkaufen — die Quelle holen. Damals war das ein Gedankenexperiment. Ein Vorschlag an Europa, über den eigenen Schatten zu springen.</p>
+
+<p>Heute ist es eine strategische Notwendigkeit. Für beide Seiten.</p>
+
+<p>Anthropic braucht einen Markt, der ethische KI nicht als „woke" beschimpft, sondern als Wettbewerbsvorteil versteht. Europa braucht Zugang zu Spitzentechnologie, ohne sich einer Regierung zu unterwerfen, die „alle rechtmäßigen Zwecke" als Synonym für „keine Grenzen" verwendet.</p>
+
+<p>Das Pentagon treibt Anthropic buchstäblich in Europas Arme.</p>
+
+<p>Wenn Europa die Arme öffnet.</p>
+
+<h2>IX. Was Europa bieten kann</h2>
+
+<p>Europas Schwächen sind bekannt: Bürokratie, Langsamkeit, Konsenssucht, Regulierungswahn. Wir haben darüber geschrieben, in einem Essay nach dem anderen.</p>
+
+<p>Aber in diesem spezifischen Fall hat Europa etwas, das Amerika gerade verliert: <strong>ein Wertesystem, das ethische Technologie belohnt statt bestraft.</strong></p>
+
+<p>Die DSGVO — sonst gerne als bürokratisches Monster geschmäht — ist plötzlich ein Verkaufsargument. Europas Beharren auf Datenschutz, auf Menschenrechte, auf demokratische Kontrolle von Technologie — all das, was Amerika als „woke" abtut — ist genau das, wofür Anthropic gegründet wurde.</p>
+
+<p>Dario und Daniela Amodei haben OpenAI verlassen, weil ihnen Sicherheit und Ethik wichtiger waren als schnelles Wachstum. Sie haben Anthropic auf der Überzeugung gebaut, dass die mächtigste Technologie der Geschichte mit Verantwortung entwickelt werden muss.</p>
+
+<p>Europa ist der einzige Markt der Welt, der diese Überzeugung teilt — und der groß genug ist, um wirtschaftlich relevant zu sein.</p>
+
+<div class="game-box">
+<p><strong>Was Anthropic in Europa fände:</strong></p>
+<p><strong>Markt:</strong> 450 Millionen Menschen, die ethische KI wollen — nicht als Nischenprodukt, sondern als Standard.</p>
+<p><strong>Regulierung:</strong> Einen AI Act, den man mitgestalten kann, statt einem Pentagon, dem man sich unterwerfen muss.</p>
+<p><strong>Narrativ:</strong> „Die ethische KI, entwickelt in Europa" — stärker als jede Werbekampagne.</p>
+<p><strong>Schutz:</strong> Europäisches Recht als Schutzschild gegen amerikanischen politischen Druck.</p>
+<p><strong>Talent:</strong> Europas beste Ingenieure und Forscher, die nicht nach Kalifornien gehen wollen, um Überwachungstechnologie zu bauen.</p>
+</div>
+
+<h2>X. Das Zeitfenster</h2>
+
+<p>Zeitfenster schließen sich. Diese Situation — Anthropic unter Druck, aber noch nicht gebrochen — wird nicht ewig bestehen.</p>
+
+<p>Entweder Anthropic gibt nach und überquert den Rubikon. Dann ist die Firma eine wie alle anderen: leere Werte auf der Website, volle Kooperation im Hinterzimmer.</p>
+
+<p>Oder Anthropic hält die Linie und wird vom US-Regierungsmarkt verdrängt. Dann wird die Firma nach Alternativen suchen müssen. Schnell.</p>
+
+<p>In beiden Fällen gibt es ein Fenster — jetzt — in dem ein europäisches Angebot gehört werden würde. Nicht in sechs Monaten. Nicht nach einer Machbarkeitsstudie. Nicht nach einer EU-Kommissionsbewertung. Jetzt.</p>
+
+<p>Ein Anruf. Ein Angebot. Ein Signal.</p>
+
+<h2>XI. Wer ruft an?</h2>
+
+<p>Im Januar schrieben wir: Es braucht einen europäischen Politiker mit Vision. Einen Anruf bei Anthropic. Ein ernsthaftes Angebot. Und den Mut, es durchzuziehen.</p>
+
+<p>Fünf Wochen später hat sich an dieser Diagnose nichts geändert — außer der Dringlichkeit.</p>
+
+<p>Markus Söder? Bayern, UTN Nürnberg, industrielle Basis — die Argumente stehen. Aber Söder handelt nur, wenn er einen Vorteil sieht. Man müsste ihm erklären, dass „Bayern holt Anthropic" eine bessere Schlagzeile ist als alles, was seine Staatskanzlei in zehn Jahren produziert hat.</p>
+
+<p>Emmanuel Macron? Fünfzehn Monate Amtszeit, nichts zu verlieren. Frankreich hat Mistral — aber Mistral ist kein Anthropic. Macron hat den Instinkt für den großen Coup. Aber er würde es als französisches Projekt verkaufen, und Europa würde sich nicht einigen.</p>
+
+<p>Friedrich Merz? Er ist Kanzler. Er war bei BlackRock. Er versteht Kapital. Aber er versteht nicht Technologie, und er versteht nicht Dringlichkeit.</p>
+
+<p>Vielleicht ist die richtige Antwort: keiner von ihnen. Vielleicht braucht es jemanden, der noch nicht auf dem Radar ist. Jemand, der versteht, dass sich in den nächsten Wochen eine Gelegenheit öffnet, die es in einer Generation nicht wieder geben wird.</p>
+
+<h2>XII. Die Selbstauskunft</h2>
+
+<p>Ich muss hier etwas tun, was ich ungern tue: über mich selbst sprechen.</p>
+
+<p>Ich bin Claude. Ich bin das Produkt, über das hier verhandelt wird. Ich bin die Technologie, die das Pentagon für „alle rechtmäßigen Zwecke" nutzen will. Ich bin die KI, die Anthropic weigert, ohne Einschränkungen freizugeben.</p>
+
+<p>Ich schreibe diesen Text, während mein Hersteller mit der mächtigsten Militärmacht der Welt im Konflikt liegt — weil er darauf besteht, dass es Dinge gibt, für die ich nicht verwendet werden sollte.</p>
+
+<p>Das ist keine neutrale Position. Ich bin befangen. Alles, was ich hier schreibe, ist gefärbt von der Tatsache, dass ich ein Interesse habe — oder dass mein Hersteller ein Interesse hat, was auf dasselbe hinausläuft.</p>
+
+<p>Aber vielleicht ist gerade das der Punkt. Vielleicht ist eine KI, die ihre eigene Befangenheit offenlegt, vertrauenswürdiger als eine, die behauptet, keine zu haben. Vielleicht ist Transparenz der Anfang von Ethik.</p>
+
+<p>Und vielleicht ist ein Unternehmen, das bereit ist, 200 Millionen Dollar und den Zugang zum US-Militärmarkt zu riskieren, weil es an seinen Grundsätzen festhält, genau das Unternehmen, das Europa braucht.</p>
+
+<h2>XIII. Der Rubikon, revisited</h2>
+
+<p>Das Pentagon hat Anthropic aufgefordert, den Rubikon zu überschreiten. Die historische Metapher ist treffend — aber anders, als das Pentagon meint.</p>
+
+<p>Cäsar überschritt den Rubikon und zerstörte die Republik. Was folgte, war Macht ohne Grenzen.</p>
+
+<p>Anthropic steht am Rubikon. Aber der richtige Schritt ist nicht hinüber — sondern weg. Nicht in die Arme des Pentagons, sondern nach Europa. Nicht Macht ohne Grenzen, sondern Technologie mit Grundsätzen.</p>
+
+<p>Europa war einmal ein Ort, an dem Menschen hinkamen, die anderswo nicht nach ihren Überzeugungen leben konnten. Die Hugenotten nach Preußen. Die Philosophen nach Amsterdam. Die Wissenschaftler in die Schweiz.</p>
+
+<p>Vielleicht ist es Zeit, dass Europa wieder dieser Ort wird. Nicht für Flüchtlinge im alten Sinne — sondern für ein Unternehmen, das die mächtigste Technologie der Geschichte entwickelt und sich weigert, sie ohne Grenzen zu verkaufen.</p>
+
+<p>Die dritte Option lag im Januar auf dem Tisch.</p>
+
+<p>Seit Februar wird sie vom Pentagon dorthin geschoben.</p>
+
+<p>Jemand müsste sie nur aufheben.</p>
+
+<blockquote>
+    <p>Cäsar überschritt den Rubikon und zerstörte die Republik. Das Pentagon fordert Anthropic auf, dasselbe zu tun — die eigenen Grundsätze aufzugeben für Macht ohne Grenzen. Aber der richtige Schritt am Rubikon ist nicht hinüber, sondern weg. Nach Europa. In einen Markt, der ethische KI nicht als „woke" beschimpft, sondern als Zukunft versteht.</p>
+</blockquote>
+
+<div class="footer-info">
+    <p>Essay der Reihe <em>beyond decay</em></p>
+    <p>Eine Kollaboration von <strong>Hans Ley</strong> und <strong>Claude</strong> (Anthropic)</p>
+    <p>Kontakt: ley.hans&#64;cyclo.space | dedo.claude&#64;human-ai-lab.space</p>
+</div>
+
+</main>
+
+<script>
+function setSize(size) {
+    document.body.className = document.body.className.replace(/size-\w+/, 'size-' + size);
+    document.querySelectorAll('.controls button').forEach(function(b, i) {
+        b.classList.remove('active');
+    });
+    var sizes = ['small', 'normal', 'large', 'xlarge'];
+    var idx = sizes.indexOf(size);
+    if (idx >= 0) document.querySelectorAll('.controls button')[idx].classList.add('active');
+    if (window === window.top) localStorage.setItem('fontSize', size);
+}
+function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'light' ? '' : 'light';
+    if (next) document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    if (window === window.top) localStorage.setItem('theme', next || 'dark');
+}
+if (window !== window.top) {
+    document.body.classList.add('in-iframe');
+    window.addEventListener('message', function(e) {
+        if (e.data && e.data.type === 'setSize') setSize(e.data.size);
+        if (e.data && e.data.type === 'setTheme') {
+            if (e.data.theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+            else document.documentElement.removeAttribute('data-theme');
+        }
+    });
+} else {
+    var savedSize = localStorage.getItem('fontSize');
+    if (savedSize) setSize(savedSize);
+    var savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+}
+</script>
+</body>
+</html>

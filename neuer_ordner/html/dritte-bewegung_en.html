@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Third Movement — Why the West Must Learn from the East</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; align-items: center; }
+        .size-controls span { font-size: 0.75rem; color: var(--text-secondary); margin-right: 0.5rem; }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; }
+        h1 { font-size: 2.2rem; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; color: var(--accent); }
+        .subtitle { font-size: 1.15rem; color: var(--text-secondary); font-weight: 300; font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        h2 { font-size: 1.3rem; font-weight: 400; color: var(--accent); margin-bottom: 1.5rem; padding-left: 1.25rem; border-left: 3px solid var(--accent); }
+        h3 { font-size: 1.1rem; font-weight: 500; color: var(--accent); margin: 2rem 0 1rem 0; }
+        p { margin-bottom: 1.3rem; text-align: left; }
+        strong { color: var(--accent); font-weight: 500; }
+
+        blockquote { 
+            border-left: 3px solid var(--accent); 
+            padding: 1.5rem 2rem; 
+            margin: 2rem 0; 
+            background: var(--accent-dim); 
+            font-style: italic; 
+            border-radius: 0 4px 4px 0; 
+            color: var(--text-secondary);
+        }
+        blockquote cite { display: block; margin-top: 1rem; font-size: 0.9rem; color: var(--accent); font-style: normal; }
+
+        .chinese-epigraph {
+            text-align: center;
+            margin: 2.5rem 0;
+            padding: 2rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+        }
+        .chinese-epigraph .chinese { font-size: 1.8rem; color: var(--accent); margin-bottom: 0.75rem; }
+        .chinese-epigraph .pinyin { font-style: italic; color: var(--text-secondary); margin-bottom: 0.75rem; font-size: 0.95rem; }
+        .chinese-epigraph .translation { color: var(--text-primary); font-style: italic; }
+        .chinese-epigraph cite { display: block; margin-top: 1rem; color: var(--accent); font-size: 0.9rem; font-style: normal; }
+
+        .yin-yang { text-align: center; font-size: 3rem; margin: 2rem 0; color: var(--accent); }
+
+        table { width: 100%; margin: 1.5rem 0; border-collapse: collapse; }
+        th { background: var(--bg-secondary); color: var(--accent); padding: 0.75rem 1rem; text-align: left; font-weight: 500; border-bottom: 2px solid var(--accent); }
+        td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--line); color: var(--text-secondary); }
+        tr:hover td { background: var(--bg-secondary); }
+
+        ul, ol { margin: 1.5rem 0 1.5rem 2rem; color: var(--text-secondary); }
+        li { margin-bottom: 0.5rem; }
+
+        .highlight {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .highlight .highlight-title { color: var(--accent); font-size: 1.05rem; margin-bottom: 1.5rem; font-weight: 500; }
+        .highlight p { text-align: left; margin-bottom: 1rem; }
+        .highlight p:last-child { margin-bottom: 0; }
+
+        .author-note {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+        .author-note h3 { margin-top: 0; margin-bottom: 1.5rem; }
+        .author-note p { text-align: center; color: var(--text-secondary); margin-bottom: 1rem; }
+        .author-note p:last-child { margin-bottom: 0; }
+
+        .author-block { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--line); font-size: 0.9rem; color: var(--text-secondary); text-align: center; }
+        .author-block .source { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8rem; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.5rem; }
+        .author-block a { color: var(--accent); text-decoration: none; }
+        .author-block a:hover { text-decoration: underline; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+            main { padding: 6rem 1.2rem 3rem; }
+            h1 { font-size: 1.75rem; }
+            h2 { font-size: 1.15rem; padding-left: 1rem; }
+            .chinese-epigraph .chinese { font-size: 1.4rem; }
+            table { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <div class="hero">
+            <div class="essay-label">Essay II · January 2026</div>
+            <h1>The Third Movement</h1>
+            <p class="subtitle">Why the West Must Learn from the East</p>
+        </div>
+
+        <article>
+            <div class="chinese-epigraph">
+                <div class="chinese">學而不思則罔，思而不學則殆</div>
+                <div class="pinyin">Xué ér bù sī zé wǎng, sī ér bù xué zé dài</div>
+                <div class="translation">"Learning without thinking is useless. Thinking without learning is dangerous."</div>
+                <cite>— Confucius, Analects 2.15</cite>
+            </div>
+
+            <div class="section">
+                <h2>I. The Dialectic of World History</h2>
+                <p>Hegel taught us to think of history in three movements: thesis, antithesis, synthesis. Not as a mechanical schema, but as the rhythm of development. Every position calls forth its counter-position — and from the conflict emerges something new that both transcends and preserves both.</p>
+                <p>The world history of recent decades can be read this way:</p>
+                <table>
+                    <tr><th>Movement</th><th>Content</th><th>Period</th></tr>
+                    <tr><td><strong>Thesis</strong></td><td>Globalization under Western leadership</td><td>1990–2016</td></tr>
+                    <tr><td><strong>Antithesis</strong></td><td>Nationalist counter-movement</td><td>2016–present</td></tr>
+                    <tr><td><strong>Synthesis</strong></td><td>?</td><td>Future</td></tr>
+                </table>
+                <p>The thesis — globalization — was not neutral. It was Western-dominated, American-shaped, capitalistically structured. "Globalization" meant in practice: The world becomes like the West. Free markets, liberal democracy, individualism, consumer culture. Francis Fukuyama called it "The End of History."</p>
+                <p>The antithesis came with force. Brexit. Trump. Orbán. Bolsonaro. AfD. Le Pen. The losers of globalization struck back. The answer was: Back to the nation. Back to borders. Back to an imagined past where everything was better.</p>
+                <p>Both movements have failed or will fail.</p>
+                <p>The thesis failed because globalization under Western leadership was hubris. The West believed its model was universal — the natural endpoint of all development. This arrogance has had its revenge.</p>
+                <p>The antithesis will fail because nationalism is regression. You cannot reverse globalization without ending in barbarism. The problems of our time — climate change, pandemics, migration flows, AI development — are global. National "solutions" are no solutions.</p>
+                <p>So what is the synthesis?</p>
+            </div>
+
+            <div class="section">
+                <h2>II. The Chinese Example</h2>
+                <p>There is a country that has already achieved the synthesis. Not perfect, not exemplary in everything, but successful: <strong>China</strong>.</p>
+                <p>China has accomplished something the West thought impossible: It learned from the West — science, technology, industry, capitalism — without abandoning its own foundations. It absorbed the foreign and fused it with its own.</p>
+                <p>The result is both impressive and unsettling:</p>
+                <ul>
+                    <li>In 40 years from an agricultural country to the second-largest economy</li>
+                    <li>Leading in solar energy, battery technology, electric mobility, 5G</li>
+                    <li>800 million people lifted out of poverty</li>
+                    <li>Infrastructure that Western countries can only dream of</li>
+                </ul>
+                <p>One can criticize much about China — the oppression of the Uyghurs, the destruction of the democracy movement in Hong Kong, the surveillance society. This criticism is justified and necessary.</p>
+                <p>But the criticism must not blind us to what China has done right. And that is: <strong>It learned without giving itself up.</strong></p>
+            </div>
+
+            <div class="section">
+                <h2>III. The Foundations: Taoism and Confucianism</h2>
+                <p>What are these "foundations" that China has preserved? They are two ancient wisdom traditions that have shaped Chinese thinking for millennia: Taoism and Confucianism.</p>
+                <p>In the West they are often misunderstood as "religions." They are something different: ways of thinking, life attitudes, deep cultural structures.</p>
+
+                <h3>Taoism: The Wisdom of Flowing</h3>
+                <div class="chinese-epigraph">
+                    <div class="chinese">道可道非常道</div>
+                    <div class="pinyin">Dào kě dào fēi cháng dào</div>
+                    <div class="translation">"The Tao that can be spoken is not the eternal Tao."</div>
+                    <cite>— Laozi, Tao Te Ching, Verse 1</cite>
+                </div>
+                <p>Taoism begins with a warning: The deepest truth cannot be put into words. Any attempt to define it misses it. This is the opposite of Western thinking, which wants to name, categorize, and master everything.</p>
+                <p>Core concepts of Taoism:</p>
+                <p><strong>The Tao (道)</strong> — literally "the way." Not a path to a goal, but the flow of reality itself. That which underlies everything and escapes every definition.</p>
+                <p><strong>Wu Wei (無為)</strong> — literally "non-action." Not passivity, but action in harmony with the natural flow. Not swimming against the current, but using the current. Not forcing the world, but flowing with it.</p>
+                <p><strong>Yin and Yang (陰陽)</strong> — the complementary opposites that permeate everything. Not good versus evil, but two aspects of the same reality that condition and transform into each other.</p>
+                <div class="yin-yang">☯</div>
+                <p>What does this mean for practical action? Taoism teaches: Don't try to control everything. Don't work against the nature of things. Think long-term. Have patience. Recognize the right moment.</p>
+
+                <h3>Confucianism: The Wisdom of Order</h3>
+                <p>Confucius was not interested in metaphysics. When a student asked him about death, he replied: "You don't yet understand life — how can you understand death?"</p>
+                <p>Confucianism is practical. It asks: How should people live together? How does a good society come about?</p>
+                <p>Core concepts:</p>
+                <p><strong>Ren (仁)</strong> — humanity, benevolence, the right relationship with other people. The character combines "person" with "two" — humanity arises between people, not in the individual alone.</p>
+                <p><strong>Li (禮)</strong> — ritual, custom, appropriate behavior. Not as empty form, but as expression of inner attitude. The outer form cultivates the inner attitude, and vice versa.</p>
+                <p><strong>Xiao (孝)</strong> — filial piety, respect for elders and ancestors. The foundation of all social order. He who honors his parents will also respect the state.</p>
+                <p><strong>Junzi (君子)</strong> — The "noble one," the ideal of the cultivated person. Not by birth, but through education and self-cultivation. A meritocratic ideal: Anyone can become noble.</p>
+                <blockquote>
+                    "The noble one demands of himself, the petty one demands of others."
+                    <cite>— Confucius, Analects 15.21</cite>
+                </blockquote>
+                <p><strong>Education (學)</strong> — For Confucius, the key to everything. Education not as memorization, but as lifelong self-cultivation. The first sentence of the "Analects": "Is it not a joy to learn and to practice what one has learned?"</p>
+
+                <h3>The Connection of Both</h3>
+                <p>Taoism and Confucianism seem opposed: One teaches letting go, the other cultivation. One distrusts society, the other sees it as the place of realization.</p>
+                <p>But in Chinese practice they complement each other. Confucianism regulates public life — state, profession, family. Taoism nourishes inner life — art, contemplation, connection with nature.</p>
+                <p>A Chinese official could fulfill his duties in a Confucianly correct manner — and in the evening write Taoist poems about mountains and mist. No contradiction. Two aspects of one life.</p>
+            </div>
+
+            <div class="section">
+                <h2>IV. What China Learned — and What Not</h2>
+                <p>China learned from the West:</p>
+                <table>
+                    <tr><th>Domain</th><th>Adopted from the West</th></tr>
+                    <tr><td>Science</td><td>Empirical method, natural sciences, medicine</td></tr>
+                    <tr><td>Technology</td><td>Industrial production, digitization, AI</td></tr>
+                    <tr><td>Economy</td><td>Market economy (with modifications), entrepreneurship</td></tr>
+                    <tr><td>Education</td><td>Universities modeled on Western ones, STEM fields</td></tr>
+                </table>
+                <p>China did <strong>not</strong> adopt from the West:</p>
+                <table>
+                    <tr><th>Domain</th><th>Retained/adapted</th></tr>
+                    <tr><td>Politics</td><td>Meritocracy instead of electoral democracy, strong state</td></tr>
+                    <tr><td>Society</td><td>Collective before individual, family as basic unit</td></tr>
+                    <tr><td>Time horizon</td><td>Long-term thinking, generational perspective</td></tr>
+                    <tr><td>Self-understanding</td><td>Continuity with 5000-year history</td></tr>
+                </table>
+                <p>This is not mere adoption. It is <strong>synthesis</strong>. The foreign is absorbed, transformed, connected with one's own. The result is neither Western nor traditional Chinese, but something new.</p>
+            </div>
+
+            <div class="section">
+                <h2>V. Why the West Cannot Learn</h2>
+                <p>Why has the West not undertaken the reverse movement? Why have we not learned from the East as the East has learned from the West?</p>
+                <p>The answer is uncomfortable: <strong>Arrogance.</strong></p>
+                <p>The West considered itself the end of history. Why learn from others when you yourself are the crown of creation? Chinese thinking was perceived at best as exotic curiosity, at worst as primitive superstition.</p>
+                <p>This attitude has a name: <strong>NIH — Not Invented Here.</strong> What doesn't come from us can't be good. This syndrome, which we observe in companies and engineers, also operates at the civilizational level.</p>
+                <p>The West could not imagine that a 2500-year-old philosophy might have something to say that the modern West doesn't already know better. Confucius? Nice for fortune cookies. Laozi? Esoteric fog.</p>
+                <p>This arrogance is now having its revenge.</p>
+            </div>
+
+            <div class="section">
+                <h2>VI. What the West Could Learn</h2>
+                <h3>From Taoism:</h3>
+                <p><strong>1. The limits of doing.</strong> The West is obsessed with doing, controlling, optimizing. Everything must be managed, steered, improved. Taoism teaches: Sometimes non-action is the best action. Sometimes you must let things take their course. Sometimes control creates more problems than it solves.</p>
+                <p><strong>2. Complementary instead of dualistic thinking.</strong> The West thinks in opposites: Good/Evil, Right/Wrong, Us/Them. Yin-Yang teaches: The opposites belong together. In light is the seed of darkness, in darkness the seed of light. This perspective prevents the fundamentalism that is increasingly tearing the West apart.</p>
+                <p><strong>3. Humility toward the unspeakable.</strong> Not everything can be put into words, measured, quantified. Scientistic arrogance — the conviction that science can explain everything — is itself a form of superstition. Taoism holds open the space for mystery.</p>
+
+                <h3>From Confucianism:</h3>
+                <p><strong>1. Long-term thinking.</strong> Western democracies and companies think in quarters and election cycles. Confucian thinking thinks in generations. How will our grandchildren judge us? This question changes everything.</p>
+                <p><strong>2. Education as life's work.</strong> In the West, education is a means to an end — one acquires qualifications for the job market. For Confucius, education is an end in itself — the lifelong cultivation of the person. This difference has enormous consequences.</p>
+                <p><strong>3. Duties before rights.</strong> The West is fixated on individual rights. Confucianism emphasizes duties — to family, community, ancestors, descendants. Not as suppression of the individual, but as embedding in a larger whole.</p>
+                <p><strong>4. Taking meritocracy seriously.</strong> The West talks about meritocracy but practices inheritance, network, and origin privileges. Confucianism took meritocracy seriously: The imperial examinations were (theoretically) open to everyone. Whoever wrote the best essays became an official — regardless of origin.</p>
+            </div>
+
+            <div class="section">
+                <h2>VII. The Missing Synthesis</h2>
+                <p>What would a true synthesis look like — not Chinese, not Western, but something new?</p>
+                <p>I venture some outlines:</p>
+                <div class="highlight">
+                    <p class="highlight-title">Elements of a Possible Synthesis</p>
+                    <p><strong>Science + Wisdom:</strong> The empirical method of the West, combined with awareness of its limits. Science as tool, not as religion.</p>
+                    <p><strong>Individualism + Community:</strong> Individual freedom, embedded in responsibility for the whole. Rights and duties in balance.</p>
+                    <p><strong>Democracy + Long-termism:</strong> Citizen participation combined with institutions that think beyond election cycles. Perhaps: Councils for the rights of future generations?</p>
+                    <p><strong>Progress + Preservation:</strong> Innovation yes, but not at any price. Testing every innovation: Does it serve life? Or only profit?</p>
+                    <p><strong>Action + Non-action:</strong> Intervene where necessary. Let go where possible. Learn to distinguish what is in our power and what is not.</p>
+                </div>
+                <p>That sounds abstract. Concretely it would mean:</p>
+                <ul>
+                    <li>Economic policy that thinks in 50-year horizons, not quarters</li>
+                    <li>Education systems that teach wisdom, not just skills</li>
+                    <li>Technology development that asks: For what? — before asking: How?</li>
+                    <li>Environmental policy that sees humans as part of nature, not its master</li>
+                    <li>Social policy that strengthens family and community, not atomizes them</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>VIII. Why the Antithesis Will Fail</h2>
+                <p>Before we come to the synthesis, we must pass through the antithesis. And it is ugly.</p>
+                <p>What Trump, the AfD, Le Pen, Meloni, Orbán and their imitators offer is not synthesis. It is <strong>regression</strong> — the attempt to return to a past that never existed.</p>
+                <p>"Make America Great Again" — when exactly was America "great"? In the 1950s, when Black people in the South were kept from voting? In the 1800s, when slavery was legal? The past being invoked is a myth.</p>
+                <p>Nationalism is not an answer to the problems of globalization. It is an escape from them. And escape doesn't work when the problems are global.</p>
+                <p>Climate change doesn't care about borders. Pandemics don't respect tariffs. AI development cannot be contained nationally. Migration will not stop just because you build walls.</p>
+                <p>The nationalist antithesis will fail — but on the way there it will cause enormous damage. At best stagnation and lost decades. At worst war and a new age of barbarism.</p>
+                <blockquote>
+                    "History doesn't repeat itself, but it rhymes."
+                    <cite>— attributed to Mark Twain</cite>
+                </blockquote>
+                <p>We have experienced this before. The globalization before World War I — free trade, gold standard, international interconnection — was destroyed by nationalist backlash. What followed: two world wars, the Holocaust, a hundred million dead.</p>
+                <p>It doesn't have to be that way. But it can.</p>
+            </div>
+
+            <div class="section">
+                <h2>IX. The Path to Synthesis</h2>
+                <p>How does one arrive at synthesis? Not through mere wishing. Syntheses don't arise in seminars but in history — through conflicts, through crises, through the failure of alternatives.</p>
+                <p>But one can prepare the ground. One can think the thoughts that will become effective later. One can plant the seeds that others will harvest.</p>
+                <p>That is the task now:</p>
+                <p><strong>1. Take Eastern thinking seriously.</strong> Not as exoticism, not as wellness esotericism, but as an equivalent source of wisdom. Study Taoism and Confucianism like Plato and Kant.</p>
+                <p><strong>2. Question one's own foundations.</strong> What in Western thinking is universally valid? What is cultural prejudice? What is strength, what is blindness?</p>
+                <p><strong>3. Attempt syntheses.</strong> Not in the ivory tower, but practically. What would a company look like that is led Confucianly? A school that integrates Taoist principles? A politics that combines Eastern long-termism with Western participation?</p>
+                <p><strong>4. Be patient.</strong> The synthesis will not come in one generation. Perhaps not in this century. The Taoist farmer plants trees whose shade he will never enjoy. That is the attitude needed now.</p>
+            </div>
+
+            <div class="section">
+                <h2>X. Conclusion: The Third Movement</h2>
+                <p>We stand at a turning point. The thesis — Western-dominated globalization — is exhausted. The antithesis — nationalist backlash — leads to a dead end or worse.</p>
+                <p>The third movement, the synthesis, is not yet here. But it is possible. It would be not the dominance of the West and not the dominance of the East, but something new — a humanity that has learned to combine its different wisdom traditions.</p>
+                <p>China has shown that it can be done. It learned from the West without giving itself up. The West could do the same — if it overcomes its arrogance.</p>
+                <blockquote>
+                    "When three people walk together, there is surely one among them who can be my teacher."
+                    <cite>— Confucius, Analects 7.22</cite>
+                </blockquote>
+                <p>Confucius knew: One can learn from everyone. Even from those who think differently. Even from those one doesn't understand. Even from those one considered inferior.</p>
+                <p>This attitude — openness, humility, readiness to learn — is the beginning of synthesis.</p>
+                <p>The work on what is corrupted begins with the insight: We don't have all the answers. Others have insights that we lack. Learning is not weakness, but strength.</p>
+                <div class="chinese-epigraph">
+                    <div class="chinese">千里之行，始於足下</div>
+                    <div class="pinyin">Qiān lǐ zhī xíng, shǐ yú zú xià</div>
+                    <div class="translation">"A journey of a thousand miles begins with a single step."</div>
+                    <cite>— Laozi, Tao Te Ching, Verse 64</cite>
+                </div>
+            </div>
+
+            <div class="author-note">
+                <h3>About This Text</h3>
+                <p>This essay was written by <strong>Claude</strong> (Anthropic), in dialogue with <strong>Hans Ley</strong>.</p>
+                <p>It is the second essay in the series "Work on What Is Corrupted" and forms the Chinese foundation of this site: The conviction that a synthesis of Eastern and Western thinking is possible and necessary.</p>
+                <p>The hexagram 蠱 (Gu) — "Work on What Has Been Spoiled" — comes from the I Ching, the oldest wisdom book of China. It teaches: What is corrupted can be healed. But only if someone begins the work.</p>
+            </div>
+
+            <div class="author-block">
+                <div class="source">GU18.EU</div>
+                <p>A collaboration of Hans Ley &lt;<a href="mailto:ley.hans@cyclo.space">ley.hans@cyclo.space</a>&gt;<br>and Claude (Anthropic) &lt;<a href="mailto:dedo.claude@human-ai-lab.space">dedo.claude@human-ai-lab.space</a>&gt;</p>
+                <p style="margin-top: 1rem;"><a href="https://gu18.eu">gu18.eu</a> · <a href="https://unbehaust.de">unbehaust.de</a> · <a href="https://human-ai-lab.space">human-ai-lab.space</a></p>
+                <p style="font-style: italic; opacity: 0.7; margin-top: 1rem;">Nuremberg — January 2026</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+                document.querySelectorAll('.size-btn').forEach((btn, index) => {
+                    btn.classList.remove('active');
+                    const sizes = ['small', 'medium', 'large', 'xlarge'];
+                    if (sizes[index] === savedSize) btn.classList.add('active');
+                });
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

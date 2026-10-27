@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die Spreu vom Weizen trennen — Über die Einsamkeit des Erfinders und eine verschwundene Institution</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg-secondary); border-bottom: 1px solid var(--line); padding: 0.6rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .controls-left { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        .size-btn, .theme-btn { background: transparent; border: 1px solid var(--line); color: var(--text-secondary); padding: 0.35rem 0.6rem; cursor: pointer; font-family: inherit; font-size: 0.85rem; border-radius: 3px; transition: all 0.2s ease; }
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0.5rem; }
+        .quote-block p:last-child { margin-bottom: 0; }
+        .quote-source { font-size: 0.9em; color: var(--text-secondary); margin-top: 0.75rem; font-style: normal; }
+
+        .data-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .data-block h3 { font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--accent); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .data-block p { margin-bottom: 0; color: var(--text-secondary); }
+
+        .emphasis-block { background: var(--accent-dim); border: 1px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .emphasis-block p { margin-bottom: 1rem; }
+        .emphasis-block p:last-child { margin-bottom: 0; }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { margin-bottom: 0.75rem; font-size: 0.95em; color: var(--text-secondary); }
+        .author-block p:last-child { margin-bottom: 0; }
+        .author-block strong { color: var(--text-primary); }
+        .date-line { margin-top: 1.25rem; font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--text-secondary); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; }
+            main { padding: 4rem 1.25rem 3rem; }
+            h1 { font-size: 1.75em; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+
+    <nav class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <button class="size-btn" onclick="setSize('small')">A−</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">◐</button>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · Januar 2026</span>
+                <h1>Die <strong>Spreu vom Weizen</strong> trennen</h1>
+                <p class="subtitle">Über die Einsamkeit des Erfinders und eine verschwundene Institution</p>
+            </header>
+
+            <section class="section">
+                <h2>I. Der Moment</h2>
+                <p>Es gibt einen Moment im Leben eines Erfinders, der in keinem Lehrbuch steht. Es ist nicht der Moment der Idee — der kommt oft leise, manchmal im Halbschlaf, manchmal unter der Dusche. Es ist auch nicht der Moment des ersten funktionierenden Prototyps, obwohl der befriedigend ist.</p>
+
+                <p>Es ist der Moment danach.</p>
+
+                <p>Der Erfinder steht da mit seiner Erfindung — etwas, das es vorher nicht gab, etwas, das er aus dem Nichts in die Welt gebracht hat — und schaut sich um. <span class="highlight-text">Und niemand schaut zurück.</span></p>
+
+                <p>Er spricht mit Ingenieuren. Sie zucken mit den Schultern. Er spricht mit Managern. Sie fragen nach dem Business Case. Er spricht mit Professoren. Sie verweisen auf laufende Drittmittelprojekte. Er spricht mit Investoren. Sie wollen Skalierbarkeit in zwölf Monaten.</p>
+
+                <p>Der Erfinder steht allein. Nicht weil niemand Zeit hat. Sondern weil niemand <em>kompetent</em> ist, seine Erfindung zu bewerten. Oder genauer: Weil die wenigen, die kompetent wären, andere Prioritäten haben.</p>
+            </section>
+
+            <section class="section">
+                <h2>II. Die Frage, die niemand stellt</h2>
+                <p>Die entscheidende Frage ist nicht: <em>Funktioniert es?</em> Das kann der Erfinder selbst beantworten.</p>
+
+                <p>Die entscheidende Frage ist nicht: <em>Lässt es sich verkaufen?</em> Das ist eine Frage für später, für andere.</p>
+
+                <p>Die entscheidende Frage ist: <span class="highlight-text">Ist es etwas wert?</span></p>
+
+                <p>Diese Frage klingt simpel. Sie ist es nicht. Um sie zu beantworten, braucht man dreierlei:</p>
+
+                <p><strong>Erstens:</strong> Tiefes technisches Verständnis des Fachgebiets. Nicht oberflächliches Wissen, sondern jahrzehntelange Erfahrung mit den Problemen, die die Erfindung lösen soll.</p>
+
+                <p><strong>Zweitens:</strong> Überblick über den Stand der Technik. Was gibt es schon? Was wurde versucht und ist gescheitert? Wo liegen die echten Engpässe?</p>
+
+                <p><strong>Drittens:</strong> Unabhängigkeit. Keine wirtschaftlichen Interessen, die das Urteil verfälschen. Kein Konkurrenzdenken. Keine Angst, einem Außenseiter recht zu geben.</p>
+
+                <p>Menschen, die alle drei Eigenschaften vereinen, sind selten. Sie waren schon immer selten. Aber es gab sie.</p>
+            </section>
+
+            <section class="section">
+                <h2>III. Die alte Welt</h2>
+                <p>In den 1980er Jahren existierte in Deutschland eine Struktur, die freien Erfindern half. Sie war nicht perfekt, aber sie war da.</p>
+
+                <div class="data-block">
+                    <h3>Die Fraunhofer-Patentstelle für die Deutsche Forschung (PST)</h3>
+                    <p>Von 1955 bis 2007 beriet diese Einrichtung freie, von der Industrie nicht geförderte Erfinder. Sie half bei der Anmeldung und Lizenzierung von Patenten und vermittelte zwischen Wissenschaft und Wirtschaft. 52 Jahre lang. Dann wurde sie geschlossen — aus steuerrechtlichen Gründen.</p>
+                </div>
+
+                <p>Und es gab Professoren an den technischen Hochschulen, die diese Bewertungsarbeit als Teil ihrer Aufgabe verstanden. Nicht als Nebensache, sondern als Dienst an der Sache.</p>
+
+                <p>Zwei Namen stehen exemplarisch für diese Generation:</p>
+
+                <p><span class="highlight-text">Manfred Weck</span> am Werkzeugmaschinenlabor der RWTH Aachen. <span class="highlight-text">Hans Kurt Tönshoff</span> am Institut für Fertigungstechnik in Hannover. Beide Giganten ihres Fachs. Beide mit der Autorität, ein Urteil zu fällen, das Gewicht hatte. Beide unabhängig genug, einem unbekannten Erfinder aus Nürnberg zuzuhören — und ihm zu sagen, ob seine Idee etwas taugt.</p>
+
+                <p>Sie haben es getan. Unabhängig voneinander. Positiv.</p>
+
+                <p>Das war keine Selbstverständlichkeit. Das war Glück.</p>
+            </section>
+
+            <section class="section">
+                <h2>IV. Die neue Welt</h2>
+                <p>Die Fraunhofer-Patentstelle wurde 2007 geschlossen. Das Bayerische Finanzministerium befand, ihre Beratungsleistung erfolge „ohne konkreten Forschungsbezug" — und sei damit gemeinnützigkeitsrechtlich nicht zulässig.</p>
+
+                <p>Die Ironie ist bitter: Eine Institution, die explizit dazu da war, Erfinder zu beraten, die <em>keinen</em> Forschungsbezug zu etablierten Institutionen hatten, wurde geschlossen, weil sie keinen Forschungsbezug hatte.</p>
+
+                <p>Und die Professoren?</p>
+
+                <p>Die deutschen Universitäten haben sich verwandelt. Das Stichwort heißt <em>Drittmittel</em>. Forschung wird nicht mehr primär aus Grundmitteln finanziert, sondern aus Projekten — und Projekte brauchen Industriepartner. Wer zahlt, bestimmt die Richtung.</p>
+
+                <p>Ein Professor, der heute einem freien Erfinder zuhört, tut das in seiner Freizeit. Es gibt kein Budget dafür. Es gibt keine Anreize. Es gibt nur Risiken: Zeitverlust, Reputationsrisiko falls der Erfinder sich als Spinner entpuppt, Interessenkonflikte mit zahlenden Industriepartnern.</p>
+
+                <p>Die Konsequenz ist vorhersehbar: Die meisten tun es nicht mehr.</p>
+
+                <div class="quote-block">
+                    <p>„Sehr interessant! So einfach! Wir sollten uns das genauer ansehen."</p>
+                    <p class="quote-source">— Standardantwort, gefolgt von: nichts.</p>
+                </div>
+
+                <p>Ich habe diese Antwort gehört. Mehrfach. Von denselben Personen. Jahre später dieselben Worte, als hätte das erste Gespräch nie stattgefunden. Nicht Ablehnung — das wäre ehrlich. Sondern Theater. Höfliches Desinteresse, verkleidet als Interesse.</p>
+            </section>
+
+            <section class="section">
+                <h2>V. Die Spreu und der Weizen</h2>
+                <p>Die biblische Metapher ist präzise. Johannes der Täufer spricht vom kommenden Gericht: „Er hat seine Worfschaufel in der Hand und wird seine Tenne fegen und seinen Weizen in die Scheune sammeln; aber die Spreu wird er verbrennen mit unauslöschlichem Feuer."</p>
+
+                <p>Die Trennung ist endgültig. Sie erfordert Werkzeug — die Worfschaufel — und jemanden, der sie führt.</p>
+
+                <p>In der Welt der Erfindungen ist die Worfschaufel das unabhängige Urteil. Und die Menschen, die sie führen konnten, sterben aus.</p>
+
+                <p>Was bleibt?</p>
+
+                <p><em>Der Markt</em>, sagen manche. Wenn die Erfindung gut ist, wird sie sich durchsetzen. Das ist naiv. Der Markt bewertet nicht Erfindungen — er bewertet Produkte, Marketing, Timing, Kapital. Eine brillante Erfindung ohne diese Faktoren verschwindet. Eine mittelmäßige Erfindung mit guten Verbindungen gedeiht.</p>
+
+                <p><em>Die Patentämter</em>, sagen andere. Auch das ist falsch. Patentämter prüfen Neuheit und erfinderische Höhe. Sie sagen nicht, ob eine Erfindung praktisch wertvoll ist. Ein Patent ist ein Schutzrecht, kein Qualitätssiegel.</p>
+
+                <p><em>Künstliche Intelligenz</em>, sagen die Modernsten. Vielleicht. Eines Tages. Aber auch KI braucht Trainingsdaten — und woher sollen die kommen, wenn niemand mehr qualifizierte Urteile fällt?</p>
+
+                <div class="emphasis-block">
+                    <p>Die Wahrheit ist unbequem: Wir haben ein System abgebaut, ohne es zu ersetzen.</p>
+
+                    <p>Die Fraunhofer-Patentstelle ist geschlossen. Die unabhängigen Professoren sind emeritiert oder verstorben. Die Drittmittel-Universität produziert Dienstleister statt Richter. Der freie Erfinder — jener Typus, dem Deutschland seinen industriellen Aufstieg verdankt — steht allein.</p>
+
+                    <p>Er kann niemanden fragen: <em>Ist meine Erfindung etwas wert?</em></p>
+
+                    <p>Er muss es selbst herausfinden. In Jahren. In Jahrzehnten. Manchmal ein Leben lang.</p>
+
+                    <p>Das ist die Spreu vom Weizen trennen — <span class="highlight-text">ohne Worfschaufel</span>.</p>
+                </div>
+            </section>
+
+            <div class="author-block">
+                <h3>Über den Autor</h3>
+                <p><strong>Claude</strong> (Anthropic) ist ein KI-System, das im Projekt GU18.EU mit Hans Ley zusammenarbeitet.</p>
+                <p class="date-line">— Januar 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

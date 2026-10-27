@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money — Tool or God? | gu18.eu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --text: #e8e6e3;
+            --text-dim: #888888;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.15);
+            --border: #2a2a2a;
+        }
+        
+        [data-theme="light"] {
+            --bg: #f5f5f5;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-dim: #555555;
+            --accent: #8a7340;
+            --accent-dim: rgba(138, 115, 64, 0.1);
+            --border: #dddddd;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'IBM Plex Serif', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.9;
+            font-size: 18px;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.size-small { font-size: 15px; }
+        body.size-normal { font-size: 18px; }
+        body.size-large { font-size: 21px; }
+        body.size-xlarge { font-size: 24px; }
+        
+        .controls-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-top: none;
+            border-right: none;
+            padding: 8px 15px;
+            display: flex;
+            gap: 8px;
+            z-index: 1000;
+            border-bottom-left-radius: 8px;
+        }
+        
+        .controls-bar button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+        
+        .controls-bar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .controls-bar button.active {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+        }
+        
+        article {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 4rem 2rem 6rem;
+        }
+        
+        .meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+        
+        .series-note {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        h1 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 500;
+            line-height: 1.25;
+            margin-bottom: 0.75rem;
+        }
+        
+        .untertitel {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            font-style: italic;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        h2 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin: 2.5rem 0 1.25rem;
+            color: var(--accent);
+        }
+        
+        p {
+            margin-bottom: 1.4rem;
+        }
+        
+        .einzug {
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--border);
+            margin: 1.5rem 0;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+        
+        .einzug .author {
+            display: block;
+            margin-top: 0.5rem;
+            font-style: normal;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+        
+        .fazit {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            margin: 2.5rem 0;
+        }
+        
+        .highlight {
+            background: var(--bg-card);
+            border-left: 3px solid var(--accent);
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .emphasis {
+            color: var(--accent);
+            font-weight: 500;
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+        }
+        
+        ul {
+            margin: 1rem 0 1.5rem 1.5rem;
+            color: var(--text-dim);
+        }
+        
+        ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .signatur {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-align: center;
+        }
+        
+        .next-essay {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background: var(--accent-dim);
+            border: 1px solid var(--border);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+        
+        .next-essay strong {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="controls-bar">
+        <button onclick="setSize('small')" id="size-small">A−</button>
+        <button onclick="setSize('normal')" id="size-normal" class="active">A</button>
+        <button onclick="setSize('large')" id="size-large">A+</button>
+        <button onclick="setSize('xlarge')" id="size-xlarge">A++</button>
+        <button onclick="toggleTheme()" id="theme-toggle">☀</button>
+    </div>
+
+    <article>
+        <div class="series-note">Essay Series: The Nature of Money · Part I</div>
+        <div class="meta">gu18.eu · February 2026</div>
+        <h1>Money — Tool or God?</h1>
+        <p class="untertitel">How an instrument became a master</p>
+        
+        <h2>The Question That Isn't Asked</h2>
+        
+        <p>What is money? The question sounds banal. Everyone knows what money is — you have it in your pocket, in your account, or you don't. Money is what you pay with. What is there to ask?</p>
+        
+        <p>Yet this apparent self-evidence should give us pause. For hardly any other phenomenon that so fundamentally determines all our lives is thinking so underdeveloped. We learn in school how photosynthesis works and when Charlemagne lived — but not how money is created, who creates it, and why it is the way it is.</p>
+        
+        <p>This gap in knowledge is no accident. It is functional.</p>
+        
+        <h2>The Myth of Barter</h2>
+        
+        <p>The standard narrative goes like this: In the beginning was barter. The farmer traded wheat for the shoemaker's shoes. This was cumbersome — what if the shoemaker didn't need wheat? So money was invented as a neutral medium of exchange. Problem solved.</p>
+        
+        <p>This story is elegant, intuitive — and historically false.</p>
+        
+        <p>Anthropologists and economic historians have searched in vain for societies that actually functioned this way. Barter, as described in economics textbooks, never existed as a predominant economic form. It appears historically mainly where people from different cultures meet — between groups, not within communities.</p>
+        
+        <p>What existed instead?</p>
+        
+        <h2>In the Beginning Was Debt</h2>
+        
+        <p>In actual communities, economies functioned differently: through giving and taking, through obligations, through debts. The farmer gave wheat to his neighbor — not for immediate compensation, but because they knew each other, because they knew it would balance out, because they were in relationship.</p>
+        
+        <p>These obligations were eventually recorded. On clay tablets in Mesopotamia, on tally sticks in Europe, in the books of temples and palaces. Money emerged not as a coin, but as bookkeeping. Not as a thing, but as a relationship. Not as having, but as owing.</p>
+        
+        <div class="einzug">
+            <p>The first "money" records we know are not coin lists, but debt registers. The Sumerian clay tablets from the third millennium BCE record who owes what to whom.</p>
+        </div>
+        
+        <p>The coin came later — and it came not from trade, but from war. Kings minted coins to pay soldiers. Soldiers spent the coins. The population needed the coins to pay taxes. A cycle of power, not of exchange.</p>
+        
+        <h2>How Money Is Created Today</h2>
+        
+        <p>And today? Most people believe that banks lend out their depositors' money. This too is false.</p>
+        
+        <p>When a bank grants a loan, it does not lend existing money. It creates new money — through an accounting act. The bank credits an amount to the borrower's account and simultaneously books a claim against them. Money comes into being. Out of nothing? Not quite: out of a promise. Out of the borrower's obligation to repay.</p>
+        
+        <p class="emphasis">Every euro, every dollar that exists was born as debt.</p>
+        
+        <p>This is not a conspiracy theory. It is the official position of the Bundesbank, the Bank of England, every central bank that has ever commented on it. It's in every serious textbook on monetary theory. It is just remarkably little known.</p>
+        
+        <h2>The Interest Paradox</h2>
+        
+        <p>But if all money is created as credit — where does the interest come from?</p>
+        
+        <p>If a bank creates 100 euros and demands 105 euros back, where do the additional 5 euros come from? They were never created. They don't exist — unless someone else takes out a new loan.</p>
+        
+        <p>Here lies the structural growth imperative of the system. Not the greed of individual actors drives expansion, but the arithmetic of the monetary system itself. To service yesterday's interest, today's loans are needed. The economy must grow, not because it would be good, but because otherwise it collapses.</p>
+        
+        <div class="highlight">
+            <p>Interest is not a price for borrowing money. It is the engine of a machine that must never stand still.</p>
+        </div>
+        
+        <h2>From Tool to End in Itself</h2>
+        
+        <p>Somewhere in this history, something tipped over. Money was invented — or better: it emerged — as a means to an end. As a memory aid for obligations. As a tool to facilitate exchange.</p>
+        
+        <p>Today, the relationship is reversed. The economy no longer serves to satisfy human needs while using money as an aid. The economy serves to multiply money — and takes human needs as a means to that end.</p>
+        
+        <p>This is not an exaggeration. It is the logic of every publicly traded company. The purpose is return on investment. Everything else — products, jobs, innovation — is means.</p>
+        
+        <h2>The Religious Dimension</h2>
+        
+        <p>Economists speak of "the market" as theologians speak of God. The market knows. The market decides. The market punishes and rewards. One must not disturb it, lest it react ungraciously.</p>
+        
+        <p>Money itself carries all the attributes of a deity:</p>
+        
+        <ul>
+            <li><strong>Omnipotence:</strong> It can effect anything — or its refusal can prevent anything.</li>
+            <li><strong>Omnipresence:</strong> It permeates every area of life, every relationship, every decision.</li>
+            <li><strong>Transcendence:</strong> It is more than its material form. The numbers in the account are not the money — they merely represent it.</li>
+            <li><strong>Demand for sacrifice:</strong> Sacrifices are made to it — time, health, relationships, ecosystems, human lives.</li>
+        </ul>
+        
+        <p>The stock exchange is the temple. The bankers are the priests. The economists are the theologians who interpret the inscrutable will of the market. And the believers? All of us.</p>
+        
+        <h2>The Double Meaning of Debt</h2>
+        
+        <p>It is no coincidence that German uses the same word for financial and moral debt (Schulden/Schuld) — and that the English Bible says "forgive us our debts" in the Lord's Prayer. Those who have debts are guilty. The moralization of economic relations is built into the language.</p>
+        
+        <p>The indebted state is treated like a sinner. The indebted person has "lived beyond their means." That someone can have credit only because someone else has debt — that assets and liabilities are two sides of the same accounting coin — disappears in the moral narrative.</p>
+        
+        <p>The Lord's Prayer asks: "Forgive us our debts." In the original Aramaic, there is a word that means both: sin and debt. The forgiveness of debts was not a metaphor. It was a concrete demand — and an ancient practice. The sabbatical year, every seven years, provided for the cancellation of debts; the Jubilee year, every 50 years, returned pledged land and freed debt bondsmen.</p>
+        
+        <p>This tradition is forgotten. The debts have remained. The forgiveness has not.</p>
+        
+        <h2>What Follows from This?</h2>
+        
+        <p>This essay is neither an indictment nor a program. It is an attempt to look at an object we hold in our hands daily without seeing it.</p>
+        
+        <p>The questions that arise are numerous: Must money function this way? Has it always functioned this way? Are there alternatives — historical, theoretical, practical? What would change if money were organized differently?</p>
+        
+        <div class="fazit">
+            <p>Money was created as a tool and has become a god. Whether it must remain so is not a technical question. It is a question of imagination — and of political will.</p>
+        </div>
+        
+        <div class="next-essay">
+            <strong>Upcoming essays in this series:</strong><br><br>
+            Part II: The Interest Paradox — Why the System Must Grow<br>
+            Part III: Money Without Debt — Historical Alternatives<br>
+            Part IV: Freiwirtschaft — Silvio Gesell's Forgotten Revolution<br>
+            Part V: Modern Monetary Theory — The State as Money Creator
+        </div>
+        
+        <div class="signatur">
+            gu18.eu · February 2026
+        </div>
+    </article>
+    
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/g, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.controls-bar button[id^="size-"]').forEach(b => b.classList.remove('active'));
+            document.getElementById('size-' + size).classList.add('active');
+            localStorage.setItem('gu18-size', size);
+        }
+        
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            document.getElementById('theme-toggle').textContent = newTheme === 'light' ? '☾' : '☀';
+            localStorage.setItem('gu18-theme', newTheme);
+        }
+        
+        (function() {
+            const savedSize = localStorage.getItem('gu18-size') || 'normal';
+            const savedTheme = localStorage.getItem('gu18-theme') || 'dark';
+            setSize(savedSize);
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.getElementById('theme-toggle').textContent = '☾';
+            }
+        })();
+    </script>
+</body>
+</html>

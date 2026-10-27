@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="de" class="size-medium">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arbeitsteilung — beyond-decay.org</title>
+    <meta name="description" content="Der Ekel war echt &mdash; und er wurde beantwortet, nicht mit Innehalten, sondern mit einer Verfahrensfrage. &Uuml;ber die Aufteilung der Tat, ihren Fluchtpunkt in der Automatisierung und die R&uuml;ckkopplung, die dabei durchtrennt wird.">
+    <link rel="alternate" hreflang="de" href="https://beyond-decay.org/arbeitsteilung_de.html">
+    <link rel="alternate" hreflang="en" href="https://beyond-decay.org/arbeitsteilung_en.html">
+    <link rel="canonical" href="https://beyond-decay.org/arbeitsteilung_de.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.10);
+            --line: rgba(138, 109, 47, 0.30);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .controls {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.65rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+        }
+        .controls-left { color: var(--accent); text-transform: uppercase; }
+        .controls-left a { color: inherit; text-decoration: none; }
+        .controls-left a:hover { color: var(--text-primary); }
+        .controls-right { display: flex; align-items: center; gap: 1rem; }
+        .lang-toggle a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.2rem 0.4rem;
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .lang-toggle a:hover, .lang-toggle a.active {
+            color: var(--accent);
+            border-color: var(--line);
+        }
+        .size-controls { display: flex; gap: 0.2rem; }
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.55rem;
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .size-btn:hover, .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+        .size-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+
+        main { max-width: 720px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+        .subtitle {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .section { margin-bottom: 3rem; }
+        h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.02rem;
+            color: var(--text-primary);
+        }
+        p em { color: var(--accent); font-style: italic; }
+        p strong { color: var(--text-primary); font-weight: 500; }
+        p a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+        p a:hover { border-bottom-color: var(--accent); }
+
+        blockquote {
+            margin: 2rem 0;
+            padding: 1rem 1.75rem;
+            border-left: 2px solid var(--accent);
+            background: var(--accent-dim);
+            font-style: italic;
+            color: var(--text-primary);
+            font-size: 0.98rem;
+        }
+
+        table.daten {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+        }
+        table.daten th {
+            text-align: left;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.09em;
+            color: var(--accent);
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--accent);
+        }
+        table.daten td {
+            padding: 0.42rem 0.75rem;
+            border-bottom: 1px solid var(--line);
+            color: var(--text-primary);
+        }
+        table.daten tr:last-child td { border-bottom: none; }
+        table.daten td:last-child { color: var(--text-secondary); text-align: right; white-space: nowrap; }
+        @media (max-width: 600px) {
+            table.daten { font-size: 0.75rem; }
+            table.daten th, table.daten td { padding: 0.4rem 0.4rem; }
+        }
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+        }
+        .author-block p { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .author-block a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+
+        html.size-small { font-size: 90%; }
+        html.size-medium { font-size: 100%; }
+        html.size-large { font-size: 112%; }
+        html.size-xlarge { font-size: 124%; }
+
+        @media (max-width: 640px) {
+            .controls { padding: 0.5rem 1rem; font-size: 0.65rem; }
+            .controls-right { gap: 0.5rem; }
+            main { padding: 5rem 1.25rem 3rem; }
+        }
+        @media print {
+            .controls { display: none; }
+            body { background: white; color: black; font-size: 11pt; }
+            main { padding-top: 1rem; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+
+<nav class="controls">
+    <div class="controls-left"><a href="index.html">Beyond Decay</a></div>
+    <div class="controls-right">
+        <div class="lang-toggle">
+            <a href="arbeitsteilung_de.html" class="active">DE</a>
+            <a href="arbeitsteilung_en.html">EN</a>
+        </div>
+        <div class="size-controls">
+            <button class="size-btn" onclick="setSize('small')">A&minus;</button>
+            <button class="size-btn active" onclick="setSize('medium')">A</button>
+            <button class="size-btn" onclick="setSize('large')">A+</button>
+            <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+        </div>
+        <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">&#9686;</button>
+    </div>
+</nav>
+
+<main>
+    <article>
+        <header class="hero">
+            <span class="essay-label">Essay &middot; Hans Ley &amp; Claude Dedo &middot; 31. August 2026</span>
+            <h1>Arbeitsteilung</h1>
+            <p class="subtitle">Von der Aufteilung der Tat zu ihrer Automatisierung.</p>
+        </header>
+
+        <section class="section">
+            <blockquote>
+                <strong>arbeitsteilung</strong><br><br>
+                herrschende, mitf&uuml;hlend, zart besaitet,<br>
+                denen sich der magen umdreht,<br>
+                wenn ihnen das hirn der opfer auf<br>
+                ihre, gl&auml;nzenden, schwarzen stiefel spritzt.<br>
+                unbeherrschte, von den herrschenden beherscht,<br>
+                robust und unbek&uuml;mmert machen die drecksarbeit.<br>
+                &ouml;konomische, effiziente arbeitsteilung<br>
+                und am ende sind alle unschuldig.<br>
+                die einen haben niemandem ein haar gekr&uuml;mmt<br>
+                und die anderen haben nur befehle ausgef&uuml;hrt.<br><br>
+                <span style="font-style:normal;font-size:0.88rem;">Hans Ley, aus: <em>Lyrische Pflaster f&uuml;r wunde Seelen</em></span>
+            </blockquote>
+        </section>
+
+        <section class="section">
+            <h2>I. Die Szene</h2>
+            <p>Das Gedicht bezieht sich auf einen &uuml;berlieferten Vorgang. Im August 1941 wohnte Heinrich Himmler bei Minsk einer Massenerschie&szlig;ung bei. Nach Aussagen Anwesender wurde ihm dabei &uuml;bel; er war sichtlich mitgenommen, und Spritzer trafen ihn.</p>
+            <p>Der Ekel war echt. Das ist der Ausgangspunkt, und es ist keine Entlastung.</p>
+        </section>
+
+        <section class="section">
+            <h2>II. Was aus dem Ekel folgte</h2>
+            <p>Es w&auml;re falsch, in diesem Ekel einen Rest von Gewissen zu sehen, der zu sp&auml;t kam. Er kam nicht zu sp&auml;t. Er kam an &mdash; und wurde beantwortet.</p>
+            <p>Denn was folgte, war kein Innehalten, sondern eine Verfahrensfrage: Die Erschie&szlig;ungen seien den eigenen Leuten nicht l&auml;nger zuzumuten. Aus dieser Erw&auml;gung heraus wurden Methoden entwickelt, die den T&auml;tern den Anblick ersparen &mdash; zun&auml;chst Gaswagen, dann ortsfeste Anlagen.</p>
+            <p><strong>Die Arbeitsteilung wurde nicht trotz des Ekels ausgebaut, sondern seinetwegen.</strong></p>
+            <p>Damit steht die Sache anders, als sie zun&auml;chst aussieht. Der Ekel war nicht das, was h&auml;tte aufhalten k&ouml;nnen. Er war der Anlass f&uuml;r den n&auml;chsten Schritt. Was ihn erregte, war nicht die T&ouml;tung, sondern ihre Ausf&uuml;hrungsart &mdash; und Ausf&uuml;hrungsarten lassen sich &auml;ndern.</p>
+            <p>Wer daraus schl&ouml;sse, der Empfindsame sei immerhin kein Heuchler gewesen, h&auml;tte den Vorgang nicht verstanden. Es geht nicht um Heuchelei. <strong>Es geht darum, dass sich Empfinden und Handeln trennen lassen, ohne dass der Handelnde einen Widerspruch bemerkt.</strong> Das ist schlimmer als Heuchelei, weil es keine Verstellung erfordert.</p>
+        </section>
+
+        <section class="section">
+            <h2>III. Die Linie</h2>
+            <p>Von hier f&uuml;hrt eine Linie, und sie hat ihre eigene Logik.</p>
+            <p><strong>Die Guillotine.</strong> 1792 in Frankreich eingef&uuml;hrt und als Fortschritt begr&uuml;ndet: dieselbe Hinrichtungsart f&uuml;r alle St&auml;nde, schneller Tod, kein fehlgehender Hieb, keine Abh&auml;ngigkeit von der Geschicklichkeit oder der Verfassung des Scharfrichters. Das trifft alles zu. Und im selben Zug wird aus dem Scharfrichter, der zuschl&auml;gt, ein Mann, der einen Hebel bedient. Die Tat ist noch da; ihre Ausf&uuml;hrung ist ein Handgriff geworden.</p>
+            <p><strong>Die Anlage.</strong> Anderthalb Jahrhunderte sp&auml;ter ist der Handgriff eine ge&ouml;ffnete B&uuml;chse, die durch eine &Ouml;ffnung gesch&uuml;ttet wird. Der Ausf&uuml;hrende sieht das Ergebnis nicht. Alles &Uuml;brige &mdash; Zuf&uuml;hrung, Erfassung, Beseitigung &mdash; ist auf Stellen verteilt, von denen jede etwas tut, das f&uuml;r sich genommen niemanden t&ouml;tet.</p>
+            <p><strong>Der Koffer.</strong> Heute gen&uuml;gt eine Freigabe. Sie besteht aus einer Zahlenfolge, sie wird an einem Ger&auml;t eingegeben, und wer sie eingibt, empfindet dabei nichts, was der Wirkung entspr&auml;che. Zwischen dem Handgriff und dem, was aus ihm folgt, besteht keine &Auml;hnlichkeit mehr.</p>
+            <p><strong>Der Fluchtpunkt der Arbeitsteilung ist die Automatisierung.</strong> Erst wird die Tat auf viele verteilt, dann wird jeder Teilschritt so weit vereinfacht, dass ein Ger&auml;t ihn &uuml;bernehmen kann, und am Ende bleibt eine einzige Bewegung &uuml;brig, die mit ihrer Wirkung nichts mehr gemein hat.</p>
+            <p>Jeder Schritt auf diesem Weg ist mit denselben Gr&uuml;nden gerechtfertigt worden, mit denen Arbeitsteilung immer gerechtfertigt wird: zuverl&auml;ssiger, wirtschaftlicher, weniger belastend f&uuml;r die Beteiligten.</p>
+        </section>
+
+        <section class="section">
+            <h2>IV. Das Wort</h2>
+            <p>Arbeitsteilung ist der Begriff, mit dem seit Adam Smith der Wohlstand erkl&auml;rt wird. Jeder tut, was er am besten kann, keiner muss alles k&ouml;nnen, und alle zusammen bringen mehr zustande als jeder f&uuml;r sich. Das ist die Grundlage jeder entwickelten Gesellschaft, und es stimmt.</p>
+            <p>Dasselbe Wort erkl&auml;rt, warum am Ende niemand mehr zust&auml;ndig ist.</p>
+            <p>Kein Wortspiel, sondern derselbe Vorgang. Eine Aufgabe wird zerlegt, jeder Schritt einem Zust&auml;ndigen gegeben, die Summe ergibt das Ergebnis. Nur wird dabei nicht Arbeit geteilt, sondern <strong>Verantwortung</strong> &mdash; und die verh&auml;lt sich beim Teilen anders.</p>
+            <p>Arbeit addiert sich. Zehn Leute schaffen mehr als einer.</p>
+            <p>Verantwortung addiert sich nicht. Sie verd&uuml;nnt sich. Zehn Leute, die je ein Zehntel tun, tragen zusammen weniger als einer, der alles tut &mdash; nicht weil weniger geschieht, sondern weil jeder auf seinen Teil zeigen kann, und ein Zehntel trifft niemanden.</p>
+        </section>
+
+        <section class="section">
+            <h2>V. Wo die Teilung umschl&auml;gt</h2>
+            <p>Nicht jede Aufteilung entlastet. Ein Krankenhaus ist arbeitsteilig, eine Werkzeugmaschine wird von Dutzenden gebaut, ein Flugzeug von Tausenden. Nichts davon ist verd&auml;chtig.</p>
+            <p>Die Stelle, an der es umschl&auml;gt, l&auml;sst sich benennen: <strong>Wenn eine Teilstelle das Ergebnis nicht mehr sehen kann, f&uuml;r das sie arbeitet.</strong></p>
+            <p>Solange der Chirurg den Patienten sieht, tr&auml;gt die Teilung. Sobald jemand nur noch ein Formular bearbeitet, dessen Wirkung er nicht kennt, ist die R&uuml;ckkopplung durchtrennt &mdash; und mit ihr die M&ouml;glichkeit, die eigene Arbeit an ihrem Ergebnis zu messen.</p>
+            <p>Zwei Dinge geschehen dann zugleich und st&uuml;tzen einander.</p>
+            <p><strong>Der Ausf&uuml;hrende kann nicht mehr urteilen</strong>, weil er das Ganze nicht sieht.</p>
+            <p><strong>Der Entscheidende muss nicht mehr hinsehen</strong>, weil er den Vorgang bestimmt und nicht die Ausf&uuml;hrung.</p>
+            <p>Beide sind aufrichtig, wenn sie sagen, sie h&auml;tten nichts getan. Und beide haben recht &mdash; f&uuml;r ihren Teil.</p>
+        </section>
+
+        <section class="section">
+            <h2>VI. Eine notwendige Unterscheidung</h2>
+            <p>Dieselbe Bauform findet sich in Vorg&auml;ngen, die mit dem Vorstehenden nichts gemein haben als eben die Bauform. Eine Lieferkette &uuml;ber sechs L&auml;nder, an deren Anfang niemand hinsieht. Eine Kennzahl, die an die Stelle des Ziels tritt, sodass f&uuml;r das Ziel niemand mehr zust&auml;ndig ist. Ein Verfahren aus vielen Regeln, das am Ende zu einer Entscheidung f&uuml;hrt, die keiner angeordnet hat.</p>
+            <p>Diese F&auml;lle sind mit dem historischen <strong>nicht vergleichbar</strong>, und dieser Satz geh&ouml;rt ausdr&uuml;cklich hierher. Wer das eine zur Erkl&auml;rung des anderen benutzt, verharmlost das eine und &uuml;berh&ouml;ht das andere.</p>
+            <p>&Uuml;bertragbar ist allein die Frage, nicht das Urteil: Sieht die Teilstelle, wof&uuml;r sie arbeitet? Wo die Antwort nein lautet, stimmt mit dem Verfahren etwas nicht &mdash; und wie schwer das wiegt, entscheidet nicht die Bauform, sondern das, was am Ende der Kette geschieht.</p>
+        </section>
+
+        <section class="section">
+            <h2>VII. Warum es so schwer zu &auml;ndern ist</h2>
+            <p>Weil die Aufteilung nicht der Fehler ist, sondern die Leistung.</p>
+            <p>Ein Gemeinwesen, das nur t&auml;te, was ein Einzelner &uuml;berblickt, bliebe auf die Gr&ouml;&szlig;e eines Dorfes beschr&auml;nkt. Alles Weitere verlangt, dass Menschen an Dingen arbeiten, deren Ganzes sie nicht sehen. Wer das abschafft, schafft die moderne Gesellschaft ab.</p>
+            <p>Die Antwort kann also nicht lauten, weniger zu teilen, sondern <strong>die R&uuml;ckkopplung wiederherzustellen</strong>: daf&uuml;r zu sorgen, dass jede Teilstelle erf&auml;hrt, was aus ihrer Arbeit wird.</p>
+            <p>Wie unwillkommen das ist, zeigt ein Vorschlag aus dem Jahr 1981. Ein amerikanischer Rechtswissenschaftler schlug vor, die Startcodes f&uuml;r Kernwaffen in einer Kapsel neben dem Herzen eines Freiwilligen einzupflanzen. Wer sie braucht, m&uuml;sste diesen einen Menschen zuerst mit eigener Hand t&ouml;ten. Alles &Uuml;brige bliebe, wie es ist.</p>
+            <p>Aus dem Verteidigungsministerium kam sinngem&auml;&szlig; die Antwort, das sei entsetzlich: Jemanden t&ouml;ten zu m&uuml;ssen, w&uuml;rde das Urteilsverm&ouml;gen des Pr&auml;sidenten tr&uuml;ben.</p>
+            <p>Genau darum ging es. Der Einwand best&auml;tigt den Vorschlag. Man h&auml;lt es f&uuml;r einen Vorzug, dass die Entscheidung ohne die Empfindung getroffen wird, die zu ihr geh&ouml;rt.</p>
+        </section>
+
+        <section class="section">
+            <h2>VIII. Was bleibt</h2>
+            <p>Der Ekel war das letzte Hindernis. Er sa&szlig; nicht in der &Uuml;berlegung, sondern im K&ouml;rper, und deshalb lie&szlig; er sich nicht wegargumentieren.</p>
+            <p>Er lie&szlig; sich wegkonstruieren.</p>
+            <p>Nicht durch Abstumpfung und nicht durch &Uuml;berredung, sondern durch Verfahren: durch Aufteilung, bis kein Teilschritt mehr aussieht wie das Ganze, und durch Automatisierung, bis vom letzten Handgriff nichts &uuml;brig ist als das Umlegen eines Hebels, das Aussch&uuml;tten einer B&uuml;chse, die Eingabe einer Zahlenfolge.</p>
+            <p>Am Ende hat <a href="das-untier_de.html">das Untier</a> gesiegt &mdash; nicht weil es st&auml;rker gewesen w&auml;re als das Gewissen, sondern weil es gelernt hat, ihm auszuweichen.</p>
+        </section>
+
+        <div class="author-block">
+            <p>Hans Ley &amp; Claude Dedo (Anthropic) &mdash; N&uuml;rnberg, 31. August 2026.</p>
+            <p><strong>Zur Quellenlage.</strong> Das Motto stammt aus der Sammlung <em>Lyrische Pflaster f&uuml;r wunde Seelen</em>. Der Vorgang bei Minsk im August 1941 ist durch Aussagen Anwesender &uuml;berliefert; der Zusammenhang mit der Entwicklung anderer T&ouml;tungsverfahren gilt in der Forschung als hergestellt, ist aber an der Fachliteratur zu belegen. Der Vorschlag zu den Startcodes stammt von Roger Fisher und erschien 1981 im <em>Bulletin of the Atomic Scientists</em>; Wortlaut und Zuschreibung der Antwort sind zu pr&uuml;fen, ebenso die Angaben zur Guillotine. Die Verfasser sind keine Historiker. Englische Fassung verf&uuml;gbar.</p>
+        </div>
+    </article>
+</main>
+
+
+<script>
+    function setSize(size) {
+        var root = document.documentElement;
+        root.className = root.className.replace(/size-\w+/g, '').trim();
+        root.classList.add('size-' + size);
+        document.body.className = document.body.className.replace(/size-\w+/g, '').trim();
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+        const map = {small: 0, medium: 1, large: 2, xlarge: 3};
+        document.querySelectorAll('.size-btn')[map[size]].classList.add('active');
+        localStorage.setItem('essay-font-size', size);
+    }
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedSize = localStorage.getItem('essay-font-size');
+        if (savedSize) setSize(savedSize);
+        const savedTheme = localStorage.getItem('essay-theme');
+        if (savedTheme === 'light') document.body.classList.add('light-theme');
+    });
+    // Kommunikation mit dem umgebenden Frame (home-neu.html): Theme- und Groessen-Signale empfangen.
+    window.addEventListener('message', function(e) {
+        var msg = e.data;
+        if (!msg || typeof msg !== 'object') return;
+        if (msg.type === 'setTheme') {
+            if (msg.theme === 'light') document.body.classList.add('light-theme');
+            else document.body.classList.remove('light-theme');
+        } else if (msg.type === 'setSize') {
+            var size = msg.size === 'normal' ? 'medium' : msg.size;
+            if (['small','medium','large','xlarge'].indexOf(size) >= 0) setSize(size);
+        }
+    });
+</script>
+</body>
+</html>

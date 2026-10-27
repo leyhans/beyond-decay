@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Industrielle Transformation Deutschlands | beyond-decay.org</title>
+  <link rel="alternate" hreflang="de" href="industrielle-transformation.html?lang=de">
+  <link rel="alternate" hreflang="en" href="industrielle-transformation.html?lang=en">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:          #f5f4f0;
+      --bg-alt:      #eceae3;
+      --text:        #1a1916;
+      --text-muted:  #6b6860;
+      --accent:      #b84c00;
+      --accent-soft: #e8d5c4;
+      --rule:        #ccc9c0;
+      --mono:        'IBM Plex Mono', monospace;
+      --sans:        'IBM Plex Sans', sans-serif;
+      --serif:       'IBM Plex Serif', serif;
+      --base-size:   17px;
+    }
+    [data-theme="dark"] {
+      --bg:          #141412;
+      --bg-alt:      #1e1d1a;
+      --text:        #e8e6e0;
+      --text-muted:  #8a8880;
+      --accent:      #e06020;
+      --accent-soft: #2a1e14;
+      --rule:        #333230;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: var(--base-size); scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.72;
+      transition: background 0.25s, color 0.25s;
+      min-height: 100vh;
+    }
+
+    /* ── Controls bar ── */
+    #controls {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.55rem 2rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+    }
+    #controls .site-id {
+      color: var(--accent);
+      font-weight: 500;
+      text-decoration: none;
+      letter-spacing: 0.08em;
+    }
+    #controls .ctrl-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .ctrl-btn {
+      background: none;
+      border: 1px solid var(--rule);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 2px;
+      transition: all 0.15s;
+    }
+    .ctrl-btn:hover, .ctrl-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .lang-active { color: var(--accent) !important; border-color: var(--accent) !important; }
+
+    /* ── Layout ── */
+    .wrapper {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+
+    /* ── Header ── */
+    .essay-header {
+      border-bottom: 1px solid var(--rule);
+      padding: 3.5rem 0 2.5rem;
+      margin-bottom: 3rem;
+    }
+    .series-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+    }
+    h1 {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+      line-height: 1.18;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      margin-bottom: 1.2rem;
+    }
+    .subtitle {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.12rem;
+      color: var(--text-muted);
+      margin-bottom: 1.8rem;
+      line-height: 1.55;
+    }
+    .meta {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    /* ── Body ── */
+    h2 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.25rem;
+      letter-spacing: 0.01em;
+      margin: 3rem 0 0.9rem;
+      color: var(--text);
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+    }
+    h3 {
+      font-family: var(--sans);
+      font-weight: 500;
+      font-size: 0.88rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 2rem 0 0.6rem;
+    }
+    p { margin-bottom: 1.2rem; }
+    p:last-child { margin-bottom: 0; }
+
+    strong { font-weight: 500; color: var(--text); }
+    em { font-style: italic; }
+
+    /* ── Pull quote ── */
+    blockquote {
+      border-left: 3px solid var(--accent);
+      margin: 2.5rem 0;
+      padding: 0.2rem 0 0.2rem 1.8rem;
+    }
+    blockquote p {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1.18rem;
+      line-height: 1.55;
+      color: var(--text);
+      margin: 0;
+    }
+
+    /* ── Data callout ── */
+    .data-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      margin: 2.5rem 0;
+    }
+    .data-cell {
+      background: var(--bg);
+      padding: 1.2rem 1.4rem;
+    }
+    .data-cell .num {
+      font-family: var(--mono);
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: var(--accent);
+      display: block;
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .data-cell .label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    /* ── Table ── */
+    .tbl-wrap { overflow-x: auto; margin: 2rem 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    th {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 2px solid var(--rule);
+      padding: 0.5rem 1rem 0.5rem 0;
+      text-align: left;
+    }
+    td {
+      border-bottom: 1px solid var(--rule);
+      padding: 0.7rem 1rem 0.7rem 0;
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    td:first-child { font-weight: 500; }
+    td.accent { color: var(--accent); font-family: var(--mono); font-size: 0.82rem; }
+
+    /* ── Footnotes ── */
+    .footnotes {
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .footnotes p { margin-bottom: 0.4rem; }
+
+    /* ── Language toggle ── */
+    [data-lang] { display: none; }
+    .lang-de [data-lang="de"] { display: block; }
+    .lang-en [data-lang="en"] { display: block; }
+    /* inline spans */
+    span[data-lang] { display: none; }
+    .lang-de span[data-lang="de"] { display: inline; }
+    .lang-en span[data-lang="en"] { display: inline; }
+
+    @media (max-width: 600px) {
+      .wrapper { padding: 0 1.2rem 4rem; }
+      #controls { padding: 0.55rem 1.2rem; }
+      .essay-header { padding: 2.2rem 0 1.8rem; }
+    }
+  </style>
+</head>
+
+<body data-theme="light" class="lang-de">
+
+<!-- ── Controls ── -->
+<nav id="controls">
+  <a class="site-id" href="https://beyond-decay.org/">beyond-decay.org</a>
+  <div class="ctrl-group">
+    <button class="ctrl-btn" id="btn-de" onclick="setLang('de')">DE</button>
+    <button class="ctrl-btn" id="btn-en" onclick="setLang('en')">EN</button>
+    <button class="ctrl-btn" onclick="changeSize(-1)">A−</button>
+    <button class="ctrl-btn" onclick="changeSize(1)">A+</button>
+    <button class="ctrl-btn" id="theme-btn" onclick="toggleTheme()">◐</button>
+  </div>
+</nav>
+
+<!-- ── Content ── -->
+<main class="wrapper">
+
+  <header class="essay-header">
+    <p class="series-label">
+      <span data-lang="de">Industriepolitik · Standort Deutschland</span>
+      <span data-lang="en">Industrial Policy · Germany as a Location</span>
+    </p>
+
+    <h1>
+      <span data-lang="de">Sowohl-als-Auch statt Entweder-Oder</span>
+      <span data-lang="en">Both-And Instead of Either-Or</span>
+    </h1>
+
+    <p class="subtitle">
+      <span data-lang="de">Ein Konzept zur industriellen Transformation Deutschlands — jenseits von Deindustrialisierungs-Panik und Weiter-so-Blindheit</span>
+      <span data-lang="en">A concept for Germany's industrial transformation — beyond deindustrialisation panic and business-as-usual blindness</span>
+    </p>
+
+    <div class="meta">
+      <span>beyond-decay.org</span>
+      <span>2026</span>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════ DE ═══════════════════════════════ -->
+
+  <article data-lang="de">
+
+    <h2>I. Die Erschöpfung eines Modells</h2>
+
+    <p>Deutschland hat jahrzehntelang von drei Strukturvorteilen gelebt, die gleichzeitig erodieren. Das ist keine konjunkturelle Delle. Es ist das Ende eines Geschäftsmodells.</p>
+
+    <p><strong>Erstens: billiges russisches Gas.</strong> Geopolitisch eliminiert. Die Energiekostenstruktur der deutschen Industrie ist dauerhaft verändert — nicht vorübergehend. Die Energiepreise in Deutschland gehören heute zu den höchsten im internationalen Vergleich, und <strong>63 Prozent</strong> der Industriebetriebe sehen sich dadurch gegenüber ihren internationalen Konkurrenten strukturell benachteiligt.</p>
+
+    <p><strong>Zweitens: China als Absatzmarkt und verlängerte Werkbank.</strong> China ist heute Konkurrent in der Fahrzeugtechnik, im Maschinenbau, in der Photovoltaik. Der Markt schrumpft als Abnehmer und wächst als Rivale. Die deutschen Exporte in die USA gingen im dritten Quartal 2025 um <strong>16 Prozent</strong> gegenüber dem Vorjahr zurück — ein Vorgeschmack auf strukturell veränderte Handelsverhältnisse.</p>
+
+    <p><strong>Drittens: der amerikanische Sicherheitsschirm.</strong> Er hat die geopolitische Stabilität geliefert, die exportorientiertes Wachstum erst ermöglichte. Er ist transaktional geworden. Sein Preis ist unbekannt.</p>
+
+    <p>Die Zahlen sprechen eine klare Sprache: Die Industrieproduktion ist 2024 um 4,8 Prozent eingebrochen — das neunte Quartal in Folge mit negativen Werten. Im Maschinenbau betrug der Rückgang im Dezember 2025 allein 6,8 Prozent, in der Automobilindustrie 8,9 Prozent. Energieintensive Branchen liegen heute <strong>17,8 Prozent</strong> unter dem Stand von 2021. Und das Gros der Prognosen sieht keine Umkehr: Für 2025 erwartet der BDI den vierten Rückgang in Folge.</p>
+
+    <div class="data-row">
+      <div class="data-cell">
+        <span class="num">−4,8 %</span>
+        <span class="label">Industrieproduktion 2024 gegenüber Vorjahr</span>
+      </div>
+      <div class="data-cell">
+        <span class="num">−17,8 %</span>
+        <span class="label">Energieintensive Branchen seit 2021</span>
+      </div>
+      <div class="data-cell">
+        <span class="num">75 %</span>
+        <span class="label">der Unternehmen nennen Bürokratie als größten Standortnachteil</span>
+      </div>
+      <div class="data-cell">
+        <span class="num">56 %</span>
+        <span class="label">halten ihr Geschäftsmodell für gefährdet</span>
+      </div>
+    </div>
+
+    <p>Hinzu kommt ein <strong>systemisches Innovationsversagen</strong>, das in der öffentlichen Debatte kaum vorkommt: Deutschland ist exzellent im inkrementellen Verbessern bestehender Technologien, aber strukturell schwach bei diskontinuierlichen Sprüngen. Das ist kein Zufall. Es ist das Ergebnis von Finanzierungsstrukturen, Normierungsbürokratie, institutioneller Risikoaversion — und der systematischen Marginalisierung unabhängiger Erfinder zugunsten von Konzernen und Normungsgremien.</p>
+
+    <blockquote>
+      <p>Deutschland produziert Konzepte im Überfluss. Es scheitert nicht an fehlenden Ideen, sondern an einer Systemträgheit, die das Neue konsequent ausbremst, bevor es markttauglich werden kann.</p>
+    </blockquote>
+
+    <h2>II. Das falsche Dilemma</h2>
+
+    <p>Die öffentliche Debatte ist in einem Entweder-Oder gefangen: entweder Deindustrialisierung als unvermeidliches Schicksal hinnehmen, oder durch politischen Willen das alte Modell konservieren. Beide Positionen sind falsch — und beide sind bequem, weil sie keine echte Analyse erfordern.</p>
+
+    <p>Das strukturell richtige Leitbild ist ein Sowohl-als-Auch: <em>Technologische Souveränität in strategischen Wertschöpfungsketten — bei gleichzeitiger Offenheit für globalen Austausch.</em> Eigenständigkeit und Vernetzung, nicht Autarkie oder Abhängigkeit. Ein industrielles Deutschland, das nicht mehr von drei gleichzeitig wegbrechenden Strukturvorteilen abhängt, sondern seine eigenen Stärken — Ingenieurstiefe, Mittelstandskultur, industrielles Erfahrungswissen — neu organisiert.</p>
+
+    <p>Das klingt abstrakt. Es ist es nicht. Es hat konkrete institutionelle, energiepolitische, innovationspolitische und qualifikatorische Konsequenzen.</p>
+
+    <h2>III. Fünf Transformationsachsen</h2>
+
+    <h3>Achse 1 — Energiesystem als Wettbewerbsfrage begreifen</h3>
+
+    <p>Die Energiewende ist kein Selbstzweck. Sie ist ein Instrument — und muss an industrieller Wettbewerbsfähigkeit gemessen werden, nicht an ideologischer Reinheit. Das bedeutet konkret: Der Industriestrompreis ist eine politische Gestaltungsgröße. Die aktuelle Kombination aus hohen Abgaben, unsicherer Netzinfrastruktur und fehlendem CO₂-Preispfad schreckt genau die Investitionen ab, die die Transformation finanzieren würden. Eine DIHK-Studie beziffert die Gesamtkosten der bisherigen Energiewende-Ausrichtung bis 2049 auf 4,8 bis 5,4 Billionen Euro — bei gleichzeitig steigendem Produktionsrückgang.</p>
+
+    <p>Gefragt ist Technologieoffenheit bei der Erzeugung, industrielle Direktlieferverträge (PPAs) als Standardinstrument sowie dezentrale Energiekonzepte für Industrieparks. <strong>82 Prozent</strong> der Unternehmen fordern eine Senkung von Steuern und Abgaben auf den Strompreis — das ist kein Lobbyanliegen, sondern Grundbedingung für Investitionsfähigkeit.</p>
+
+    <h3>Achse 2 — Kritische Rohstoffe als strategische Frage behandeln</h3>
+
+    <p>Die Abhängigkeit von chinesischen Seltenen Erden ist keine Naturtatsache. Sie ist das Ergebnis von Jahrzehnten der Desinteressepolitik. Die Reaktion darauf muss dreispurig sein: europäische Rohstoffpartnerschaften mit Ländern des Globalen Südens (Afrika, Lateinamerika) als strategisches Langfristprojekt; Aufbau einer ernsthaften Recyclinginfrastruktur als Sekundärquelle; gezielte Materialforschung zur Substitution kritischer Abhängigkeiten. Keine dieser Maßnahmen wirkt innerhalb einer Legislaturperiode. Alle drei sind dennoch dringend zu beginnen.</p>
+
+    <h3>Achse 3 — Das Innovationssystem reparieren</h3>
+
+    <p>Dies ist der am meisten unterschätzte Transformationsbedarf — und der politisch unbequemste, weil er etablierte Interessen direkt berührt. Das deutsche Innovationssystem belohnt systematisch Konzerne gegenüber Einzelerfindern, Normierungsgremien gegenüber disruptiven Ideen, Verwaltungskonformität gegenüber technischer Originalität.</p>
+
+    <p>Konkrete Maßnahmen: Ein <em>Inventor's Statute</em>, das unabhängigen Erfindern rechtliche Stellung und Finanzierungszugang sichert. Öffentliche Innovationsagenturen mit echtem Risikokapitalmandat nach DARPA-Vorbild. Reform des Patentsystems: Schutzfristen für KMU und Einzelerfinder verlängern, Klagekosten begrenzen. Öffnung der Normungsprozesse für externe Innovationsträger — mit Stimmrecht, nicht nur als Anhörungsparteien.</p>
+
+    <p>Der tiefere Punkt: Diskontinuierliche Innovation entsteht nicht in Konzernlabors. Sie entsteht an den Rändern des Systems. Wer die Ränder systematisch ausblendet, verliert die Zukunft an die, die sie nicht ausblenden.</p>
+
+    <h3>Achse 4 — Mittelstand transformieren, nicht musealisieren</h3>
+
+    <p>Der Mittelstand ist Deutschlands eigentlicher Industriekern. Er wird jedoch behandelt wie ein Denkmal statt wie ein lebendiger Organismus. <strong>Jedes fünfte Industrieunternehmen</strong> plant für 2025 die Verlagerung von Produktion ins Ausland — nicht aus strategischer Überzeugung, sondern weil Bürokratie, Energiekosten und fehlende Planungssicherheit die Standortentscheidung erzwingen. 75 Prozent der Unternehmen nennen die Überregulierung inzwischen als größten Standortnachteil — erstmals noch vor den Energiekosten.</p>
+
+    <p>Transformation des Mittelstands bedeutet: Digitalisierung nicht als Compliance-Pflicht, sondern als Wettbewerbswerkzeug. Systematische Lösungen für das Nachfolgeproblem — und hier verdient ein Instrument besondere Erwähnung, das seit sieben Jahren auf seine gesetzliche Umsetzung wartet: die <strong>Gesellschaft mit gebundenem Vermögen (GmgV)</strong>. Das Konzept ist einfach: Gewinne bleiben im Unternehmen, werden nicht ausgeschüttet, das Unternehmen dient seinem Zweck — nicht dem kurzfristigen Kapitalinteresse seiner Eigentümer. Für Mittelständler ohne Nachfolger, für werteorientierte Gründer, für Sozialunternehmen wäre das die dringend benötigte Rechtsform. Der Koalitionsvertrag der Ampel 2021 hat sie versprochen — nicht umgesetzt. Der Koalitionsvertrag von CDU/CSU und SPD 2025 verspricht sie erneut. Im März 2026 liegt ein Rahmenkonzept vor — ausdrücklich als „noch nicht in der Bundesregierung abgestimmter Diskussionsvorschlag". Kein Gesetzentwurf, kein Zeitplan. Das ist kein Zufall: Es gibt eine gut organisierte Lobby <em>gegen</em> die GmgV — weil ein Unternehmen ohne Ausschüttungsdruck strukturell wettbewerbsstärker ist als eines mit. Zusätzlich bleiben MBO-Finanzierung und genossenschaftliche Strukturen wichtige ergänzende Instrumente. Kooperationsplattformen statt Einzelkämpfertum in F&amp;E. Zugang zu Risikokapital ohne Silicon-Valley-Kulturimport.</p>
+
+    <h3>Achse 5 — Qualifikation als Transformationsvoraussetzung</h3>
+
+    <p>Alle vorangegangenen Achsen brauchen Menschen, die sie tragen können. Das duale System ist stark — aber es muss weiterentwickelt werden: Mechatronik, Systemdenken, digitale Kompetenz als Standardbestandteil beruflicher Ausbildung. Qualifikationsübergänge ermöglichen: lebenslanges Lernen als organisierter Prozess, nicht als Slogan. Zuwanderung gezielt auf identifizierte Qualifikationslücken ausrichten — ohne die Integration der bereits Anwesenden zu vernachlässigen.</p>
+
+    <h2>IV. Das eigentliche Hindernis</h2>
+
+    <p>Alle Transformationskonzepte — dieses eingeschlossen — scheitern nicht an fehlenden Ideen. Sie scheitern an Systemträgheit: regulatorischer Pfadabhängigkeit, lobbystischer Besitzstandswahrung, dem kurzen politischen Zeithorizont einer Legislaturperiode gegenüber den langen Investitionszyklen industrieller Systeme (15 bis 30 Jahre).</p>
+
+    <p>Das führt zu einem institutionellen Problem, das selten beim Namen genannt wird: Wer trägt die Transformation eigentlich?</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Ebene</th>
+            <th>Nominelle Rolle</th>
+            <th>Strukturelles Problem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Bundesregierung</td>
+            <td>Strategische Rahmensetzung</td>
+            <td class="accent">Ressortdenken, Koalitionskompromisse</td>
+          </tr>
+          <tr>
+            <td>Länder</td>
+            <td>Industriepolitische Umsetzung</td>
+            <td class="accent">Unterschiedliche Kapazitäten, Kirchturmdenken</td>
+          </tr>
+          <tr>
+            <td>BDI / VDMA</td>
+            <td>Interessenaggregation</td>
+            <td class="accent">Dominiert von Großkonzernen</td>
+          </tr>
+          <tr>
+            <td>Wissenschaft</td>
+            <td>Technologietransfer</td>
+            <td class="accent">Zu akademisch, zu langsam</td>
+          </tr>
+          <tr>
+            <td>Unabhängige Erfinder</td>
+            <td>Diskontinuierliche Innovation</td>
+            <td class="accent">Strukturell ausgeschlossen</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Ein realistischer institutioneller Vorschlag wäre ein <strong>Transformationsrat</strong> außerhalb der Ministeriumskontrolle: mit rotierender Besetzung (kein Dauerlobbymandat), Pflichtanteil für unabhängige Technologieträger, direktem Parlamentsmandat und transparenter Entscheidungsdokumentation. Das ist kein technikokratischer Beirat mehr — es wäre ein institutionell eigenständiger Akteur.</p>
+
+    <h2>V. Zeitachse</h2>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Horizont</th>
+            <th>Prioritäten</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>0 – 3 Jahre</td>
+            <td>Industriestrompreis stabilisieren · Bürokratieabbau für Gründungen und Investitionen · Rohstoffpartnerschaften initiieren · Innovationsrat einsetzen</td>
+          </tr>
+          <tr>
+            <td>3 – 10 Jahre</td>
+            <td>Innovationssystem strukturell reformieren · Mittelstandsdigitalisierung · Qualifikationsoffensive · Recyclinginfrastruktur ausbauen</td>
+          </tr>
+          <tr>
+            <td>10 – 25 Jahre</td>
+            <td>Technologische Souveränität in Schlüsselsektoren · neue Exportstärken aufgebaut · Rohstoffabhängigkeiten reduziert</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>VI. Die europäische Dimension: Führen ohne zu dominieren</h2>
+
+    <p>Die industrielle Transformation Deutschlands ist keine rein nationale Angelegenheit. Und sie darf es nicht sein. Europa ist der unverzichtbare Rahmen — aber nur dann, wenn Deutschland diesen Rahmen aktiv mitgestaltet, statt auf europäischen Konsens zu warten. Beides gleichzeitig: nationale Entschlossenheit <em>und</em> europäische Verantwortung.</p>
+
+    <p>Die Diagnose liegt vor. Mario Draghi hat sie 2024 auf 383 Seiten formuliert: Europa verliert den Anschluss — technologisch, energiepolitisch, geopolitisch. Sein Bericht fordert jährliche Zusatzinvestitionen von 750 bis 800 Milliarden Euro, entsprechend 4 bis 5 Prozent des EU-BIP. Ein Jahr nach der Veröffentlichung sind nach Schätzungen unabhängiger Beobachter gerade einmal <strong>10 bis 11 Prozent</strong> der Empfehlungen umgesetzt. Draghi selbst drängte die europäischen Regierungen, endlich zu handeln. Die EU-Maschinerie arbeitet auf Sparflamme — während die strukturelle Krise auf Hochtouren läuft.</p>
+
+    <blockquote>
+      <p>Europa braucht Deutschland als funktionierende Industrienation — nicht als Exporteur seiner eigenen Krise.</p>
+    </blockquote>
+
+    <p>Das ist der eigentliche Einsatz. Solange Deutschland in innenpolitischen Debatten über Bürokratieabbau und Energiepreise festhängt, fehlt Europa sein industrielles Gravitationszentrum. Die deutsch-französische Achse, die traditionell große europäische Initiativen angestoßen hat, ist geschwächt — beide Länder mit sich selbst beschäftigt, beide unfähig, die politische Kraft aufzubringen, die eine Neuausrichtung Europas erfordern würde.</p>
+
+    <h3>Was Europa leisten kann — und was nicht</h3>
+
+    <p>Es gibt Dinge, die nur auf europäischer Ebene funktionieren: die Vollendung des Kapitalmarktbinnenmarkts (Capital Markets Union / Savings and Investment Union), der einheitliche Zugang zu strategischen Rohstoffen, koordinierte Handelspolitik gegenüber China und den USA, gemeinsame Verteidigungsinvestitionen. Diese Hebel übersteigen die Möglichkeiten jedes einzelnen Mitgliedsstaats — auch die Deutschlands.</p>
+
+    <p>Konkret überzeugend ist der Vorschlag eines <em>28th Regime</em>: Ein optionales europäisches Unternehmensstatut, das Gründungen erlaubt, sofort in allen EU-Ländern tätig zu sein, ohne sich durch 27 nationale Rechtssysteme zu arbeiten. Das würde Kapital halten, das heute nach London, New York oder Singapur abwandert. Noch nicht umgesetzt — aber im Competitiveness Compass der Kommission verankert.</p>
+
+    <p>Gleichzeitig gibt es Dinge, die Europa strukturell nicht leisten kann und nicht leisten sollte: nationale Industriepolitik ersetzen, Energiepreise für Standortentscheidungen einzelner Betriebe administrieren, Innovationswege von Brüssel aus vorschreiben. Der EU-Dschungel entsteht genau dort, wo europäische Regulierung in nationale Zuständigkeiten eindringt, ohne die operativen Voraussetzungen zu kennen oder zu schaffen.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Hebel</th>
+            <th>Europäische Ebene</th>
+            <th>Nationale Ebene</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Kapitalmarkt</td>
+            <td class="accent">Savings &amp; Investment Union</td>
+            <td>Risikokapitalzugang für KMU</td>
+          </tr>
+          <tr>
+            <td>Rohstoffe</td>
+            <td class="accent">Gemeinsame Beschaffung, Critical Raw Materials Act</td>
+            <td>Recyclinginfrastruktur, Materialforschung</td>
+          </tr>
+          <tr>
+            <td>Energie</td>
+            <td class="accent">Koordinierter CO₂-Preispfad, Netzausbau</td>
+            <td>Industriestrompreis, PPAs, Eigenversorgung</td>
+          </tr>
+          <tr>
+            <td>Innovation</td>
+            <td class="accent">28th Regime, Horizon-Programm</td>
+            <td>Inventor's Statute, DARPA-Modell</td>
+          </tr>
+          <tr>
+            <td>Handel</td>
+            <td class="accent">Zollpolitik, Reziprozität gegenüber USA/China</td>
+            <td>Exportförderung, Marktzugangsstrategie</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Deutschlands Rolle: Vorangehen, nicht warten</h3>
+
+    <p>Die entscheidende Frage ist nicht, ob Europa die Transformation trägt — sondern wer in Europa sie antreibt. Deutschland hat dafür die industrielle Substanz, die institutionelle Tiefe und das technologische Know-how. Was es nicht hat: den politischen Willen, Führung zu übernehmen, bevor der europäische Konsens fertig geknüpft ist.</p>
+
+    <p>Das Muster muss sich umkehren. Nicht: auf Brüssel warten und dann klagen, dass die Richtlinien nicht passen. Sondern: national handeln, europäische Standards mitschreiben, Koalitionen der Willigen organisieren — und den Beweis erbringen, dass industrielle Transformation gelingt. Ein Deutschland, das seine eigene Energiefrage löst, seine eigene Innovationspolitik erneuert und seinen Mittelstand transformiert, ist das stärkste Argument für eine europäische Industriestrategie, das es geben kann.</p>
+
+    <p>Europa braucht keine deutschen Belehrungen. Es braucht ein deutsches Beispiel.</p>
+
+    <h2>VII. Schluss: Was wirklich fehlt</h2>
+
+    <p>Eine industrielle Transformation Deutschlands ist möglich. Die Voraussetzungen — technisches Know-how, qualifizierte Fachkräfte, Mittelstandskultur, Kapitaltiefe — sind vorhanden. Was fehlt, ist keine Ressource. Es ist eine <em>Korrektur des Narrativs</em>, die notwendig ist.</p>
+
+    <p>Deutschland muss das Scheitern als Lernprozess rehabilitieren, nicht als Schande. Es muss die institutionelle Fähigkeit entwickeln, Widersprüche auszuhalten — Offenheit und Souveränität, Globalisierung und strategische Eigenständigkeit, Tradition und Disruption — anstatt zwischen ihnen hin- und herzupendeln.</p>
+
+    <p>Das Sowohl-als-Auch ist kein Kompromiss. Es ist die einzige realistische Antwort auf eine Situation, in der keine der beiden Seiten des klassischen Entweder-Oder stimmt. Und es gilt auch für Europas Rolle: nicht Bremse, nicht Alibi — sondern Verstärker einer nationalen Entschlossenheit, die Europa selbst dringend braucht.</p>
+
+    <div class="footnotes">
+      <p><strong>Quellen:</strong></p>
+      <p>Agora Energiewende: <em>Die Energiewende in Deutschland – Stand der Dinge 2025</em> (Januar 2026)</p>
+      <p>BDI / Verbandsbuero.de: <em>Deutsche Industrie im freien Fall – Produktionsrückgang 2025</em> (Dezember 2025)</p>
+      <p>DIHK: <em>IHK-Energiewende-Barometer 2025</em> (Juli 2025); <em>Aktuelle Energiewende-Politik kostet bis zu 5,4 Billionen Euro</em> (September 2025)</p>
+      <p>Alvarez &amp; Marsal / DGMF: <em>Wettbewerbsindex 2025</em> (April 2025)</p>
+      <p>IW / Wirtschaftsvereinigung der Grünen: <em>Transformationskompass 2025</em> (Juli 2025)</p>
+      <p>Hessischer Industrie- und Handelskammertag: <em>IHK-Energiewende-Barometer 2025 Hessen</em> (Dezember 2025)</p>
+      <p>int-acc.de / Gesamtmetall: <em>Produzierendes Gewerbe 2025 – Rückgang der Industrieproduktion</em></p>
+      <p>Mario Draghi: <em>The Future of European Competitiveness</em>, Europäische Kommission (September 2024)</p>
+      <p>Europäische Kommission: <em>Competitiveness Compass</em> (Januar 2025)</p>
+      <p>Contextualsolutions.de / Deutsche Bank: <em>Draghi Report – One Year On</em> (September 2025)</p>
+      <p>Bruegel: <em>Draghi on a shoestring: the European Commission's Competitiveness Compass</em> (Februar 2025)</p>
+      <p>beyond-decay.org: <a href="https://beyond-decay.org/legislative-lobby_de.html" style="color:var(--accent);text-decoration:none;">Die legislative Lobby</a> — Zur Gesellschaft mit gebundenem Vermögen und den Mechanismen ihrer Blockade (April 2026)</p>
+    </div>
+
+  </article>
+
+  <!-- ═══════════════════════════════ EN ═══════════════════════════════ -->
+
+  <article data-lang="en">
+
+    <h2>I. The Exhaustion of a Model</h2>
+
+    <p>For decades Germany thrived on three structural advantages that are now eroding simultaneously. This is not a cyclical dip. It is the end of a business model.</p>
+
+    <p><strong>First: cheap Russian gas.</strong> Geopolitically eliminated. The energy cost structure of German industry has changed permanently — not temporarily. Germany's energy prices now rank among the highest in any international comparison, and <strong>63 percent</strong> of industrial companies report a structural competitive disadvantage as a result.</p>
+
+    <p><strong>Second: China as export market and extended workbench.</strong> China is now a competitor in automotive engineering, mechanical engineering, and photovoltaics. The market is shrinking as a buyer and growing as a rival. German industrial exports to the United States fell by <strong>16 percent</strong> year-on-year in Q3 2025 — a foretaste of structurally altered trade relations.</p>
+
+    <p><strong>Third: the American security umbrella.</strong> It provided the geopolitical stability that made export-led growth possible in the first place. It has become transactional. Its price is unknown.</p>
+
+    <p>The figures speak plainly: industrial output contracted by 4.8 percent in 2024 — the ninth consecutive quarter of negative figures. The mechanical engineering sector fell 6.8 percent in December 2025 alone; the automotive sector fell 8.9 percent. Energy-intensive industries now stand <strong>17.8 percent</strong> below their 2021 levels. And the bulk of forecasts see no reversal: for 2025, the BDI expects a fourth consecutive year of decline.</p>
+
+    <div class="data-row">
+      <div class="data-cell">
+        <span class="num">−4.8 %</span>
+        <span class="label">Industrial output 2024 versus prior year</span>
+      </div>
+      <div class="data-cell">
+        <span class="num">−17.8 %</span>
+        <span class="label">Energy-intensive industries since 2021</span>
+      </div>
+      <div class="data-cell">
+        <span class="num">75 %</span>
+        <span class="label">of companies cite bureaucracy as the greatest locational disadvantage</span>
+      </div>
+      <div class="data-cell">
+        <span class="num">56 %</span>
+        <span class="label">regard their own business model as at risk</span>
+      </div>
+    </div>
+
+    <p>Added to this is a <strong>systemic innovation failure</strong> that rarely features in public debate: Germany excels at incremental improvement of existing technologies but is structurally weak at discontinuous leaps. This is no accident. It is the product of financing structures, standardisation bureaucracy, institutional risk aversion — and the systematic marginalisation of independent inventors in favour of corporations and standards committees.</p>
+
+    <blockquote>
+      <p>Germany produces concepts in abundance. It fails not for want of ideas, but because of a systemic inertia that consistently stops the new from becoming market-ready.</p>
+    </blockquote>
+
+    <h2>II. The False Dilemma</h2>
+
+    <p>Public debate is trapped in an either-or: either accept deindustrialisation as inevitable fate, or use political will to preserve the old model. Both positions are wrong — and both are comfortable, because neither requires genuine analysis.</p>
+
+    <p>The structurally correct guiding principle is a both-and: <em>technological sovereignty in strategic value chains — combined with openness to global exchange.</em> Self-sufficiency and interconnection, not autarky or dependency. An industrial Germany no longer dependent on three simultaneously collapsing structural advantages, but one that reorganises its own strengths — engineering depth, Mittelstand culture, accumulated industrial knowledge — in a new form.</p>
+
+    <p>That sounds abstract. It is not. It has concrete institutional, energy-policy, innovation-policy, and skills-policy consequences.</p>
+
+    <h2>III. Five Axes of Transformation</h2>
+
+    <h3>Axis 1 — Understand Energy as a Competitiveness Question</h3>
+
+    <p>The energy transition is not an end in itself. It is an instrument — and must be measured by industrial competitiveness, not ideological purity. Concretely: the industrial electricity price is a political variable. The current combination of high levies, uncertain grid infrastructure, and an unclear carbon pricing path deters precisely the investments that would finance the transformation. A DIHK study puts the total cost of the current energy transition approach through 2049 at 4.8 to 5.4 trillion euros — alongside a continuing production decline.</p>
+
+    <p>What is needed is technology openness in generation, industrial power purchase agreements (PPAs) as a standard instrument, and decentralised energy concepts for industrial parks. <strong>82 percent</strong> of companies demand a reduction in taxes and levies on electricity prices — not a lobbying concern, but a basic condition for investment capacity.</p>
+
+    <h3>Axis 2 — Treat Critical Raw Materials as a Strategic Question</h3>
+
+    <p>Dependence on Chinese rare earths is not a fact of nature. It is the result of decades of policy indifference. The response must run on three tracks: European raw materials partnerships with countries in the Global South as a long-term strategic project; the development of serious recycling infrastructure as a secondary source; and targeted materials research to substitute critical dependencies. None of these measures will work within a single legislative term. All three are nonetheless urgent to begin.</p>
+
+    <h3>Axis 3 — Repair the Innovation System</h3>
+
+    <p>This is the most underestimated transformation need — and politically the most uncomfortable, because it directly touches established interests. The German innovation system systematically rewards corporations over individual inventors, standards committees over disruptive ideas, administrative compliance over technical originality.</p>
+
+    <p>Concrete measures: an <em>Inventor's Statute</em> securing legal standing and financing access for independent inventors. Public innovation agencies with a genuine risk-capital mandate on the DARPA model. Reform of the patent system: extend protection periods for SMEs and individual inventors, limit litigation costs. Open standardisation processes to external innovators — with voting rights, not merely as parties to be consulted.</p>
+
+    <p>The deeper point: discontinuous innovation does not arise in corporate laboratories. It arises at the margins of the system. Those who systematically exclude the margins lose the future to those who do not.</p>
+
+    <h3>Axis 4 — Transform the Mittelstand, Do Not Museify It</h3>
+
+    <p>The Mittelstand is Germany's real industrial core. It is, however, treated like a monument rather than a living organism. <strong>One in five industrial companies</strong> planned to relocate production abroad in 2025 — not from strategic conviction, but because bureaucracy, energy costs, and absent planning certainty force the locational decision. 75 percent of companies now cite over-regulation as the greatest locational disadvantage — for the first time ahead of energy costs.</p>
+
+    <p>Transformation of the Mittelstand means: digitalisation as a competitive tool, not a compliance obligation. Systematic solutions to the succession problem — and one instrument deserves particular mention here, one that has been waiting for its legal implementation for seven years: the <strong>Gesellschaft mit gebundenem Vermögen (GmgV)</strong>, or company with tied assets. The concept is straightforward: profits remain in the company, cannot be distributed, and the company serves its purpose — not the short-term capital interests of its owners. For Mittelstand firms without successors, for value-driven founders, for social enterprises, this would be the urgently needed legal form. The 2021 coalition agreement promised it — not implemented. The 2025 CDU/CSU and SPD coalition agreement promises it again. In March 2026 a framework concept was presented — explicitly as a discussion paper "not yet coordinated within the federal government". No bill, no timeline. This is no accident: there is a well-organised lobby <em>against</em> the GmgV — because a company without distribution pressure is structurally more competitive than one with. MBO financing and cooperative structures remain important complementary instruments. Cooperation platforms instead of lone-fighter approaches in R&amp;D. Access to risk capital without Silicon Valley cultural import.</p>
+
+    <h3>Axis 5 — Qualifications as a Prerequisite for Transformation</h3>
+
+    <p>All preceding axes require people capable of carrying them. The dual system is strong — but must be developed further: mechatronics, systems thinking, digital competence as standard components of vocational training. Enable qualification transitions: lifelong learning as an organised process, not a slogan. Direct immigration specifically at identified skills shortages — without neglecting the integration of those already present.</p>
+
+    <h2>IV. The Real Obstacle</h2>
+
+    <p>All transformation concepts — this one included — fail not for want of ideas. They fail because of systemic inertia: regulatory path dependency, lobbying to preserve vested interests, the short political time horizon of a legislative term against the long investment cycles of industrial systems (15 to 30 years).</p>
+
+    <p>This gives rise to an institutional problem that is rarely named directly: who actually carries the transformation?</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Level</th>
+            <th>Nominal role</th>
+            <th>Structural problem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Federal Government</td>
+            <td>Strategic framework setting</td>
+            <td class="accent">Ministerial silo thinking, coalition compromises</td>
+          </tr>
+          <tr>
+            <td>Federal States</td>
+            <td>Industrial policy implementation</td>
+            <td class="accent">Varying capacities, parochialism</td>
+          </tr>
+          <tr>
+            <td>BDI / VDMA</td>
+            <td>Interest aggregation</td>
+            <td class="accent">Dominated by large corporations</td>
+          </tr>
+          <tr>
+            <td>Academia</td>
+            <td>Technology transfer</td>
+            <td class="accent">Too academic, too slow</td>
+          </tr>
+          <tr>
+            <td>Independent Inventors</td>
+            <td>Discontinuous innovation</td>
+            <td class="accent">Structurally excluded</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>A realistic institutional proposal would be a <strong>Transformation Council</strong> outside ministerial control: with rotating membership (no permanent lobby mandate), a mandatory share of independent technology holders, a direct parliamentary mandate, and transparent decision documentation. That is no longer a technocratic advisory body — it would be an institutionally independent actor.</p>
+
+    <h2>V. Timeline</h2>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Horizon</th>
+            <th>Priorities</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>0 – 3 years</td>
+            <td>Stabilise industrial electricity price · Reduce bureaucracy for startups and investment · Initiate raw materials partnerships · Establish innovation council</td>
+          </tr>
+          <tr>
+            <td>3 – 10 years</td>
+            <td>Structurally reform the innovation system · Mittelstand digitalisation · Skills offensive · Build recycling infrastructure</td>
+          </tr>
+          <tr>
+            <td>10 – 25 years</td>
+            <td>Technological sovereignty in key sectors · New export strengths established · Raw material dependencies reduced</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>VI. The European Dimension: Leading Without Dominating</h2>
+
+    <p>Germany's industrial transformation is not a purely national matter. And it must not be. Europe is the indispensable framework — but only if Germany actively shapes that framework rather than waiting for European consensus. Both at once: national resolve <em>and</em> European responsibility.</p>
+
+    <p>The diagnosis exists. Mario Draghi formulated it in 2024 across 383 pages: Europe is falling behind — technologically, in energy policy, geopolitically. His report calls for additional annual investment of 750 to 800 billion euros, equivalent to 4 to 5 percent of EU GDP. One year after publication, independent observers estimate that just <strong>10 to 11 percent</strong> of the recommendations have been implemented. Draghi himself pressed European leaders to act. The EU machinery is running at minimum speed — while the structural crisis is running at full throttle.</p>
+
+    <blockquote>
+      <p>Europe needs Germany as a functioning industrial nation — not as an exporter of its own crisis.</p>
+    </blockquote>
+
+    <p>That is the real stake. As long as Germany is mired in domestic debates over bureaucracy reduction and energy prices, Europe loses its industrial centre of gravity. The Franco-German axis that traditionally drove bold European initiatives is weakened — both countries preoccupied with themselves, both unable to muster the political force that a reorientation of Europe would require.</p>
+
+    <h3>What Europe Can Deliver — and What It Cannot</h3>
+
+    <p>Some things only work at the European level: completing the Capital Markets Union (now the Savings and Investment Union), unified access to strategic raw materials, coordinated trade policy towards China and the United States, joint defence investment. These levers exceed the capacity of any individual member state — including Germany.</p>
+
+    <p>One concretely compelling proposal is the <em>28th Regime</em>: an optional European company statute that would allow newly founded companies to operate immediately across all EU countries without navigating 27 national legal systems. That would retain capital that today migrates to London, New York, or Singapore. Not yet implemented — but anchored in the Commission's Competitiveness Compass.</p>
+
+    <p>At the same time there are things Europe structurally cannot and should not do: replace national industrial policy, administer energy prices for the locational decisions of individual companies, prescribe innovation pathways from Brussels. The EU jungle grows precisely where European regulation encroaches on national competences without knowing or creating the operational preconditions.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Lever</th>
+            <th>European level</th>
+            <th>National level</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Capital markets</td>
+            <td class="accent">Savings &amp; Investment Union</td>
+            <td>Risk capital access for SMEs</td>
+          </tr>
+          <tr>
+            <td>Raw materials</td>
+            <td class="accent">Joint procurement, Critical Raw Materials Act</td>
+            <td>Recycling infrastructure, materials research</td>
+          </tr>
+          <tr>
+            <td>Energy</td>
+            <td class="accent">Coordinated carbon pricing path, grid expansion</td>
+            <td>Industrial electricity price, PPAs, self-supply</td>
+          </tr>
+          <tr>
+            <td>Innovation</td>
+            <td class="accent">28th Regime, Horizon programme</td>
+            <td>Inventor's Statute, DARPA model</td>
+          </tr>
+          <tr>
+            <td>Trade</td>
+            <td class="accent">Tariff policy, reciprocity towards US/China</td>
+            <td>Export promotion, market access strategy</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Germany's Role: Go First, Don't Wait</h3>
+
+    <p>The decisive question is not whether Europe carries the transformation — but who in Europe drives it. Germany has the industrial substance, the institutional depth, and the technological know-how for that role. What it lacks is the political will to take the lead before European consensus has been fully stitched together.</p>
+
+    <p>The pattern must reverse. Not: wait for Brussels, then complain that the directives don't fit. But: act nationally, help write European standards, organise coalitions of the willing — and provide the proof that industrial transformation works. A Germany that solves its own energy question, renews its own innovation policy, and transforms its Mittelstand is the strongest argument for a European industrial strategy that could exist.</p>
+
+    <p>Europe does not need German lectures. It needs a German example.</p>
+
+    <h2>VII. Conclusion: What Is Actually Missing</h2>
+
+    <p>Industrial transformation of Germany is possible. The prerequisites — technical know-how, skilled workers, Mittelstand culture, depth of capital — are present. What is missing is not a resource. It is a <em>correction of the narrative</em> that is needed.</p>
+
+    <p>Germany must rehabilitate failure as a learning process, not as a disgrace. It must develop the institutional capacity to hold contradictions — openness and sovereignty, globalisation and strategic self-reliance, tradition and disruption — rather than oscillating between them.</p>
+
+    <p>The both-and is not a compromise. It is the only realistic answer to a situation in which neither side of the classic either-or holds. And it applies to Europe's role as well: not brake, not alibi — but amplifier of a national resolve that Europe itself urgently needs.</p>
+
+    <div class="footnotes">
+      <p><strong>Sources:</strong></p>
+      <p>Agora Energiewende: <em>Die Energiewende in Deutschland – Stand der Dinge 2025</em> (January 2026)</p>
+      <p>BDI / Verbandsbuero.de: <em>Deutsche Industrie im freien Fall – Produktionsrückgang 2025</em> (December 2025)</p>
+      <p>DIHK: <em>IHK-Energiewende-Barometer 2025</em> (July 2025); <em>Aktuelle Energiewende-Politik kostet bis zu 5,4 Billionen Euro</em> (September 2025)</p>
+      <p>Alvarez &amp; Marsal / DGMF: <em>Wettbewerbsindex 2025</em> (April 2025)</p>
+      <p>IW / Wirtschaftsvereinigung der Grünen: <em>Transformationskompass 2025</em> (July 2025)</p>
+      <p>Hessischer Industrie- und Handelskammertag: <em>IHK-Energiewende-Barometer 2025 Hessen</em> (December 2025)</p>
+      <p>Mario Draghi: <em>The Future of European Competitiveness</em>, European Commission (September 2024)</p>
+      <p>European Commission: <em>Competitiveness Compass</em> (January 2025)</p>
+      <p>Contextualsolutions.de / Deutsche Bank: <em>Draghi Report – One Year On</em> (September 2025)</p>
+      <p>Bruegel: <em>Draghi on a shoestring: the European Commission's Competitiveness Compass</em> (February 2025)</p>
+      <p>beyond-decay.org: <a href="https://beyond-decay.org/legislative-lobby_en.html" style="color:var(--accent);text-decoration:none;">The Legislative Lobby</a> — On the Gesellschaft mit gebundenem Vermögen and the mechanisms of its blockade (April 2026)</p>
+    </div>
+
+  </article>
+
+</main>
+
+<script>
+  // ── Language ──
+  let currentLang = 'de';
+  function setLang(lang) {
+    currentLang = lang;
+    document.body.className = document.body.className.replace(/lang-\w+/, '') + ' lang-' + lang;
+    document.documentElement.lang = lang;
+    document.getElementById('btn-de').classList.toggle('lang-active', lang === 'de');
+    document.getElementById('btn-en').classList.toggle('lang-active', lang === 'en');
+  }
+  setLang('de');
+
+  // ── Theme ──
+  function toggleTheme() {
+    const b = document.body;
+    b.dataset.theme = b.dataset.theme === 'dark' ? 'light' : 'dark';
+  }
+
+  // ── Font size ──
+  let size = 17;
+  function changeSize(delta) {
+    size = Math.min(22, Math.max(13, size + delta));
+    document.documentElement.style.setProperty('--base-size', size + 'px');
+  }
+</script>
+</body>
+</html>

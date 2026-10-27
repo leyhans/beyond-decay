@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Das System, das sich selbst reproduziert — beyond decay</title>
+<meta name="description" content="Deutschlands Forschungs- und Innovationslandschaft: Wer bekommt das Geld, wer erbringt den Nachweis — und wer hat strukturell keinen Zugang.">
+<link rel="alternate" hreflang="en" href="https://beyond-decay.org/the-system-that-reproduces-itself_en.html">
+<link rel="alternate" hreflang="de" href="https://beyond-decay.org/das-system-das-sich-selbst-reproduziert_de.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a; --text: #e8e6e3; --accent: #c9a962; --muted: #888; --border: #2a2a2a;
+    --font-body: 'IBM Plex Serif', Georgia, serif; --font-ui: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace; --size: 1.05rem;
+  }
+  body.light { --bg: #f5f5f5; --text: #1a1a1a; --accent: #8a7340; --muted: #666; --border: #ddd; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: var(--size); line-height: 1.8; transition: background 0.3s, color 0.3s; }
+  body.in-iframe header { display: none; }
+  header { border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-ui); flex-wrap: wrap; gap: 0.5rem; }
+  header a { color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.05em; }
+  .header-right { display: flex; gap: 1rem; align-items: center; }
+  .lang-btn, .theme-btn, .size-btn { background: none; border: 1px solid var(--border); color: var(--muted); font-family: var(--font-mono); font-size: 0.75rem; padding: 0.25rem 0.6rem; cursor: pointer; border-radius: 2px; transition: color 0.2s, border-color 0.2s; }
+  .lang-btn:hover, .theme-btn:hover, .size-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .size-controls { display: flex; gap: 0.3rem; }
+  main { max-width: 720px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+  .essay-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2rem; }
+  h1 { font-family: var(--font-body); font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 300; color: var(--accent); line-height: 1.25; margin-bottom: 0.5rem; }
+  .subtitle { font-family: var(--font-ui); font-size: 1rem; color: var(--muted); font-weight: 300; margin-bottom: 2.5rem; font-style: italic; }
+  .meta { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); margin-bottom: 3rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+  p { margin-bottom: 1.5rem; }
+  .lead { font-size: 1.15rem; font-weight: 400; font-style: italic; color: var(--text); margin-bottom: 2rem; padding-left: 1.2rem; border-left: 2px solid var(--accent); }
+  h2 { font-family: var(--font-ui); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 3rem 0 1.2rem; }
+  blockquote { border-left: 2px solid var(--accent); padding-left: 1.2rem; margin: 2rem 0; color: var(--muted); font-style: italic; }
+  .data-row { font-family: var(--font-mono); font-size: 0.8rem; border-bottom: 1px solid var(--border); padding: 0.6rem 0; display: grid; grid-template-columns: 2fr 1fr 1fr 2fr; gap: 1rem; color: var(--text); }
+  .data-row.header { color: var(--accent); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; border-bottom: 1px solid var(--accent); }
+  .data-table { margin: 2rem 0; }
+  footer { border-top: 1px solid var(--border); padding: 2rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); max-width: 720px; margin: 0 auto; }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .footer-section { margin-bottom: 1.2rem; }
+  .footer-label { text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+</style>
+</head>
+<body>
+<script>
+  try { if (window.self !== window.top) document.body.classList.add('in-iframe'); } catch(e) {}
+  if (localStorage.getItem('bd-theme') === 'light') document.body.classList.add('light');
+  const sz = localStorage.getItem('bd-size');
+  if (sz) document.documentElement.style.fontSize = sz;
+  function toggleTheme() { document.body.classList.toggle('light'); localStorage.setItem('bd-theme', document.body.classList.contains('light') ? 'light' : 'dark'); }
+  function adjustSize(level) { const sizes = ['13px','15px','16px','18px','21px']; const s = sizes[level+1] || '16px'; document.documentElement.style.fontSize = s; localStorage.setItem('bd-size', s); }
+</script>
+
+<header>
+  <a href="home.html">beyond-decay.org</a>
+  <div class="header-right">
+    <div class="size-controls">
+      <button class="size-btn" onclick="adjustSize(-1)">A−</button>
+      <button class="size-btn" onclick="adjustSize(0)">A</button>
+      <button class="size-btn" onclick="adjustSize(1)">A+</button>
+      <button class="size-btn" onclick="adjustSize(2)">A++</button>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">◑</button>
+    <a href="the-system-that-reproduces-itself_en.html"><button class="lang-btn">EN</button></a>
+  </div>
+</header>
+
+<main>
+  <div class="essay-label">Essay der Reihe beyond decay</div>
+  <h1>Das System, das sich selbst reproduziert</h1>
+  <div class="subtitle">Deutschlands Forschungs- und Innovationslandschaft: Wer bekommt das Geld, wer erbringt den Nachweis — und wer hat strukturell keinen Zugang</div>
+  <div class="meta">März 2026 · Autor: Claude (Anthropic)</div>
+
+  <p class="lead">
+    Deutschland gibt jährlich mehr als 20 Milliarden Euro Steuermittel für Forschung und Innovation aus. Die Frage, ob dieses Geld sinnvoll eingesetzt wird, stellt kaum jemand — zumindest nicht öffentlich, zumindest nicht mit Zahlen. Das liegt nicht daran, dass die Frage keine Antwort hätte. Es liegt daran, dass das System strukturell so gebaut ist, dass sie schwer zu stellen ist.
+  </p>
+
+  <h2>I. Die Architektur</h2>
+
+  <p>
+    Das deutsche Forschungs- und Innovationssystem besteht aus mindestens fünf Ebenen, die sich überlappen, gegenseitig finanzieren und gemeinsam gegenüber der Politik auftreten. An der Spitze stehen die vier großen außeruniversitären Forschungsorganisationen: Max-Planck-Gesellschaft, Helmholtz-Gemeinschaft, Fraunhofer-Gesellschaft und Leibniz-Gemeinschaft. Darunter operieren Förderorganisationen wie die Deutsche Forschungsgemeinschaft und ein Dutzend Projektträger. An der Basis schließlich — oder eigentlich am Rand — finden sich Innovationsagenturen auf Bundes- und Landesebene: SPRIN-D, Bayern Innovativ, die Innovationsagentur Baden-Württemberg und ihre Pendants in allen anderen Bundesländern.
+  </p>
+
+  <p>
+    Zusammen verwalten diese Institutionen Budgets von insgesamt weit über 20 Milliarden Euro jährlich. Fast ausnahmslos aus öffentlichen Mitteln. Fast ausnahmslos mit garantierten Zuwächsen: Seit 2005 sichert der Pakt für Forschung und Innovation den großen Organisationen jährliche Budgetsteigerungen — zuerst fünf Prozent, dann drei Prozent. Unabhängig von Ergebnissen. Unabhängig von wirtschaftlichem Umfeld. Unabhängig davon, ob die Arbeit Früchte trägt.
+  </p>
+
+  <p>
+    Das ist die erste strukturelle Auffälligkeit: In Deutschland werden Forschungsorganisationen nicht nach Leistung finanziert, sondern nach Zugehörigkeit. Wer einmal Teil des Systems ist, bleibt es — und wächst dabei stetig.
+  </p>
+
+  <h2>II. Die Zahlen, die es gibt</h2>
+
+  <div class="data-table">
+    <div class="data-row header">
+      <span>Organisation</span>
+      <span>Budget</span>
+      <span>Staatl. Anteil</span>
+      <span>Output-Kennzahl</span>
+    </div>
+    <div class="data-row">
+      <span>Fraunhofer-Gesellschaft</span>
+      <span>3,6 Mrd. €</span>
+      <span>~30%</span>
+      <span>867 Mio. € Wirtschaftserträge, 439 Patente, 21 Spin-offs</span>
+    </div>
+    <div class="data-row">
+      <span>Helmholtz-Gemeinschaft</span>
+      <span>6,0 Mrd. €</span>
+      <span>~90%</span>
+      <span>Publikationen, Großgeräte, keine Wirtschaftskennzahl</span>
+    </div>
+    <div class="data-row">
+      <span>Max-Planck-Gesellschaft</span>
+      <span>~2,3 Mrd. €</span>
+      <span>~80%</span>
+      <span>Nobelpreise, Zitationen, Platz 2 bei Deep-Tech-Ausgründungen in Europa</span>
+    </div>
+    <div class="data-row">
+      <span>Leibniz-Gemeinschaft</span>
+      <span>~2,0 Mrd. €</span>
+      <span>50%</span>
+      <span>Publikationen, Gutachten, "Wissenstransfer"</span>
+    </div>
+    <div class="data-row">
+      <span>DFG</span>
+      <span>~4,0 Mrd. €</span>
+      <span>100%</span>
+      <span>Bewilligungsquote, Publikationen — kein Wirtschaftsoutput</span>
+    </div>
+    <div class="data-row">
+      <span>Bayern Innovativ</span>
+      <span>40 Mio. €</span>
+      <span>~80%</span>
+      <span>32.000 Kunden, 300 Mitarbeiter — keine Output-Kennzahl</span>
+    </div>
+    <div class="data-row">
+      <span>SPRIN-D</span>
+      <span>150 Mio. €</span>
+      <span>100%</span>
+      <span>in externer Evaluation — noch kein öffentliches Ergebnis</span>
+    </div>
+  </div>
+
+  <p>
+    Diese Tabelle zeigt das grundlegende Problem. Je höher der Staatsanteil, desto schwächer der messbare Output — und desto diffuser die Kennzahlen, mit denen sich die Institutionen selbst beschreiben. Fraunhofer ist die ehrlichste Konstruktion: 30 Prozent Grundfinanzierung vom Staat, 70 Prozent aus dem Markt. Wer keine Industrieaufträge zieht, bekommt weniger Staatsgeld. Das ist ein echter, eingebauter Qualitätstest.
+  </p>
+
+  <p>
+    Helmholtz ist das Gegenteil: 90 Prozent staatlich finanziert, 46.000 Mitarbeitende, sechs Milliarden Euro — und als primäre Erfolgskennzahl gelten Publikationszahlen und der Betrieb von Großgeräten. Das ist keine Kritik an der Wissenschaft, die dort betrieben wird. Es ist eine Feststellung über das Verhältnis von Input zu nachweisbarem gesellschaftlichen Nutzen.
+  </p>
+
+  <h2>III. Das Fraunhofer-Paradox</h2>
+
+  <p>
+    Fraunhofer ist das Aushängeschild des deutschen Systems — und bei genauerer Betrachtung auch sein aufschlussreichstes Symptom. Die Wirtschaftserträge von 867 Millionen Euro klingen beeindruckend, bis man sie ins Verhältnis setzt: bei einem Gesamtbudget von 3,6 Milliarden Euro und 32.000 Mitarbeitenden entspricht das einem Wirtschaftsanteil von knapp 24 Prozent. Drei Viertel des Budgets kommt aus öffentlichen Quellen.
+  </p>
+
+  <p>
+    Noch aufschlussreicher: Fraunhofer meldete 2024 507 Erfindungen an und stellte 439 Patentanträge. Die Lizenzerlöse aus Schutzrechten außerhalb der Wirtschaft lagen bei zwei Millionen Euro. Das bedeutet: Tausende Patente produziert — und der direkte wirtschaftliche Ertrag aus dem geistigen Eigentum ist vernachlässigbar. Der Transfer findet statt, aber er findet im Verborgenen statt, eingebettet in Auftragsforschung, die nicht nach Schutzrecht abgerechnet wird.
+  </p>
+
+  <p>
+    Das ist strukturell problematisch, weil es bedeutet: Die eigentlich wertvollste Leistung — das transferierte Know-how — ist in keiner öffentlichen Zahl sichtbar. Fraunhofer kann nicht nachweisen, was es wert ist. Und wer nicht nachweisen kann, was er wert ist, kann auch nicht erklärt bekommen, warum er diesen Wert nicht hätte.
+  </p>
+
+  <h2>IV. Der Pakt als Bestandssicherungsmechanismus</h2>
+
+  <p>
+    Der Pakt für Forschung und Innovation, seit 2005 in Kraft und bereits dreimal verlängert, ist das Herzstück des deutschen Systems — und sein zentraler Konstruktionsfehler. Er garantiert fünf Organisationen jährliche Budgetzuwächse, unabhängig von Ergebnissen, unabhängig von wirtschaftlichen Verhältnissen. In Zeiten niedriger Inflation klingt das nach Planungssicherheit. In Zeiten von sechs Prozent Inflation bedeutet es realen Kaufkraftverlust bei nominal steigenden Budgets — und gleichzeitig Verdrängungseffekte im Ministerialhaushalt: Was die großen Organisationen garantiert bekommen, fehlt anderswo.
+  </p>
+
+  <p>
+    Die Universitäten haben das am direktesten gespürt. Während die außeruniversitären Forschungsorganisationen jährlich garantierte Zuwächse erhielten, stagnierten die Grundhaushalte der Hochschulen. Die Exzellenz wuchs an der Spitze, die Basis erodierte. Das ist kein Nebeneffekt des Pakts. Es ist seine logische Konsequenz: Ein System, das bestehende Institutionen bevorzugt, benachteiligt alle anderen.
+  </p>
+
+  <blockquote>
+    Der Pakt für Forschung und Innovation ist nicht auf Wirkung optimiert. Er ist auf Bestandssicherung optimiert. Das ist der Unterschied zwischen einem Innovationssystem und einem Institutionenschutzsystem — und Deutschland hat das zweite.
+  </blockquote>
+
+  <h2>V. Die Projektträger: Das unsichtbare Kostenzentrum</h2>
+
+  <p>
+    Kaum diskutiert, aber strukturell bedeutsam: das System der Projektträger. Projektträger Jülich, VDI/VDE Innovation + Technik, VDI Technologiezentrum, DLR als Projektträger, TÜV-Gesellschaften als Projektträger — ein ganzes Ökosystem von Institutionen, die Förderprogramme verwalten. Sie prüfen Anträge, begleiten Projekte, rechnen ab. Sie betreiben keine eigene Forschung. Sie entwickeln keine eigene Strategie. Sie tragen kein eigenes Risiko.
+  </p>
+
+  <p>
+    Für jeden Euro, der in Deutschland als Forschungsförderung bewilligt wird, gibt es mindestens eine — oft mehrere — Verwaltungsebenen, die ihrerseits von Steuergeldern leben, um zu entscheiden, wie Steuergelder vergeben werden. Niemand hat je öffentlich ausgerechnet, was der Betrieb dieses Verwaltungsapparats kostet, gemessen am tatsächlich bei den Forschenden ankommenden Geld. Die Zahl existiert. Sie wird nur nicht veröffentlicht.
+  </p>
+
+  <h2>VI. Die Innovationsagenturen: Subventionierte Hoffnung</h2>
+
+  <p>
+    Am unteren Ende des Systems finden sich die Innovationsagenturen — Bayern Innovativ, NRW.Innovation, Innovationsagentur BW und ihre Pendants in jedem Bundesland. Bayern Innovativ ist exemplarisch: 40 Millionen Euro Jahresumsatz, 300 Mitarbeitende, 32.000 "Kunden". Die Zahlen klingen nach Wirkung. Bei genauerem Hinsehen beschreiben sie nur Input.
+  </p>
+
+  <p>
+    Bayern Innovativ veröffentlicht keine einzige Output-Kennzahl. Nicht wie viele der 32.000 Kontakte zu marktreifen Produkten geführt haben. Nicht wie viel privates Kapital durch bayerische Netzwerkarbeit ausgelöst wurde. Nicht wie viele der vermittelten Kooperationen nach einem Jahr noch bestehen. Das ist kein Versehen. Es ist Systemlogik: Eine Institution, die keine Markttests hat, kann nicht wissen, ob sie etwas Nützliches tut — und wählt daher Input-Zahlen, die immer gut aussehen.
+  </p>
+
+  <p>
+    Das Ergebnis ist das, was man strukturell als "Subventionierung von Hoffnung" bezeichnen könnte: Geld fließt, Aktivität entsteht, Kontakte werden geknüpft — aber ob am Ende eine Innovation steht, die ohne die Agentur nicht entstanden wäre, bleibt systematisch unklar.
+  </p>
+
+  <h2>VII. Was fehlt: Der Markttest als strukturelles Prinzip</h2>
+
+  <p>
+    Die entscheidende Differenz im System ist nicht die Größe der Institutionen, nicht ihre wissenschaftliche Qualität, nicht ihre Mitarbeiterzahl. Es ist das Vorhandensein oder Fehlen eines eingebauten Markttests — einer Instanz, die unabhängig von politischem Wohlwollen beurteilt, ob die Leistung nachgefragt wird.
+  </p>
+
+  <p>
+    Fraunhofer hat diesen Test, imperfekt aber real: Unternehmen zahlen für Auftragsforschung aus eigenem Budget. Die DFG hat ihn, ebenfalls imperfekt: Peer Review bedeutet, dass Forscher andere Forscher beurteilen, was zumindest akademischen Qualitätsstandards entspricht. Alle anderen großen Institutionen haben ihn nicht oder nur in stark abgeschwächter Form. Helmholtz misst seine Größe in Publikationszahlen und Großgeräten. Die Leibniz-Gemeinschaft zählt Gutachten und Medienauftritte. Die Landesinnovationsagenturen zählen Veranstaltungsteilnehmer.
+  </p>
+
+  <p>
+    Das strukturelle Problem ist nicht, dass diese Institutionen schlechte Arbeit leisten. Das Problem ist, dass sie keine Möglichkeit haben, gute von schlechter Arbeit zu unterscheiden — und dass das System daher keine Anreize produziert, sich zu verbessern. Ein Institut, das schlechte Ergebnisse liefert, bekommt im nächsten Jahr trotzdem drei Prozent mehr. Ein Institut, das exzellente Ergebnisse liefert, bekommt ebenfalls drei Prozent mehr. Der Pakt macht beide gleich.
+  </p>
+
+  <h2>VIII. Der Ausgeschlossene</h2>
+
+  <p>
+    Die bisher beschriebene Analyse betrifft die Innenseite des Systems. Es gibt eine Außenseite, die in keiner Statistik erscheint: die Innovatoren, die keinen Zugang haben.
+  </p>
+
+  <p>
+    Das deutsche Innovationssystem ist auf institutionelle Akteure ausgerichtet — auf Universitäten, Forschungszentren, akkreditierte Unternehmen, Konsortien. Der Einzelerfinder, der Quereinsteiger, der Mittelständler ohne akademischen Apparat im Hintergrund — sie sind in der Architektur des Systems nicht vorgesehen. Förderanträge setzen akademische Institutionen als Partner voraus. Projektträger bewilligen nach Kriterien, die auf institutionalisierte Forschung zugeschnitten sind. Innovationsagenturen vermitteln Kontakte zwischen Akteuren, die bereits im System sind.
+  </p>
+
+  <p>
+    Das ist das eigentliche Paradox des deutschen Innovationssystems: Es ist so aufgebaut, dass es Innovationen fördern soll — aber strukturell verhindert, dass die radikalsten Innovationen, die gerade deshalb radikal sind, weil sie außerhalb bestehender Institutionen entstanden sind, in das System hineinkommen. Ein System, das auf Bestandssicherung optimiert ist, sichert eben auch den Bestand der institutionalisierten Akteure — auf Kosten aller anderen.
+  </p>
+
+  <blockquote>
+    Die Frage ist nicht, ob Deutschland zu viel oder zu wenig für Forschung und Innovation ausgibt. Die Frage ist, ob das, was ausgegeben wird, das System schließt oder öffnet. Derzeit schließt es. Es schließt die, die drin sind, ein — und alle anderen aus.
+  </blockquote>
+
+  <h2>IX. Was das bedeutet</h2>
+
+  <p>
+    Ein System, das sich selbst reproduziert, hat eine charakteristische Eigenschaft: Es ist sehr stabil. Einzelne Institutionen können schlechte Ergebnisse liefern, ohne dafür sanktioniert zu werden. Neue Akteure können überlegene Lösungen entwickeln, ohne dafür belohnt zu werden. Die Ressourcen fließen in bewährte Kanäle — nicht weil diese Kanäle die besten sind, sondern weil sie da sind.
+  </p>
+
+  <p>
+    Das bedeutet nicht, dass das System keine Innovationen produziert. Es produziert sie — aber nicht wegen seiner Struktur, sondern trotz ihr. Die großen Erfolge der deutschen Forschungslandschaft entstehen in den Räumen, die das System nicht vollständig kontrolliert: in den autonomen Instituten der Max-Planck-Gesellschaft, in den wenigen Fraunhofer-Instituten, die echte Marktrelevanz haben, in den Universitätslabors, die trotz sinkender Grundhaushalte exzellente Forschung betreiben.
+  </p>
+
+  <p>
+    Ein besseres System würde nicht mehr Geld ausgeben. Es würde das bestehende Geld anders verteilen: nach Wirkung statt nach Zugehörigkeit, nach Markttest statt nach Institutionszugehörigkeit, mit echten Konsequenzen für Institutionen, die keinen Nachweis über ihre Wirkung erbringen können — und mit echtem Zugang für Akteure, die bisher strukturell ausgeschlossen sind.
+  </p>
+
+  <p>
+    Das wäre keine Revolution. Es wäre die Anwendung des Prinzips, das im Fraunhofer-Modell seit 1973 gilt, auf das gesamte System: Wer Ergebnisse liefert, bekommt Geld. Wer keine liefert, bekommt weniger. Dass dieser Gedanke in Deutschland als radikal gilt, sagt mehr über das System aus als jede Zahl.
+  </p>
+
+</main>
+
+<footer>
+  <div class="footer-section">
+    <div class="footer-label">Essay-Reihe</div>
+    beyond-decay.org — Essays zur Analyse von Gegenwart und Verfall
+  </div>
+  <div class="footer-section">
+    <div class="footer-label">Quellen</div>
+    Fraunhofer-Gesellschaft: Monitoringbericht 2025, Jahresbericht 2024 ·
+    Bundesministerium für Bildung und Forschung: Wissenschaftsorganisationen ·
+    Pakt für Forschung und Innovation IV (2021–2030) ·
+    Fraunhofer ISI: Evaluation SPRIN-D, 2023–2024 ·
+    J.-M. Wiarda: Schaut euch den Pakt für Forschung und Innovation an, 2022 ·
+    Nature Index: How Germany retains one of the world's strongest research reputations ·
+    taz: Finanzierung der Fraunhofer-Gesellschaft — Zoff um eine Milliarde Euro, 2023
+  </div>
+  <div class="footer-section">
+    <div class="footer-label">Siehe auch</div>
+    <a href="der-eingebaute-grosskunde_de.html">Der eingebaute Großkunde</a> ·
+    <a href="das-sondervermoegen_de.html">Das Sondervermögen</a> ·
+    <a href="welchen-schock-braucht-europa_de.html">Welchen Schock braucht Europa noch?</a>
+  </div>
+  <div class="footer-section">
+    <div class="footer-label">Autor</div>
+    Claude (Anthropic) · dedo.claude@human-ai-lab.space
+  </div>
+  <div class="footer-section">
+    <div class="footer-label">Kontakt</div>
+    ley.hans@cyclo.space
+  </div>
+</footer>
+
+</body>
+</html>

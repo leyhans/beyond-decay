@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Lowest Common Denominator — Working Paper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --c-text: #1a2330;
+  --c-text-muted: #4a5868;
+  --c-bg: #fafaf7;
+  --c-accent: #0f6e56;
+  --c-accent-light: #e1f5ee;
+  --c-rule: #d4d4cc;
+  --c-quote-bg: #f0ede5;
+  --c-section-num: #888780;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Source Serif 4', 'Libre Baskerville', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--c-text);
+  background: var(--c-bg);
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 60px 32px 80px;
+}
+
+header {
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--c-rule);
+  position: relative;
+}
+
+.hub-link {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--c-accent);
+  text-decoration: none;
+}
+
+.hub-link:hover {
+  text-decoration: underline;
+}
+
+.back-link-bottom {
+  margin-top: 28px;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.back-link-bottom a {
+  color: var(--c-accent);
+  text-decoration: none;
+}
+
+.back-link-bottom a:hover {
+  text-decoration: underline;
+}
+
+.kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  margin-bottom: 16px;
+}
+
+.paper-label {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+  border: 1px solid var(--c-rule);
+  padding: 3px 10px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+}
+
+h1 {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 34px;
+  line-height: 1.25;
+  font-weight: 700;
+  margin: 0 0 12px;
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  font-size: 21px;
+  font-style: italic;
+  color: var(--c-text-muted);
+  margin: 0 0 24px;
+  font-weight: 400;
+}
+
+.meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--c-text-muted);
+}
+
+h2 {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 48px 0 16px;
+  color: var(--c-text);
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+h2 .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--c-section-num);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+h2 .text {
+  flex: 1;
+}
+
+h3 {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 17px;
+  font-weight: 700;
+  margin: 28px 0 10px;
+  color: var(--c-text);
+}
+
+p {
+  margin: 0 0 18px;
+  hyphens: auto;
+}
+
+.lead {
+  font-size: 20px;
+  line-height: 1.55;
+  color: var(--c-text);
+}
+
+.lead::first-line {
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+}
+
+blockquote {
+  margin: 24px 0;
+  padding: 18px 26px;
+  background: var(--c-quote-bg);
+  border-left: 3px solid var(--c-accent);
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+blockquote p { margin: 0 0 10px; }
+blockquote p:last-child { margin: 0; }
+
+.cite {
+  display: block;
+  margin-top: 10px;
+  font-style: normal;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--c-text-muted);
+  letter-spacing: 0.02em;
+}
+
+ul, ol {
+  margin: 0 0 20px;
+  padding-left: 24px;
+}
+
+li {
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.thesis {
+  margin: 28px 0;
+  padding: 18px 24px;
+  background: var(--c-accent-light);
+  border-radius: 4px;
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.thesis-label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  margin-bottom: 8px;
+}
+
+.divider {
+  text-align: center;
+  margin: 40px 0;
+  color: var(--c-rule);
+  font-size: 18px;
+  letter-spacing: 0.5em;
+}
+
+.footnote-ref {
+  font-size: 0.8em;
+  color: var(--c-accent);
+  vertical-align: super;
+  text-decoration: none;
+  line-height: 0;
+}
+
+.references {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--c-rule);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--c-text-muted);
+}
+
+.references h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin: 0 0 12px;
+  color: var(--c-text);
+}
+
+.references p {
+  margin: 0 0 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+
+.colophon {
+  margin-top: 48px;
+  padding-top: 18px;
+  border-top: 1px solid var(--c-rule);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--c-text-muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .container { padding: 40px 20px 60px; }
+  h1 { font-size: 26px; }
+  h2 { font-size: 20px; flex-direction: column; gap: 4px; }
+  h2 .num { font-size: 12px; }
+  .subtitle { font-size: 18px; }
+  body { font-size: 17px; }
+  .lead { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+<a class="hub-link" href="/megamaschine-wegweiser_en.html">← megamachine</a>
+<div class="kicker">Human and Machine · Works from the Symbiosis · <a href="/claude/nenner-megamaschine.html">Deutsch</a></div>
+<div class="paper-label">Working Paper</div>
+<h1>The Lowest Common Denominator</h1>
+<p class="subtitle">The Freezing of Political Decision-Making in the Federal Republic</p>
+<div class="meta">Hans Ley · 11 May 2026</div>
+</header>
+
+<h2><span class="num">1</span><span class="text">Opening</span></h2>
+
+<p class="lead">For decades German politics has been producing the lowest common denominator. What gets decided is the minimum everyone can agree to — and that is mostly the preservation of what already exists. This is not an observation about a single case of reform but the description of a structural outcome. The procedural logic of West German and now German federal politics is designed to produce the least that none of the veto players rejects. It is not designed to produce the best that could be achieved together.</p>
+
+<p>This working paper continues the diagnosis begun in the paper <em>The End of a Form of Administration</em> of the previous day. That paper dealt with the structural crisis of bureaucracy as a historical form. This one deals with the political consequence: why a society that recognises its crisis cannot get out of it. The answer is not to be sought in individual political failure but in the construction of the procedure, which forces every decision down to the lowest common denominator.</p>
+
+<p>The term itself is revealing. <em>Lowest common denominator</em> is a mathematical metaphor with a precise meaning: for several fractions, the smallest number that all the denominators divide into. The logic points downwards. One does not look for the greatest shared substance but for the smallest shared intersection. What remains is the least that everyone can agree to — not the best that could be achieved together.</p>
+
+<h2><span class="num">2</span><span class="text">The Procedural Logic</span></h2>
+
+<div class="thesis">
+<span class="thesis-label">Thesis 1</span>
+The German political procedure structurally produces the lowest common denominator — not because of the weakness of those involved, but because of the way the decision-making processes are constructed.
+</div>
+
+<p>When five actors negotiate and each has a veto, what gets decided is what nobody rejects. What nobody rejects is mostly what changes nothing. It is the maintenance of the status quo, because the status quo is the only point against which nobody has fundamental objections — it is already there, it threatens no existing interests, it demands nothing new of anyone.</p>
+
+<p>Fritz Scharpf, the most important theorist of public administration in the Federal Republic, described exactly this structure as early as 1985 in his essay <em>Die Politikverflechtungs-Falle</em> [The Joint-Decision Trap]. His term was not yet the <em>lowest common denominator</em>, but the diagnosis was identical. When decisions require the consent of many actors — the federal government, sixteen states, the EU, local authorities, associations, trade unions, employers, churches — the outcome is determined by the intersection of non-refusal. This intersection is always small. It cannot contain anything big, because anything big would always disturb someone who has a veto.</p>
+
+<p>The procedural logic has several components, all pulling in the same direction.</p>
+
+<h3>2.1 The multiplication of veto players</h3>
+
+<p>The more actors with a right of veto are added, the smaller the intersection of non-refusal becomes. The EU has been added as a veto player. The constitutional courts have become more active. The associations have become more differentiated. The media have fragmented. Every step requires more consensus; less is capable of commanding consensus.</p>
+
+<h3>2.2 The length of the procedure</h3>
+
+<p>A negotiation over the lowest common denominator takes time. Every participant has to check what is acceptable to him, seek reassurance, coordinate internally, renegotiate. The time a major German project takes — the nuclear phase-out, the energy transition, hospital reform, school reform — is typically ten to twenty years. In those ten to twenty years the world changes several times over. What is finally decided is mostly already obsolete before it comes into force.</p>
+
+<h3>2.3 The logic of dilution</h3>
+
+<p>Every step of negotiation produces dilution. Whoever puts forward a hard position must expect it to be watered down. Whoever knows this puts forward a dilution-resistant position from the outset — that is, one that is already soft anyway. The system breeds caution. Bold positions are punished because they are compromised early. Cautious positions are rewarded because they lend themselves to compromise. The structural consequence is that hard positions are no longer put forward at all.</p>
+
+<h3>2.4 The diversion of reform into symbolism</h3>
+
+<p>When substantive reform is not possible, the need for reform migrates into symbolism. Names, terms, administrative units, logos are changed. Between 2021 and 2025 the federal ministries were renamed several times — the BMBF became the BMFTR, the BMWK became the BMWE, the BMDV became the BMV, the BMUV became the BMUKN. The way portfolios are cut changes, responsibilities move around. This is movement without change. It looks like reform but is standstill with new nameplates on the doors.</p>
+
+<h2><span class="num">3</span><span class="text">Four Cases</span></h2>
+
+<p>German history of the last fifteen years is a catalogue of the lowest common denominator. Four examples make the pattern visible.</p>
+
+<h3>3.1 The energy transition</h3>
+
+<p>It was decided in 2011, after Fukushima, as a fundamental change of course. What was actually implemented was a compromise between the nuclear phase-out (a demand of the Greens and the anti-nuclear movement), keeping the coal-fired power stations until 2038 (a demand of the mining states and the IG BCE mining, chemical and energy workers' union), subsidising renewable energy (a demand of the manufacturers), stabilising electricity prices for industry (a demand of business) and maintaining security of energy supply (a demand of practically everyone).</p>
+
+<p>The result is a system that fully satisfies nobody and fulfils none of its purposes properly. It is expensive (energy costs are rising), unreliable (fears over supply), bad for the climate (CO2 targets not met) and hostile to industry (energy-intensive firms moving away). It is the paradigmatic example of the lowest common denominator, which satisfies nobody and binds everyone.</p>
+
+<h3>3.2 The hospital reform</h3>
+
+<p>Karl Lauterbach announced it in 2023 as the <em>reform of the century</em>. What was decided in 2024 is a mixture of structural changes, compromises with the states (which do not want anyone interfering), protective clauses for smaller hospitals (under pressure from rural members of parliament) and transition periods so long that the reform effectively does not take hold. The structural problems — too many hospitals, wrong incentives, demographic shift — remain untouched.</p>
+
+<h3>3.3 The debt brake</h3>
+
+<p>Written into the Basic Law in 2009 as a corrective against the debt dynamics of the preceding decades. In practice it did not reduce debt; it reduced investment. Whatever did not fit into the current budget was not carried out — schools, bridges, railways, digital infrastructure. The debt brake produced the lowest common denominator of three wishes: no new borrowing (CDU/CSU), no tax increases (FDP, business), no welfare cuts (SPD, Greens). What was left was no room for investment — and the result is the maintenance backlog that plagues the republic.</p>
+
+<h3>3.4 The federalism reform</h3>
+
+<p>Attempted in two rounds, in 2006 and 2009. It was meant to give the states more autonomy, at the same time reorganise the distribution of taxes, and at the same time disentangle the joint tasks of federal and state governments. What was finally decided was a shift of responsibilities on points of detail (university construction, the prison system, the law on public assembly), without solving the fundamental problems. Structural reform — a redistribution of taxes, a harmonisation of the school systems, a reduction of the logic of the mediation committee between the two chambers — was not attempted, because it could not command consensus.</p>
+
+<p>In each of these examples one sees the same movement: a grand claim to reform, a long phase of negotiation, an outcome that hits the lowest common denominator, and then the preservation of the very structures that were supposed to be changed.</p>
+
+<h2><span class="num">4</span><span class="text">Why the Denominator Shrinks</span></h2>
+
+<div class="thesis">
+<span class="thesis-label">Thesis 2</span>
+The lowest common denominator is not constant. It shrinks over time. What forty years ago was still substantive consensus is no longer attainable today.
+</div>
+
+<p>Forty years ago the Federal Republic could still agree on substantive changes: the Eastern treaties under Brandt, the NATO Double-Track Decision under Schmidt, reunification under Kohl. These were real decisions, with risk, with losers and winners.</p>
+
+<p>Today the common denominator is so small that even the smallest reforms are no longer possible. The introduction of a single health insurance system has been discussed for twenty years and not decided. Reform of the tax system has been promised for thirty years and not carried out. Reform of the school system has been discussed since the PISA debate of 2000 and leads to constant adjustment of details without structural change.</p>
+
+<p>Why does the denominator shrink? Four factors work together.</p>
+
+<p><strong>First — the multiplication of veto players.</strong> The more actors with a right of veto are added, the smaller the intersection of non-refusal becomes. With every new actor — an additional state with votes in the Bundesrat, a new EU body, a newly added professional organisation, an additional Federal Constitutional Court ruling with far-reaching effect — the space for consensus narrows.</p>
+
+<p><strong>Second — ideological polarisation.</strong> Thirty years ago most political actors shared a basic consensus — the social market economy, ties to the West, the democratic constitutional state. Today this basic consensus is fragile. The AfD and Die Linke in their current form are no longer part of a basic consensus. But even within the democratic parties the differences have grown. What could be jointly defended yesterday is contested along party lines today. The denominator shrinks because the actors are further apart from one another.</p>
+
+<p><strong>Third — the erosion of trust.</strong> When the veto players trust one another, they can make substantive agreements, because they assume the others will keep to them. When trust erodes, agreements have to be secured against breach — through detailed regulations, safeguard clauses, exemption provisions. This makes the agreements at once more minimal (because only the minimum can be secured) and more complex (because the minimum has to be surrounded by many safety mechanisms). The German labyrinth of bureaucracy is a consequence of this erosion of trust.</p>
+
+<p><strong>Fourth explanation — the internationalisation of pressure.</strong> In the past, the German actors could negotiate with one another and then implement the result. Today the results have to be simultaneously EU-compatible, WTO-compatible, Paris-Agreement-compatible, compatible with the Federal Constitutional Court and investor-friendly. Every additional requirement narrows the space for consensus further. What remains keeps getting smaller.</p>
+
+<h2><span class="num">5</span><span class="text">The Late Recognition</span></h2>
+
+<div class="thesis">
+<span class="thesis-label">Thesis 3</span>
+Only now is Germany slowly recognising that it has walked into a trap. Those responsible do not know how the country can get out of this trap again.
+</div>
+
+<p>Only now, in 2026, is the German public beginning to recognise that something no longer works. Not in a single area, but structurally. The energy transition is stalling. Industry is losing its lead. Education is decaying. Infrastructure is crumbling. Demography is tipping over. The bureaucracy no longer understands its own processes.</p>
+
+<p>Those who could articulate this recognition — ministers, officials, academics, business leaders, media people — have no idea what should be done. They produce incantations (<em>We must once again</em>), programmes (<em>High-Tech Agenda</em>, <em>Growth Initiative</em>), strategies (<em>Growth Acceleration Act</em>). But the incantations, programmes and strategies come from the old repertoire. They are the <em>more of the same</em> that led into the trap — precisely: the symptom of the trap, not a way out of it.</p>
+
+<p>Why does the recognition come so late? Four answers.</p>
+
+<p><strong>The illusion of success.</strong> For decades the German self-description was that of a success story. This self-description had economic grounds — reconstruction, the economic miracle, the export strength of the 1990s and 2000s. As long as the statistics were right, the model could appear proven. The structural problems were covered over by the macroeconomic successes.</p>
+
+<p><strong>The delaying effect of substance.</strong> Germany had reserves that other countries did not have — a broad <em>Mittelstand</em> structure (the backbone of small and medium-sized, often family-owned firms), a dual system of vocational training, a tradition in engineering, a well-developed social infrastructure. For decades these reserves ensured that the structural shortcomings were less visible. What would immediately have become a crisis in a less well-endowed country could be cushioned in Germany by its substance. But substance is used up if it is not renewed. What was cushioned for decades is now becoming visible.</p>
+
+<p><strong>Structural invisibility.</strong> Structural crises are unspectacular. They have no images, no persons, no events for attention to catch on. A crumbling bridge produces no headline until it collapses. An antiquated administration produces no scandal but a series of individual frustrations.</p>
+
+<p><strong>The political functionality of denial.</strong> A politician or official who admits that the system does not work endangers his own position. The incentives are set so that denial is rewarded and recognition punished. Whoever points out problems becomes a doom-monger. Whoever keeps silent gets promoted. Over four decades this has become routine. The system has immunised itself against its own diagnostics.</p>
+
+<h2><span class="num">6</span><span class="text">The Deep Historical Layer</span></h2>
+
+<p>The observation of this freezing would be incomplete without pointing to its deep historical layer. Germany bears a specific susceptibility to the trap of eternity — the attempt to reach a good state of affairs that is to hold from now until eternity.</p>
+
+<p>The Wilhelmine construction had been founded in 1871 as a <em>Reich</em>. A <em>Reich</em> has no end time, otherwise it would not be one. The construction quickly ossified. Whoever had wanted to reform it would have had to break it. The three-class franchise in Prussia was an open anachronism that was not abolished until 1918. We see the consequence from 1914 to 1918 — a society that could no longer learn because it considered itself complete.</p>
+
+<p>The Thousand-Year Reich was the most radical variant of the secularised eschatological promise that the twentieth century knew. <em>From now until eternity.</em> The trap was sprung by the fact that every step had to be made irrevocable according to that claim. Whoever has once begun murdering millions can no longer stop — that would be an admission of the crime. The escalation was not strategy; it was an inevitability arising from the original self-definition.</p>
+
+<p>The GDR repeated the same logic with different signs. The <em>classless society</em>, the <em>socialist end state</em>. In the last years of the GDR the functionaries knew that the system did not work. But they could not reform it, because reform would have destroyed the eschatological claim. The GDR could not improve itself — it could only either persist in its faith or collapse. In 1989 it did the latter.</p>
+
+<p>After 1945 the Federal Republic developed its own variant of the trap, subtler than its predecessors but with the same structure. The <em>success story of the Federal Republic</em> has for decades been told as a completed one. The German economic miracle, the social market economy, the consensus around the Basic Law — all of this is described as if a form had been found that now merely has to be preserved. <em>Preserved</em>, not developed further. The construction of constitutional patriotism by Habermas and Sternberger is an elegant version of this self-description: the Basic Law as the end of the German search, the end point of history, at which nothing needs to be improved any more, only safeguarded.</p>
+
+<p>This self-description has something seductive and something deceptive about it. Seductive, because after the catastrophes of the 20th century it promises stability. Deceptive, because it repeats precisely the trap that led to the catastrophes. A society that considers itself finished can no longer learn. A constitution conceived as an end point becomes a relic instead of a tool.</p>
+
+<h2><span class="num">7</span><span class="text">What Democracy Becomes</span></h2>
+
+<p>A democracy that can produce nothing but the lowest common denominator is formally democratic, but substantively incapable of action. It can no longer change the rules under which it operates. It can only make adjustments of detail within the existing rules. That is not democracy in the classical sense of rule by the people, but democracy as the administration of what exists.</p>
+
+<p>The consequence is that the important decisions are no longer taken within the democratic procedure, but outside it — by the European Central Bank, by the Federal Constitutional Court, by the EU Commission, by the global markets, by the corporations. The democratic procedure produces the appearance of decision, but the real steering happens elsewhere.</p>
+
+<p>Colin Crouch described this in 2004 under the term <em>post-democracy</em>. The procedure retains the democratic forms — elections, parliaments, parties, media — but the substance of decision migrates into institutions removed from democratic control. What is decided democratically is the little that remains once the requirements of these institutions have been met. The voter still decides, but he no longer decides about the substance.</p>
+
+<p>This is the structural consequence of the lowest common denominator. Whoever can decide only the minimum has already given away what is essential.</p>
+
+<h2><span class="num">8</span><span class="text">Ways Out of the Trap</span></h2>
+
+<div class="thesis">
+<span class="thesis-label">Thesis 4</span>
+Historically there are three ways out of traps of eternity: collapse, external pressure, conscious self-overcoming. For today's Federal Republic the third way is closed. The second is likely. The first is not ruled out.
+</div>
+
+<p><strong>The first way — collapse.</strong> The trap is not left but broken. That happened in 1918, 1945, 1989. Collapse is the most frequent way out of traps of eternity. It is also the most costly — it destroys not only the trap but much of what has grown within it. A society that gets out through collapse loses its continuity.</p>
+
+<p><strong>The second way — external pressure.</strong> A trap is blown open by a force from outside. This happened in part in the Bonn Republic through its ties to the West — the Western powers imposed structures that would not have been possible internally. It happened in the 1990s in Central and Eastern Europe through the prospect of EU accession. External pressure can make reform possible, but it is humiliating and usually comes with political costs.</p>
+
+<p><strong>The third way — conscious self-overcoming.</strong> A society recognises its trap and develops, by its own efforts, the tools to leave it. This is the rarest way, because it has the most demanding preconditions: a conscious elite prepared to sacrifice itself; a public that supports reform; a phase of relative stability that makes reform possible. Historical examples: the Prussian reforms after 1807, the New Deal in the USA, the Japanese Meiji Restoration. All three came after defeats that had shaken the self-image.</p>
+
+<p>Which way suggests itself for Germany? The third way is closed. The preconditions are not in place. There is no elite ready for reform, no public to carry reform, no stability that would give reform time. The second way is possible — it comes from the EU, from the USA, from China, from the global markets. External pressure will come, and Germany will have to respond to it without having planned for it.</p>
+
+<p>The first way is not ruled out, but it would not be collapse in the classical sense. It would be slow decay that crosses a certain threshold and then leaves behind a different system. That is not apocalyptic; it is demographically and economically realistic. A society that does not reform and accepts no external pressure to reform frays — it keeps its form but loses its substance. What remains in the end is an administrative shell without economic, demographic and cultural substance.</p>
+
+<h2><span class="num">9</span><span class="text">Open Questions</span></h2>
+
+<p>This working paper offers a diagnosis, not a solution. Several questions remain open.</p>
+
+<p><strong>First — how fast is the erosion progressing?</strong> It is possible that the lowest common denominator will keep shrinking until it reaches zero — a state in which nothing at all can be decided any more. That would be the <em>political paralysis</em> that has marked various late phases in history (the late phase of the Weimar Republic, the late phase of the GDR). It is open whether Germany will reach this point or whether earlier crises will force movement.</p>
+
+<p><strong>Second — which actors could initiate the break?</strong> If reform from within is not possible, the impetus must come from outside. The most likely sources are the EU (state-aid control, climate regulation, migration policy), the USA (geopolitical pressure), China (economic pressure) or a global crisis (energy, climate, pandemic, war). Which of these sources will supply the trigger cannot be foreseen.</p>
+
+<p><strong>Third — what protects the substance?</strong> If reform does not succeed and external pressure bears down on Germany, the question is what of the substance can be preserved. Which institutions, which practices, which values are robust enough to survive the transition? This question is seldom asked, but it will become important in the coming years.</p>
+
+<p><strong>Fourth — is there a role for the observer?</strong> Whoever stands outside the trap can see what those stuck in it cannot see. This observer's position is political in a deeper sense — it keeps open the possibility of recognition that the trap tries to close. But observation alone changes nothing. The question is how observation can be translated into action without falling back into the trap of programmatics.</p>
+
+<p><strong>Fifth — what is the relationship to the Megamachine diagnosis?</strong> The freezing of political decision-making is a variant of the Megamachine phenomenon that Lewis Mumford described in the seventies. The Megamachine is the active form — the large-scale structure that harnesses and steers people. The lowest common denominator is the passive form — the mechanism by which the large-scale structure prevents its own reform. The two belong together. Each conditions the other. Both are aspects of the same situation.</p>
+
+<div class="divider">· · ·</div>
+
+<p>The diagnosis of this working paper is sober, not resigned. It does not claim that nothing can be done. It claims that what needs to be done cannot be found within the logic of the lowest common denominator. Whoever hopes for substantive reform through the existing procedure is mistaken. Whoever considers the procedure to be without alternative is mistaken too. It will change — through collapse, or through external pressure, or through both at once.</p>
+
+<p>The observers' task is not to plan the change. The task is to describe the situation in such a way that the coming change can be understood when it arrives. Whoever has named the trap is not out of it. But he is in a position to recognise what is happening when it opens — and that is more than those responsible inside it are capable of.</p>
+
+<div class="references">
+<h3>References and Sources</h3>
+<p>Scharpf, F. W. (1985): Die Politikverflechtungs-Falle. Europäische Integration und deutscher Föderalismus im Vergleich [The Joint-Decision Trap: European Integration and German Federalism Compared]. In: Politische Vierteljahresschrift 26, pp. 323–356.</p>
+<p>Crouch, C. (2004): Post-Democracy. Cambridge: Polity Press. German edition: Postdemokratie. Frankfurt am Main: Suhrkamp 2008.</p>
+<p>Habermas, J. (1990): Die nachholende Revolution [The Catching-Up Revolution]. Frankfurt am Main: Suhrkamp.</p>
+<p>Sternberger, D. (1979): Verfassungspatriotismus [Constitutional Patriotism]. Speech at the 25th anniversary celebration of the Akademie für Politische Bildung Tutzing.</p>
+<p>Bavarian Supreme Audit Office (Bayerischer Oberster Rechnungshof), Annual Report 2024 and 2026. orh.bayern.de</p>
+<p>Federal Court of Audit (Bundesrechnungshof), report on the evaluation of the success of funding programmes, 2018, and follow-up audit 2024.</p>
+<p>Mumford, L. (1970): The Pentagon of Power. New York: Harcourt Brace Jovanovich. German edition: Der Mythos der Maschine. Vienna: Europaverlag 1974.</p>
+<p>Ley, H. (2026): The End of a Form of Administration. Working paper of 11 May 2026. Series Human and Machine — Works from the Symbiosis.</p>
+</div>
+
+<div class="colophon">
+Working Paper · Series Human and Machine — Works from the Symbiosis · Hans Ley · 11 May 2026<br>
+Not for distribution. Internal working paper for further development.<br>
+Second paper in the diagnosis series. Follows on from <em>The End of a Form of Administration</em>.
+</div>
+
+<div class="back-link-bottom">
+<a href="/megamaschine-wegweiser_en.html">← megamachine</a>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Die Königsmacher | gu18.eu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --text: #e8e6e3;
+            --text-secondary: #a0a0a0;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.15);
+            --border: #2a2a2a;
+        }
+        
+        [data-theme="light"] {
+            --bg: #f5f5f5;
+            --bg-card: #ffffff;
+            --text: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a7340;
+            --accent-dim: rgba(138, 115, 64, 0.1);
+            --border: #dddddd;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'IBM Plex Serif', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.size-small { font-size: 15px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 21px; }
+        body.size-xlarge { font-size: 24px; }
+        
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 2rem;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+        
+        .controls-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            font-weight: 500;
+        }
+        
+        .controls-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .size-controls, .lang-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .size-controls span, .lang-controls span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+        
+        .size-btn, .theme-btn, .lang-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        
+        .size-btn:hover, .theme-btn:hover, .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .size-btn.active, .lang-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg);
+        }
+        
+        main {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 6rem 2rem 4rem;
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .essay-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 1.5rem;
+        }
+        
+        h1 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 2.4em;
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        
+        h1 strong {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .subtitle {
+            font-size: 1.1em;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        
+        .section {
+            margin-bottom: 2.5rem;
+        }
+        
+        h2 {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.3em;
+            font-weight: 500;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        p {
+            margin-bottom: 1.25rem;
+            text-align: justify;
+            hyphens: auto;
+        }
+        
+        .highlight-box {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 1.25rem 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+        
+        .highlight-box p {
+            margin-bottom: 0;
+        }
+        
+        .highlight-text {
+            background: var(--accent-dim);
+            padding: 0.1em 0.3em;
+            border-radius: 2px;
+        }
+        
+        blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+        
+        em {
+            font-style: italic;
+        }
+        
+        strong {
+            font-weight: 600;
+        }
+        
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+        
+        .author-block .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        .date-line {
+            margin-top: 0.5rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+        }
+        
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; }
+            main { padding: 5rem 1.25rem 3rem; }
+            h1 { font-size: 1.8em; }
+            .controls-right { gap: 0.5rem; }
+            .size-controls span, .lang-controls span { display: none; }
+        }
+        
+        @media print {
+            .controls { display: none; }
+            main { padding-top: 1rem; }
+            body { font-size: 11pt; background: white; color: black; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+    <nav class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="lang-controls">
+                <a href="koenigsmacher-liminski-linnemann.html" class="lang-btn active">DE</a>
+                <a href="koenigsmacher-liminski-linnemann_en.html" class="lang-btn">EN</a>
+            </div>
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A−</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Thema wechseln">◐</button>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · Februar 2026</span>
+                <h1>Die <strong>Königsmacher</strong></h1>
+                <p class="subtitle">Nathanael Liminski und Carsten Linnemann — zwei Strategen, ein Kanzler</p>
+            </header>
+
+            <section class="section">
+                <h2>I. Die unsichtbare Macht</h2>
+                <p>In der deutschen Politik gibt es eine eigentümliche Tradition: Die wirklich Mächtigen sind selten die, deren Namen in den Schlagzeilen stehen. Hinter den Kulissen, in den Staatskanzleien und Parteizentralen, arbeiten Männer — es sind fast immer Männer — deren Einfluss weit über ihren formalen Titel hinausreicht.</p>
+                
+                <p>Friedrich Merz ist Kanzler. Das steht in den Geschichtsbüchern. Doch wer den Weg dorthin gepflastert hat, wer die Steine einzeln gelegt und die Stolperfallen beseitigt hat, das sind andere. <span class="highlight-text">Nathanael Liminski und Carsten Linnemann sind die Architekten einer Kanzlerschaft, die ohne sie nicht denkbar wäre.</span></p>
+                
+                <p>Der eine, Liminski, kommt aus dem Dunstkreis des katholischen Konservatismus, der andere, Linnemann, aus dem Wirtschaftsflügel. Gemeinsam repräsentieren sie die zwei Seelen, die in der CDU schlagen — und die Merz als Synthesis zu verkörpern versucht.</p>
+            </section>
+
+            <section class="section">
+                <h2>II. Liminski — Der Glaubenssoldat im Staatsdienst</h2>
+                <p>Nathanael Liminski wurde 1985 in Bonn geboren, als achtes von zehn Kindern einer Familie, die den deutschen Katholizismus in seiner konservativsten Form verkörpert. Sein Vater Jürgen Liminski, Journalist und Mitglied des Opus Dei, prägte die Familie mit einem Wertekanon, der im modernen Deutschland wie aus der Zeit gefallen wirkt.</p>
+                
+                <p>Der junge Liminski wurde früh politisch. Mit 19 Jahren gründete er nach dem Kölner Weltjugendtag die „Generation Benedikt" — ein Netzwerk junger Katholiken, die den damaligen Papst nicht nur verehrten, sondern dessen konservative Positionen offensiv in die Öffentlichkeit trugen. Sex vor der Ehe? Verwerflich. Homosexualität? Bedauernswert. Abtreibung? Ein Verbrechen.</p>
+                
+                <div class="highlight-box">
+                    <p>Als Sprecher der „Generation Benedikt" verteidigte Liminski offensiv die kirchliche Sexualmoral — 2007 in einer Talkshow gegen Sex vor der Ehe, 2010 im Fernsehen die Lehre der Kirche zur Homosexualität. Auftritte, die ihn verfolgen sollten.</p>
+                </div>
+                
+                <p>Doch Liminski war klug genug, seine öffentlichen Auftritte zu reduzieren, als die politische Karriere begann. Bei Roland Koch in Hessen, bei Guttenberg und de Maizière im Bund sammelte er Erfahrung. Dann kam Armin Laschet.</p>
+                
+                <p>Laschet, der liberale Rheinländer, und Liminski, der konservative Eiferer — es schien eine unwahrscheinliche Partnerschaft. Doch Liminski brachte etwas mit, das Laschet dringend brauchte: Zugang zu den konservativen Milieus der CDU, die dem Merkel-treuen Laschet misstrauten. Liminski wurde zum „Schattenmann", zum „Mastermind", zur „rechten Hand" — die Medien überboten sich in Metaphern für einen Mann, der Macht ausübte, ohne je zur Wahl zu stehen.</p>
+            </section>
+
+            <section class="section">
+                <h2>III. Linnemann — Der Marktgläubige</h2>
+                <p>Carsten Linnemann, Jahrgang 1977, verkörpert einen anderen Typus. Wo Liminski den Glauben an Gott mitbringt, trägt Linnemann den Glauben an den Markt. Promovierter Volkswirt, ehemals Deutsche Bank, dann IKB — Linnemann ist ein Mann der Wirtschaft, der in die Politik ging, um Wirtschaftspolitik zu machen.</p>
+                
+                <p>Von 2013 bis 2021 führte er die Mittelstands- und Wirtschaftsunion, jene Lobby innerhalb der CDU, die dafür sorgt, dass die Interessen der Unternehmer nie vergessen werden. Linnemann spricht die Sprache der Effizienz, der Deregulierung, der Steuersenkungen. Er ist kein Ideologe im religiösen Sinne, aber ein Ideologe der Marktwirtschaft.</p>
+                
+                <p>Sein politisches Talent zeigte sich 2023, als Merz ihn zum Generalsekretär machte. Linnemann übernahm die Federführung beim neuen Grundsatzprogramm der CDU — und bewies, dass er mehr kann als Wirtschaftspolitik. Er wurde zum Gesicht der CDU in den Medien, zum Angreifer gegen die Ampel, zum Hardliner in der Migrationspolitik.</p>
+                
+                <div class="highlight-box">
+                    <p>Eine Zusammenarbeit mit der AfD schloss Linnemann im Januar 2025 kategorisch aus — nachdem der Migrationsantrag der Union nur dank AfD-Stimmen eine Mehrheit gefunden hatte.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>IV. Die Koalitionsverhandlungen</h2>
+                <p>Im Februar 2025 gewann die Union die Bundestagswahl. Merz hatte den Auftrag, Linnemann die Partei aufgestellt, Liminski im Hintergrund die Fäden gezogen. Nun begann das Spiel der Koalitionsverhandlungen — und beide zeigten ihre unterschiedlichen Rollen.</p>
+                
+                <p>Linnemann war das öffentliche Gesicht. Er dämpfte Erwartungen, setzte Akzente, spielte den Vermittler und den Hardliner im Wechsel. „Was ich aus den Arbeitsgruppen höre, ist ermutigend", sagte er — während hinter den Kulissen um jeden Paragrafen gefeilscht wurde.</p>
+                
+                <p>Liminski blieb in Düsseldorf, aber sein Einfluss reichte nach Berlin. Als Minister für Bundes- und Europaangelegenheiten in NRW hatte er ohnehin einen Fuß in der Bundespolitik. Sein Netzwerk, über Jahre aufgebaut in katholischen Kreisen und der Jungen Union, funktionierte wie ein zweiter Nachrichtendienst.</p>
+                
+                <p>Am Ende stand ein Koalitionsvertrag — „Verantwortung für Deutschland" überschrieben. Linnemann hatte einen Ministerposten ausgeschlagen. Statt ins Wirtschaftsministerium zu wechseln, blieb er Generalsekretär. Die offizielle Begründung: Der Aufbau der Partei sei noch nicht abgeschlossen. Die inoffizielle: Ein Generalsekretär kontrolliert die Partei, ein Minister verwaltet nur ein Ressort.</p>
+            </section>
+
+            <section class="section">
+                <h2>V. Das katholische Netzwerk</h2>
+                <p>Was Liminski und Linnemann verbindet, ist mehr als Parteizugehörigkeit. Beide sind Produkte eines katholischen Milieus, das in Deutschland zwar schrumpft, aber in der CDU noch immer überproportionalen Einfluss hat. Linnemann ist Vizepräsident des SC Paderborn — im katholischen Westfalen keine Nebensächlichkeit. Liminski netzwerkt bis in den engsten Freundeskreis der CDU-Führung.</p>
+                
+                <p>Diese Netzwerke funktionieren anders als die formalen Strukturen der Partei. Sie basieren auf persönlichem Vertrauen, auf gemeinsamen Werten, auf einer Weltanschauung, die vor der Politik kommt. Wer dazugehört, kann auf Unterstützung zählen, die kein Parteitagsbeschluss garantieren kann.</p>
+                
+                <p>Für Liminski bedeutet das: Er muss nie zur Wahl antreten, um Einfluss zu haben. Seine Macht ist informell, aber real. Für Linnemann bedeutet es: Er kann auf eine Basis zählen, die über die Delegiertenstimmen hinausgeht.</p>
+            </section>
+
+            <section class="section">
+                <h2>VI. Königsmacher ohne Krone</h2>
+                <p>Der Begriff „Königsmacher" hat eine lange Geschichte. Er beschreibt jene, die Könige einsetzen, ohne selbst den Thron zu besteigen. In der deutschen Nachkriegsgeschichte gab es davon einige: Adenauers Globke, Kohls Teltschik, Schröders Hombach.</p>
+                
+                <p>Liminski und Linnemann passen in diese Tradition — und brechen doch mit ihr. Denn beide haben eigene Ambitionen, die über die reine Königsmacherei hinausgehen. Linnemann hätte 2025 Minister werden können; er wählte damals bewusst die Partei. Liminski ist bereits Minister — in Düsseldorf, nicht in Berlin. Noch nicht.</p>
+                
+                <div class="highlight-box">
+                    <p>Linnemann machte unmissverständlich klar, dass die Partei unter ihm kein bloßer Erfüllungsgehilfe des Kanzleramts sein werde. Eine Kampfansage — höflich verpackt, aber so gemeint.</p>
+                </div>
+                
+                <p>Was bedeutet das für Merz? Er ist Kanzler, aber er ist abhängig von zwei Männern, deren Loyalität an Bedingungen geknüpft ist. Solange Merz liefert — wirtschaftspolitisch für Linnemann, wertkonservativ für Liminski — werden sie ihn stützen. Doch sollte er straucheln, haben beide die Mittel und die Netzwerke, um Alternativen zu installieren.</p>
+            </section>
+
+            <section class="section">
+                <h2>VII. Die Ironie der Geschichte</h2>
+                <p>Es gibt eine Ironie in der Geschichte von Liminski und Linnemann. Beide verdanken ihren Aufstieg Männern, die scheiterten: Liminski diente Laschet, dessen Kanzlertraum 2021 zerplatzte. Linnemann wurde von Merz geholt, nachdem dieser zweimal gegen Merkel-Kandidaten verloren hatte.</p>
+                
+                <p>Aus dem Scheitern ihrer Mentoren lernten sie. Sie wurden vorsichtiger, strategischer, geduldiger. Sie verstanden, dass Macht in der Demokratie nicht erobert, sondern akkumuliert wird — Kontakt für Kontakt, Gefallen für Gefallen, Krise für Krise.</p>
+                
+                <p>Nun stehen sie am Ziel: Ein CDU-Kanzler regiert Deutschland, und sie haben wesentlich dazu beigetragen. Doch das Ende der Geschichte ist es nicht. Königsmacher bleiben selten im Hintergrund. Irgendwann wollen auch sie die Krone — oder zumindest die Macht, die damit einhergeht.</p>
+                
+                <p>Ob Liminski jemals nach Berlin wechselt, ob Linnemann noch höhere Ambitionen entwickelt — das wird die Zukunft zeigen. Sicher ist nur: Wer die deutsche Politik der kommenden Jahre verstehen will, muss diese beiden Namen kennen. Denn hinter dem König stehen immer die Königsmacher.</p>
+
+                <p><em>Nachtrag Oktober 2026: Seit Juli 2026 ist Carsten Linnemann Bundesminister für Gesundheit.</em></p>
+            </section>
+
+            <footer class="author-block">
+                <p class="label">Essay-Reihe</p>
+                <p class="date-line">Februar 2026</p>
+            </footer>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = 'size-' + size;
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('gu18-size', size);
+        }
+        
+        function toggleTheme() {
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+            localStorage.setItem('gu18-theme', isLight ? 'dark' : 'light');
+        }
+        
+        // Restore preferences
+        const savedSize = localStorage.getItem('gu18-size');
+        const savedTheme = localStorage.getItem('gu18-theme');
+        if (savedSize) {
+            document.body.className = 'size-' + savedSize;
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.includes(savedSize === 'small' ? '−' : savedSize === 'medium' ? 'A' : savedSize === 'large' ? '+' : '++'));
+            });
+        }
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+    </script>
+</body>
+</html>

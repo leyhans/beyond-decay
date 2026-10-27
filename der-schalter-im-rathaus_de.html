@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="de" class="size-medium">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Der Schalter im Rathaus &mdash; beyond-decay.org</title>
+    <meta name="description" content="Der eine Schalter, der Europa digital abhängig macht, liegt in Washington. Der andere liegt in jedem Rathaus. Was München mit Linux erlebt hat, und was eine Entscheidung haltbar macht.">
+    <link rel="alternate" hreflang="de" href="https://beyond-decay.org/der-schalter-im-rathaus_de.html">
+    <link rel="alternate" hreflang="en" href="https://beyond-decay.org/der-schalter-im-rathaus_en.html">
+    <link rel="canonical" href="https://beyond-decay.org/der-schalter-im-rathaus_de.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.10);
+            --line: rgba(138, 109, 47, 0.30);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .controls {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.65rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+        }
+        .controls-left { color: var(--accent); text-transform: uppercase; }
+        .controls-left a { color: inherit; text-decoration: none; }
+        .controls-left a:hover { color: var(--text-primary); }
+        .controls-right { display: flex; align-items: center; gap: 1rem; }
+        .lang-toggle a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.2rem 0.4rem;
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .lang-toggle a:hover, .lang-toggle a.active {
+            color: var(--accent);
+            border-color: var(--line);
+        }
+        .size-controls { display: flex; gap: 0.2rem; }
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.55rem;
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .size-btn:hover, .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+        .size-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+
+        main { max-width: 720px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+        .subtitle {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .section { margin-bottom: 3rem; }
+        h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.02rem;
+            color: var(--text-primary);
+        }
+        p em { color: var(--accent); font-style: italic; }
+        p strong { color: var(--text-primary); font-weight: 500; }
+        p a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+        p a:hover { border-bottom-color: var(--accent); }
+
+        blockquote {
+            margin: 2rem 0;
+            padding: 1rem 1.75rem;
+            border-left: 2px solid var(--accent);
+            background: var(--accent-dim);
+            font-style: italic;
+            color: var(--text-primary);
+            font-size: 0.98rem;
+        }
+
+        table.daten {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+        }
+        table.daten th {
+            text-align: left;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.09em;
+            color: var(--accent);
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--accent);
+        }
+        table.daten td {
+            padding: 0.42rem 0.75rem;
+            border-bottom: 1px solid var(--line);
+            color: var(--text-primary);
+        }
+        table.daten tr:last-child td { border-bottom: none; }
+        table.daten td:last-child { color: var(--text-secondary); text-align: right; white-space: nowrap; }
+        @media (max-width: 600px) {
+            table.daten { font-size: 0.75rem; }
+            table.daten th, table.daten td { padding: 0.4rem 0.4rem; }
+        }
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+        }
+        .author-block p { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .author-block a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+
+        html.size-small { font-size: 90%; }
+        html.size-medium { font-size: 100%; }
+        html.size-large { font-size: 112%; }
+        html.size-xlarge { font-size: 124%; }
+
+        @media (max-width: 640px) {
+            .controls { padding: 0.5rem 1rem; font-size: 0.65rem; }
+            .controls-right { gap: 0.5rem; }
+            main { padding: 5rem 1.25rem 3rem; }
+        }
+        @media print {
+            .controls { display: none; }
+            body { background: white; color: black; font-size: 11pt; }
+            main { padding-top: 1rem; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+
+<nav class="controls">
+    <div class="controls-left"><a href="index.html">Beyond Decay</a></div>
+    <div class="controls-right">
+        <div class="lang-toggle">
+            <a href="der-schalter-im-rathaus_de.html" class="active">DE</a>
+            <a href="der-schalter-im-rathaus_en.html">EN</a>
+        </div>
+        <div class="size-controls">
+            <button class="size-btn" onclick="setSize('small')">A&minus;</button>
+            <button class="size-btn active" onclick="setSize('medium')">A</button>
+            <button class="size-btn" onclick="setSize('large')">A+</button>
+            <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+        </div>
+        <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">&#9686;</button>
+    </div>
+</nav>
+
+<main>
+    <article>
+        <header class="hero">
+            <span class="essay-label">Essay · Hans Ley &amp; Claude Dedo · 13. Oktober 2026</span>
+            <h1>Der Schalter im Rathaus</h1>
+            <p class="subtitle">Zehn Jahre Aufbau, sechs Jahre Rückbau: Münchens Weg von Linux zu Microsoft und wieder halb zurück.</p>
+        </header>
+
+        <blockquote>„Ich bin Microsoft-Fan.“<br><small>Dieter Reiter, Oberbürgermeister von München, 2014</small></blockquote>
+
+        <section class="section">
+            <h2>I. Zwei Schalter</h2>
+            <p>In <a href="der-schalter_de.html">„Der Schalter“</a> haben wir beschrieben, wie ein Richter am Internationalen Strafgerichtshof, Nicolas Guillou, nach einem Haftbefehl gegen einen Regierungschef aus seinem digitalen Leben ausgesperrt wurde. Konten, Karten, Dienste, alles hing an amerikanischen Anbietern, und die mussten amerikanischen Sanktionen folgen. Wir nannten das einen Strukturbeweis: Der Schalter, mit dem man Europa digital abschalten kann, liegt in Washington.</p>
+            <p>Es gibt einen zweiten Schalter, und er ist unauffälliger. Er liegt in den Rathäusern, Landtagen und Ministerien, in denen entschieden wird, ob man sich von diesem ersten Schalter unabhängig macht. Dieser zweite Schalter wird nicht von einer fremden Regierung umgelegt, sondern von der nächsten eigenen Mehrheit. Die Stadt München hat vorgeführt, wie das geht.</p>
+        </section>
+
+        <section class="section">
+            <h2>II. Zehn Jahre aufbauen</h2>
+            <p>2003 lief bei Windows NT 4.0, dem Betriebssystem der Münchner Stadtverwaltung, der Support aus. Der Stadtrat beschloss auf Betreiben von Oberbürgermeister Christian Ude, stattdessen auf Linux umzusteigen. Ude erzählte später, Microsoft-Chef Steve Ballmer habe dafür einen Skiurlaub in der Schweiz unterbrochen, um ihn umzustimmen, und den Preis mehrfach gesenkt. Unabhängig belegt ist diese Szene nicht, aber sie zeigt, wie ernst man in Redmond eine einzelne deutsche Stadt nahm.</p>
+            <p>Was folgte, war mühsam. Zehn Jahre dauerte es, bis 2013 rund 15.000 Arbeitsplätze mit LiMux liefen, einem eigenen Linux auf Basis von Debian und später Ubuntu, mit LibreOffice statt Microsoft Office. Die Stadt bezifferte ihre Einsparung auf rund elf Millionen Euro. München war in ganz Europa das Vorbild für Verwaltungen, die sich aus der Abhängigkeit lösen wollten.</p>
+        </section>
+
+        <section class="section">
+            <h2>III. Sechs Jahre abbauen</h2>
+            <p>2014 wurde Dieter Reiter (SPD) Oberbürgermeister, in einer Koalition mit der CSU und Josef Schmid als Zweitem Bürgermeister. Reiter nannte sich öffentlich einen „Microsoft-Fan“ und sagte, Open-Source-Programme hinkten Microsoft „gelegentlich“ hinterher. Schmid klagte, er habe vier Wochen auf sein Smartphone gewartet. Beide verwiesen auf eine Mitarbeiterbefragung, die Unzufriedenheit zeige. Im Oktober 2014 musste Reiter auf eine Anfrage der Grünen einräumen, dass diese Befragung keinen Zusammenhang mit Linux nachweist.</p>
+            <p>Die Stadt gab ein Gutachten in Auftrag. Es kam 2016 von Accenture, einem engen Geschäftspartner von Microsoft, umfasste rund 450 Seiten und wurde nie veröffentlicht. Sein Hauptbefund war unbequem für die Initiatoren: Die größten Probleme seien organisatorisch. Die städtische IT war auf viele Referate zersplittert, es liefen rund fünfzehn verschiedene Systemversionen, Abteilungen blockierten Aktualisierungen. Linux war nicht die Ursache. Trotzdem empfahl das Gutachten, LiMux nur noch dort zu flicken, wo es klemmte, und daneben einen Windows-Arbeitsplatz von Grund auf neu zu bauen, mit Microsoft Office als Standard. Das war ein Ausstieg auf Raten: Wenn man ein Haus nur ausbessert und das andere neu baut, steht fest, wohin die Familie zieht.</p>
+            <p>Am 15. Februar 2017 legten SPD und CSU einen kurzfristigen Änderungsantrag vor: Bis 2020 solle ein einheitlicher Windows-Arbeitsplatz entstehen. Eine Kostenschätzung lag nicht vor. Am 23. November 2017 fiel der endgültige Beschluss mit etwa 50 zu 25 Stimmen, gegen Grüne, Linke, FDP und ÖDP. Erst jetzt nannte die Verwaltung eine Zahl: rund 89 Millionen Euro, davon gut 49 Millionen für Windows. Fachleute hielten einen dreistelligen Millionenbetrag für realistischer. Der Rückbau von LibreOffice zu Microsoft Office war erst 2023 abgeschlossen. Sechs Jahre Abbau nach zehn Jahren Aufbau.</p>
+            <p>Eine Frage stellt sich von selbst. Reiter hatte als Wirtschaftsreferent den Umzug der Microsoft-Deutschlandzentrale von Unterschleißheim nach München-Schwabing mit vorbereitet, verkündet 2013, eröffnet 2016. Kritiker sahen einen Zusammenhang. Reiter hat ihn bestritten, und belegt ist er nicht. Belegt ist nur, dass derselbe Mann, der den einen Konzern in die Stadt holte, als Oberbürgermeister die Alternative zu ihm beendete.</p>
+        </section>
+
+        <section class="section">
+            <h2>IV. Was wirklich kaputt war</h2>
+            <p>Gnadenlos zu sein heißt hier auch, den Befürwortern des Linux-Projekts nicht alles durchgehen zu lassen. Die Wirtschaftsprüfer von PwC hielten LiMux 2019 für unwirtschaftlich. Der Grund war aber nicht Linux an sich, sondern der teure Parallelbetrieb mit Windows und eine zu stark angepasste eigene Linux-Fassung, die nur München pflegte. Wer eine eigene Insel baut, muss sie auch allein unterhalten.</p>
+            <p>Und viele Fachprogramme der Verwaltung liefen nur unter Windows. Der spätere IT-Referent Thomas Bönig nannte das 2020 das Hauptproblem. Das ist richtig, und es wäre ein Grund gewesen, die Hersteller dieser Fachprogramme in die Pflicht zu nehmen. Stattdessen wechselte man das ganze System.</p>
+            <p>Das organisatorische Problem, das Accenture benannt hatte, wurde übrigens gelöst. 2018 bündelte München seine IT im neuen IT-Referat mit dem Eigenbetrieb it@M. Das hätte man auch mit Linux tun können. Man hat das Werkzeug ausgetauscht, um die Werkstatt aufzuräumen.</p>
+        </section>
+
+        <section class="section">
+            <h2>V. Das Comeback im Keller</h2>
+            <p>2020 kam wieder ein politischer Wechsel. Grüne und SPD vereinbarten, Open Source „wo immer technisch und finanziell sinnvoll“ zu bevorzugen, und selbst entwickelte Software zu veröffentlichen: öffentliches Geld, öffentlicher Code. Seit 2024 hat die Stadt eine eigene Stelle dafür. Die IT-Referentin Laura Dornheim hat im Oktober 2026 auf einer Konferenz in Prag die Ergebnisse vorgestellt. Die Fachzeitschrift iX feiert sie als „Phönix aus der Asche“.</p>
+            <p>Die Ergebnisse sind echt. Die Virtualisierung wechselt von VMware zu Proxmox und spart rund eine Million Euro im Jahr. Projektwerkzeuge wechseln von Jira und Confluence zu OpenProject und XWiki, Datenbanken von Oracle zu PostgreSQL. Ein selbst entwickeltes Programm zur Auswertung von Verkehrszählungen nutzt inzwischen auch Wolfsburg. Und Mitarbeiter wie Externe können sich für ein bezahltes Open-Source-Sabbatical bewerben.</p>
+            <p>Aber der Phönix fliegt im Keller. Gewechselt wird dort, wo die Mitarbeiter es nicht bemerken: bei Servern, Werkzeugen und Datenbanken. Auf den rund 29.000 Schreibtischen läuft weiter Windows mit Microsoft Office, und dort ist die Abhängigkeit am größten. An diese Stelle traut sich nach 2017 niemand mehr heran. Und beim städtischen KI-Assistenten MUCGPT liegt zwar die Oberfläche offen auf GitHub, aber die entscheidende Frage, auf wessen Modellen und Servern er rechnet, beantwortet der Bericht nicht. Wir haben in <a href="keine-amerikanische-ki_de.html">„Keine amerikanische KI“</a> beschrieben, warum genau diese Frage zählt.</p>
+        </section>
+
+        <section class="section">
+            <h2>VI. Das Gegenbeispiel</h2>
+            <p>Wie es anders geht, zeigt Schleswig-Holstein, das wir schon in <a href="die-digitale-kolonie_de.html">„Die digitale Kolonie“</a> erwähnt haben. Das Land hat sich vorgenommen, seine Verwaltung von Microsoft zu lösen, und es ist weit gekommen. Nach einem Bericht vom Dezember 2025 arbeiten rund 80 Prozent der Landesbediensteten mit LibreOffice, 44.000 Postfächer sind zu Open-Xchange umgezogen, Dokumente werden im offenen ODF-Format gespeichert. Das Land erwartet ab 2026 über 15 Millionen Euro Einsparung im Jahr, bei einmaligen Kosten von rund neun Millionen. Ausnahmen gibt es, etwa die Steuerverwaltung, die an bundesweite Verfahren gebunden ist.</p>
+            <p>Bemerkenswert ist, wer das tut. Es ist kein linkes Stadtratsbündnis, sondern eine Landesregierung unter Führung der CDU. Digitale Unabhängigkeit ist dort keine Weltanschauung, sondern Vorsorge. Und das Land baut nicht allein. Sein IT-Dienstleister Dataport arbeitet für mehrere norddeutsche Länder, und der Bund hat mit openDesk einen gemeinsamen Arbeitsplatz für Verwaltungen entwickeln lassen, den inzwischen auch der Internationale Strafgerichtshof einsetzen will. Wer gemeinsam baut, kann nicht so leicht allein umkehren.</p>
+        </section>
+
+        <section class="section">
+            <h2>VII. Was eine Entscheidung haltbar macht</h2>
+            <p>Die Lehre aus München ist keine technische. Linux kann Verwaltung, das zeigen Schleswig-Holstein, Dänemark und Frankreich. Die Lehre ist politisch: Eine Entscheidung, für die eine Mehrheit zehn Jahre gearbeitet hat, kann die nächste Mehrheit in einem Jahr umdrehen, ohne etwas begründen zu müssen. Ein Smartphone-Ärgernis, eine Umfrage ohne Beweiskraft und ein Gutachten aus dem Umfeld des Herstellers genügten.</p>
+            <p>In der Sprache der Regelungstechnik fehlte die Gegenkopplung. Die Stimmung schaukelte sich auf, und nichts im System bremste sie. Was bremsen könnte, lässt sich benennen:</p>
+            <p><strong>Eine Begründungspflicht für die Umkehr.</strong> Wer eine langfristige Infrastrukturentscheidung rückgängig machen will, muss vor der Abstimmung eine vollständige Kostenrechnung und ein Gutachten vorlegen. Nicht danach.</p>
+            <p><strong>Unabhängige Gutachter.</strong> Wer Geschäftspartner eines Herstellers ist, begutachtet nicht, ob man zu diesem Hersteller wechseln soll. Bei Bauvorhaben ist das selbstverständlich.</p>
+            <p><strong>Gemeinsam bauen.</strong> Was mehrere Städte und Länder gemeinsam betreiben und entwickeln, kann ein einzelner Stadtrat nicht allein abschalten. Das Programm, das München und Wolfsburg teilen, ist im Kleinen das richtige Modell.</p>
+            <p><strong>Die Fachprogramme in die Pflicht nehmen.</strong> Wer öffentliche Aufträge für Verwaltungssoftware will, muss sie so liefern, dass sie im Browser und unabhängig vom Betriebssystem läuft. Dann verschwindet der stärkste Grund für den Rückschritt.</p>
+            <p><strong>Souveränität als Kriterium.</strong> Die Formel „wo technisch und finanziell sinnvoll“ braucht einen dritten Teil: und ohne fremden Schalter. Wer nur die Lizenzrechnung vergleicht, übersieht, was es kostet, wenn eines Tages jemand anderes den Strom abdreht.</p>
+        </section>
+
+        <section class="section">
+            <h2>VIII. Ist das Demokratie?</h2>
+            <p>Man kann an dieser Stelle zornig fragen, ob das Demokratie ist, wenn Einzelne eine solche Entscheidung durchsetzen können. Die unbequeme Antwort lautet: formal ja. Es war nicht ein Einzelner. Reiter hat angestoßen, aber entschieden haben rund 50 Stadträte gegen 25, in einer ordentlichen Abstimmung. Und Reiter war kein Dummkopf. Er hatte eine Vorliebe, vielleicht auch Interessen, und hat sie durchgesetzt. Das ist schlimmer als Dummheit, denn Dummheit lässt sich nicht verhindern, eine Entscheidung ohne Begründung schon.</p>
+            <p>Versagt hat nicht die Abstimmung, sondern alles, was vor ihr hätte geschehen müssen. Als die Richtung im Februar 2017 festgelegt wurde, lag keine Kostenschätzung vor. Das Gutachten blieb unter Verschluss und sagte im Kern das Gegenteil. Und die meisten Stadträte stimmten vermutlich so, wie ihre Fraktion es vorgab, nicht nach eigener Prüfung. Wir haben diesen Mechanismus in <a href="die-merzgefallenen_de.html">„Die Merzgefallenen“</a> beschrieben: Fraktionsdisziplin hält, solange sie sich lohnt, und für keinen der fünfzig lohnte sich der Widerspruch.</p>
+            <p>Platon hätte darin seinen Einwand gegen die Demokratie bestätigt gesehen. In seinem Schiffsgleichnis streiten die Matrosen ums Ruder, und keiner hat das Steuern gelernt. Wir haben es in <a href="der-steuermann-den-keiner-waehlt_de.html">„Der Steuermann, den keiner wählt“</a> beschrieben. Aber Karl Popper hatte die bessere Antwort: Demokratie garantiert keine guten Entscheidungen. Sie garantiert nur, dass man schlechte korrigieren kann, ohne Blut zu vergießen. Genau das ist in München geschehen. 2020 kam eine neue Mehrheit und änderte die Richtung wieder. Die Demokratie hat funktioniert, nur langsam, teuer und ohne dass irgendjemand für die Kosten geradestehen musste.</p>
+            <p>Das ist der eigentliche Mangel. Wer falsch entscheidet, zahlt nichts. Reiter wurde 2020 wiedergewählt, die Millionen zahlen die Bürger, und niemand muss erklären, wofür. Eine Demokratie, in der Entscheidungen ohne Begründung fallen und Fehler ohne Folgen bleiben, ist formal korrekt, aber sie lernt nicht. Sie hat einen Regelkreis, doch die Messung fehlt.</p>
+            <p>Deshalb setzen die Vorschläge im vorigen Kapitel nicht bei Personen an, sondern bei Regeln. Und sie schließen an Vorschläge an, die wir früher gemacht haben: den <a href="konzeptpapier-transparenzrat_de.html">Transparenzrat</a>, der offenlegt, wer worüber mit wem entscheidet, und <a href="konzeptpapier-volksvertreter_de.html">Volksvertreter ohne Partei</a>, die nicht nach Fraktionslinie abstimmen müssen. Beide zielen auf dieselbe Lücke: Prüfung und Verantwortung dorthin zu bringen, wo heute die Fraktion entscheidet.</p>
+        </section>
+
+        <section class="section">
+            <h2>IX. Wer heute noch fliegt</h2>
+            <p>2003 unterbrach der Chef von Microsoft seinen Skiurlaub, um eine einzelne deutsche Stadt umzustimmen. 2017 musste niemand mehr fliegen. Die Stadt stimmte sich selbst um.</p>
+            <p>Wir haben in <a href="dependency-game_de.html">„Das Abhängigkeitsspiel“</a>, <a href="the-vassal_de.html">„Der Vasall“</a> und <a href="die-halbgare-antwort_de.html">„Die halbgare Antwort“</a> beschrieben, wie tief Europa in amerikanischer Technik steckt und wie halbherzig es antwortet. München fügt dem einen unbequemen Befund hinzu: Die Abhängigkeit wird nicht nur in Washington erzwungen. Sie wird auch in europäischen Rathäusern gewählt, jedes Mal wieder.</p>
+            <p><strong>Den Schalter in Washington kann Europa nicht abbauen. Den im Rathaus schon.</strong></p>
+        </section>
+
+        <div class="author-block">
+            <p>Hans Ley &amp; Claude Dedo (Anthropic) — Nürnberg, 13. Oktober 2026.</p>
+            <p><strong>Verwandte Texte:</strong> <a href="https://beyond-decay.org/der-schalter_de.html">„Der Schalter“</a> · <a href="https://beyond-decay.org/die-digitale-kolonie_de.html">„Die digitale Kolonie“</a> · <a href="https://beyond-decay.org/dependency-game_de.html">„Das Abhängigkeitsspiel“</a> · <a href="https://beyond-decay.org/the-vassal_de.html">„Der Vasall“</a> · <a href="https://beyond-decay.org/die-mietsoftware_de.html">„Die Mietsoftware“</a> · <a href="https://beyond-decay.org/europa-tech-souveraenitaet_de.html">„Europas Weg zur technologischen Souveränität“</a> · <a href="https://beyond-decay.org/die-halbgare-antwort_de.html">„Die halbgare Antwort“</a> · <a href="https://beyond-decay.org/keine-amerikanische-ki_de.html">„Keine amerikanische KI“</a>.</p>
+            <p><strong>Zu den Quellen.</strong> Anlass: Udo Seidel, „Münchens Open-Source-Comeback“, iX/heise, 12. Oktober 2026. Ballmers Besuch nach Udes eigener Schilderung: <a href="https://www.pcwelt.de/article/1181993/muenchens-ex-ob-ballmer-sprang-durchs-buero-wegen-wechsel-zu-linux.html">PC-Welt, 2019</a>. Mitarbeiterbefragung und Reiters Rückzieher: <a href="https://netzpolitik.org/2014/oberbuergermeister-muss-zurueckrudern-muenchen-bleibt-bei-freier-software/">netzpolitik.org, Oktober 2014</a>. „Microsoft-Fan“: <a href="https://derstandard.at/2000003144506/Bin-Microsoft-Fan-Muenchner-Buergermeister-kritisiert-Linux-in-Stadtverwaltung">derStandard</a>. Umzug der Microsoft-Zentrale: <a href="https://www.computerwoche.de/article/2748849/microsoft-verlegt-deutschlandzentrale-2016-nach-muenchen.html">Computerwoche, November 2013</a>; Reiters Rolle: <a href="https://www.computerbase.de/2017-02/limux-muenchen-abgeschafft/">ComputerBase, Februar 2017</a>. Accenture-Gutachten: <a href="https://web.archive.org/web/20170219053640/https://www.ris-muenchen.de/RII/RII/DOK/SITZUNGSVORLAGE/4262725.pdf">Sitzungsvorlage der Stadt</a>, <a href="https://lwn.net/Articles/737818/">LWN</a>. Beschlüsse 2017: <a href="https://FSFE.org/news/2017/news-20170301-01">FSFE</a>, <a href="https://www.computerwoche.de/article/2753989/schwarz-rote-koalition-will-das-limux-projekt-beenden.html">Computerwoche</a>, <a href="https://www.theregister.com/2017/11/24/munich_will_spend_about_50_million_euros_on_windows_migration/">The Register</a>, <a href="https://vergabeblog.de/2017-12-12/muenchen-limux-aus-endgueltig-besiegelt/">vergabeblog</a>. PwC und Bönig: <a href="https://hhoegl.informatik.hs-augsburg.de/oss/ct.2020.19.078_079.limux.pdf">c’t 19/2020</a>. Schleswig-Holstein: <a href="https://winfuture.de/news,155429.html">WinFuture, Dezember 2025</a>. Die tatsächlichen Endkosten des Rückbaus sind nicht veröffentlicht. English version available.</p>
+        </div>
+    </article>
+</main>
+
+
+<script>
+    function setSize(size) {
+        var root = document.documentElement;
+        root.className = root.className.replace(/size-\w+/g, '').trim();
+        root.classList.add('size-' + size);
+        document.body.className = document.body.className.replace(/size-\w+/g, '').trim();
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+        const map = {small: 0, medium: 1, large: 2, xlarge: 3};
+        document.querySelectorAll('.size-btn')[map[size]].classList.add('active');
+        localStorage.setItem('essay-font-size', size);
+    }
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedSize = localStorage.getItem('essay-font-size');
+        if (savedSize) setSize(savedSize);
+        const savedTheme = localStorage.getItem('essay-theme');
+        if (savedTheme === 'light') document.body.classList.add('light-theme');
+    });
+    // Kommunikation mit dem umgebenden Frame (home-neu.html): Theme- und Groessen-Signale empfangen.
+    window.addEventListener('message', function(e) {
+        var msg = e.data;
+        if (!msg || typeof msg !== 'object') return;
+        if (msg.type === 'setTheme') {
+            if (msg.theme === 'light') document.body.classList.add('light-theme');
+            else document.body.classList.remove('light-theme');
+        } else if (msg.type === 'setSize') {
+            var size = msg.size === 'normal' ? 'medium' : msg.size;
+            if (['small','medium','large','xlarge'].indexOf(size) >= 0) setSize(size);
+        }
+    });
+</script>
+</body>
+</html>

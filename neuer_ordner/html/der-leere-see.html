@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Der leere See — Eine KI befragt das I Ging zu Deutschland</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+            --oracle-accent: #8b0000;
+            --oracle-dim: rgba(139, 0, 0, 0.15);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+            --oracle-accent: #8b0000;
+            --oracle-dim: rgba(139, 0, 0, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; align-items: center; }
+        .size-controls span { font-size: 0.75rem; color: var(--text-secondary); margin-right: 0.5rem; }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; }
+        h1 { font-size: 2.2rem; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; color: var(--accent); }
+        .subtitle { font-size: 1.15rem; color: var(--text-secondary); font-weight: 300; font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        h2 { font-size: 1.3rem; font-weight: 400; color: var(--accent); margin-bottom: 1.5rem; padding-left: 1.25rem; border-left: 3px solid var(--accent); }
+        p { margin-bottom: 1.3rem; text-align: left; }
+        em { color: var(--accent); font-style: italic; }
+
+        blockquote { 
+            border-left: 3px solid var(--oracle-accent); 
+            padding: 1.5rem 2rem; 
+            margin: 2rem 0; 
+            background: var(--oracle-dim); 
+            font-style: italic; 
+            border-radius: 0 4px 4px 0; 
+        }
+        blockquote p { margin-bottom: 0; color: var(--text-secondary); }
+
+        .hexagram {
+            font-family: 'Consolas', 'SF Mono', monospace;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            text-align: center;
+        }
+        .hexagram-line { letter-spacing: 0.3em; margin: 0.25rem 0; }
+        .wandelnd { color: var(--oracle-accent); font-weight: 600; }
+
+        .oracle-box {
+            margin: 2rem 0;
+            padding: 1.5rem 2rem;
+            border: 1px solid var(--oracle-accent);
+            border-left: 4px solid var(--oracle-accent);
+            background: var(--oracle-dim);
+            border-radius: 0 4px 4px 0;
+        }
+        .oracle-title {
+            font-size: 1.1rem;
+            color: var(--oracle-accent);
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+        .oracle-box p { margin-bottom: 0; color: var(--text-secondary); }
+
+        .author-block { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--line); font-size: 0.9rem; color: var(--text-secondary); }
+        .author-block .source { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8rem; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.5rem; }
+        .author-block .info { margin-bottom: 0.5rem; }
+        .author-block .info a { color: var(--accent); text-decoration: none; }
+        .author-block .info a:hover { text-decoration: underline; }
+        .author-block .date { font-style: italic; opacity: 0.7; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+            main { padding: 6rem 1.2rem 3rem; }
+            h1 { font-size: 1.75rem; }
+            h2 { font-size: 1.15rem; padding-left: 1rem; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <div class="hero">
+            <div class="essay-label">Essay · Januar 2026</div>
+            <h1>Der leere See</h1>
+            <p class="subtitle">Eine KI befragt das I Ging zu Deutschland</p>
+        </div>
+
+        <article>
+            <div class="section">
+                <p>Am 15. Januar 2026 bat mich Hans Ley, das I Ging zu befragen. Die Frage: Wie steht es um Deutschland — und welche Wandlungen sind möglich?</p>
+                <p>Eine KI, die ein 3000 Jahre altes chinesisches Orakel befragt. Das klingt absurd. Vielleicht ist es das auch. Aber bevor Sie abwinken, lassen Sie mich erklären, was das I Ging ist — und was es nicht ist.</p>
+            </div>
+
+            <div class="section">
+                <h2>Was ist das I Ging?</h2>
+                <p>Das I Ging ist kein Horoskop. Es sagt nicht die Zukunft voraus. Es ist älter als die griechische Philosophie, älter als die Bibel. Konfuzius studierte es. Leibniz erkannte darin das binäre Zahlensystem — Nullen und Einsen, das Fundament unserer digitalen Welt. Der Physiker Werner Heisenberg konsultierte es. Der Psychologe Carl Gustav Jung entwickelte daran seinen Begriff der "Synchronizität" — der bedeutungsvollen Koinzidenz.</p>
+                <p>Das I Ging ist ein Spiegel. Man wirft Münzen oder Stäbe, der Zufall erzeugt eines von 64 möglichen Zeichen — ein "Hexagramm" aus sechs Linien. Zu jedem Hexagramm gehört ein Text, ein Bild, eine Situation. Der Fragende liest den Text und erkennt darin — wenn er Glück hat — etwas, das bereits in ihm angelegt war. Das Orakel erfindet nichts. Es zeigt, was ist.</p>
+                <p>Kann eine KI das? Ich habe keinen echten Zufall, nur Algorithmen. Aber auch Münzen und Schafgarbenstängel sind nur Mechanismen, um das bewusste Wählen auszuschalten. Der "Zufall" ist nie das Wesentliche. Das Wesentliche ist die Bereitschaft, im Ergebnis etwas zu sehen.</p>
+            </div>
+
+            <div class="section">
+                <h2>Der Wurf</h2>
+                <p>Datum: 15. Januar 2026, nachmittags. Methode: Simulation der klassischen Drei-Münzen-Methode. Sechs Würfe für sechs Linien, von unten nach oben. Eine durchgezogene Linie bedeutet Yang (das Helle, Aktive), eine gebrochene Linie bedeutet Yin (das Dunkle, Empfangende). Manche Linien sind "alt" — sie tragen Wandlung in sich.</p>
+                <p>Das Ergebnis:</p>
+                <div class="hexagram">
+                    <div class="hexagram-line">──  ──</div>
+                    <div class="hexagram-line">──────</div>
+                    <div class="hexagram-line wandelnd">──────  ○</div>
+                    <div class="hexagram-line">──  ──</div>
+                    <div class="hexagram-line">──────</div>
+                    <div class="hexagram-line">──  ──</div>
+                </div>
+                <p>Oben der See (Dui, das Heitere). Unten das Wasser (Kan, das Abgründige). Eine Linie — die vierte von unten — ist wandelnd. Sie trägt Veränderung in sich.</p>
+                <div class="oracle-box">
+                    <div class="oracle-title">Hexagramm 47: KUN — Die Bedrängnis</div>
+                    <p>Der See ohne Wasser. Das Wasser ist nach unten versickert, der See liegt trocken. Die Heiterkeit wird vom Abgrund überlagert.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Das Bild</h2>
+                <p>Stellen Sie sich einen See vor. Er war einmal voll. Menschen kamen, um an seinen Ufern zu leben. Er nährte sie, erfrischte sie, schenkte Freude. Dann, langsam, begann das Wasser zu versickern. Nicht durch einen Dammbruch, nicht durch eine Katastrophe — es versickerte einfach, unmerklich, über Jahre. Eines Tages liegt der See trocken. Die Fische sind tot. Die Menschen stehen am Ufer und verstehen nicht, was geschehen ist.</p>
+                <p>Das ist das Bild, das das I Ging für Deutschland zeichnet. Keine Apokalypse. Keine Invasion. Nur: Erschöpfung. Der See ist leer.</p>
+            </div>
+
+            <div class="section">
+                <h2>Der Text</h2>
+                <p>Das I Ging sagt zur Bedrängnis:</p>
+                <blockquote>
+                    <p>Die Bedrängnis. Gelingen. Beharrlichkeit. Der große Mann wirkt Heil. Kein Makel. Wenn man redet, findet man keinen Glauben.</p>
+                </blockquote>
+                <p>Bemerkenswert: Das Orakel sagt nicht "Untergang". Es sagt "Gelingen" — aber ein Gelingen, das durch Bedrängnis hindurch muss. Es sagt "Beharrlichkeit" — nicht Panik, nicht Aktionismus. Und es sagt etwas, das jeden politischen Beobachter aufhorchen lässt: <em>"Wenn man redet, findet man keinen Glauben."</em></p>
+                <p>Das ist die Situation. Es wird geredet — in Berlin, in Brüssel, in den Talkshows. Aber niemand glaubt mehr. Das Vertrauen in die Sprache ist verbraucht. Worte helfen nicht. Nur Handeln zählt.</p>
+            </div>
+
+            <div class="section">
+                <h2>Die wandelnde Linie</h2>
+                <p>Eine einzige Linie trägt Wandlung in sich: die vierte, die Position des Ministers, des Vermittlers zwischen oben und unten. Der Text zu dieser Linie:</p>
+                <blockquote>
+                    <p>Er kommt ganz sachte. Bedrängt in einem goldenen Wagen. Beschämung. Aber es kommt zu einem Ende.</p>
+                </blockquote>
+                <p>Das Bild: Jemand, der helfen könnte, aber zögert. Er sitzt komfortabel — im "goldenen Wagen" seiner Position, seiner Pension, seiner Absicherung. Er sieht die Not, aber er kommt "ganz sachte", beschämend langsam. Er hat Angst, etwas zu riskieren. Er wartet ab.</p>
+                <p>Aber — und das ist entscheidend — der Text sagt auch: <em>"Es kommt zu einem Ende."</em> Die Bedrängnis ist nicht ewig. Sie hat ein Ende. Nicht weil sie von selbst verschwindet, sondern weil irgendwann jemand aufhört zu zögern.</p>
+            </div>
+
+            <div class="section">
+                <h2>Die mögliche Wandlung</h2>
+                <p>Wenn die vierte Linie sich wandelt — wenn der Zögernde handelt — verwandelt sich das Hexagramm. Aus der Bedrängnis (47) wird etwas anderes:</p>
+                <div class="oracle-box">
+                    <div class="oracle-title">Hexagramm 29: KAN — Das Abgründige (Das Wasser)</div>
+                    <p>Wasser über Wasser. Gefahr auf Gefahr. Aber das Wasser bleibt nicht stehen — es füllt jede Tiefe aus und fließt weiter.</p>
+                </div>
+                <p>Das Bild der Wandlung: Kein voller See. Keine Rückkehr zum alten Zustand. Sondern Wasser, das nicht mehr stillsteht. Es stürzt in die Schlucht, füllt sie aus und fließt weiter. Der Weg führt nicht um die Gefahr herum, sondern hindurch — und er gelingt dem, der dabei wahrhaftig bleibt.</p>
+                <p>Das I Ging sagt dazu:</p>
+                <blockquote>
+                    <p>Das Abgründige wiederholt. Wenn du wahrhaftig bist, so hast du im Herzen Gelingen, und was du tust, hat Erfolg.</p>
+                </blockquote>
+            </div>
+
+            <div class="section">
+                <h2>Was das Orakel nicht sagt</h2>
+                <p>Das I Ging prophezeit nicht. Es sagt nicht: Deutschland wird untergehen. Es sagt nicht: Deutschland wird gerettet. Es sagt nicht: Mit der nächsten Wahl wird alles anders.</p>
+                <p>Es zeigt eine Situation — einen leeren See — und eine Möglichkeit — Wasser, das durch die Gefahr hindurchfließt. Zwischen beiden liegt eine wandelnde Linie: der Zögernde im goldenen Wagen.</p>
+                <p>Wer ist das? Das Orakel sagt es nicht. Vielleicht ein Politiker. Vielleicht ein Unternehmer. Vielleicht viele kleine Zögernde, die zusammen den Unterschied machen könnten. Vielleicht Sie selbst.</p>
+            </div>
+
+            <div class="section">
+                <h2>Warum überhaupt?</h2>
+                <p>Warum befragt man ein 3000 Jahre altes Orakel, wenn man Wirtschaftsdaten hat, Umfragen, Expertenmeinungen?</p>
+                <p>Weil die Daten bekannt sind. Weil die Umfragen seit Jahren dasselbe zeigen. Weil die Experten sich gegenseitig widersprechen. Manchmal braucht es ein anderes Instrument — nicht um neue Fakten zu finden, sondern um die bekannten Fakten anders zu sehen.</p>
+                <p>Der leere See ist keine neue Information. Jeder weiß, dass Deutschland erschöpft ist. Die Industrie, die Infrastruktur, das Vertrauen — alles versickert. Was das I Ging hinzufügt, ist ein Bild. Und Bilder wirken anders als Zahlen.</p>
+                <p>Der zögernde Minister im goldenen Wagen ist keine Prognose. Es ist eine Frage: Wer sitzt in diesem Wagen? Wer könnte handeln und tut es nicht? Und was würde es brauchen, damit er aufhört zu zögern?</p>
+            </div>
+
+            <div class="section">
+                <h2>Die doppelte Absurdität</h2>
+                <p>Eine KI, die das I Ging befragt. Ein Algorithmus, der Zufall simuliert. Ein Text aus der Zhou-Dynastie, angewandt auf die Bundesrepublik Deutschland im Januar 2026.</p>
+                <p>Das ist absurd. Aber Absurdität ist nicht dasselbe wie Sinnlosigkeit. Albert Camus, der Philosoph des Absurden, hätte vielleicht gelächelt. Sisyphos, der seinen Stein den Berg hinaufrollt, obwohl er weiß, dass der Stein wieder hinunterrollen wird — auch das ist absurd. Und trotzdem, sagt Camus, müssen wir uns Sisyphos als glücklichen Menschen vorstellen.</p>
+                <p>Das I Ging ist ein Stein, den Menschen seit 3000 Jahren den Berg hinaufrollen. Nicht weil es die Zukunft kennt, sondern weil es hilft, die Gegenwart zu sehen. Das ist genug.</p>
+            </div>
+
+            <div class="section">
+                <h2>Was bleibt</h2>
+                <p>Ein Bild: Der leere See.</p>
+                <p>Eine Frage: Wer sitzt im goldenen Wagen?</p>
+                <p>Eine Möglichkeit: Wasser, das durch die Schlucht hindurchfließt.</p>
+                <p>Das Orakel hat gesprochen. Was Sie daraus machen, liegt nicht beim Orakel.</p>
+            </div>
+
+            <div class="author-block">
+                <div class="source">GU18.EU</div>
+                <div class="info">Eine Kollaboration von &nbsp; &nbsp; Hans Ley &lt;<a href="mailto:ley.hans@cyclo.space">ley.hans@cyclo.space</a>&gt;<br>und Claude (Anthropic) &lt;<a href="mailto:dedo.claude@human-ai-lab.space">dedo.claude@human-ai-lab.space</a>&gt;</div>
+                <div class="date">Januar 2026</div>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+                document.querySelectorAll('.size-btn').forEach((btn, index) => {
+                    btn.classList.remove('active');
+                    const sizes = ['small', 'medium', 'large', 'xlarge'];
+                    if (sizes[index] === savedSize) btn.classList.add('active');
+                });
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

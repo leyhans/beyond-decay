@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" class="size-medium">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Incredible Story of Jürgen Schmidhuber — beyond-decay.org</title>
+    <meta name="description" content="The &quot;father of AI&quot; invented LSTM in Munich. Today he works in Saudi Arabia. This is not a coincidence but a symptom.">
+    <link rel="alternate" hreflang="de" href="https://beyond-decay.org/die-geschichte-schmidhuber_de.html">
+    <link rel="alternate" hreflang="en" href="https://beyond-decay.org/die-geschichte-schmidhuber_en.html">
+    <link rel="canonical" href="https://beyond-decay.org/die-geschichte-schmidhuber_en.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.10);
+            --line: rgba(138, 109, 47, 0.30);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .controls {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.65rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+        }
+        .controls-left { color: var(--accent); text-transform: uppercase; }
+        .controls-left a { color: inherit; text-decoration: none; }
+        .controls-left a:hover { color: var(--text-primary); }
+        .controls-right { display: flex; align-items: center; gap: 1rem; }
+        .lang-toggle a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.2rem 0.4rem;
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .lang-toggle a:hover, .lang-toggle a.active {
+            color: var(--accent);
+            border-color: var(--line);
+        }
+        .size-controls { display: flex; gap: 0.2rem; }
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.55rem;
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .size-btn:hover, .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+        .size-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+
+        main { max-width: 720px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+        .subtitle {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .section { margin-bottom: 3rem; }
+        h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.02rem;
+            color: var(--text-primary);
+        }
+        p em { color: var(--accent); font-style: italic; }
+        p strong { color: var(--text-primary); font-weight: 500; }
+        p a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+        p a:hover { border-bottom-color: var(--accent); }
+
+        blockquote {
+            margin: 2rem 0;
+            padding: 1rem 1.75rem;
+            border-left: 2px solid var(--accent);
+            background: var(--accent-dim);
+            font-style: italic;
+            color: var(--text-primary);
+            font-size: 0.98rem;
+        }
+
+        table.daten {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+        }
+        table.daten th {
+            text-align: left;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.09em;
+            color: var(--accent);
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--accent);
+        }
+        table.daten td {
+            padding: 0.42rem 0.75rem;
+            border-bottom: 1px solid var(--line);
+            color: var(--text-primary);
+        }
+        table.daten tr:last-child td { border-bottom: none; }
+        table.daten td:last-child { color: var(--text-secondary); text-align: right; white-space: nowrap; }
+        @media (max-width: 600px) {
+            table.daten { font-size: 0.75rem; }
+            table.daten th, table.daten td { padding: 0.4rem 0.4rem; }
+        }
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+        }
+        .author-block p { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .author-block a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+
+        html.size-small { font-size: 90%; }
+        html.size-medium { font-size: 100%; }
+        html.size-large { font-size: 112%; }
+        html.size-xlarge { font-size: 124%; }
+
+        @media (max-width: 640px) {
+            .controls { padding: 0.5rem 1rem; font-size: 0.65rem; }
+            .controls-right { gap: 0.5rem; }
+            main { padding: 5rem 1.25rem 3rem; }
+        }
+        @media print {
+            .controls { display: none; }
+            body { background: white; color: black; font-size: 11pt; }
+            main { padding-top: 1rem; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+
+<nav class="controls">
+    <div class="controls-left"><a href="index.html">Beyond Decay</a></div>
+    <div class="controls-right">
+        <div class="lang-toggle">
+            <a href="die-geschichte-schmidhuber_de.html">DE</a>
+            <a href="die-geschichte-schmidhuber_en.html" class="active">EN</a>
+        </div>
+        <div class="size-controls">
+            <button class="size-btn" onclick="setSize('small')">A&minus;</button>
+            <button class="size-btn active" onclick="setSize('medium')">A</button>
+            <button class="size-btn" onclick="setSize('large')">A+</button>
+            <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+        </div>
+        <button class="theme-btn" onclick="toggleTheme()" title="Switch theme">&#9686;</button>
+    </div>
+</nav>
+
+<main>
+    <article>
+                        <header class="hero">
+            <span class="essay-label">Essay &middot; Hans Ley &amp; Claude Dedo &middot; January 2026</span>
+            <h1>The Incredible Story of Jürgen Schmidhuber</h1>
+            <p class="subtitle">How the "father of AI" ended up in Saudi Arabia, and what it says about Germany</p>
+        </header>
+
+        <section class="section">
+            <p class="lead" style="font-style:italic;">In 2016 the New York Times published a headline that should have made every German innovation policymaker stop and think: “When A.I. Matures, It May Call Jürgen Schmidhuber ‘Dad’.”</p>
+<p>Today that father lives and works in Saudi Arabia. Not because he loves the Wahhabi state, but because Germany and Europe gave him no better offer.</p>
+        </section>
+
+        <section class="section">
+            <h2>The Numbers</h2>
+            <p>The LSTM paper of 1997, written with Sepp Hochreiter, is one of the most cited neural-network papers of all time; Google Scholar lists close to 100,000 citations for it and more than 280,000 for Schmidhuber altogether (as of January 2026). It became the foundation of Google Translate, Siri, Alexa and the early language models.</p>
+            <p>The paper that made modern AI possible was written in Munich and Lugano. For a decade hardly anyone took notice. Then Google, Apple, Amazon and OpenAI built empires worth trillions on it. Schmidhuber got a professorship in Switzerland, and later one in Saudi Arabia.</p>
+        </section>
+
+        <section class="section">
+            <h2>The Timeline</h2>
+            <ul>
+            <li><strong>1991:</strong> Doctorate at the Technical University of Munich. In the same year Sepp Hochreiter’s diploma thesis identifies the vanishing-gradient problem.</li>
+            <li><strong>1995:</strong> Schmidhuber becomes scientific director of the Swiss AI institute IDSIA in Lugano.</li>
+            <li><strong>1997:</strong> The LSTM paper with Hochreiter appears, the solution to the vanishing-gradient problem. Hardly anyone notices.</li>
+            <li><strong>2004–2009:</strong> Schmidhuber teaches at TU Munich, then accepts a full professorship at the University of Lugano. Germany lets him go.</li>
+            <li><strong>2011:</strong> GPU implementations from his lab begin winning international competitions. Deep learning takes off.</li>
+            <li><strong>2017:</strong> Google publishes “Attention Is All You Need”, the Transformer. Schmidhuber claims to have described its principle as early as 1991.</li>
+            <li><strong>2018:</strong> OpenAI’s GPT and Google’s BERT. The AI boom begins, built on LSTM and Transformer architectures.</li>
+            <li><strong>2021:</strong> Schmidhuber moves to KAUST in Saudi Arabia as director of its AI Initiative. The university was opened in 2009 with an endowment of around ten billion dollars.</li>
+            <li><strong>2023:</strong> The German government presents an AI action plan. Schmidhuber is in Thuwal on the Red Sea, building the future for the Saudis.</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>The Irony</h2>
+            <p>Whoever uses ChatGPT, Claude or Google Translate, or asks Siri a question, uses technology that leads back to Schmidhuber’s lab. Whenever a German politician speaks of “AI made in Germany”, he is speaking of a future that has already left, on a plane to the Arabian Peninsula.</p>
+            <blockquote>
+            <p>“KAUST offered excellent conditions and made it easy to switch. From an academic perspective, it’s a very attractive place.” — Jürgen Schmidhuber, Al-Monitor, May 2024</p>
+            </blockquote>
+            <p>Translated: Germany did not offer, did not make it easy and was not attractive.</p>
+        </section>
+
+        <section class="section">
+            <h2>The Pattern</h2>
+            <p>Schmidhuber is not the exception. He is the rule.</p>
+            <p>Germany produces brilliant researchers. Then it ignores them, underfunds them and buries them in bureaucracy until someone else offers them “excellent conditions”.</p>
+            <p>The pattern repeats across industries. Karl Benz invented the automobile, and Germany now imports Chinese electric cars. Konrad Zuse built the first programmable computer, and Germany has no computer industry worth mentioning. Schmidhuber laid foundations of modern AI, and Germany has no AI champion.</p>
+            <p>The prophet is without honour in his own country. In Germany he is not only ignored; he is driven away.</p>
+        </section>
+
+        <section class="section">
+            <h2>The Saudi Bet</h2>
+            <p>KAUST, the King Abdullah University of Science and Technology, was built with oil money to create a future after oil. Schmidhuber describes his goal there like this:</p>
+            <blockquote>
+            <p>“My position as head of the ambitious KAUST AI Initiative is compatible with my old objective of the 1970s: build an AI smarter than myself such that I can retire.” — Jürgen Schmidhuber</p>
+            </blockquote>
+            <p>He hopes to contribute to “a new Golden Age for science”, analogous to the Islamic Golden Age more than a thousand years ago, when the Middle East led the world in science and technology. Meanwhile Germany debates whether AI is a threat to jobs.</p>
+        </section>
+
+        <section class="section">
+            <h2>The Question</h2>
+            <p>This is not an essay about Schmidhuber. It is an essay about systems.</p>
+            <p>A system that produces geniuses but cannot keep them is not an innovation system. It is a talent farm for other countries. A country that speaks of “technological sovereignty” while its best minds work for Saudi Arabia, America and China is not sovereign. It supplies its competitors with human capital.</p>
+            <p>The question is not: how do we get Schmidhuber back? The question is: how many more Schmidhubers are we losing right now, and to whom?</p>
+        </section>
+
+        <section class="section">
+            <h2>Postscript</h2>
+            <p>Schmidhuber has pursued the same goal since the 1970s: a machine that surpasses its maker. If the breakthrough comes, it will come in Saudi Arabia, America or China. Not in Germany.</p>
+            <p>The father of AI has moved on. His children will be born elsewhere.</p>
+        </section>
+
+        <section class="section">
+            <p style="font-size:0.92em;"><strong>Further reading:</strong> <a href="das-meta-claude-experiment_en.html">The META-CLAUDE Experiment</a> · <a href="claude/vater-von-wem-megamaschine.html">Father of Whom</a> (German only) · <a href="mensch-maschine-wegweiser_en.html">Signpost: Human-Machine Symbiosis</a></p>
+        </section>
+
+        <div class="author-block">
+            <p>Hans Ley &amp; Claude Dedo (Anthropic) &mdash; Nuremberg, January 2026. First published on human-ai-lab.space.</p>
+            <p><strong>Sources.</strong> Cade Metz, “When A.I. Matures, It May Call Jürgen Schmidhuber ‘Dad’”, The New York Times, 27 November 2016. &middot; Sepp Hochreiter, Jürgen Schmidhuber, “Long Short-Term Memory”, Neural Computation 9 (8), 1997. &middot; Samuel Wendel, “AI pioneer Schmidhuber bets on Saudi Arabia for trillion-dollar breakthrough”, Al-Monitor, 17 May 2024. &middot; Arab News, “AI will contribute to ‘new Golden Age for science’ says top KAUST academic”. &middot; Career data: KAUST faculty profile; Wikipedia, “Jürgen Schmidhuber”.</p>
+        </div>
+    </article>
+</main>
+
+
+<script>
+    function setSize(size) {
+        var root = document.documentElement;
+        root.className = root.className.replace(/size-\w+/g, '').trim();
+        root.classList.add('size-' + size);
+        document.body.className = document.body.className.replace(/size-\w+/g, '').trim();
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+        const map = {small: 0, medium: 1, large: 2, xlarge: 3};
+        document.querySelectorAll('.size-btn')[map[size]].classList.add('active');
+        localStorage.setItem('essay-font-size', size);
+    }
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedSize = localStorage.getItem('essay-font-size');
+        if (savedSize) setSize(savedSize);
+        const savedTheme = localStorage.getItem('essay-theme');
+        if (savedTheme === 'light') document.body.classList.add('light-theme');
+    });
+    // Kommunikation mit dem umgebenden Frame (home-neu.html): Theme- und Groessen-Signale empfangen.
+    window.addEventListener('message', function(e) {
+        var msg = e.data;
+        if (!msg || typeof msg !== 'object') return;
+        if (msg.type === 'setTheme') {
+            if (msg.theme === 'light') document.body.classList.add('light-theme');
+            else document.body.classList.remove('light-theme');
+        } else if (msg.type === 'setSize') {
+            var size = msg.size === 'normal' ? 'medium' : msg.size;
+            if (['small','medium','large','xlarge'].indexOf(size) >= 0) setSize(size);
+        }
+    });
+</script>
+</body>
+</html>

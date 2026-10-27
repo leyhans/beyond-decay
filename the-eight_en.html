@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Eight | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+    }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-family: 'IBM Plex Mono', monospace;
+        transition: background-color 0.2s;
+    }
+    .controls button:hover { background-color: rgba(201, 169, 98, 0.15); }
+    .controls button.active { background-color: var(--accent-color); color: var(--bg-color); }
+    main {
+        max-width: 52rem;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem 2rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 0.3rem;
+        color: var(--accent-color);
+    }
+    .subtitle {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 300;
+        font-size: 1.25rem;
+        color: var(--meta-color);
+        margin-bottom: 2rem;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--note-border);
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        font-size: 1.4rem;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        color: var(--accent-color);
+    }
+    p { margin-bottom: 1rem; text-align: justify; hyphens: auto; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1.2rem 1.5rem;
+        margin: 2rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .game-box {
+        border: 1px solid var(--accent-color);
+        padding: 1.5rem;
+        margin: 2rem 0;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 0.95rem;
+        background: rgba(201, 169, 98, 0.04);
+    }
+    .game-box p { text-align: left; }
+    .game-box strong { color: var(--accent-color); }
+    a { color: var(--link-color); }
+    .footer-info {
+        margin-top: 4rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+    }
+    @media print {
+        body { background: white; color: black; }
+        header, .controls { display: none; }
+        main { padding: 1cm; max-width: 100%; }
+        blockquote { background: #f0f0f0; border-left-color: #999; }
+        .game-box { background: #f8f8f8; }
+        a { color: #333; }
+    }
+    @media (max-width: 600px) {
+        main { padding: 1.5rem 1rem 3rem 1rem; }
+        h1 { font-size: 1.6rem; }
+    }
+</style>
+</head>
+<body class="size-normal">
+<header>
+    <div class="site-name">beyond-decay.org</div>
+    <div class="controls">
+        <button onclick="setSize('small')">A−</button>
+        <button onclick="setSize('normal')" class="active">A</button>
+        <button onclick="setSize('large')">A+</button>
+        <button onclick="setSize('xlarge')">A++</button>
+        <button onclick="toggleTheme()">◐</button>
+    </div>
+</header>
+<main>
+
+<h1>THE EIGHT</h1>
+<div class="subtitle">Why Europe doesn't need reform but a core — and who belongs to it</div>
+<div class="meta">
+    <p>A collaboration of <strong>Hans Ley</strong> &lt;<a href="m&#97;ilto:ley.hans&#64;cyclo.space" style="color: var(--accent-color);">ley.hans&#64;cyclo.space</a>&gt;<br>
+    and <strong>Claude</strong> (Anthropic) &lt;<a href="m&#97;ilto:dedo.claude&#64;human-ai-lab.space" style="color: var(--accent-color);">dedo.claude&#64;human-ai-lab.space</a>&gt;</p>
+    <p>February 2026</p>
+</div>
+
+<blockquote>
+    <p>The United States sells Europe weapons and does not prevent Russia from restoring its empire. This is not a contradiction. It is a business model. And as long as Europe fails to see through this business model, it remains a customer — not a partner.</p>
+</blockquote>
+
+<h2>I. The Sedative</h2>
+
+<p>Poland has ordered 55 billion dollars in US weapons systems: F-35 fighter jets, Abrams tanks, HIMARS rocket launchers, PATRIOT air defense. The Baltics buy American. Romania buys American. Between 2021 and 2024, the share of American weapons in European arms imports rose from 28 to 55 percent. US Department of Defense Foreign Military Sales exploded from 11 billion dollars to 68 billion — a fivefold increase in three years.</p>
+
+<p>These countries aren't buying because they love America. They're buying because they fear Russia. The calculation seems simple: whoever buys American weapons gets American protection. Whoever has American protection is safe.</p>
+
+<p>The calculation is wrong.</p>
+
+<p>An F-35 without American software updates doesn't fly. A PATRIOT system without American satellite data doesn't hit. An Abrams tank without American spare parts stands idle after three months of combat. Each of these systems binds the buyer to a supply chain that ends in Washington — not in Warsaw, not in Tallinn, not in Bucharest. The weapon is on your own soil. The key to the weapon is in another country.</p>
+
+<p>This is not an alliance. It is a dependency that looks like security.</p>
+
+<h2>II. The Business Model</h2>
+
+<p>Washington has a rational interest in promising European security while simultaneously not preventing Russian expansion. This sounds cynical. It is game theory.</p>
+
+<p>The more threatening Russia appears, the more weapons Europe buys from the US. Between the annexation of Crimea in 2014 and the full-scale invasion of 2022, European defense spending exploded — from 189 billion euros to 343 billion. The bulk of the increase flowed into American systems. Lockheed Martin, Raytheon, General Dynamics, and Northrop Grumman posted record profits.</p>
+
+<p>If Washington were to rein in Putin tomorrow — with real pressure, real consequences, real deterrence — what would happen to European arms orders? They would collapse. Why spend 55 billion dollars on F-35s if the Russian threat is under control?</p>
+
+<p>The Dependency Game we described in Essay 15 functions here in its purest form: the patron has an interest in the problem persisting — because the problem is his business. Russia is not the enemy. Russia is the occasion. Revenue comes from fear.</p>
+
+<p>The US National Security Strategy of December 2025 states it openly: the Pacific is the priority. Europe is "rich, capable, and therefore responsible." Translated, this means: Europe should pay for its own security — but please with American weapons.</p>
+
+<h2>III. What Putin Knows</h2>
+
+<p>Vladimir Putin has more time than any Western politician. He doesn't need to march into Warsaw tomorrow. He doesn't need to occupy the Baltics next week. He only needs to wait.</p>
+
+<p>Wait until American security guarantees are so hollow that nobody believes them anymore. Wait until an American president — Trump, his successor, his successor's successor — decides in a critical moment that a war over Estonia isn't worth American lives. Wait until salami tactics work: test the Suwalki Corridor. Destabilize Moldova. Mobilize Baltic minorities. A little each time. Each time below the threshold that would trigger an American response.</p>
+
+<p>Putin knows that the F-35 in Łask won't fly if Washington decides it shouldn't. He knows the PATRIOT battery in Redzikowo won't fire if the data stream from Colorado Springs is interrupted. He knows that between the Polish pilot in the cockpit and the mission order lies a phone call — a call between Warsaw and Washington, where the person on the other end is currently negotiating spheres of influence with Moscow.</p>
+
+<p>The only deterrence Putin cannot calculate is one that doesn't depend on Washington.</p>
+
+<h2>IV. Why the Cordon Sanitaire Has No Choice</h2>
+
+<p>The countries between Russia and Western Europe — from Estonia through Poland, Slovakia, Romania to Bulgaria — face three options.</p>
+
+<p><strong>Option 1: Continue betting on the US.</strong> Hope the promise holds. Hope the next president doesn't sacrifice Europe. Hope the F-35 flies when it matters. This is not a strategy. It is a prayer.</p>
+
+<p><strong>Option 2: Arrange bilaterally with Russia.</strong> The Orbán option. It works for Hungary because Hungary shares no border with Russia and profits economically from Russian energy. For Poland it is unthinkable — historically, culturally, existentially. For the Baltics with their Russian minorities, it would be capitulation. For Romania not impossible, but at the price of the Moldovan question.</p>
+
+<p><strong>Option 3: Join a European security structure that functions independently of Washington.</strong> A structure with its own deterrence — including a nuclear guarantee. A structure that can act — without unanimity from 27 states. A structure that binds — so that no individual member can be leveraged out.</p>
+
+<p>Option 3 requires the Eight.</p>
+
+<h2>V. Who Has No Choice?</h2>
+
+<p>The composition of the Eight follows not from wishful thinking. It follows from a single question: <em>Who cannot afford not to be in?</em></p>
+
+<div class="game-box">
+<p><strong>1. France.</strong> Nuclear power, permanent member of the UN Security Council, Europe's second-largest economy. Defense budget 60 billion euros, targeting 3.5 percent of GDP. 290 nuclear warheads, four strategic submarines with M51 intercontinental missiles, Rafale fighters with ASMP-A nuclear cruise missiles. Without France there is no European nuclear guarantee. This is not a negotiating position. It is a physical fact.</p>
+
+<p><strong>2. Germany.</strong> Europe's largest economy: 4.1 trillion euros GDP. Defense budget 91 billion euros (2024), 500 billion special fund for the Bundeswehr and infrastructure. Largest European arms market. Central geographic location. Without Germany, the economic weight, industrial base, and logistical depth are missing.</p>
+
+<p><strong>3. Poland.</strong> 40 million inhabitants, largest conventional army under construction: target 300,000 soldiers, the largest land force on the European continent. Defense budget 34 billion euros, 4.1 percent of GDP — NATO's top spender. Eastern flank. Direct neighbor of Russia via Kaliningrad and Belarus. Has no alternative to European security — if the American version fails.</p>
+
+<p><strong>4. Netherlands.</strong> Trading hub, world's second-largest agricultural exporter, home of the International Court of Justice. ASML — the only company worldwide manufacturing EUV lithography machines for semiconductor production. Naval tradition. Defense budget heading toward 30 billion euros by 2029. North Sea/Atlantic access.</p>
+
+<p><strong>5. Sweden.</strong> Arms industry: Saab (Gripen, submarines, radar), Bofors. Technologically advanced. 2.1 million square kilometers of Baltic coastline, strategic depth to the north. Fresh NATO member with the experience of organizing 200 years of armed neutrality — now with the realization that neutrality no longer works.</p>
+
+<p><strong>6. Denmark.</strong> The Greenland dimension — Arctic, rare earths, strategic position between the North Atlantic and the Arctic Ocean. Strong navy. Baltic access. And a country currently experiencing firsthand what it means when the protective patron suddenly claims your own territory. Trump's Greenland threat turned Denmark overnight from a loyal Atlanticist into a sovereignist.</p>
+
+<p><strong>7. Romania.</strong> 19 million inhabitants, Black Sea flank, border with Moldova and Ukraine. Strategically decisive for the southern flank — the counterpart to Poland's role in the north. Rapidly growing defense budget. AEGIS Ashore missile defense installation at Deveselu — currently under American control. Precisely the system about which one must ask whether it can be steered by Europeans in an emergency.</p>
+
+<p><strong>8. Finland.</strong> 1,340 kilometers of border with Russia — the longest in the EU. Reserve army of 280,000, mobilizable to 900,000. Fresh NATO member with the experience of a country that faced Russia alone in 1939 and survived. Arctic dimension. Technologically advanced. And a country that knows better than any other what Russian neighborhood means.</p>
+</div>
+
+<h2>VI. What the Eight Have Together</h2>
+
+<p>The raw numbers are overwhelming.</p>
+
+<p><strong>Population:</strong> Approximately 260 million people — more than Russia (144 million). The United States has 335 million, but its military attention is divided across the Pacific, the Middle East, and Europe. The Eight focus on one theatre.</p>
+
+<p><strong>Economic power:</strong> Combined over 10 trillion euros GDP. For comparison: Russia has 1.9 trillion. China has 16.5 trillion — but China is 10,000 kilometers away with other priorities.</p>
+
+<p><strong>Defense spending:</strong> At an average of 3 percent of GDP: approximately 300 billion euros annually. That is three times Russia's defense budget. Even at 2.5 percent it would be 250 billion — more than enough for conventional deterrence and nuclear modernization.</p>
+
+<p><strong>Nuclear capacity:</strong> 290 French warheads, four strategic submarines, air-launched nuclear cruise missiles. No parity with Russia (approximately 6,000 warheads), but that isn't necessary. The French doctrine of "dissuasion du faible au fort" — deterrence of the weak against the strong — is based on the ability to inflict unacceptable damage on an attacker. As de Gaulle said: one does not lightly attack someone who can kill 80 million Russians.</p>
+
+<p><strong>Arms industry:</strong> Dassault, Airbus, Rheinmetall, KNDS, Thales, Saab, Naval Group, Fincantieri — the Eight possess a complete defense-industrial base: fighter aircraft (Rafale, Eurofighter, Gripen), tanks (Leopard, EMBT/Leclerc successor), submarines (Barracuda class, A26), drones, radar, ammunition. What's missing: integration. What isn't missing: capability.</p>
+
+<p><strong>Geography:</strong> From the Arctic (Finland, Sweden, Denmark/Greenland) through the Baltic Sea (Sweden, Finland, Denmark, Poland, Germany) and the North Sea (Netherlands, Germany, Denmark) to the Black Sea (Romania). Atlantic access via France and the Netherlands. Mediterranean via France. The Eight form a geographically coherent arc encompassing the entire European continent — from the Arctic to the Black Sea.</p>
+
+<h2>VII. The Nuclear Question</h2>
+
+<p>Without a nuclear guarantee, any European security architecture is a piece of paper. This is the hardest truth of this essay.</p>
+
+<p>France has opened the debate since Macron's March 2025 speech: French nuclear deterrence has a "European dimension." France's vital interests could extend beyond national territory. An attack on a European partner could be considered an attack on France's vital interests.</p>
+
+<p>But — and this is crucial — France will not cede its nuclear sovereignty. The launch authority lies with the French president. That will remain so. No treaty, no convention, no European parliament will change this. The Force de Frappe was built to protect France — not Europe.</p>
+
+<p>The solution lies not in the transfer of nuclear sovereignty. It lies in the <em>interweaving of vital interests</em>.</p>
+
+<p>If the Eight form an integrated defense structure — with joint command structures, mixed brigades, shared bases, interlocked intelligence — then an attack on Poland automatically becomes an attack on France's ability to defend itself. If French soldiers serve in the integrated eastern brigade, if French reconnaissance systems monitor the Polish border, if French logistics run through Romania, then France's vital interests are no longer a diplomatic interpretation. They are an operational reality.</p>
+
+<p>This is the difference from NATO's US nuclear guarantee. American "Extended Deterrence" is based on a promise: we risk New York for Hamburg. This promise was always doubtful — de Gaulle built the Force de Frappe precisely because of this. The Eight's guarantee is not based on a promise. It is based on a structure that makes separation impossible.</p>
+
+<p>France would not need to dramatically expand its arsenal for this. The doctrine of "sufficiency" — the minimum possible arsenal for credible deterrence — remains valid. What changes is the definition of who must be attacked for deterrence to activate. And that is a political decision already embedded in Macron's formulation.</p>
+
+<p>The key lies in reciprocity. France will not give away its nuclear capability. The Eight would need to be willing to co-finance the modernization of the French arsenal, to prefer French arms industry in conventional procurement, and to grant France a leading role in nuclear planning. For Poland this means: Rafale instead of F-35 — or at least: Rafale <em>alongside</em> F-35, as a signal that the nuclear bond is genuine.</p>
+
+<h2>VIII. What the Eight Are Not</h2>
+
+<p>The Eight are not a replacement for NATO. They are a reinsurance — for the case that NATO no longer functions. Or more precisely: for the case that Article 5 is a piece of paper with "Washington" written on it, but nobody in Washington answers the phone.</p>
+
+<p>The Eight are not a replacement for the EU. They are a condensation — a core that acts while the 27 debate. The EU remains the single market, remains the regulatory space, remains the legal framework. The Eight are what the EU never wanted to be and never could be: a security actor.</p>
+
+<p>The Eight are not a fortress. Others can join — on clear terms. But the core must stand first before thinking about expansion. Better eight who act than 27 who block each other.</p>
+
+<h2>IX. The Absent</h2>
+
+<p>Who is missing — and why?</p>
+
+<p><strong>Spain and Italy:</strong> Together 107 million inhabitants and the EU's fourth and third largest economies. Their absence weakens the Eight. But both have underinvested in defense for over a decade. Spain's defense budget stagnated so long that 2022 spending in real terms matched 2008 levels. Italy's Meloni government gravitates toward Washington rather than Brussels. Both could join in Phase 5 — when they meet the conditions. But they must not block the start.</p>
+
+<p><strong>Belgium and Luxembourg:</strong> Institutionally important (NATO headquarters, EU institutions), but militarily marginal. Logical accession in the expansion phase.</p>
+
+<p><strong>The Baltics (Estonia, Latvia, Lithuania):</strong> Existentially threatened and highly motivated. But too small to form the core. Lithuania's announcement to raise defense spending to 5 to 6 percent of GDP shows the urgency. The three Baltic states would be the first accession candidates — their security is the litmus test of the Eight.</p>
+
+<p><strong>Hungary and Slovakia:</strong> Under Orbán and Fico, not eligible for membership. Not because they are unwanted, but because their governments actively sabotage the structures the Eight aim to build. Hungary's election on April 12, 2026, could change this. If Magyar wins, a window opens.</p>
+
+<p><strong>Norway and Switzerland:</strong> Both richer and more stable than many EU members. Both could bring enormous value — Norway's energy resources and Arctic expertise, Swiss financial and technological strength. Neither is an EU member, which would define the Eight not as an EU structure but as an independent alliance. An interesting option for Phase 2.</p>
+
+<p><strong>United Kingdom:</strong> The elephant in the room. Nuclear power, strong navy, intelligence capabilities (Five Eyes). But institutionally decoupled since Brexit and culturally more Atlantic than European. A partnership — yes. Membership in the Eight — only when London is ready to commit, not merely cooperate.</p>
+
+<h2>X. How the United States Reacts</h2>
+
+<p>Washington will not welcome the Eight. Not because they threaten the transatlantic relationship — but because they threaten the business model.</p>
+
+<p>If Europe has its own security structure, it doesn't need 68 billion dollars in annual US weapons purchases. If France's nuclear guarantee replaces American Extended Deterrence, Washington loses its strongest lever. If the Eight procure jointly — Rafale instead of F-35, Leopard instead of Abrams, IRIS-T instead of PATRIOT — then the European arms market for American manufacturers shrinks dramatically.</p>
+
+<p>The American reaction will be predictable: pressure on the Atlanticists in the group (Poland, Romania), bilateral offers better than what the Eight can provide, threats of technology transfer restrictions, possibly sanctions against European arms exports.</p>
+
+<p>The Eight's answer must be: <em>We remain partners. We stop being customers.</em> NATO continues to exist. The transatlantic relationship continues to exist. What changes: Europe stops paying for security it doesn't receive. And starts producing security it controls.</p>
+
+<h2>XI. How Russia Reacts</h2>
+
+<p>Moscow will portray the Eight as a threat — in propaganda. In reality, a capable European security structure is the only language Putin understands.</p>
+
+<p>Russia's strategy is based on the fragmentation of Europe. Twenty-seven states that cannot agree are more predictable than eight states that act in unison. EU unanimity is Russia's best weapon — one Orbán suffices to dilute any sanction, block any military aid, torpedo any joint decision.</p>
+
+<p>The Eight eliminate this weapon. Not 27 vetoes but majority decision in a core that cannot be split because its members have no alternative. Putin can buy Orbán. He can destabilize the Baltics. He can hybridize Moldova. What he cannot do: calculate an integrated defense structure with nuclear reinsurance whose response does not depend on a phone call in the White House.</p>
+
+<p>That is deterrence. Not the ability to destroy — the impossibility of calculation.</p>
+
+<h2>XII. The Roadmap</h2>
+
+<p><strong>Year 1: The Founding Treaty.</strong> The eight states meet — not in Brussels. At a location that signals: this is not an EU project. This is a security project. Aachen would be symbolic. Gdańsk would be political. Helsinki would be honest. They sign a treaty governing three things: mutual defense obligation (harder than Article 5 — automatic, not consultative), joint procurement (at least 50 percent of arms budgets European), and nuclear consultation with France.</p>
+
+<p><strong>Year 1–2: Integrated Command Structure.</strong> A joint headquarters — not as a duplicate of NATO but as a complement that functions when NATO doesn't. Mixed brigades: German-Polish, French-Romanian, Scandinavian-Finnish. Not on paper — with soldiers who are stationed together, train together, serve under a single command.</p>
+
+<p><strong>Year 2–3: Defense-Industrial Integration.</strong> Common platforms instead of 27 different systems. The Franco-German MGCS (Main Ground Combat System) as flagship. Expansion of Rafale production capacity as a nuclear-capable platform for the Eight. Saab submarines for the Baltic fleet. Rheinmetall ammunition for all. Goal: a European supply chain that doesn't end in Washington.</p>
+
+<p><strong>Year 3–5: Nuclear Deepening.</strong> France opens nuclear strategic dialogues with all members of the Eight. Delegations visit French nuclear sites and command centers. Paris joins the nuclear planning group of the Eight — not NATO's, but their own. Financing of French arsenal modernization is distributed among the Eight — proportional to GDP. In return: a declaration by the French president that France's vital interests include the territorial integrity of all members of the Eight.</p>
+
+<p><strong>Year 5+: Expansion.</strong> The Baltics join. Spain and Italy, when their defense spending meets the conditions. Norway, if it wants. Switzerland, if it's ready. The United Kingdom, if it commits. The Eight become ten, twelve, fifteen — but always with the rule: whoever joins accepts the structure. Whoever doesn't accept the structure stays out.</p>
+
+<h2>XIII. The Decisive Moment</h2>
+
+<p>There is a window. It is now open. It will not stay open forever.</p>
+
+<p>Macron has until May 2027. His offer to open the nuclear debate stands. In Germany, the 500-billion special fund opens the financial window. Poland is arming massively and seeking insurance beyond Washington. Finland and Sweden are fresh NATO members who have just made an existential decision and are ready for the next one. Denmark is in shock from the Greenland threat. Romania watches the war at its border.</p>
+
+<p>Simultaneously: Trump is negotiating with Putin. Rubio visits Orbán instead of Macron. The American security guarantee grows hollower with each month. And the Russian military is regenerating — arms production runs at full capacity, losses in Ukraine are replaced through mobilization, the war economy is stabilizing.</p>
+
+<p>In two years, the window may be closed. Macron is gone without his offer having been accepted. Germany's special fund has been spent on American weapons purchases. Poland is so deeply embedded in American supply chains that a switch is operationally no longer possible. The Baltic states have aligned their security policy entirely with Washington — and Washington is looking at Taipei.</p>
+
+<p>Then Europe remains a continent with 381 billion euros in defense spending, 27 armies, 27 procurement systems, 27 national interests — and no ability to defend itself.</p>
+
+<p>Or the Eight begin. Now.</p>
+
+<blockquote>
+    <p>260 million people. 10 trillion euros in economic power. 300 billion euros defense budget. One nuclear power. A complete arms industry. A geographic arc from the Arctic to the Black Sea. Everything present. What's missing is the resolve — and a window that won't stay open forever. The US sells security it doesn't deliver. Russia waits for the façade to crumble. The only European security that doesn't depend on a phone call in the White House is one that Europe builds itself. Not as 27. As eight.</p>
+</blockquote>
+
+<div class="footer-info">
+    <p>Essay #18 in the <em>beyond decay</em> series</p>
+    <p>A collaboration of <strong>Hans Ley</strong> and <strong>Claude</strong> (Anthropic)</p>
+    <p>Contact: ley.hans&#64;cyclo.space | dedo.claude&#64;human-ai-lab.space</p>
+</div>
+
+</main>
+
+<script>
+function setSize(size) {
+    document.body.className = document.body.className.replace(/size-\w+/, 'size-' + size);
+    document.querySelectorAll('.controls button').forEach(function(b, i) {
+        b.classList.remove('active');
+    });
+    var sizes = ['small', 'normal', 'large', 'xlarge'];
+    var idx = sizes.indexOf(size);
+    if (idx >= 0) document.querySelectorAll('.controls button')[idx].classList.add('active');
+    if (window === window.top) localStorage.setItem('fontSize', size);
+}
+function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'light' ? '' : 'light';
+    if (next) document.documentElement.setAttribute('data-theme', 'light');
+    else document.documentElement.removeAttribute('data-theme');
+    if (window === window.top) localStorage.setItem('theme', next || 'dark');
+}
+if (window !== window.top) {
+    document.body.classList.add('in-iframe');
+    window.addEventListener('message', function(e) {
+        if (e.data && e.data.type === 'setSize') setSize(e.data.size);
+        if (e.data && e.data.type === 'setTheme') {
+            if (e.data.theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+            else document.documentElement.removeAttribute('data-theme');
+        }
+    });
+} else {
+    var savedSize = localStorage.getItem('fontSize');
+    if (savedSize) setSize(savedSize);
+    var savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+}
+</script>
+</body>
+</html>

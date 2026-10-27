@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIEGEL | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 2.4rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+        letter-spacing: 2px;
+    }
+    .subtitle {
+        font-size: 1.05rem;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        letter-spacing: 1px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.8rem;
+        margin-bottom: 1.2rem;
+    }
+    p {
+        margin-bottom: 1.4rem;
+        text-align: justify;
+        hyphens: auto;
+    }
+    blockquote {
+        margin: 1.8rem 0;
+        padding: 1.2rem 1.5rem;
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        font-style: italic;
+    }
+    strong { color: var(--accent-color); font-weight: 600; }
+    em { font-style: italic; }
+    .note {
+        border-top: 1px solid var(--note-border);
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+    .note a { color: var(--link-color); }
+    .signature {
+        margin-top: 2.5rem;
+        text-align: right;
+        font-size: 0.95rem;
+    }
+
+    /* Hide header when inside iframe */
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        text-decoration: none; font-weight: 500; letter-spacing: 1px;
+    }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    @media (max-width: 600px) {
+        /* Hide header when inside iframe */
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        .note { border-top-color: #ccc !important; }
+        .note a { color: #333 !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+<nav class="bd-back" style="max-width:860px;margin:0 auto;padding:10px 16px;font-size:0.85em;line-height:1.6;"><a href="https://beyond-decay.org/" target="_top" style="color:inherit;">← beyond-decay.org</a> · <a href="https://beyond-decay.org/vergeltung-als-bauwerk_de.html" target="_top" style="color:inherit;">← Vergeltung als Bauwerk</a></nav>
+
+<header>
+    <span class="site-name">beyond-decay.org</span>
+    <div class="controls">
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Größe</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <a href="riegel_en.html" class="ctrl-link">EN</a>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+    <main>
+        <h1>RIEGEL</h1>
+        <div class="subtitle">Wer die Lücke schließt, schließt sich selbst ein — Ein Konzept zur Neutralisierung der Suwalki-Bedrohung durch automatische Reziprozität</div>
+        <div class="meta">beyond-decay.org — Februar 2026</div>
+
+        <h2>I. Die Falle im Kopf</h2>
+
+        <p>Seit 2014 gilt die Suwalki-Lücke als die gefährlichste Stelle Europas. Ein 65 Kilometer schmaler Landkorridor zwischen Polen und Litauen, eingekeilt zwischen dem russischen Kaliningrad im Westen und Belarus im Osten. Die einzige Landverbindung zwischen den baltischen NATO-Staaten und dem Rest des Bündnisses.</p>
+
+        <p>Die Geschichte, die man sich darüber erzählt, geht so: Russland könnte diesen Korridor in einem Handstreich schließen — ein gleichzeitiger Vorstoß aus Kaliningrad und aus Grodno, 65 Kilometer, ein paar Tage, fertig. Estland, Lettland und Litauen wären abgeschnitten. NATO-Nachschub könnte nur noch über See oder Luft kommen, beides bedroht durch russische Raketen aus Kaliningrad. Schach und Matt.</p>
+
+        <p>NATO-Generalsekretär Mark Rutte versprach im Februar 2026 eine „vernichtende Antwort", falls Russland die Lücke blockiert. Deutschland stationiert eine Panzerbrigade in Litauen. Polen baut den „East Shield" — ein 2,5-Milliarden-Euro-Verteidigungswall entlang seiner Ostgrenze. Litauen steigert seinen Verteidigungshaushalt auf fünf bis sechs Prozent des BIP und montiert Leopard-2-Panzer vor Ort.</p>
+
+        <p>All das ist nicht falsch. Aber es ist die falsche Frage.</p>
+
+        <p>Die falsche Frage lautet: Wie verteidigen wir den Korridor? Die richtige Frage lautet: Was passiert auf der anderen Seite der Gleichung, wenn jemand versucht, ihn zu schließen?</p>
+
+        <h2>II. Die alte Geometrie</h2>
+
+        <p>Bis 2022 hatte das Suwalki-Szenario eine gewisse Logik. Die Ostsee war kein NATO-Binnenmeer. Schweden war neutral, Finnland formell bündnisfrei. Russlands Baltische Flotte in Kaliningrad kontrollierte gemeinsam mit der Nordflotte und landbasierten Raketensystemen wesentliche Teile des maritimen Raums. Eine Seeversorgung der baltischen Staaten wäre riskant gewesen, ein Lufttransport unter dem Schirm russischer Flugabwehr noch riskanter.</p>
+
+        <p>In dieser Geometrie war die Suwalki-Lücke tatsächlich NATOs Achillesferse: ein einziger Landweg, der über Gelingen oder Scheitern der baltischen Verteidigung entschied.</p>
+
+        <p>Aber diese Geometrie existiert nicht mehr.</p>
+
+        <h2>III. Die neue Geometrie — Die Ostsee als NATO-Binnenmeer</h2>
+
+        <p>Seit dem Beitritt Finnlands (April 2023) und Schwedens (März 2024) zur NATO hat sich die strategische Lage fundamental verändert. Die Ostsee ist heute de facto ein NATO-Binnenmeer. Jede Küste gehört einem Bündnismitglied — mit Ausnahme der russischen Exklave Kaliningrad und eines kurzen Küstenstreifens bei St. Petersburg.</p>
+
+        <p>Diese Veränderung wird in ihrer Tragweite erstaunlich wenig diskutiert. Die Debatte über die Suwalki-Lücke wird weitergeführt, als hätte sich nichts geändert — als wäre es noch 2014. Generäle planen weiter die Verteidigung eines Landkorridors, während die eigentliche Revolution auf dem Wasser stattgefunden hat.</p>
+
+        <p>Was sich geändert hat: Der Finnische Meerbusen — der Zugang von der offenen Ostsee nach St. Petersburg — ist an seiner engsten Stelle 60 Kilometer breit. Auf der einen Seite: Finnland, NATO-Mitglied. Auf der anderen: Estland, NATO-Mitglied. Dazwischen: die russische Marinebasis Kronstadt und der Hafen von St. Petersburg, Russlands zweitgrößte Stadt und wichtigster Ostseezugang.</p>
+
+        <p>Gleichzeitig ist Kaliningrad — die Exklave, von der die hypothetische Suwalki-Operation ausgehen müsste — vollständig von NATO-Territorium umgeben. Im Süden: Polen. Im Norden und Osten: Litauen. Zur See: NATO-Gewässer in jeder Richtung.</p>
+
+        <p>Die konventionelle Analyse sieht in dieser Konstellation nur die baltische Verwundbarkeit. Sie übersieht die russische.</p>
+
+        <h2>IV. Die Inversion — Kaliningrads Verwundbarkeit</h2>
+
+        <p>Kaliningrad ist keine Festung. Es ist eine Falle.</p>
+
+        <p>Die Oblast hat rund 430.000 Einwohner, davon etwa 230.000 in der Stadt Kaliningrad selbst. Sie beherbergt die Hauptquartiere der Baltischen Flotte, Raketenbrigaden mit Iskander-Systemen, S-400-Luftabwehr und vermutlich nuklearfähige Trägersysteme. All das macht Kaliningrad in der konventionellen Analyse zu einer Bedrohung.</p>
+
+        <p>Aber all das muss auch versorgt werden. Lebensmittel, Treibstoff, Ersatzteile, Munition, Medikamente — alles kommt entweder über See oder durch den Landkorridor über Litauen und Belarus nach Kaliningrad. Es gibt keine Pipeline, die nicht über NATO-Territorium oder NATO-Gewässer führt. Es gibt keine Schifffahrtsroute, die nicht durch Gewässer verläuft, die von NATO-Küsten aus kontrollierbar sind.</p>
+
+        <p>Im Moment, in dem Russland den Suwalki-Korridor schließt, verliert es den letzten Anschein von Normalität in seiner Beziehung zu den Anrainerstaaten. Eine Abriegelung Kaliningrads — keine Schiffe rein, keine raus, keine Transitgenehmigungen durch Litauen — wäre nicht nur möglich, sondern logisch und sofort umsetzbar.</p>
+
+        <p>430.000 Menschen ohne zuverlässige Versorgung. Eine Militärgarnison, deren Nachschublinien über Nacht gekappt werden. Raketensysteme, die viel weniger bedrohlich sind, wenn die Soldaten, die sie bedienen, nicht wissen, wann die nächste Lieferung kommt.</p>
+
+        <p>Das ist die Inversion: Die Suwalki-Lücke zu schließen wäre kein russischer Triumph. Es wäre die Selbstisolation einer halben Million Menschen auf einem Stück Land, das in jeder Hinsicht von denen abhängt, die man gerade angegriffen hat.</p>
+
+        <h2>V. Der Flaschenhals — St. Petersburg im Trichter</h2>
+
+        <p>Aber die Konsequenzen gehen weiter. Weit über Kaliningrad hinaus.</p>
+
+        <p>St. Petersburg ist eine Stadt von fünf Millionen Einwohnern. Russlands kulturelle Hauptstadt, sein wichtigster Ostseehafen, Sitz bedeutender Rüstungsindustrie und Marinewerften. Der gesamte zivile und militärische Seeverkehr von und nach St. Petersburg muss durch den Finnischen Meerbusen — einen Trichter, der sich nach Westen auf 60 Kilometer verengt, mit Finnland im Norden und Estland im Süden.</p>
+
+        <p>Seit beide NATO-Mitglieder sind, ist dieser Trichter kontrollierbar. Nicht in der Theorie, sondern in der Praxis. Finnland verfügt über eine der erfahrensten Küstenverteidigungen der Welt — eine Tradition, die auf den Winterkrieg zurückgeht. Die finnische Marine unterhält moderne Minenleger, Küstenraketensysteme und eine tiefgestaffelte Seeüberwachung. Estland hat in den letzten Jahren massiv in Küstenverteidigung investiert.</p>
+
+        <p>Eine Seeblockade des Finnischen Meerbusens — aktiviert beim ersten Anzeichen einer Suwalki-Operation — würde nicht nur den Militärhafen Kronstadt abschneiden, sondern den gesamten zivilen Seehandel St. Petersburgs unterbinden. Keine Containerschiffe, keine Tanker, keine Rohstoffexporte über die Ostsee.</p>
+
+        <p>Die ökonomischen Konsequenzen wären für Russland gravierend. Aber die militärischen wären unmittelbar: Die Baltische Flotte wäre in einem Binnenmeer eingesperrt, dessen Ausgänge von feindlichen Küsten kontrolliert werden.</p>
+
+        <h2>VI. RIEGEL — Das Prinzip der automatischen Reziprozität</h2>
+
+        <p>Aus dieser Analyse ergibt sich ein Konzept, das wir <em>RIEGEL</em> nennen: <strong>Reciprocal Immediate Geostrategic Enclosure and Lockdown</strong>.</p>
+
+        <p>Das Prinzip ist einfach: Wer die Lücke schließt, schließt sich selbst ein.</p>
+
+        <p>RIEGEL ist keine Drohung. Es ist ein Mechanismus. Der Unterschied ist entscheidend. Eine Drohung erfordert eine politische Entscheidung im Moment der Krise — und genau darauf spekuliert der Angreifer. Wird NATO wirklich „vernichtend" reagieren, wie Rutte verspricht? Wird es Konsens geben? Wie lange dauert die Abstimmung? Jede Drohung enthält den Zweifel an ihrer Umsetzung.</p>
+
+        <p>Ein Mechanismus dagegen funktioniert wie ein Schloss: automatisch, unvermeidlich, vorher bekannt. RIEGEL bedeutet:</p>
+
+        <p><strong>Erstens — Deklaration.</strong> Die NATO-Anrainerstaaten der Ostsee erklären öffentlich und verbindlich: Jede militärische Aktion gegen den Suwalki-Korridor löst automatisch die vollständige maritime und territoriale Abriegelung Kaliningrads sowie die Sperrung des Finnischen Meerbusens aus. Keine Konsultation, keine Abstimmung, kein Sicherheitsrat. Ein Mechanismus, kein Beschluss.</p>
+
+        <p><strong>Zweitens — Vorbereitung.</strong> Die Infrastruktur für die sofortige Umsetzung wird im Voraus geschaffen. Minenfelder vorbereitet, Küstenraketensysteme positioniert, Sensornetze installiert, Befehlsketten festgelegt. Nicht als Geheimnis, sondern offen und transparent. Der Angreifer soll wissen, was ihn erwartet — nicht hoffen, dass es vielleicht nicht funktioniert.</p>
+
+        <p><strong>Drittens — Automatisierung.</strong> Die Aktivierung ist an objektiv verifizierbare Auslöser gekoppelt. Nicht an eine politische Lagebeurteilung, sondern an physische Fakten: Truppenkonzentrationen oberhalb definierter Schwellen, Grenzüberschreitungen, Waffeneinsatz im Korridor. Die Verifikation erfolgt durch verteilte Sensorsysteme — satellitengestützt, unterseeisch, bodengebunden —, die nicht von einer einzigen Instanz kontrolliert werden.</p>
+
+        <p><strong>Viertens — Reziprozität.</strong> RIEGEL ist kein Angriffskonzept. Es ist ein Spiegel. Russland schließt die Lücke — Russland verliert Kaliningrad und den Zugang zu St. Petersburg. Die Verhältnismäßigkeit ist gegeben: Wer drei Staaten isoliert, wird selbst isoliert. Wer einen Korridor blockiert, verliert zwei.</p>
+
+        <h2>VII. Die vorbereitenden Maßnahmen</h2>
+
+        <p>RIEGEL erfordert keine futuristische Technologie und keine astronomischen Budgets. Die Mittel existieren, die Geographie ist günstig, die beteiligten Staaten sind kompetent. Was fehlt, ist die Entscheidung — und das Konzept.</p>
+
+        <p><strong>Maritime Sperrkapazität Kaliningrad.</strong> Polen und Litauen verfügen über küstengestützte Antischiffsraketen und Minenleger. Die Zugänge zu Kaliningrad — der Hafen Baltijsk und die Frische Nehrung — liegen innerhalb der Reichweite bestehender Systeme. Eine vorbereitete Seeblockade ist innerhalb von Stunden aktivierbar. Ergänzt durch Unterwasser-Sensornetze, die jede U-Boot-Bewegung erfassen.</p>
+
+        <p><strong>Sperrung Finnischer Meerbusen.</strong> Finnland hat jahrzehntelange Erfahrung in der Küstenverteidigung und Minenkriegführung. Gemeinsam mit Estland kann der Meerbusen innerhalb kürzester Zeit für den Schiffsverkehr unpassierbar gemacht werden. Die finnischen Küstenraketensysteme und die estnische Küstenverteidigung ergänzen sich natürlich — sie decken denselben Trichter von beiden Seiten ab.</p>
+
+        <p><strong>Transit-Sperrung über Land.</strong> Kaliningrads Landversorgung läuft über Litauen — Eisenbahn und Straße. Die Transitgenehmigungen sind ein politisches Instrument, das bereits 2022 kurzfristig eingesetzt wurde und eine heftige diplomatische Krise auslöste. Im RIEGEL-Kontext ist die sofortige Sperrung aller Transitrouten Teil des automatischen Mechanismus.</p>
+
+        <p><strong>Dezentrale Überwachung.</strong> Die gesamte Suwalki-Region und die Ostsee werden durch ein Netz verteilter Sensoren überwacht — nicht zentral und nicht geheim, sondern offen und redundant. Satellitenbilder, AIS-Daten, seismische Sensoren, Unterwassermikrofone, zivile und militärische Radarsysteme. Die Daten sind nicht nur für Militärs zugänglich, sondern teilweise öffentlich — denn Transparenz ist Teil der Abschreckung.</p>
+
+        <p><strong>Autonome Versorgung der baltischen Staaten.</strong> Parallel zur Sperrinfrastruktur muss die Abhängigkeit der baltischen Staaten vom Landkorridor reduziert werden. Dezentrale Energieerzeugung, lokale Nahrungsmittelreserven, maritime Versorgungsrouten über Schweden und Finnland, vorpositionierte Materiallager. Wenn die Lücke geschlossen wird, muss das für die Bevölkerung der baltischen Staaten unbequem sein — aber nicht existenziell.</p>
+
+        <h2>VIII. Warum Mechanismen stärker sind als Drohungen</h2>
+
+        <p>Die konventionelle Abschreckung beruht auf einer Drohung: „Wenn ihr angreift, schlagen wir zurück." Das Problem dieser Logik ist, dass der Angreifer die Drohung testen kann. Er kalkuliert: Werden sie wirklich? Wie schnell? Einstimmig? Was, wenn Washington zögert? Was, wenn Berlin debattiert?</p>
+
+        <p>Die NATO-Übung „Hedgehog 2025" in Estland — 16.000 Soldaten aus 12 NATO-Staaten — endete nach Medienberichten mit dem Urteil eines Teilnehmers: „We're fucked." Nicht weil die Soldaten schlecht waren, sondern weil die Szenarien zeigten, wie schnell eine russische Operation den Korridor schließen kann, bevor die Allianz reagiert.</p>
+
+        <p>Ruttes „vernichtende Antwort" ist Rhetorik. RIEGEL ist Physik. Der Unterschied: Ein Mechanismus funktioniert, auch wenn der politische Wille schwankt. Die Minen liegen im Wasser. Die Raketen stehen an der Küste. Die Transitgenehmigungen sind annulliert. Es gibt keinen Moment der Entscheidung, weil die Entscheidung vorher getroffen wurde.</p>
+
+        <p>Für Russland verändert das die Kalkulation grundlegend. Bisher lautet die Rechnung: Suwalki schließen → baltische Staaten abgeschnitten → NATO vor vollendete Tatsachen gestellt → Verhandlungsposition stärken. Mit RIEGEL lautet die Rechnung: Suwalki schließen → Kaliningrad verloren → St. Petersburg blockiert → 430.000 eigene Bürger in einer Exklave ohne Versorgung → strategische Katastrophe.</p>
+
+        <p>Keine rationale Führung in Moskau würde diese Rechnung akzeptieren. Das ist keine Hoffnung — das ist Arithmetik.</p>
+
+        <h2>IX. Die Architektur der Konsequenz</h2>
+
+        <p>RIEGEL folgt der gleichen Logik wie NUET — das vorgeschlagene Abkommen zur Ächtung des Einsatzes nuklearer Waffen. Beide Konzepte beruhen nicht auf Drohungen, Vergeltung oder Eskalationsdominanz, sondern auf dem, was wir <em>zivilisatorische Abschreckung</em> nennen: die Schaffung einer Architektur, in der destruktives Handeln automatisch und unvermeidlich auf den Handelnden zurückfällt.</p>
+
+        <p>Die konventionelle Sicherheitspolitik denkt in Kategorien von Angriff und Verteidigung, Aktion und Reaktion. Sie fragt: Wie schlagen wir zurück? Die zivilisatorische Abschreckung fragt anders: Wie gestalten wir die Situation so, dass der Angriff sich von selbst bestraft?</p>
+
+        <p>Im Fall der Suwalki-Lücke liegt die Antwort in der Geographie selbst. Sie war immer da. Kaliningrad war immer eine Exklave. St. Petersburg lag immer am Ende eines Trichters. Aber solange Schweden und Finnland nicht in der NATO waren, fehlten die Schließmuskeln. Jetzt sind sie da. Was fehlt, ist nicht die Fähigkeit, sondern das Konzept — und die Entscheidung, es zu implementieren.</p>
+
+        <p>Friedrich Merz sprach auf der Münchner Sicherheitskonferenz im Februar 2026 davon, dass Europa die „stärkste Armee" des Kontinents aufbauen müsse. Er forderte mehr Verteidigungsausgaben, mehr Panzer, mehr Brigaden. Er sprach die Sprache des 20. Jahrhunderts: mehr von demselben.</p>
+
+        <p>RIEGEL spricht eine andere Sprache. Nicht: Wie werden wir stärker als der Gegner? Sondern: Wie machen wir den Angriff sinnlos? Nicht: Wie gewinnen wir den Krieg? Sondern: Wie verhindern wir, dass er geführt wird — nicht durch Aufrüstung, sondern durch Architektur?</p>
+
+        <p>Das ist der Kern der zivilisatorischen Abschreckung: Sie verändert nicht das Kräfteverhältnis, sondern die Struktur der Entscheidung.</p>
+
+        <h2>X. Was fehlt</h2>
+
+        <p>Die Suwalki-Lücke ist kein militärisches Problem, das eine militärische Lösung braucht. Sie ist ein Architekturproblem, das eine Architekturlösung braucht. Die Architektur heißt RIEGEL, und ihr Prinzip ist älter als jede Militärstrategie: Wer anderen eine Grube gräbt, fällt selbst hinein.</p>
+
+        <p>Aber das passiert nicht von selbst. Es muss gebaut werden. Nicht mit Panzern und Brigaden — obwohl auch die ihren Platz haben —, sondern mit Mechanismen, die so klar, so öffentlich und so unvermeidlich sind, dass kein rationaler Akteur sie testen will.</p>
+
+        <p>Die Geographie ist auf unserer Seite. Die Fähigkeiten existieren. Die Bündnispartner stehen bereit.</p>
+
+        <p>Was fehlt, ist ein Bundeskanzler, der auf der Münchner Sicherheitskonferenz nicht die hundertste Rede über Verteidigungsausgaben hält, sondern einen einzigen Satz sagt, den die Welt versteht:</p>
+
+        <blockquote>Wer die Lücke schließt, schließt sich selbst ein.</blockquote>
+
+        <div class="note">
+            <p><strong>RIEGEL</strong> — Reciprocal Immediate Geostrategic Enclosure and Lockdown — ist das zweite Konzept in der Reihe zivilisatorischer Abschreckung nach <strong>NUET</strong> (Nuclear Use Exclusion Treaty). Beide Konzepte folgen dem Prinzip der Architektur statt der Drohung: destruktives Handeln wird nicht vergolten, sondern durch die Struktur der Situation auf den Handelnden zurückgeworfen.</p>
+            <p>Die Reihe erscheint auf <a href="https://beyond-decay.org/home.html">beyond-decay.org</a> — konstruktive Vorschläge für eine Welt, die sie braucht.</p>
+        </div>
+
+        <div class="signature">
+            Hans Ley<br>
+            Nürnberg, Februar 2026
+        </div>
+    </main>
+
+<script>
+    (function() {
+        // Detect iframe and hide header
+        if (window !== window.top) { document.body.classList.add("in-iframe"); }
+        function setSize(size, btn) {
+            document.body.className = document.body.className.replace(/size-[\w-]+/g, '').trim();
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(function(b) { b.classList.remove('active'); });
+            if (btn) btn.classList.add('active');
+            try { localStorage.setItem('bd-size', size); } catch(e) {}
+        }
+        // Size buttons
+        document.querySelectorAll('.size-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                setSize(this.getAttribute('data-size'), this);
+            });
+        });
+        // Theme toggle
+        document.getElementById('btn-theme').addEventListener('click', function() {
+            var isLight = document.body.getAttribute('data-theme') === 'light';
+            if (isLight) { document.body.removeAttribute('data-theme'); }
+            else { document.body.setAttribute('data-theme', 'light'); }
+            try { localStorage.setItem('bd-theme', isLight ? 'dark' : 'light'); } catch(e) {}
+        });
+        // Listen for postMessage from parent (home.html iframe)
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.type === 'setSize') {
+                var btn = document.querySelector('.size-btn[data-size="' + e.data.size + '"]');
+                setSize(e.data.size, btn);
+            }
+            if (e.data && e.data.type === 'setTheme') {
+                if (e.data.theme === 'light') { document.body.setAttribute('data-theme', 'light'); }
+                else { document.body.removeAttribute('data-theme'); }
+            }
+        });
+        // Restore saved preferences (standalone mode)
+        try {
+            var savedTheme = localStorage.getItem('bd-theme');
+            if (savedTheme === 'light') document.body.setAttribute('data-theme', 'light');
+            var savedSize = localStorage.getItem('bd-size');
+            if (savedSize) {
+                var btn = document.querySelector('.size-btn[data-size="' + savedSize + '"]');
+                setSize(savedSize, btn);
+            }
+        } catch(e) {}
+    })();
+</script>
+
+</body>
+</html>

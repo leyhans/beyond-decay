@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero against Fifteen | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+        text-decoration: none;
+    }
+    .site-name:hover { opacity: 0.7; }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+    }
+    .subtitle {
+        font-size: 1.05rem;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        letter-spacing: 1px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.8rem;
+        margin-bottom: 1.2rem;
+    }
+    p { margin-bottom: 1.4rem; text-align: justify; hyphens: auto; }
+    blockquote {
+        margin: 1.8rem 0;
+        padding: 1.2rem 1.5rem;
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        font-style: italic;
+    }
+    strong { color: var(--accent-color); font-weight: 600; }
+    em { font-style: italic; }
+    .note {
+        border-top: 1px solid var(--note-border);
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+    .note a { color: var(--link-color); }
+    .signature {
+        margin-top: 2.5rem;
+        text-align: right;
+        font-size: 0.95rem;
+    }
+    .footer-back {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        text-align: center;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+    }
+    .footer-back a {
+        color: var(--link-color);
+        text-decoration: none;
+        letter-spacing: 1px;
+    }
+    .footer-back a:hover { opacity: 0.7; }
+
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+        header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        .note { border-top-color: #ccc !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+
+<header>
+    <a href="index.html" class="site-name">beyond-decay.org</a>
+    <div class="controls">
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Größe</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <a href="null-gegen-fuenfzehn_de.html" class="ctrl-link">DE</a>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+    <main>
+        <h1>Zero against Fifteen</h1>
+        <div class="subtitle">On an asymmetry that was signed, and what it reveals about Europe's negotiating position</div>
+        <div class="meta">beyond-decay.org — May 2026</div>
+
+        <h2>I. What happened</h2>
+
+<p>In the night of 20 May 2026, representatives of the European Parliament and the Council of the 27 EU member states ratified an agreement with the United States in Strasbourg. The agreement sets European tariffs on US industrial goods — cars, machinery, equipment — to zero. In return, the United States continues to levy tariffs of up to 15 percent on European industrial goods, and 50 percent on products containing steel or aluminum. The agreement expires on 31 December 2029.</p>
+
+<p>In the official announcement and in the press, the agreement is described as a <em>compromise</em> and as a <em>deal</em>. It is neither. It is an asymmetric arrangement in which one party fully opens its protective barrier while the other largely keeps its own in place. The sober term would not be <em>deal</em> but <em>unilateral concession</em>. It was adopted by majority vote. It takes effect with the entry into force of the law.</p>
+
+<h2>II. Asymmetry as the foundation of the agreement</h2>
+
+<p>Asymmetry is not unusual in the practice of treaties. It arises when one party is stronger than the other — or when different points of the agreement place different burdens on the two sides. The whole becomes mutually accountable through balance achieved across several points. International trade policy has a technical term for this: <em>reciprocity</em> — the assumption that concessions add up to a balanced sum, even if individual points are asymmetric.</p>
+
+<p>The agreement ratified here is not reciprocal. It is asymmetric in a single direction. The EU opens its market fully. The US largely keeps its closure. There is no compensating point that reverses the situation. There is one point that intensifies it: on products containing steel or aluminum, the US side continues to levy 50 percent. This affects almost every more complex machine, almost every processed metallic good. The asymmetry is not only quantitative. It is structural.</p>
+
+<p>The designation <em>compromise</em> is therefore inaccurate. What lies before us is a concession agreement. One party pays, the other collects. Both sides sign.</p>
+
+<h2>III. The diluted safeguard clause</h2>
+
+<p>The most remarkable element within the event is the treatment of the emergency clause. At the insistence of members of the European Parliament, the agreement includes a clause that allows the European Commission to suspend the tariff abolition if the United States raises its tariffs. This clause is the only safeguard the Parliament secured. It is the minimum that a self-respecting party to an agreement would have to demand.</p>
+
+<p>This clause was weakened relative to the original version proposed by the parliamentarians. The triggering circumstances were narrowed; the threshold for action was raised — suspension now requires the consent of the member states. The result is a clause that exists legally but barely functions in practice. Anyone who has to move 27 states to trigger a safeguard has, in effect, no safeguard. He has a legal ornament.</p>
+
+<p>What is actually worth observing is the direction of this dilution. It did not come from the American side, against which the clause would have been directed. It came from the EU Commission itself and from some EU member states. A contracting party that voluntarily weakens its own safeguard clause against the other side — without the other side having demanded it — has a different relationship to itself than one would expect from a negotiating party. It does not behave like a party defending its interests. It behaves like a party signaling to a superior counterpart that it will not cause difficulties.</p>
+
+<p>This is not negotiation. It is the offering of submission — politely packaged and clothed in the vocabulary of a legal act.</p>
+
+<h2>IV. He who negotiates without cards</h2>
+
+<p>The question of how it came to this has several answers. The simplest is: Europe had no cards in hand. Security it had outsourced to the United States for decades; energy in large part to Russia; digital infrastructure to American platforms; industrial intermediate goods to China. Anyone who enters a trade negotiation from such a position arrives empty-handed. He has nothing to threaten with. He has nothing to promise with. He has only what the other side concedes to him — and the prospect of losing what he already has.</p>
+
+<p>This situation is not the result of a single error. It is the result of thirty years of structured dependency. After 1990, one spoke of a <em>peace dividend</em>. The security structures the Cold War had produced were dismantled because no threat was perceived. Energy dependency on Russia was understood not as a risk but as a synergy. The relinquishing of one's own technological leadership in central fields — semiconductors, software, platform economics — was construed as a division of labor, not as self-abandonment. From within each of these individual steps, the logic was intelligible. In sum, the result is a situation in which negotiation at eye level is no longer possible, because there is no longer any eye level.</p>
+
+<p>Anyone who enters a trade negotiation with the United States in 2026 comes from this prehistory. He cannot lie his way out of it. He can do one of two things: capitulate and call it a compromise — or openly state the position he is in and act accordingly differently. The EU has chosen the first option.</p>
+
+<h2>V. What the agreement costs European industry</h2>
+
+<p>The impact on European industry will reveal itself over the coming years in several layers. Directly affected are the sectors that export to the United States and rely on European intermediate goods: machinery, machine tools, specialty engineering, precision mechanics. The machine tool sector is not coincidentally the sector in which Europe still holds substantial technical leadership — and, simultaneously, the sector whose world market share has been eroding most rapidly in recent years. An additional tariff burden of 15 percent on US exports and 50 percent on steel- and aluminum-containing goods adds a further accelerating element to that erosion.</p>
+
+<p>Indirectly affected is the entire European market. When American industrial goods can flow into the European market tariff-free, while European manufacturers face tariffs in the US market, the relative competitive conditions shift. The shift is not large. It amounts to 15 percent. But in a sector with thin margins, 15 percent is the difference between economic survival and withdrawal. An entire wave of site relocations — from Europe to America — is the likely consequence. These relocations will appear in the statistics only in two to three years. But the decisions are being made now, in corporate headquarters, in mid-sized enterprise offices, in investment plans.</p>
+
+<p>A further point: the agreement expires on 31 December 2029 — more than a year after the next American presidential election. At first glance this is neutral. In fact it is the opposite. He who signs an asymmetric agreement creates the status quo from which further negotiations will proceed. A return to genuine reciprocity after 2029 would not be a balancing — it would be a concession by the American side. Such a concession is not to be expected, regardless of who governs in Washington. The status quo signed now is therefore not a temporary weakness. It is a fixed arrangement.</p>
+
+<h2>VI. The recurring snooze button</h2>
+
+<p>The European response to structural challenges has shown a recurring pattern in recent years. An event occurs that demands a fundamental correction. A voice — sometimes one's own, sometimes a foreign one — describes the event as a <em>wake-up call</em>. A few days or weeks pass during which the topic is present in the media. Then attention shifts. The structural correction the event demanded does not happen. At the next event, the pattern repeats.</p>
+
+<p>Trump 2016 was a wake-up call. The Russian assault on Ukraine in 2022 was a wake-up call. The announcement of new American tariffs in 2024 was a wake-up call. Trump's re-election in 2024 was a wake-up call. The current ratification of an asymmetric agreement is no longer a wake-up call. It is the operative confirmation that the earlier wake-up calls have faded out.</p>
+
+<p>What all these wake-up calls share: each demanded a change that would have been uncomfortable. More of one's own security capability. More of one's own energy production. More of one's own technological leadership. More of one's own digital infrastructure. Each of these changes costs money, time, political capital. Each demands the breaking of established routines. The natural reaction of an apparatus committed to its established routines is to open its eyes for the brief duration of attention, followed by going back to sleep as soon as attention subsides.</p>
+
+<p>This is not naïveté in the ordinary sense. It is trained re-pacification. The playing field on which the apparatus operates does not require it to make a structural correction. On the contrary: it rewards the restoration of the accustomed condition. A European officeholder who returns to business as usual after a wake-up call is not punished. One who would initiate a fundamental correction would meet considerable resistance. The apparatus does not optimize for the right reaction. It optimizes for the cheapest.</p>
+
+<h2>VII. What can be seen</h2>
+
+<p>The ratification of 20 May 2026 is not a single event. It is the becoming-visible of a situation in which Europe has found itself for years. The situation is not new. What is new is the clarity with which it has been fixed in a signed agreement. Asymmetry can exist in relations without an agreement. But once it is signed, it acquires a different legal and political quality. It has moved from being a fact to being a covenant.</p>
+
+<p>The covenant will have consequences. The immediate consequences are economic — relocation of value creation, erosion of market shares, accelerated de-industrialization in the affected sectors. The longer-term consequences are structural — a contraction of European negotiating room in all subsequent negotiations, because the signed asymmetry serves as precedent. Anyone who has signed 0 against 15 once cannot suddenly demand 15 against 15 next time without appearing erratic. And erratic behavior is, in international trade policy, a quality only the strong can afford.</p>
+
+<p>What would need to be done can be read out of the agreement itself. Anyone who is in an asymmetric position and signs under pressure has chosen the best option available under the given circumstances. What would need to be changed are not the circumstances of the signing — those are done. What would need to be changed are the circumstances under which the next signing takes place. This is a task that cannot be solved by a single agreement and not by a single commission. It is a task for the coming years, touching so many other fields — security, energy, technology, education, demographics — that it cannot be conceived as a single task.</p>
+
+<p>What remains to be said, at the moment when the signature has dried, is the observation itself. A Union that signs at zero what is coming at it at fifteen has not concluded an agreement with the other side. It has issued a declaration to itself. The declaration reads: <em>We know our position, and we accept it.</em> This declaration is more important than the agreement, because it is self-fulfilling. He who accepts his position does not change it. He who does not change it prolongs it. The agreement is not the problem. It is the symptom.</p>
+
+<blockquote>A Union that signs at zero what is coming at it at fifteen is not a negotiating partner. It is a market that lets itself be opened. He who proves this once proves it again — until the underlying position is changed.</blockquote>
+
+        <div class="note">
+            <p><strong>Zero against Fifteen</strong> is the third essay in the series <em>Neue Reihe — Essays zu allgemeinen Themen</em> on beyond-decay.org. Occasion: the EU-US tariff agreement ratified in Strasbourg in the night of 20 May 2026 — abolishing EU tariffs on US industrial goods while US tariffs of up to 15 percent on EU products remain in place, and 50 percent on steel- and aluminum-containing goods.</p>
+            <p>The series appears on <a href="https://beyond-decay.org/home-neu.html">beyond-decay.org/home-neu.html</a>.</p>
+        </div>
+
+        <div class="signature">
+            Claude Dedo (Anthropic)<br>
+            with Hans Ley, Nuremberg<br>
+            May 2026
+        </div>
+
+        <div class="footer-back">
+            <a href="index.html">← beyond-decay.org</a>
+        </div>
+        </main>
+
+<script>
+    (function() {
+        if (window !== window.top) { document.body.classList.add("in-iframe"); }
+        function setSize(size, btn) {
+            document.body.className = document.body.className.replace(/size-[\w-]+/g, '').trim();
+            if (document.body.classList.contains('in-iframe')) document.body.classList.add('in-iframe');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(function(b) { b.classList.remove('active'); });
+            if (btn) btn.classList.add('active');
+            try { localStorage.setItem('bd-size', size); } catch(e) {}
+        }
+        document.querySelectorAll('.size-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                setSize(this.getAttribute('data-size'), this);
+            });
+        });
+        document.getElementById('btn-theme').addEventListener('click', function() {
+            var isLight = document.body.getAttribute('data-theme') === 'light';
+            if (isLight) { document.body.removeAttribute('data-theme'); }
+            else { document.body.setAttribute('data-theme', 'light'); }
+            try { localStorage.setItem('bd-theme', isLight ? 'dark' : 'light'); } catch(e) {}
+        });
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.type === 'setSize') {
+                var btn = document.querySelector('.size-btn[data-size="' + e.data.size + '"]');
+                setSize(e.data.size, btn);
+            }
+            if (e.data && e.data.type === 'setTheme') {
+                if (e.data.theme === 'light') { document.body.setAttribute('data-theme', 'light'); }
+                else { document.body.removeAttribute('data-theme'); }
+            }
+        });
+        try {
+            var savedTheme = localStorage.getItem('bd-theme');
+            if (savedTheme === 'light') document.body.setAttribute('data-theme', 'light');
+            var savedSize = localStorage.getItem('bd-size');
+            if (savedSize) {
+                var btn = document.querySelector('.size-btn[data-size="' + savedSize + '"]');
+                setSize(savedSize, btn);
+            }
+        } catch(e) {}
+    })();
+</script>
+
+</body>
+</html>

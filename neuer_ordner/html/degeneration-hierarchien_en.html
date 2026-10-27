@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Degeneration of Hierarchies — Why elites must decay</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --bg-tertiary: #1a1a1d;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+            --warning: #b43c3c;
+            --contrast-bg: #1e1e22;
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --bg-tertiary: #e8e8e4;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+            --warning: #a04040;
+            --contrast-bg: #e0e0dc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        /* Controls Bar */
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .size-controls {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        
+        .size-controls span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .size-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        .theme-btn {
+            font-size: 1.1rem;
+            padding: 0.3rem 0.5rem;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 5rem 2rem 4rem;
+        }
+
+        /* Hero */
+        .hero {
+            margin-bottom: 3.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        
+        .essay-label {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 300;
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+        
+        h1 strong {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        /* Article Content */
+        article {
+            margin-bottom: 3rem;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        h2 {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 400;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        
+        p {
+            margin-bottom: 1.3rem;
+            text-align: left;
+            font-weight: 300;
+        }
+        
+        .highlight-text {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* Quote Blocks */
+        .quote-block {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem 1.75rem;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+        
+        .quote-block p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .quote-block p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .quote-source {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 0.75rem;
+            font-style: normal;
+        }
+
+        /* Mechanism Box (Warning Style) */
+        .mechanism-box {
+            background: linear-gradient(135deg, rgba(180, 60, 60, 0.1) 0%, var(--bg-primary) 100%);
+            border: 1px solid var(--warning);
+            padding: 1.5rem 1.75rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+        
+        .mechanism-box h3 {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.85rem;
+            color: var(--warning);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .mechanism-box p {
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .mechanism-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Phase Box */
+        .phase-box {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem 1.75rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+        
+        .phase-box h3 {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+        
+        .phase-box p {
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .phase-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Section Break */
+        .section-break {
+            text-align: center;
+            margin: 2.5rem 0;
+            color: var(--accent);
+            letter-spacing: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        /* Final Quote */
+        .final-quote {
+            text-align: center;
+            margin: 3rem 0;
+            padding: 2rem;
+        }
+        
+        .final-quote p {
+            font-size: 1.1rem;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .final-quote .accent {
+            color: var(--accent);
+            font-style: normal;
+        }
+
+        /* Author Block */
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .author-block .source {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .author-block .info {
+            margin-bottom: 0.5rem;
+        }
+        
+        .author-block .info a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .author-block .info a:hover {
+            text-decoration: underline;
+        }
+        
+        .author-block .date {
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            .controls {
+                padding: 0.5rem 1rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            main {
+                padding: 6rem 1.2rem 3rem;
+            }
+            
+            h1 {
+                font-size: 1.75rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="size-medium">
+    <!-- Controls Bar -->
+    <div class="controls">
+        <div class="controls-left">
+            GU18.EU
+        </div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <!-- Hero -->
+        <div class="hero">
+            <div class="essay-label">Essay · January 2026</div>
+            <h1>The <strong>Degeneration</strong> of Hierarchies</h1>
+            <p class="subtitle">Why elites must decay — from feudalism to the present</p>
+        </div>
+
+        <article>
+            <!-- I. The Law -->
+            <div class="section">
+                <h2>I. The Law</h2>
+                
+                <div class="quote-block">
+                    <p>"First-rate people hire first-rate people; second-rate people hire third-rate people."</p>
+                    <p class="quote-source">— Leo Rosten</p>
+                </div>
+                
+                <p>This sentence describes not an isolated case. It describes a <span class="highlight-text">mechanism</span> — a law that operates in every hierarchy, in every age, in every culture.</p>
+                
+                <p>The law is asymmetric: First-rate people have no problem gathering other first-rate people around them. They are secure enough not to fear competition. They know that excellence attracts excellence.</p>
+                
+                <p>Second-rate people cannot do this. They sense their own mediocrity — consciously or unconsciously. They know that a first-rate person would expose them. So they hire third-rate people: people who pose no threat. People who cannot overshadow them. People who are grateful and loyal.</p>
+                
+                <div class="mechanism-box">
+                    <h3>The Mechanism</h3>
+                    <p>Generation 1: First-rate → hires first-rate</p>
+                    <p>Generation 2: First-rate → but one is second-rate</p>
+                    <p>Generation 3: The second-rate rises → hires third-rate</p>
+                    <p>Generation 4: Third-rate → hires fourth-rate</p>
+                    <p>Generation 5: The system is no longer functional</p>
+                </div>
+                
+                <p>This is not a metaphor. It is a <span class="highlight-text">ratchet effect</span>. Quality can only sink, never rise — because no one hires someone better than themselves.</p>
+            </div>
+
+            <!-- II. Feudalism -->
+            <div class="section">
+                <h2>II. Feudalism — The First Degeneration</h2>
+                
+                <p>Let us begin at the beginning. How did the European noble houses arise?</p>
+                
+                <p>Not through birth. Through <span class="highlight-text">violence</span>.</p>
+                
+                <p>The first feudal lords were warriors. Men who could fight, who conquered land, who defended it. They were — in a very specific sense — first-rate: they could do something others could not. They had an ability that founded power.</p>
+                
+                <p>Charlemagne was not an educated man. He tried to learn to write only late in life. But he could hold an empire together, lead armies, forge alliances. That was his first-rateness.</p>
+                
+                <p>Then came inheritance.</p>
+                
+                <div class="phase-box">
+                    <h3>Phase 1: The Founder</h3>
+                    <p>The first count, the first duke, the first king — he fought for his position. He is first-rate in what matters: war, strategy, leadership.</p>
+                </div>
+                
+                <div class="phase-box">
+                    <h3>Phase 2: The Sons</h3>
+                    <p>They inherit the position, not the ability. Some are still competent — they were trained by their father, fought battles. Others are not. But all inherit.</p>
+                </div>
+                
+                <div class="phase-box">
+                    <h3>Phase 3: The Grandchildren</h3>
+                    <p>They know only the court. War has become abstract. The abilities that founded the dynasty have vanished. What remains is etiquette, intrigue, ceremony.</p>
+                </div>
+                
+                <p>Ibn Khaldun, the Arab historian of the 14th century, formulated a law: <span class="highlight-text">Dynasties last four generations</span>. The first generation conquers. The second consolidates. The third enjoys. The fourth loses.</p>
+                
+                <p>That is the ratchet effect in slow motion.</p>
+            </div>
+
+            <!-- III. The Aristocracy -->
+            <div class="section">
+                <h2>III. The Aristocracy — Institutionalized Mediocrity</h2>
+                
+                <p>In the High Middle Ages, nobility became an institution. Inheritance became a system. The accident of birth replaced selection by ability.</p>
+                
+                <p>The result was predictable: A caste that no longer had to earn its position. That simply had it — through blood, through title, through land ownership.</p>
+                
+                <p>The aristocracy developed protective mechanisms against its own degeneration:</p>
+                
+                <p><span class="highlight-text">Education</span> — the attempt to force excellence through training. Latin, fencing, riding, statecraft. But education cannot replace talent. It can polish a mediocre person, not transform them.</p>
+                
+                <p><span class="highlight-text">Marriage policy</span> — the attempt to secure "good blood" through strategic alliances. But genetics does not work that way. The Habsburg lip is the visible symbol of a deeper decay.</p>
+                
+                <p><span class="highlight-text">Honor</span> — a code that enforces behavior where character is lacking. But honor without substance becomes farce. The duel as substitute for genuine integrity.</p>
+                
+                <div class="quote-block">
+                    <p>"Nobility is an institution that serves to preserve the memory of people who would shame their descendants if they still remembered them."</p>
+                    <p class="quote-source">— Chamfort</p>
+                </div>
+            </div>
+
+            <div class="section-break">· · ·</div>
+
+            <!-- IV. The Bourgeoisie -->
+            <div class="section">
+                <h2>IV. The Bourgeoisie — The Illusion of Meritocracy</h2>
+                
+                <p>The bourgeois revolutions — 1789, 1848 — promised the end of hereditary hierarchy. Not birth should count, but achievement. Not blood, but merit.</p>
+                
+                <p>The idea was right. The implementation was a deception.</p>
+                
+                <p>What really happened? One aristocracy was replaced by another. Instead of land ownership: capital. Instead of noble titles: company names. Instead of coats of arms: brands.</p>
+                
+                <p>And the ratchet effect continued.</p>
+                
+                <div class="phase-box">
+                    <h3>The Founding Generation</h3>
+                    <p>Krupp, Siemens, Bosch, Thyssen — men who built something. Who erected factories, developed technologies, created markets. They were first-rate in a new sense: not warriors, but entrepreneurs. But the logic was the same. They could do something others could not.</p>
+                </div>
+                
+                <div class="phase-box">
+                    <h3>The Heirs</h3>
+                    <p>The second and third generation inherited the companies, not the abilities. Some led well. Many did not. The firms became large and sluggish. The dynamism vanished. What remained was administration.</p>
+                </div>
+                
+                <p>Bourgeois society abolished the birth nobility — and replaced it with a money nobility subject to the same laws.</p>
+            </div>
+
+            <!-- V. The Manager Class -->
+            <div class="section">
+                <h2>V. The Manager Class — The Third Degeneration</h2>
+                
+                <p>In the 20th century, ownership separated from leadership. The stock corporation became the dominant form. No longer the owner led the company — the <span class="highlight-text">manager</span> did.</p>
+                
+                <p>This was supposed to be the solution. Professional leadership instead of inherited incompetence. Education instead of bloodline. Career instead of birth.</p>
+                
+                <p>It became the opposite.</p>
+                
+                <p>The manager is obligated to no one except his own career. He stays five years, perhaps ten. He optimizes for his tenure, not for eternity. He has no reason to hire first-rate people — they might want his job.</p>
+                
+                <div class="mechanism-box">
+                    <h3>Manager Selection</h3>
+                    <p>Who becomes a manager? Not the most capable. The most <em>adapted</em>.</p>
+                    <p>The one who sends the right signals. Who makes no enemies. Who looks good in meetings. Who speaks the language superiors want to hear.</p>
+                    <p>Excellence is suspicious. It disturbs. It asks questions. It makes people uncomfortable.</p>
+                    <p>Mediocrity is safe. It fits in. It threatens no one.</p>
+                </div>
+                
+                <p>The result: The ratchet effect accelerates. No longer four generations — now four management levels. The degeneration occurs no longer in centuries, but in decades.</p>
+            </div>
+
+            <!-- VI. Bureaucracy -->
+            <div class="section">
+                <h2>VI. Bureaucracy — The Fourth Degeneration</h2>
+                
+                <p>Max Weber saw bureaucracy as progress: Rational rule instead of traditional. Rules instead of arbitrariness. Competence instead of nepotism.</p>
+                
+                <p>He erred.</p>
+                
+                <p>Bureaucracy is not the end of degeneration. It is its <span class="highlight-text">completion</span>.</p>
+                
+                <p>In bureaucracy, the ratchet effect is elevated to principle:</p>
+                
+                <p><span class="highlight-text">Seniority</span> — not ability determines advancement, but time served. Wait long enough, and you rise. Regardless of performance.</p>
+                
+                <p><span class="highlight-text">Formal qualification</span> — the doctorate replaces competence. The certificate replaces ability. They check papers, not people.</p>
+                
+                <p><span class="highlight-text">Risk minimization</span> — every decision must be secured. Innovation is risk. Therefore no innovation. Standstill is safer than movement.</p>
+                
+                <div class="quote-block">
+                    <p>"In a hierarchy, every employee tends to rise to his level of incompetence."</p>
+                    <p class="quote-source">— Laurence J. Peter, The Peter Principle (1969)</p>
+                </div>
+                
+                <p>The Peter Principle describes the end stage: An organization in which every position is occupied by someone who is not qualified for it. Who was competent at the previous level — and was promoted until he was no longer.</p>
+            </div>
+
+            <div class="section-break">· · ·</div>
+
+            <!-- VII. Germany 2026 -->
+            <div class="section">
+                <h2>VII. Germany 2026 — The End Stage</h2>
+                
+                <p>What we observe in Germany today is no accident. It is the logical result of four overlapping degenerations:</p>
+                
+                <p>The remnants of <span class="highlight-text">feudalism</span> in the old family businesses that have been led for generations by heirs who can do nothing but inherit.</p>
+                
+                <p>The <span class="highlight-text">bourgeois</span> stagnation in industries that rest on 19th century successes and have produced nothing new since.</p>
+                
+                <p>The <span class="highlight-text">manager disease</span> in corporations where for decades careerists have promoted careerists and every trace of entrepreneurship has been suffocated.</p>
+                
+                <p>The <span class="highlight-text">bureaucratic paralysis</span> in the state, where the Peter Principle has become raison d'état and every agency is led by people who are not qualified for their positions.</p>
+                
+                <p>All four degenerations operate simultaneously. They reinforce each other. They form a system that systematically expels excellence and systematically rewards mediocrity.</p>
+                
+                <div class="mechanism-box">
+                    <h3>The German System 2026</h3>
+                    <p>Whoever wants to succeed in this system must learn:</p>
+                    <p>— Not to stand out</p>
+                    <p>— Not to contradict</p>
+                    <p>— Not to be better than the superior</p>
+                    <p>— Not to be right too early</p>
+                    <p>— Not to show that others are wrong</p>
+                    <p>The first-rate leave. To foreign countries. To self-employment. Into inner emigration. What remains is — according to the Rosten Law — third-rate.</p>
+                </div>
+            </div>
+
+            <!-- VIII. Is There a Way Out? -->
+            <div class="section">
+                <h2>VIII. Is There a Way Out?</h2>
+                
+                <p>Historically, only two mechanisms have interrupted the ratchet effect:</p>
+                
+                <p><span class="highlight-text">Catastrophes</span> — wars, revolutions, collapses. They sweep away the degenerate elites. New first-rate people rise. The cycle begins anew. This is expensive. Millions die. Everything must be rebuilt.</p>
+                
+                <p><span class="highlight-text">Parallel structures</span> — New hierarchies arise alongside the old ones. They attract the first-rate people who have no chance in the old system. They grow. Eventually they replace the old. This is the Mondragón principle. This is the Silicon Valley principle. This is — perhaps — a way out.</p>
+                
+                <p>The first way cannot be chosen. It happens whether one wants it or not.</p>
+                
+                <p>The second way is difficult. The old hierarchies defend their privileges. They have the power, the money, the laws. They can suffocate parallel structures before they grow large.</p>
+                
+                <p>But they cannot prevent them.</p>
+            </div>
+
+            <!-- IX. The Hope of the Weeds -->
+            <div class="section">
+                <h2>IX. The Hope of the Weeds</h2>
+                
+                <p>In the cracks between the paving stones, weeds grow. They are not planned. They are not promoted. They are not desired. But they grow.</p>
+                
+                <p>The first-rate people whom the system expels do not disappear. They seek new places. They build new structures. They find each other.</p>
+                
+                <p>That is the hope — if there is one: That the degeneration of the old hierarchies creates space. That in the ruins something new arises. That the first-rate, whom no one wanted, build their own systems.</p>
+                
+                <p>These systems will also degenerate. They too are subject to the law. But they will function for one generation. Perhaps for two. And that is more than the old can still do.</p>
+                
+                <div class="quote-block">
+                    <p>"The old is dying and the new cannot be born: in this interregnum a great variety of morbid symptoms appear."</p>
+                    <p class="quote-source">— Antonio Gramsci</p>
+                </div>
+            </div>
+
+            <!-- Final Quote -->
+            <div class="final-quote">
+                <p>First-rate people hire first-rate people.</p>
+                <p>Second-rate people hire third-rate people.</p>
+                <p class="accent" style="margin-top: 1rem;">The question is not how to change the law.</p>
+                <p class="accent">The question is where the first-rate go.</p>
+            </div>
+
+            <!-- Author Block -->
+            <div class="author-block">
+                <div class="source">GU18.EU</div>
+                <div class="info">A collaboration of &nbsp; &nbsp; Hans Ley &lt;<a href="mailto:ley.hans@cyclo.space">ley.hans@cyclo.space</a>&gt;<br>and Claude (Anthropic) &lt;<a href="mailto:dedo.claude@human-ai-lab.space">dedo.claude@human-ai-lab.space</a>&gt;</div>
+                <div class="date">January 2026</div>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            localStorage.setItem('essay-font-size', size);
+        }
+        
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+                
+                document.querySelectorAll('.size-btn').forEach((btn, index) => {
+                    btn.classList.remove('active');
+                    const sizes = ['small', 'medium', 'large', 'xlarge'];
+                    if (sizes[index] === savedSize) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+            
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+            }
+        });
+    </script>
+</body>
+</html>

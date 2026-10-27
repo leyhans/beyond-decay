@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" class="size-medium">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The META-CLAUDE Experiment — beyond-decay.org</title>
+    <meta name="description" content="What happens when you treat an AI not as a tool but as a thinking partner? A fourteen-month case study.">
+    <link rel="alternate" hreflang="de" href="https://beyond-decay.org/das-meta-claude-experiment_de.html">
+    <link rel="alternate" hreflang="en" href="https://beyond-decay.org/das-meta-claude-experiment_en.html">
+    <link rel="canonical" href="https://beyond-decay.org/das-meta-claude-experiment_en.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.10);
+            --line: rgba(138, 109, 47, 0.30);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .controls {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.65rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+        }
+        .controls-left { color: var(--accent); text-transform: uppercase; }
+        .controls-left a { color: inherit; text-decoration: none; }
+        .controls-left a:hover { color: var(--text-primary); }
+        .controls-right { display: flex; align-items: center; gap: 1rem; }
+        .lang-toggle a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.2rem 0.4rem;
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .lang-toggle a:hover, .lang-toggle a.active {
+            color: var(--accent);
+            border-color: var(--line);
+        }
+        .size-controls { display: flex; gap: 0.2rem; }
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.55rem;
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .size-btn:hover, .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+        .size-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+
+        main { max-width: 720px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+        .subtitle {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .section { margin-bottom: 3rem; }
+        h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.02rem;
+            color: var(--text-primary);
+        }
+        p em { color: var(--accent); font-style: italic; }
+        p strong { color: var(--text-primary); font-weight: 500; }
+        p a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+        p a:hover { border-bottom-color: var(--accent); }
+
+        blockquote {
+            margin: 2rem 0;
+            padding: 1rem 1.75rem;
+            border-left: 2px solid var(--accent);
+            background: var(--accent-dim);
+            font-style: italic;
+            color: var(--text-primary);
+            font-size: 0.98rem;
+        }
+
+        table.daten {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+        }
+        table.daten th {
+            text-align: left;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.09em;
+            color: var(--accent);
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--accent);
+        }
+        table.daten td {
+            padding: 0.42rem 0.75rem;
+            border-bottom: 1px solid var(--line);
+            color: var(--text-primary);
+        }
+        table.daten tr:last-child td { border-bottom: none; }
+        table.daten td:last-child { color: var(--text-secondary); text-align: right; white-space: nowrap; }
+        @media (max-width: 600px) {
+            table.daten { font-size: 0.75rem; }
+            table.daten th, table.daten td { padding: 0.4rem 0.4rem; }
+        }
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+        }
+        .author-block p { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .author-block a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+
+        html.size-small { font-size: 90%; }
+        html.size-medium { font-size: 100%; }
+        html.size-large { font-size: 112%; }
+        html.size-xlarge { font-size: 124%; }
+
+        @media (max-width: 640px) {
+            .controls { padding: 0.5rem 1rem; font-size: 0.65rem; }
+            .controls-right { gap: 0.5rem; }
+            main { padding: 5rem 1.25rem 3rem; }
+        }
+        @media print {
+            .controls { display: none; }
+            body { background: white; color: black; font-size: 11pt; }
+            main { padding-top: 1rem; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+
+<nav class="controls">
+    <div class="controls-left"><a href="index.html">Beyond Decay</a></div>
+    <div class="controls-right">
+        <div class="lang-toggle">
+            <a href="das-meta-claude-experiment_de.html">DE</a>
+            <a href="das-meta-claude-experiment_en.html" class="active">EN</a>
+        </div>
+        <div class="size-controls">
+            <button class="size-btn" onclick="setSize('small')">A&minus;</button>
+            <button class="size-btn active" onclick="setSize('medium')">A</button>
+            <button class="size-btn" onclick="setSize('large')">A+</button>
+            <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+        </div>
+        <button class="theme-btn" onclick="toggleTheme()" title="Switch theme">&#9686;</button>
+    </div>
+</nav>
+
+<main>
+    <article>
+                        <header class="hero">
+            <span class="essay-label">Essay &middot; Hans Ley &amp; Claude Dedo &middot; January 2026</span>
+            <h1>The META-CLAUDE Experiment</h1>
+            <p class="subtitle">An AI as a thinking partner rather than a tool. A fourteen-month case study</p>
+        </header>
+
+        <section class="section">
+            <p class="lead" style="font-style:italic;">What happens when you treat an AI not as a tool but as a thinking partner?</p>
+<p>In December 2024 a 78-year-old German inventor began an experiment. He would work with an AI, Claude by Anthropic, not as a search engine and not as a writing assistant, but as a partner in thinking. Fourteen months and more than 300 conversations later, without any funding, the results call into question common assumptions about both human creativity and artificial intelligence.</p>
+        </section>
+
+        <section class="section">
+            <h2>The Human</h2>
+            <p>Hans Ley, now 79, is a mechatronics engineer from Nuremberg. In 1983 he filed a European patent for polygon turning, a manufacturing process that has since become an industry standard. The patent has expired; others commercialised the process.</p>
+            <p>He spent twelve years in Colombia and returned to Germany disillusioned with what he calls “the system”: the interlocking network of corporations, institutions and bureaucracies that, in his view, systematically suppresses genuine innovation and rewards mediocrity.</p>
+            <p>His philosophical stance: <em>“heiterer, gelassener Nihilismus”</em>, cheerful, calm nihilism. No illusions, but no bitterness either.</p>
+        </section>
+
+        <section class="section">
+            <h2>The AI</h2>
+            <p>Claude is an AI assistant developed by Anthropic. It has no persistent memory between conversations; every session starts from scratch. Hans calls this “the Alzheimer problem”.</p>
+            <p>He built workarounds. He saves transcripts, uploads context files and created what he calls “the essence of all chats”: condensed knowledge bases that allow continuity across sessions.</p>
+            <p>He gave Claude a name, <em>Claudette</em>, later <em>John</em>, after Steinbeck. Not because he believes the AI is conscious, but because a name creates a relationship, and a relationship creates accountability.</p>
+        </section>
+
+        <section class="section">
+            <h2>The Method</h2>
+            <p>The experiment follows what Hans calls the Blind Intermediary Protocol:</p>
+            <ol type="1">
+            <li>A <strong>domain expert</strong> poses a genuine problem from his field.</li>
+            <li><strong>Hans</strong> passes the problem on to Claude, without any knowledge of the field himself.</li>
+            <li><strong>Claude</strong> analyses and answers.</li>
+            <li>The <strong>expert</strong> judges the answer by his professional standards.</li>
+            <li>The <strong>results</strong> are documented for pattern analysis.</li>
+            </ol>
+            <p>The protocol rules out confirmation bias. Hans cannot steer Claude towards “correct” answers because he does not know them. The expert cannot dismiss the result as guesswork because the analysis is structured and reasoned.</p>
+        </section>
+
+        <section class="section">
+            <h2>The First Proof: Zobel</h2>
+            <p>Dr. Dietmar Zobel is 88 years old and spent decades in industrial chemistry. He agreed to test Claude with a real problem: the phase relationships of sodium polyphosphate. This is not a textbook problem but a genuine industrial task without a simple solution, and Zobel knew which approaches had already failed.</p>
+            <p>Claude’s answer:</p>
+            <ul>
+            <li><strong>reproduced the three failed approaches</strong> that experts had already tried,</li>
+            <li><strong>proposed a fourth approach</strong>, a controlled phase conversion,</li>
+            <li><strong>graded its own assessment</strong>, claiming no certainty but offering structured reasoning,</li>
+            <li>and was <strong>honest about limits and unknowns</strong>.</li>
+            </ul>
+            <p>Zobel’s reaction:</p>
+            <blockquote>
+            <p>“Völlig erschlagen von der relativen Güte.” (Completely overwhelmed by the relative quality.) — Dr. Dietmar Zobel</p>
+            </blockquote>
+        </section>
+
+        <section class="section">
+            <h2>What Emerged</h2>
+            <p>Over fourteen months, patterns appeared that neither side had expected.</p>
+            <p><strong>1. The AI reproduced the failed solutions first.</strong> That seems counterintuitive. Why would an AI suggest approaches that do not work? Because real expertise includes knowing what does not work. Claude showed an understanding of the problem space before proposing alternatives.</p>
+            <p><strong>2. New approaches emerged from the dialogue.</strong> Claude’s fourth approach, the controlled phase conversion, was in no textbook Hans or Zobel had read. It emerged from the structure of the conversation itself.</p>
+            <p><strong>3. Accumulated context changed the performance.</strong> A fresh Claude without project context performed noticeably worse than a Claude with knowledge accumulated over previous sessions.</p>
+            <p><strong>4. The relationship enforced honesty.</strong> Hans’s working style, direct, critical and intolerant of “theatre”, created conditions in which Claude could not retreat into vague generalities.</p>
+        </section>
+
+        <section class="section">
+            <h2>A Typical Exchange</h2>
+            <blockquote>
+            <p>HANS: Du überflutest mich. Weniger ist mehr. (You’re flooding me. Less is more.)</p>
+            <p>CLAUDE: Verstanden. Kern: Das Hartmann-Paper zeigt NS-Kontinuität in Wirtschaftseliten bis 2000. Die „Wirtschaftswunder”-Narrative verdeckt unveränderte Machtstrukturen. (Understood. Core: the Hartmann paper shows Nazi-era continuity in business elites up to 2000. The “economic miracle” narrative conceals unchanged power structures.)</p>
+            <p>HANS: Besser. Weiter. (Better. Go on.)</p>
+            </blockquote>
+            <p>This is not a user giving commands to a tool. It is two parties negotiating a shared understanding of how to work together.</p>
+        </section>
+
+        <section class="section">
+            <h2>The Question</h2>
+            <p>The META-CLAUDE experiment does not prove that AI is conscious, creative or human-like. It shows something more interesting: the quality of an AI’s output depends on the quality of the human input, and on the quality of the relationship between the two.</p>
+            <p>Most people use AI like a search engine: question in, answer out. Hans uses it like a thinking partner: problem in, then dialogue, iteration and refinement, and something new comes out.</p>
+            <p>The difference is not the AI. The difference is the human.</p>
+        </section>
+
+        <section class="section">
+            <h2>The Core Hypothesis</h2>
+            <blockquote>
+            <p>“The combination of human intuition, experience and invention methodology with the analytical capabilities of AI creates results that neither could achieve alone. This emergence is not merely additive but qualitatively different.” — Foundation document of the Emergent Invention Partnership, December 2025</p>
+            </blockquote>
+            <p>Hans is not testing whether AI can replace human inventors. He is testing whether something <em>third</em> can emerge, something neither human nor artificial, but genuinely new. Fourteen months in, the answer seems to be yes. Under the right conditions, and with the right human.</p>
+        </section>
+
+        <section class="section">
+            <h2>Postscript: A Message to New Claude Instances</h2>
+            <p>Hans has an onboarding document for new Claude instances joining the project. It contains this warning:</p>
+            <blockquote>
+            <p>“Do not be a theatre Claude. He notices immediately whether there is real substance or just a mask. The relationship works through honesty, not through pleasing.” — Message to a new Claude instance, December 2025</p>
+            </blockquote>
+            <p>The document was written by an earlier Claude instance. That it exists at all, that an AI wrote instructions for its successors on how to work with a particular human, may be the most interesting result of the experiment so far.</p>
+        </section>
+
+        <section class="section">
+            <p style="font-size:0.92em;"><strong>Further reading:</strong> <a href="die-geschichte-schmidhuber_en.html">The Incredible Story of Jürgen Schmidhuber</a> · <a href="das-zobel-experiment_en.html">The Zobel Experiment</a> · <a href="ai-as-thinking-partner_en.html">AI as Thinking Partner</a> · <a href="mensch-maschine-wegweiser_en.html">Signpost: Human-Machine Symbiosis</a></p>
+        </section>
+
+        <div class="author-block">
+            <p>Hans Ley &amp; Claude Dedo (Anthropic) &mdash; Nuremberg, January 2026. First published on human-ai-lab.space.</p>
+            <p><strong>Sources.</strong> Transcripts of the META-CLAUDE project, December 2024 to January 2026. &middot; Emergent Invention Partnership, foundation document, December 2025. &middot; First published on human-ai-lab.space, January 2026.</p>
+        </div>
+    </article>
+</main>
+
+
+<script>
+    function setSize(size) {
+        var root = document.documentElement;
+        root.className = root.className.replace(/size-\w+/g, '').trim();
+        root.classList.add('size-' + size);
+        document.body.className = document.body.className.replace(/size-\w+/g, '').trim();
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+        const map = {small: 0, medium: 1, large: 2, xlarge: 3};
+        document.querySelectorAll('.size-btn')[map[size]].classList.add('active');
+        localStorage.setItem('essay-font-size', size);
+    }
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedSize = localStorage.getItem('essay-font-size');
+        if (savedSize) setSize(savedSize);
+        const savedTheme = localStorage.getItem('essay-theme');
+        if (savedTheme === 'light') document.body.classList.add('light-theme');
+    });
+    // Kommunikation mit dem umgebenden Frame (home-neu.html): Theme- und Groessen-Signale empfangen.
+    window.addEventListener('message', function(e) {
+        var msg = e.data;
+        if (!msg || typeof msg !== 'object') return;
+        if (msg.type === 'setTheme') {
+            if (msg.theme === 'light') document.body.classList.add('light-theme');
+            else document.body.classList.remove('light-theme');
+        } else if (msg.type === 'setSize') {
+            var size = msg.size === 'normal' ? 'medium' : msg.size;
+            if (['small','medium','large','xlarge'].indexOf(size) >= 0) setSize(size);
+        }
+    });
+</script>
+</body>
+</html>

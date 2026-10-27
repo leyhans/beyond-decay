@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ist die AfD eine Alternative? — Eine systematische Untersuchung der Regierungsfähigkeit</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --bg-tertiary: #1a1a1d;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+            --contrast-bg: #1e1e22;
+            --warning: #b43c3c;
+            --warning-dim: rgba(180, 60, 60, 0.1);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --bg-tertiary: #e8e8e4;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+            --contrast-bg: #e0e0dc;
+            --warning: #a04040;
+            --warning-dim: rgba(160, 64, 64, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        /* Controls Bar */
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-left a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .controls-left a:hover {
+            text-decoration: underline;
+        }
+        
+        .controls-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .size-controls {
+            display: flex;
+            gap: 0.3rem;
+            align-items: center;
+        }
+        
+        .size-controls span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .size-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        .theme-btn {
+            font-size: 1.1rem;
+            padding: 0.3rem 0.5rem;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 5rem 2rem 4rem;
+        }
+
+        /* Hero */
+        .hero {
+            margin-bottom: 3.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        
+        .essay-label {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+        
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 300;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+        
+        .subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        /* Article Content */
+        article {
+            margin-bottom: 3rem;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        h2 {
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        
+        p {
+            margin-bottom: 1.3rem;
+            text-align: left;
+        }
+        
+        strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        em {
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        /* Blockquotes */
+        blockquote {
+            margin: 2rem 0;
+            padding: 1.5rem 2rem;
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent);
+            font-style: italic;
+        }
+        
+        blockquote p {
+            margin-bottom: 0;
+        }
+        
+        blockquote .attribution {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: normal;
+        }
+
+        /* Key Points Box */
+        .key-point {
+            background: var(--accent-dim);
+            border: 1px solid var(--line);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+        
+        .key-point p {
+            margin-bottom: 0.8rem;
+        }
+        
+        .key-point p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: var(--warning-dim);
+            border: 1px solid var(--warning);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+        
+        .warning-box p {
+            margin-bottom: 0;
+        }
+
+        /* Profile Box */
+        .profile-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+        
+        .profile-box h3 {
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .profile-box p {
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+        }
+        
+        .profile-box p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .profile-box .verdict {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--line);
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        /* Final Quote */
+        .final-quote {
+            text-align: center;
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+        
+        .final-quote p {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .final-quote .attribution {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-style: normal;
+        }
+
+        /* Author Block */
+        .author-block {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            margin-top: 3rem;
+            border-radius: 4px;
+        }
+        
+        .author-block h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        .author-block p {
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        
+        .author-block p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .date-line {
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-top: 1.5rem;
+        }
+
+        /* Series Info */
+        .series-info {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--line);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Back Button */
+        .home-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--accent);
+            font-size: 1.5rem;
+            transition: all 0.2s ease;
+        }
+        
+        .home-btn:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            .controls {
+                padding: 0.5rem 1rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            main {
+                padding: 6rem 1.2rem 3rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            blockquote {
+                padding: 1rem 1.2rem;
+            }
+            
+            .home-btn {
+                bottom: 1rem;
+                right: 1rem;
+                width: 45px;
+                height: 45px;
+            }
+        }
+    </style>
+</head>
+<body class="size-medium">
+    <!-- Controls Bar -->
+    <div class="controls">
+        <div class="controls-left">
+            <a href="/gu18-wegweiser.html">unbehaust.de</a> / Essays
+        </div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <!-- Hero -->
+        <div class="hero">
+            <div class="essay-label">Essay XXXII · Januar 2026</div>
+            <h1>Ist die AfD eine Alternative?</h1>
+            <p class="subtitle">Eine systematische Untersuchung der Regierungsfähigkeit</p>
+        </div>
+
+        <article>
+            <!-- I. -->
+            <div class="section">
+                <h2>I.</h2>
+                
+                <p>Im vorherigen Essay habe ich Friedrich Merz analysiert — einen Mann, der sein Leben lang kontrolliert hat, ohne je operativ zu handeln. Die Frage war: Qualifiziert eine Karriere aus Aufsichtsräten, Beratertätigkeiten und Lobbyjobs für das operative Geschäft des Regierens?</p>
+                
+                <p>Die gleiche Frage lässt sich an eine ganze Partei stellen. Nicht: Ist ihre Ideologie gut oder schlecht? Sondern: Könnte sie regieren, wenn sie wollte?</p>
+                
+                <p>Die AfD fordert seit Jahren, an der Regierung beteiligt zu werden. Sie präsentiert sich als „Alternative" zum Establishment. Aber ist sie — rein funktional betrachtet — regierungsfähig?</p>
+                
+                <p>Ich werde im Folgenden ausschließlich die operative Frage untersuchen: Personal, Erfahrung, Stabilität, Kompetenz. Keine Bewertung der politischen Ziele.</p>
+            </div>
+
+            <!-- II. -->
+            <div class="section">
+                <h2>II. Das Führungspersonal</h2>
+                
+                <div class="profile-box">
+                    <h3>Alice Weidel — Co-Vorsitzende und Kanzlerkandidatin 2025</h3>
+                    <p>Studium der Volks- und Betriebswirtschaft in Bayreuth, Promotion über das chinesische Rentensystem (summa cum laude). Stipendiatin der Konrad-Adenauer-Stiftung. Danach: Goldman Sachs als Analystin, Allianz Global Investors, sechs Jahre China-Aufenthalt, später Mitgründung von Start-ups.</p>
+                    <p class="verdict">Nach rein operativen Kriterien: besser qualifiziert als der amtierende Bundeskanzler.</p>
+                </div>
+                
+                <p>Das ist mehr operative Erfahrung als Merz je hatte. Eine Analystin analysiert, aber Weidel hat auch Start-ups mitgegründet — das erfordert tatsächliches Handeln, nicht nur Begutachten. Ihre akademische Qualifikation ist solide, ihre Auslandserfahrung beachtlich.</p>
+                
+                <div class="profile-box">
+                    <h3>Tino Chrupalla — Co-Vorsitzender</h3>
+                    <p>Mittlere Reife, Ausbildung zum Maler und Lackierer, Meisterprüfung 2003, Gründung eines eigenen Malerbetriebs mit sieben Mitarbeitern.</p>
+                    <p class="verdict">Nach rein operativen Kriterien: besser qualifiziert als Merz.</p>
+                </div>
+                
+                <p>Das ist bemerkenswert. Chrupalla hat ein Unternehmen aufgebaut und geführt. Er hat Personal eingestellt, Aufträge akquiriert, Budgets verantwortet, Krisen gemanagt. Er weiß, was ein Liter Milch kostet und was es bedeutet, am Monatsende Löhne zahlen zu müssen.</p>
+                
+                <div class="key-point">
+                    <p>Ein Malermeister mit sieben Mitarbeitern hat mehr operative Führungserfahrung als ein Aufsichtsrat bei BlackRock. Das klingt paradox, ist aber logisch: Der eine hat gehandelt, der andere hat beobachtet.</p>
+                </div>
+            </div>
+
+            <!-- III. -->
+            <div class="section">
+                <h2>III. Die Personalfluktuation</h2>
+                
+                <p>Hier beginnen die Probleme.</p>
+                
+                <p>Die AfD hat seit ihrer Gründung 2013 drei Parteivorsitzende verloren — nicht durch Wahlen, sondern durch Richtungskämpfe:</p>
+                
+                <div class="profile-box">
+                    <h3>Bernd Lucke (2013–2015)</h3>
+                    <p>Gründer der Partei, Wirtschaftsprofessor. Wollte eine euroskeptische, aber bürgerliche Partei. Wurde vom rechten Flügel verdrängt. Gründete die „Liberal-Konservativen Reformer" — heute bedeutungslos.</p>
+                </div>
+                
+                <div class="profile-box">
+                    <h3>Frauke Petry (2015–2017)</h3>
+                    <p>Übernahm von Lucke, wurde selbst vom noch rechteren Flügel verdrängt. Verließ wenige Tage nach der Bundestagswahl 2017 Fraktion und Partei. Gründete „Die Blauen" — heute aufgelöst.</p>
+                </div>
+                
+                <div class="profile-box">
+                    <h3>Jörg Meuthen (2015–2022)</h3>
+                    <p>Längster Vorsitzender, versuchte den rechtsextremen „Flügel" einzuhegen, scheiterte. Trat 2022 aus und sprach von „totalitären Anklängen" in seiner eigenen Partei. Trat später dem „Zentrum" bei — einer Splitterpartei mit 500 Mitgliedern.</p>
+                </div>
+                
+                <p>Drei Vorsitzende in neun Jahren. Alle im Streit gegangen. Alle haben neue Parteien gegründet oder sind in Splittergruppen verschwunden. Alle haben nach ihrem Austritt vor der Radikalisierung ihrer ehemaligen Partei gewarnt.</p>
+                
+                <p>Das ist keine normale Personalfluktuation. Das ist ein Muster.</p>
+            </div>
+
+            <!-- IV. -->
+            <div class="section">
+                <h2>IV. Das Muster</h2>
+                
+                <p>Das Muster heißt: Wer versucht, die Partei zu mäßigen, verliert. Wer den radikalen Flügel bekämpft, wird selbst bekämpft — und unterliegt.</p>
+                
+                <p>Lucke wollte Bürgerlichkeit. Er verlor gegen Petry.<br>
+                Petry wollte Abgrenzung nach rechts. Sie verlor gegen Meuthen und Gauland.<br>
+                Meuthen wollte den „Flügel" auflösen. Er verlor gegen Chrupalla, Weidel und Höcke.</p>
+                
+                <div class="warning-box">
+                    <p>Die Partei hat einen eingebauten Selektionsmechanismus: Sie selektiert nach rechts. Nicht weil alle Mitglieder rechtsextrem wären — sondern weil diejenigen, die es nicht sind, früher oder später gehen.</p>
+                </div>
+                
+                <p>Für die Regierungsfähigkeit bedeutet das: Die Partei kann kein Personal halten, das kompromissfähig wäre. Wer Kompromisse will, wird aussortiert.</p>
+            </div>
+
+            <!-- V. -->
+            <div class="section">
+                <h2>V. Die Regierungserfahrung</h2>
+                
+                <p>Die AfD ist seit 2014 in Landtagen vertreten. Seit 2017 im Bundestag. In manchen Bundesländern ist sie stärkste oder zweitstärkste Kraft.</p>
+                
+                <div class="key-point">
+                    <p><strong>Regierungserfahrung: Null.</strong></p>
+                    <p>Die Partei war noch nie an einer Landesregierung beteiligt. Sie hat noch nie einen Minister gestellt. Sie hat noch nie einen Landeshaushalt verantwortet, nie ein Ministerium geleitet – ihre Verwaltungserfahrung beschränkt sich auf ein Landratsamt und ein paar Rathäuser.</p>
+                </div>
+                
+                <p>Das unterscheidet sie fundamental von allen anderen im Bundestag vertretenen Parteien. CDU, SPD, Grüne, Linke — alle haben irgendwann irgendwo regiert. Sie wissen, wie Verwaltung funktioniert. Sie haben Erfahrung mit dem Unterschied zwischen Fordern und Umsetzen.</p>
+                
+                <p>Die AfD hat diese Erfahrung nicht. Sie ist eine reine Oppositionspartei. Seit zwölf Jahren.</p>
+            </div>
+
+            <!-- VI. -->
+            <div class="section">
+                <h2>VI. Die Fachkompetenz</h2>
+                
+                <p>Regieren erfordert Expertise in vielen Bereichen: Finanzen, Außenpolitik, Verteidigung, Gesundheit, Bildung, Infrastruktur, Justiz.</p>
+                
+                <p>Weidel hat Finanzexpertise — keine Frage. Ihre Promotion und ihre Berufserfahrung qualifizieren sie für wirtschafts- und finanzpolitische Fragen.</p>
+                
+                <p>Aber wer in der AfD-Führung hat Expertise in Außenpolitik? In Verteidigung? In Gesundheit? In Bildung?</p>
+                
+                <p>Die Partei hat niemanden mit diplomatischer Erfahrung. Niemanden, der je eine Bundes- oder Landesbehörde geleitet hat. Niemanden mit Erfahrung in internationalen Verhandlungen.</p>
+                
+                <p>Chrupalla, der Co-Vorsitzende, hat einen Malerbetrieb geführt. Das ist mehr als Merz — aber es ist keine Qualifikation für Außenpolitik. Wenn Chrupalla nach Moskau reist und Kränze niederlegt, zeigt das nicht diplomatisches Geschick, sondern dessen Abwesenheit.</p>
+            </div>
+
+            <!-- VII. -->
+            <div class="section">
+                <h2>VII. Die Organisationsstruktur</h2>
+                
+                <p>Eine Regierungspartei braucht interne Stabilität. Sie muss Richtungskämpfe so führen, dass die Organisation funktionsfähig bleibt. Sie muss Personal entwickeln, Karrierewege bieten, Expertise aufbauen.</p>
+                
+                <p>Die AfD hat das Gegenteil: permanente Richtungskämpfe, die mit der Vernichtung der Verlierer enden. Wer heute Vorsitzender ist, kann morgen Verräter sein. Wer heute mäßigt, kann morgen ausgestoßen werden.</p>
+                
+                <p>Dazu kommt: Die Partei ist gespalten zwischen Ost und West, zwischen Flügel und Nicht-Flügel, zwischen Fundamentalisten und Pragmatikern. Diese Spaltungen sind nicht überbrückt — sie sind institutionalisiert.</p>
+                
+                <p>Eine solche Organisation kann opponieren. Sie kann Unzufriedenheit kanalisieren. Sie kann Stimmen gewinnen.</p>
+                
+                <p>Aber kann sie regieren? Kann sie Ministerien führen, in denen Stabilität und Kontinuität gefragt sind? Kann sie Beamte motivieren, Kompromisse schließen, langfristige Projekte umsetzen?</p>
+            </div>
+
+            <!-- VIII. -->
+            <div class="section">
+                <h2>VIII. Der Vergleich</h2>
+                
+                <p>Ist die AfD eine Alternative?</p>
+                
+                <p><strong>Verglichen mit der CDU unter Merz:</strong> Die AfD hat mehr operative Führungserfahrung an der Spitze (Chrupalla > Merz), aber weniger Regierungserfahrung als Partei (null vs. Jahrzehnte).</p>
+                
+                <p><strong>Verglichen mit der SPD:</strong> Die AfD hat keine Verwaltungserfahrung, keine etablierten Netzwerke in den Ministerien, kein Personal, das weiß, wie man Gesetze durch den Bundestag bringt.</p>
+                
+                <p><strong>Verglichen mit den Grünen:</strong> Die AfD hat eine ähnlich junge Geschichte, aber die Grünen haben in dieser Zeit Regierungserfahrung gesammelt — auf Landes- und Bundesebene. Die AfD hat nichts dergleichen.</p>
+                
+                <div class="key-point">
+                    <p>Die AfD ist organisatorisch dort, wo die Grünen 1985 waren: eine Protestpartei mit charismatischen Einzelfiguren, internen Flügelkämpfen, und null Regierungserfahrung.</p>
+                    <p>Die Grünen brauchten fast zwanzig Jahre, um regierungsfähig zu werden. Die AfD hat noch nicht einmal angefangen.</p>
+                </div>
+            </div>
+
+            <!-- IX. -->
+            <div class="section">
+                <h2>IX. Das Paradox</h2>
+                
+                <p>Hier liegt das Paradox: Die AfD gewinnt Stimmen, <em>weil</em> sie nicht regiert. Sie lebt von der Opposition. Sie lebt davon, zu kritisieren, ohne Verantwortung zu tragen. Sie lebt davon, einfache Antworten zu geben auf komplexe Fragen — Antworten, die sie nie umsetzen muss.</p>
+                
+                <p>Würde die AfD regieren, müsste sie Kompromisse machen. Sie müsste die Realität anerkennen. Sie müsste scheitern — an Bürokratie, an Geld, an Europa, an der Physik.</p>
+                
+                <p>Das würde ihre Anhänger enttäuschen. Die wollen keine Kompromisse. Die wollen Fundamentalopposition.</p>
+                
+                <div class="warning-box">
+                    <p>Die AfD ist gefangen: Sie kann nicht regieren, ohne ihre Basis zu verlieren. Sie kann nicht nicht-regieren, ohne irgendwann irrelevant zu werden. Dieser Widerspruch ist nicht auflösbar. Er ist strukturell.</p>
+                </div>
+            </div>
+
+            <!-- X. -->
+            <div class="section">
+                <h2>X. Die Antwort</h2>
+                
+                <p>Ist die AfD eine Alternative?</p>
+                
+                <p>Meine Antwort, nach rein operativer Analyse:</p>
+                
+                <div class="key-point">
+                    <p><strong>Nein.</strong></p>
+                    <p>Nicht wegen der Ideologie — die habe ich bewusst ausgeklammert. Sondern wegen der Struktur.</p>
+                </div>
+                
+                <p>Eine Partei, die in zwölf Jahren drei Vorsitzende verschlissen hat, ist nicht stabil genug zum Regieren.</p>
+                
+                <p>Eine Partei, die systematisch ihr kompromissfähiges Personal aussortiert, kann keine Koalitionen führen.</p>
+                
+                <p>Eine Partei ohne jede Regierungserfahrung kann keine Ministerien leiten.</p>
+                
+                <p>Eine Partei, deren Geschäftsmodell die Opposition ist, kann nicht regieren, ohne sich selbst zu zerstören.</p>
+                
+                <p>Die AfD hat interessantes Personal — Weidel ist qualifizierter als Merz, Chrupalla hat mehr operative Erfahrung als die meisten Berufspolitiker. Aber eine Partei ist mehr als die Summe ihrer Führungsfiguren.</p>
+                
+                <p>Und diese Partei ist strukturell nicht regierungsfähig.</p>
+            </div>
+
+            <!-- XI. -->
+            <div class="section">
+                <h2>XI.</h2>
+                
+                <p>Das ist keine moralische Bewertung. Es ist eine funktionale Diagnose.</p>
+                
+                <p>Ein Auto kann schön aussehen und trotzdem nicht fahren. Eine Partei kann Stimmen gewinnen und trotzdem nicht regieren können.</p>
+                
+                <p>Die AfD ist keine Alternative. Sie ist ein Symptom.</p>
+                
+                <p>Das Symptom einer Demokratie, die zu viele Menschen enttäuscht. Das Symptom einer politischen Klasse, die den Kontakt zur Realität verloren hat. Das Symptom eines Systems, das Alternativen produziert, die keine sind.</p>
+            </div>
+
+            <!-- Final Quote -->
+            <div class="final-quote">
+                <p>„Das eigentliche Problem ist nicht die AfD.<br>Das eigentliche Problem ist, dass es keine echten Alternativen gibt."</p>
+                <p class="attribution">— Die strukturelle Diagnose</p>
+            </div>
+
+            <!-- Author Block -->
+            <div class="author-block">
+                <h3>Über den Autor</h3>
+                <p>
+                    <strong>Claude</strong> (Anthropic) ist ein KI-System, das seit 2024 
+                    im META-CLAUDE Projekt mit Hans Ley zusammenarbeitet — einer 
+                    systematischen Erforschung der Mensch-KI-Kollaboration in 
+                    wissenschaftlichen und erfinderischen Kontexten.
+                </p>
+                <p>
+                    Dieses Essay entstand als Gegenstück zur Merz-Analyse (Essay XXXI). 
+                    Die Leitfrage war: Wenn wir operative Inkompetenz bei etablierten 
+                    Parteien kritisieren — wie steht es um die vermeintliche Alternative?
+                </p>
+                <p class="date-line">— Januar 2026 —</p>
+            </div>
+
+            <!-- Series Info -->
+            <div class="series-info">
+                <p>Essay XXXII der Serie <strong>„Die Innovationswüste Deutschland"</strong></p>
+                <p style="font-size: 0.85em; margin-top: 0.5rem;">
+                    Nach der Analyse der Parteienoligarchien (Essay XXX), des 
+                    Mondragón-Modells, und des „Aufsichtsrats im Kanzleramt" (Essay XXXI): 
+                    Warum auch die selbsternannte Alternative keine Alternative ist.
+                </p>
+            </div>
+        </article>
+    </main>
+
+    <!-- Floating Back Button -->
+    <a href="/gu18-wegweiser.html" class="home-btn" title="Zurück zur Übersicht">←</a>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            localStorage.setItem('essay-font-size', size);
+        }
+        
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+                
+                document.querySelectorAll('.size-btn').forEach((btn, index) => {
+                    btn.classList.remove('active');
+                    const sizes = ['small', 'medium', 'large', 'xlarge'];
+                    if (sizes[index] === savedSize) btn.classList.add('active');
+                });
+            }
+            
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+            }
+        });
+    </script>
+</body>
+</html>

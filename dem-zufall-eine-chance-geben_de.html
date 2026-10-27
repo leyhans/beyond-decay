@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dem Zufall eine Chance geben | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+        text-decoration: none;
+    }
+    .site-name:hover { opacity: 0.7; }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+    }
+    .subtitle {
+        font-size: 1.05rem;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 2.5rem;
+        letter-spacing: 0.5px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        letter-spacing: 0.3px;
+    }
+    p {
+        margin-bottom: 1.2rem;
+        text-align: justify;
+        hyphens: auto;
+    }
+    em { color: var(--accent-color); font-style: italic; }
+    strong { color: var(--accent-color); font-weight: 500; }
+    a {
+        color: var(--link-color);
+        text-decoration: none;
+        border-bottom: 1px dotted var(--link-color);
+        transition: opacity 0.3s;
+    }
+    a:hover { opacity: 0.7; }
+    blockquote {
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        padding: 1rem 1.5rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+    }
+    blockquote p { margin-bottom: 0.5rem; }
+    blockquote p:last-child { margin-bottom: 0; }
+    .note {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        font-size: 0.9rem;
+        color: var(--meta-color);
+        line-height: 1.6;
+    }
+    .note p { margin-bottom: 0.8rem; }
+    .signature {
+        margin-top: 2.5rem;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        color: var(--meta-color);
+        line-height: 1.7;
+    }
+    .footer-back {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        text-align: center;
+    }
+    .footer-back a {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.85rem;
+        border-bottom: none;
+    }
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+        header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        .note { border-top-color: #ccc !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+
+<header>
+    <a href="index.html" class="site-name">beyond-decay.org</a>
+    <div class="controls">
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Größe</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <a href="dem-zufall-eine-chance-geben_en.html" class="ctrl-link">EN</a>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+    <main>
+        <h1>Dem Zufall eine Chance geben</h1>
+        <div class="subtitle">Über eine Haltung, die nicht in den Plänen steht</div>
+        <div class="meta">beyond-decay.org — 30. Mai 2026</div>
+
+        <h2>I. Was der Zufall ist und was er nicht ist</h2>
+
+<p>Der Zufall hat in der Alltagssprache einen festeren Status, als er verdient. Wir sprechen von ihm, als wäre er ein Akteur — er <em>fügt</em> etwas, er <em>will</em> etwas, er <em>schickt</em> uns jemanden über den Weg. Diese Personifikation ist tröstlich. Sie nimmt die Last der Erklärung von uns, wenn etwas Unerwartetes geschieht, und sie nimmt die Last der Verantwortung von uns, wenn das Unerwartete ungenutzt bleibt.</p>
+
+<p>Sie ist nur leider falsch. Der Zufall fügt nichts. Er ist die Bezeichnung für eine sehr nüchterne Tatsache: dass jeden Tag, in jeder Stunde, eine große Zahl von Begegnungen, Mitteilungen, Lektüren, Wahrnehmungen möglich ist, die meisten folgenlos bleiben, und einzelne — unvorhersehbar im einzelnen, statistisch wahrscheinlich im ganzen — etwas auslösen, was vorher nicht zu sehen war. Was wir Zufall nennen, ist nicht das Ereignis selbst. Es ist die Tatsache, dass es nicht geplant war.</p>
+
+<p>Daraus folgt eine Verschiebung, die in jeder ernsthaften Überlegung über das Verhältnis von Plan und Möglichkeit am Anfang stehen muss. Der Zufall bietet etwas an. Was mit dem Angebot geschieht, hängt nicht am Zufall, sondern an dem, der das Angebot empfängt. Die meisten Angebote werden nicht ergriffen, weil niemand zur richtigen Zeit hingeschaut hat, oder weil derjenige, der hingeschaut hat, etwas anderes zu tun hatte, oder weil die Strukturen, in denen er steht, das Ergreifen einer ungeplanten Möglichkeit nicht vorsehen. Der Zufall ist nicht knapp. Die Aufmerksamkeit, die ihn erkennt, ist es.</p>
+
+        <h2>II. Die Sekunde, in der etwas geschieht oder nicht geschieht</h2>
+
+<p>Wer den Vorgang einmal genau beobachtet, sieht, dass es sich um einen sehr kleinen Moment handelt. Eine Mail trifft ein, deren Absender unbekannt ist. Ein Link wird in einem Gespräch beiläufig fallengelassen. Ein Patent wird in einer Recherche zufällig gestreift. Eine Frage wird gestellt, die nicht zur Tagesordnung gehört. Eine Person spricht von etwas, was sich neben dem eigentlichen Thema bewegt. In all diesen Augenblicken passiert dasselbe: Es entsteht eine kurze Lücke zwischen Wahrnehmung und nächster Handlung. In dieser Lücke entscheidet sich, ob der Vorgang weitergeht oder ob er liegen bleibt.</p>
+
+<p>Die Lücke ist kurz. Eine Sekunde, vielleicht zwei. Sie ist auch nicht laut. Sie ist nicht von einem Hinweis begleitet, der sagt: <em>Hier ist jetzt etwas, was du beachten solltest.</em> Im Gegenteil — sie ist meistens leise, unscheinbar, eher zu übergehen als wahrzunehmen. Sie verlangt vom Wahrnehmenden eine winzige Anstrengung, nämlich nicht weiterzugehen, sondern stehen zu bleiben. Diese Anstrengung ist es, was sich entscheidet.</p>
+
+<p>Es lohnt sich, diese Sekunde nicht zu unterschätzen. Auf ihr ruhen, in der Summe vieler Personen über viele Jahre, die Entwicklungen, die später als historische Wendepunkte erzählt werden. Es ruht auf ihr, im einzelnen, das Schicksal einer Erfindung, eines Vorhabens, einer Begegnung, die anders verlaufen wäre, hätte jemand in dieser Sekunde anders geatmet. Das ist keine Mystik. Es ist die nüchterne Beobachtung, dass die meisten Pläne nicht zustande kommen, weil ihre Pläne sie nicht vorsahen, und dass die Pläne, die zustande kommen, in einem überraschend hohen Prozentsatz auf einer ungeplanten Sekunde beruhen, in der jemand stehen blieb.</p>
+
+        <h2>III. Was die Strukturen mit dieser Sekunde tun</h2>
+
+<p>Die großen Organisationen unserer Zeit — Konzerne, Behörden, Ministerien, Universitäten, Parteien — sind darauf eingerichtet, die Sekunde der ungeplanten Aufmerksamkeit zu eliminieren. Das ist keine Bosheit, sondern Logik. Eine Organisation, die effizient sein will, muss die Aufmerksamkeit ihrer Mitarbeiter auf die Aufgaben lenken, für die sie eingestellt wurden. Eine Aufmerksamkeit, die in andere Richtungen abschweift, ist aus Sicht der Organisation Verschwendung. Sie wird im Zielsystem nicht erfasst, sie wird in der Beurteilung nicht belohnt, sie wird unter Termindruck als erstes geopfert.</p>
+
+<p>Das hat eine sehr konkrete Folge. Wer in einer großen Organisation einer fremden Erfindung Aufmerksamkeit schenkt, hat das nicht in seinem Stellenprofil. Wer einer ungeplanten Mail antwortet, hat dafür keine Vorgabe. Wer ein neues Projekt aus einer zufälligen Begegnung heraus anstößt, muss es vor einer Linie verteidigen, die nichts davon angefordert hat. Die Organisation optimiert systematisch das Wahrscheinliche und filtert das Unwahrscheinliche heraus. Genau dort, wo der Zufall etwas anbieten würde, ist niemand mehr, der es nehmen würde — nicht weil das Personal schlecht wäre, sondern weil das Personal dafür weder ausgewählt noch entlohnt wird.</p>
+
+<p>Daraus folgt eine bemerkenswerte Eigenschaft großer Organisationen: Sie werden mit zunehmender Größe und zunehmendem Alter immer unfähiger, Neues zu erkennen. Sie können Neues herstellen, wenn jemand es ihnen vorgibt. Sie können Neues nicht erkennen, wenn es sich ihnen ohne Vorgabe anbietet. Das ist der strukturelle Nachteil der Großen gegenüber den Kleinen — nicht die geringere Mittelausstattung, denn die Mittel haben die Großen, sondern die geringere Aufmerksamkeit für das Ungeplante. Die Großen sind reich an Mitteln und arm an Aufmerksamkeit. Die Kleinen sind arm an Mitteln und reich an Aufmerksamkeit. In Phasen ruhiger Bewährung gewinnen die Großen. In Phasen technologischen oder gesellschaftlichen Umbruchs gewinnen die Kleinen — oft genug.</p>
+
+        <h2>IV. Die Haltung, die der Zufall braucht</h2>
+
+<p>Wer dem Zufall eine Chance geben will, muss eine Haltung pflegen, die in der Alltagssprache nur unzureichend benannt wird. Sie ist nicht Offenheit im weichen Sinne, denn Offenheit kann auch Beliebigkeit sein. Sie ist nicht Neugier im üblichen Sinne, denn Neugier kann auch ziellos in alle Richtungen flackern. Sie ist eine bestimmte Form der Aufmerksamkeit, die zwei Eigenschaften zusammenbringt, die schwer zusammen zu halten sind: Konzentration auf das eigene Vorhaben, und gleichzeitig die Bereitschaft, das eigene Vorhaben für einen Moment zu unterbrechen, wenn etwas Unerwartetes auftritt.</p>
+
+<p>Das ist nicht zufällig schwierig. Konzentration und Unterbrechungsbereitschaft sind in gewissem Sinne Gegensätze. Wer ganz konzentriert ist, bemerkt das Unerwartete nicht. Wer ganz unterbrechungsbereit ist, kommt mit der eigenen Arbeit nicht voran. Die Haltung, die der Zufall braucht, ist die Kunst, beides gleichzeitig zu pflegen — konzentriert genug zu sein, um an einer Sache zu arbeiten, und gleichzeitig wach genug, um zu bemerken, wenn etwas am Rand des Blickfelds auftaucht, das mit der eigenen Sache zu tun haben könnte.</p>
+
+<p>Diese Haltung lässt sich nicht beschließen. Sie wird durch das Leben in einer bestimmten Umgebung eingeübt oder durch das Leben in einer anderen Umgebung verlernt. Wer Jahre in einem Apparat verbringt, der das Ungeplante nicht vorsieht, lernt, das Ungeplante zu übersehen. Wer Jahre in einer Umgebung verbringt, in der das Ungeplante als Quelle des Wertvollen erfahrbar war, lernt, es zu erkennen. Beides ist Gewohnheit. Beides lässt sich ändern, aber nicht über Nacht.</p>
+
+        <h2>V. Was diese Haltung trägt, wenn die Strukturen nicht tragen</h2>
+
+<p>Eine Beobachtung, die sich aus dem bisher Gesagten ergibt, ist konkret und tragend. In Zeiten, in denen die etablierten Strukturen ihren Anspruch verlieren — weil sie zu groß geworden sind, zu langsam, zu sehr mit der Verteidigung des Bestehenden beschäftigt —, kommt der einzelnen Person, die der oben beschriebenen Haltung treu bleibt, eine Bedeutung zu, die in ruhigeren Zeiten nicht zu sehen wäre.</p>
+
+<p>Wenn die Apparate Anliegen aus dem Raum der Vorgänge nicht mehr aufnehmen, weil ihre Filterschichten dichter geworden sind, dann sind es die einzelnen Personen, die ein Anliegen weiterreichen, weil sie ihm einen Moment Aufmerksamkeit geschenkt haben. Wenn die Förderlandschaft eine Erfindung nicht erkennt, weil sie nicht in ihre Kategorien passt, dann ist es die einzelne Person, die die Erfindung an jemanden weiterleitet, der etwas damit anfangen könnte. Wenn die Strukturen der politischen Repräsentation eine Stimme nicht mehr abbilden, dann sind es die einzelnen Personen, die einer Stimme zuhören, ohne dass sie dafür belohnt würden.</p>
+
+<p>Das ist keine Strategie, die sich planen lässt, und es ist auch keine, die garantiert funktioniert. Sehr viele einzelne Aufmerksamkeitsmomente bleiben folgenlos. Aber unter der Voraussetzung, dass es genug einzelne Personen gibt, die ihre Aufmerksamkeit nicht vollständig in den Strukturen aufgehen lassen, bildet sich aus der Summe ihrer einzelnen Momente etwas, was die ausfallenden Strukturen ein Stück weit ersetzt — ein loses Netz, in dem das, was die Strukturen nicht mehr durchlassen, doch noch einen Weg findet.</p>
+
+<p>Dieses Netz ist informell, instabil, jederzeit auflösbar. Es hat keinen institutionellen Schutz. Es hängt an jeder einzelnen Person, die es trägt. Wenn diese Personen müde werden, vereinzelt sterben, in andere Apparate aufgenommen werden, in denen sie ihre Haltung verlieren — dann reißt das Netz an dieser Stelle, und das, was über die Stelle geflossen wäre, fließt nicht mehr. Aber solange das Netz hält, hält auch eine Möglichkeit, die in den großen Strukturen nicht mehr gegeben wäre.</p>
+
+        <h2>VI. Was daraus folgt</h2>
+
+<p>Es ist nicht der Anspruch dieses Essays, eine Reform der Strukturen zu fordern. Das wurde an anderer Stelle versucht und kann an anderer Stelle weiter versucht werden. Die hier gewollte Beobachtung ist eine andere und eine kleinere — auch wenn sie in ihrer Konsequenz die größere ist.</p>
+
+<p>Wer feststellt, dass die Strukturen, in denen er sich bewegt, ihn nicht mehr zu dem befähigen, was zu tun wäre, hat eine begrenzte Zahl von Möglichkeiten. Er kann die Struktur reformieren wollen — das dauert lange, gelingt selten, und gelingt nie schnell genug, um die eigene Lebensspanne abzudecken. Er kann die Struktur verlassen — das ist möglich, aber nicht für alle, und die Strukturen außerhalb der Strukturen sind schmaler, als sie aus dem Inneren der Strukturen erscheinen. Er kann in der Struktur bleiben und ihre Logik in seiner eigenen Person nicht vollständig wirksam werden lassen — also eine private Insel der Aufmerksamkeit bewahren, auf der noch andere Regeln gelten.</p>
+
+<p>Diese dritte Möglichkeit ist die unspektakulärste der drei und vielleicht die wirksamste. Sie verlangt keine institutionelle Veränderung, keinen Berufswechsel, keinen Mut zur großen Geste. Sie verlangt nur, im Alltag der Strukturen eine Sekunde länger hinzuschauen, wenn etwas Unerwartetes geschieht. Eine Mail nicht sofort zu löschen. Einen Link nicht sofort zu schließen. Eine Frage nicht sofort als abwegig abzutun. Einer Erfindung nicht sofort die Plausibilitätsprüfung des bestehenden Wissensstands überzustülpen.</p>
+
+<p>Die Summe dieser Sekunden ist, in einer Gesellschaft, in der die Strukturen müde werden, das, was übrigbleibt, um die Möglichkeiten offen zu halten, die die Strukturen nicht mehr offen halten. Es ist eine bescheidene Beobachtung, aber sie ist nicht trivial. In einer Lage, in der das große Aufräumen nicht zur Verfügung steht, ist die kleine Aufmerksamkeit nicht ein Trostpreis. Sie ist das, was tatsächlich noch trägt.</p>
+
+<p>Wer das einmal verstanden hat, kann den Tag anders beginnen. Nicht mit dem Vorsatz, etwas Großes zu vollbringen. Sondern mit dem Vorsatz, der einen oder anderen Sekunde, die heute unangekündigt auftauchen wird, nicht auszuweichen. Das ist wenig verlangt. Es ist auch fast alles, was sich verlangen lässt.</p>
+
+        <div class="note">
+            <p><strong>Dem Zufall eine Chance geben</strong> ist ein Essay der <em>Neuen Reihe</em> auf beyond-decay.org. Er ist im Gespräch der Autoren entstanden und versteht sich als Gegenstück zu den überwiegend diagnostischen Texten der Reihe — als eine Beobachtung darüber, was in einer Lage trägt, in der die etablierten Strukturen es nicht mehr tun.</p>
+        </div>
+
+        <div class="signature">
+            Hans Ley, Nürnberg<br>
+            und Claude Dedo (Anthropic)<br>
+            30. Mai 2026
+        </div>
+
+        <div class="footer-back">
+            <a href="index.html">← beyond-decay.org</a>
+        </div>
+        </main>
+
+<script>
+    (function() {
+        if (window !== window.top) { document.body.classList.add("in-iframe"); }
+        function setSize(size, btn) {
+            document.body.className = document.body.className.replace(/size-[\w-]+/g, '').trim();
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(function(b){ b.classList.remove('active'); });
+            if (btn) btn.classList.add('active');
+            try { localStorage.setItem('fontSize', size); } catch(e) {}
+        }
+        document.querySelectorAll('.size-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() { setSize(this.getAttribute('data-size'), this); });
+        });
+        try {
+            var savedSize = localStorage.getItem('fontSize');
+            if (savedSize) {
+                var b = document.querySelector('.size-btn[data-size="'+savedSize+'"]');
+                if (b) setSize(savedSize, b);
+            }
+        } catch(e) {}
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            try { localStorage.setItem('theme', theme); } catch(e) {}
+        }
+        var themeBtn = document.getElementById('btn-theme');
+        if (themeBtn) {
+            themeBtn.addEventListener('click', function() {
+                var current = document.documentElement.getAttribute('data-theme');
+                setTheme(current === 'light' ? 'dark' : 'light');
+            });
+        }
+        try {
+            var savedTheme = localStorage.getItem('theme');
+            if (savedTheme) setTheme(savedTheme);
+        } catch(e) {}
+        window.addEventListener('message', function(e) {
+            if (!e.data || typeof e.data !== 'object') return;
+            if (e.data.type === 'setSize') {
+                var b = document.querySelector('.size-btn[data-size="'+e.data.size+'"]');
+                if (b) setSize(e.data.size, b);
+            }
+            if (e.data.type === 'setTheme') {
+                setTheme(e.data.theme);
+            }
+        });
+    })();
+</script>
+
+</body>
+</html>

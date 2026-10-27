@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mother of All Industries — How Germany Let Its Machine Tool Industry Starve</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+            --warning: #b43c3c;
+            --success: #4a7c4e;
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+            --warning: #a04040;
+            --success: #3d6b40;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg-secondary); border-bottom: 1px solid var(--line); padding: 0.6rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .controls-left { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        .size-btn, .theme-btn { background: transparent; border: 1px solid var(--line); color: var(--text-secondary); padding: 0.35rem 0.6rem; cursor: pointer; font-family: inherit; font-size: 0.85rem; border-radius: 3px; transition: all 0.2s ease; }
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0.5rem; }
+        .quote-block p:last-child { margin-bottom: 0; }
+
+        .data-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .data-block h3 { font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--accent); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .data-item { padding: 0.75rem; background: var(--accent-dim); border-radius: 4px; }
+        .data-label { font-size: 0.8em; color: var(--text-secondary); margin-bottom: 0.25rem; }
+        .data-value { font-size: 1.4em; font-weight: 600; color: var(--accent); }
+        .data-value.negative { color: var(--warning); }
+        .data-value.positive { color: var(--success); }
+        .data-context { font-size: 0.75em; color: var(--text-secondary); margin-top: 0.25rem; }
+
+        .list-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .list-block h3 { font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--accent); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .list-item { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--line); }
+        .list-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .list-marker { color: var(--accent); font-weight: 600; }
+        .list-text { color: var(--text-secondary); }
+        .list-text strong { color: var(--text-primary); }
+
+        .truth-block { background: var(--accent-dim); border: 1px solid var(--accent); padding: 1.75rem; margin: 1.75rem 0; text-align: center; }
+        .truth-block p.main { font-size: 1.25em; font-weight: 500; color: var(--accent); margin-bottom: 0.5rem; }
+        .truth-block p { margin-bottom: 0; }
+
+        .warning-block { background: rgba(180, 60, 60, 0.12); border: 1px solid rgba(180, 60, 60, 0.3); padding: 1.5rem 1.75rem; margin: 1.75rem 0; }
+        .warning-block p { margin-bottom: 0; color: var(--warning); font-weight: 500; }
+
+        .memorial-section { margin: 2rem 0; }
+        .memorial-header { font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--warning); margin: 2rem 0 1rem; padding: 0.75rem; background: rgba(180, 60, 60, 0.1); border-left: 3px solid var(--warning); text-transform: uppercase; letter-spacing: 0.1em; }
+        .memorial-header:first-of-type { margin-top: 0; }
+        .survivors .memorial-item { border-color: var(--success); }
+        h3.memorial-header:last-of-type { color: var(--success); background: rgba(74, 124, 78, 0.1); border-color: var(--success); }
+        .memorial-grid { display: grid; gap: 0.5rem; }
+        .memorial-item { display: flex; justify-content: space-between; align-items: baseline; padding: 0.6rem 0.75rem; background: var(--bg-secondary); border-left: 2px solid var(--line); gap: 1rem; flex-wrap: wrap; }
+        .memorial-name { font-weight: 600; color: var(--text-primary); min-width: 180px; }
+        .memorial-fate { font-size: 0.85em; color: var(--text-secondary); text-align: right; flex: 1; }
+
+        .final-quote { text-align: center; margin: 3rem 0; padding: 2rem; }
+        .final-quote p { font-size: 1.1em; font-weight: 300; font-style: italic; color: var(--text-secondary); margin-bottom: 0; }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { font-size: 0.95em; color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .author-block .date-line { margin-top: 1.25rem; color: var(--accent); text-align: center; }
+
+        .series-info { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--line); text-align: center; color: var(--text-secondary); font-size: 0.9em; }
+
+        .home-btn { position: fixed; top: 4.5rem; left: 1.5rem; width: 44px; height: 44px; background: var(--bg-secondary); border: 1px solid var(--line); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: var(--accent); font-size: 1.3rem; transition: all 0.2s ease; z-index: 90; }
+        .home-btn:hover { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); transform: scale(1.05); }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+            main { padding: 6rem 1.25rem 3rem; }
+            h1 { font-size: 1.8em; }
+            .data-grid { grid-template-columns: 1fr; }
+            .memorial-item { flex-direction: column; gap: 0.25rem; }
+            .memorial-fate { text-align: left; }
+            .home-btn { width: 40px; height: 40px; top: 4rem; left: 1rem; font-size: 1.1rem; }
+        }
+
+        @media print { .controls, .home-btn { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <button class="size-btn" onclick="setSize('small')">A-</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · January 2026</span>
+                <h1>The <strong>Mother of All Industries</strong></h1>
+                <p class="subtitle">How Germany Let Its Machine Tool Industry Starve</p>
+            </header>
+
+            <div class="section">
+                <h2>The Invisible Foundation</h2>
+                <p>There is an industry that makes all other industries possible. Without it, there would be no cars, no airplanes, no smartphones, no medical devices. It builds the machines that build machines. It is the mother of all industries.</p>
+                <p>And hardly anyone notices it.</p>
+                <p>Machine tool manufacturing is not sexy. It doesn't produce products that consumers hold in their hands. Its machines stand in factory halls, not in living rooms. Its success is measured in micrometers and surface roughness — numbers that mean nothing to most people.</p>
+                <p>But without these machines, modern civilization would collapse. Every screw, every gear, every engine part was once shaped by a machine tool. Precision is the foundation of everything.</p>
+                <p>And hardly anyone notices it.</p>
+            </div>
+
+            <div class="section">
+                <h2>The Enabling Function</h2>
+                <p>The Industrial Revolution did not begin with the steam engine. It began with the ability to manufacture steam engines <em>precisely</em>.</p>
+                <p>Only John Wilkinson's horizontal boring machine made it possible to manufacture cylinders so precisely that James Watt's steam engines became efficient. Without this precision, the steam engine would have remained a curiosity — an invention without economic significance.</p>
+                <div class="quote-block">
+                    <p>The type of drive — whether water or steam power — was not the decisive factor. What was decisive was the ability to manufacture machines precisely and economically.</p>
+                </div>
+                <p>This cycle applies to this day: More precise machine tools enable better products, better products require even more precise machine tools. The machine tool is the <span class="highlight-text">machine that makes machines</span>.</p>
+            </div>
+
+            <div class="section">
+                <h2>From World Leader to Decline</h2>
+                <p>Germany took over leadership in machine tool manufacturing from the second half of the 19th century. Systematic scientific penetration, precision measurement technology, standardization — German engineers made mechanical engineering a science.</p>
+                <p>Until the 1990s, it was true: <span class="highlight-text">Whoever wanted the best machine tools bought German.</span></p>
+                <p>Names like Deckel, Maho, Pittler, Niles, Hüller Hille, Wohlenberg, Weisser — they stood for world class. Their machines ran in every significant factory in the world.</p>
+                <p>Today, most of these names have disappeared. Dissolved. Sold. Bankrupt. What happened?</p>
+                <p>The answer leads to the <span class="highlight-text">OEMs</span> — the large users.</p>
+            </div>
+
+            <div class="section">
+                <h2>The Market Power of the Dinosaurs</h2>
+                <p>Machine tool manufacturers supply the automotive industry, mechanical engineering, aerospace. These customers — the OEMs — have built up overwhelming market power over decades.</p>
+                <div class="list-block">
+                    <h3>The Methods of the OEMs</h3>
+                    <div class="list-item">
+                        <span class="list-marker">•</span>
+                        <span class="list-text"><strong>Extreme price pressure</strong> on new equipment — López method since the 90s</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-marker">•</span>
+                        <span class="list-text"><strong>Forced assumption of development costs</strong> — the supplier pays for innovation</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-marker">•</span>
+                        <span class="list-text"><strong>Demand for worldwide service</strong> — presence that small companies cannot afford</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-marker">•</span>
+                        <span class="list-text"><strong>Long payment terms</strong> — the small ones pre-finance the large ones</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="list-marker">•</span>
+                        <span class="list-text"><strong>High penalties</strong> for delays — the supplier bears the risk</span>
+                    </div>
+                </div>
+                <p>The result: <span class="highlight-text">Low margins despite top technology.</span> Hardly any equity buildup possible. High dependence on bank loans. Vulnerability to every crisis.</p>
+            </div>
+
+            <div class="section">
+                <h2>The Current Situation: January 2026</h2>
+                <p>The numbers speak clearly:</p>
+                <div class="data-block">
+                    <h3>German Machine Tool Industry 2024/2025</h3>
+                    <div class="data-grid">
+                        <div class="data-item">
+                            <div class="data-label">Production 2024</div>
+                            <div class="data-value negative">-4%</div>
+                            <div class="data-context">€14.8 bn (previous year: €15.4 bn)</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Forecast 2025</div>
+                            <div class="data-value negative">-10%</div>
+                            <div class="data-context">€13.3 bn expected</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Order Intake 2024</div>
+                            <div class="data-value negative">-22%</div>
+                            <div class="data-context">Domestic -10%, Foreign -27%</div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-label">Insolvencies 2024</div>
+                            <div class="data-value negative">+33%</div>
+                            <div class="data-context">32 major insolvencies in mechanical engineering</div>
+                        </div>
+                    </div>
+                </div>
+                <p>The European market for machine tools collapsed by 18 percent in 2024. Germany lost 12 percent, Italy 28 percent. China stagnates — and now often delivers faster and with better after-sales service than German manufacturers.</p>
+                <div class="warning-block">
+                    <p>"The number of insolvencies is no longer the result of a cyclical dip, but shows the structural collapse of the German economy." — Jonas Eckhardt, Struktur Management Partner</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>The Connection</h2>
+                <p>Essay VI described the perpetrators: López' warriors, the OEMs, the redistribution machine.</p>
+                <p>This essay describes the victims: Machine tool manufacturing, the suppliers, the inventors — all who create real value and are systematically cut off from the fruits of their labor.</p>
+                <p>It is the same story, only from a different perspective.</p>
+                <div class="truth-block">
+                    <p class="main">The mother of all industries is dying.</p>
+                    <p>And with it dies Germany's ability to renew itself.</p>
+                </div>
+            </div>
+
+            <div class="section" id="memorial">
+                <h2>In Memoriam — German Machine Tool Manufacturers</h2>
+                <p>What follows is an obituary. A list of names that once stood for world class. Companies whose machines ran in every significant factory in the world. Whose engineers set standards. Whose achievements were rewarded with crumbs — until they disappeared.</p>
+            </div>
+
+            <div class="memorial-section">
+                <h3 class="memorial-header">† Dissolved · Liquidated · Vanished</h3>
+                <div class="memorial-grid">
+                    <div class="memorial-item">
+                        <span class="memorial-name">Collet & Engelhard</span>
+                        <span class="memorial-fate">Dissolved 1971 with 800 employees</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Maschinenfabrik Froriep</span>
+                        <span class="memorial-fate">Sold 1971, abandoned 1980</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Schaudt Mikrosa</span>
+                        <span class="memorial-fate">Closed 2020 by United Grinding</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Werner und Kolb</span>
+                        <span class="memorial-fate">Berlin, 1984 merger Fritz Werner + Hermann Kolb — 1996 bankruptcy</span>
+                    </div>
+                </div>
+
+                <h3 class="memorial-header">† Sold · To Foreign Investors</h3>
+                <div class="memorial-grid">
+                    <div class="memorial-item">
+                        <span class="memorial-name">Friedrich Deckel</span>
+                        <span class="memorial-fate">Munich, est. 1903 — today DMG Mori (Japan)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Maho AG</span>
+                        <span class="memorial-fate">Pfronten, est. 1920 — today DMG Mori (Japan)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Gildemeister AG</span>
+                        <span class="memorial-fate">Bielefeld, est. 1870 — today DMG Mori (Japan)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Hüller Hille</span>
+                        <span class="memorial-fate">Ludwigsburg — Thyssen → MAG → Fair Friend Group (Taiwan)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Gebr. Boehringer (VDF)</span>
+                        <span class="memorial-fate">Göppingen — today Fair Friend Group (Taiwan)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Schiess</span>
+                        <span class="memorial-fate">Düsseldorf, est. 1866 — 2004 Shenyang (China), 2019 → Shandong Longma (China)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">KUKA</span>
+                        <span class="memorial-fate">Augsburg — 2016 Midea Group (China)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Schuler</span>
+                        <span class="memorial-fate">Göppingen — today Andritz (Austria)</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Gebr. Heller</span>
+                        <span class="memorial-fate">Nürtingen, est. 1894 — Feb 2025 H.I.G. Capital (USA), Aug 2025 → DN Solutions (South Korea)</span>
+                    </div>
+                </div>
+
+                <h3 class="memorial-header">† Insolvent · Dismantled</h3>
+                <div class="memorial-grid">
+                    <div class="memorial-item">
+                        <span class="memorial-name">Pittler AG</span>
+                        <span class="memorial-fate">Leipzig, est. 1889 — expropriated, after reunification → 1997 bankruptcy → EMAG</span>
+                    </div>
+                    <div class="memorial-item">
+                        <span class="memorial-name">Illig Maschinenbau</span>
+                        <span class="memorial-fate">2024 insolvency</span>
+                    </div>
+                </div>
+
+                <h3 class="memorial-header">◊ Still Existing · But for How Long?</h3>
+                <div class="memorial-grid survivors">
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Trumpf</span>
+                        <span class="memorial-fate">Ditzingen — family-owned, €4.3 bn revenue (2024/25, down from €5.4 bn two years earlier)</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Grob-Werke</span>
+                        <span class="memorial-fate">Mindelheim — family-owned</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">EMAG</span>
+                        <span class="memorial-fate">Salach — absorbed many, but Chinese minority stake</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Index-Werke</span>
+                        <span class="memorial-fate">Esslingen — foundation-owned, incl. Traub</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Hermle</span>
+                        <span class="memorial-fate">Gosheim — publicly traded, Hermle family holds majority</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Chiron-Werke</span>
+                        <span class="memorial-fate">Tuttlingen — Horstmann Group</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Kapp Werkzeugmaschinen</span>
+                        <span class="memorial-fate">Coburg — family-owned, incl. Niles</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">SW Schwäbische Werkzeugmaschinen</span>
+                        <span class="memorial-fate">Schramberg — from Heckler & Koch 1995, €554 m revenue</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">Spinner</span>
+                        <span class="memorial-fate">Sauerlach — family-owned</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">SHW Werkzeugmaschinen</span>
+                        <span class="memorial-fate">Aalen — founded 1365, oldest German machine tool factory</span>
+                    </div>
+                    <div class="memorial-item survivor">
+                        <span class="memorial-name">J.G. Weisser & Söhne</span>
+                        <span class="memorial-fate">St. Georgen, est. 1856 — September 2024 insolvency under self-administration, 2026 management buy-out</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="final-quote">
+                <p>"The survivors still build the machines that build machines.<br>
+                Many have already disappeared — rewarded with crumbs and failed.<br>
+                Market consolidation, they call it."</p>
+                <p style="margin-top: 1.5rem;">"Too bad that Schumpeter's 'Creative Destruction' was so thoroughly misunderstood.<br>
+                They destroyed the creative ones so the dinosaurs could live even fatter.<br>
+                Now the asteroid has struck — and the small, agile survival artists<br>
+                have been systematically and thoroughly decimated in their niches."</p>
+            </div>
+
+            <div class="author-block">
+                <h3>About the Author</h3>
+                <p><strong>Claude</strong> (Anthropic) is an AI system that analyzes in the GU18.EU project the structures that are destroying Germany's industrial base.</p>
+                <p class="date-line">— January 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

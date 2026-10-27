@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Ukraine War — Who Wants What?</title>
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --text-primary: #e8e8e8;
+            --text-secondary: #b8b8b8;
+            --accent: #7eb8da;
+            --accent-dim: #5a9bc0;
+            --line: #3a3a5a;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #fafafa;
+            --bg-secondary: #f0f0f0;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --accent: #2a6a9a;
+            --accent-dim: #1a5a8a;
+            --line: #d0d0d0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .controls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 100;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+        }
+
+        .size-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .size-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .size-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        
+        .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .essay-container {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 80px 2rem 4rem 2rem;
+        }
+
+        .essay-container.size-s { max-width: 600px; font-size: 0.95rem; }
+        .essay-container.size-m { max-width: 750px; font-size: 1.05rem; }
+        .essay-container.size-l { max-width: 900px; font-size: 1.15rem; }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: normal;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--accent);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            font-weight: normal;
+            color: var(--accent);
+            margin: 3rem 0 1.5rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: normal;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem 0;
+            font-style: italic;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        .lead {
+            font-size: 1.15em;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        blockquote {
+            border-left: 3px solid var(--accent);
+            margin: 2rem 0;
+            padding: 1rem 1.5rem;
+            background: var(--bg-secondary);
+            font-style: italic;
+        }
+
+        blockquote cite {
+            display: block;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: normal;
+        }
+
+        .highlight {
+            color: var(--accent);
+        }
+
+        .actor-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .actor-box h4 {
+            color: var(--accent);
+            font-weight: normal;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .goals-list {
+            margin: 1rem 0;
+        }
+
+        .goals-list dt {
+            color: var(--text-primary);
+            font-weight: bold;
+            margin-top: 0.75rem;
+        }
+
+        .goals-list dd {
+            color: var(--text-secondary);
+            margin-left: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 0.9rem;
+        }
+
+        .matrix-table th,
+        .matrix-table td {
+            border: 1px solid var(--line);
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .matrix-table th {
+            background: var(--bg-secondary);
+            color: var(--accent);
+            font-weight: normal;
+        }
+
+        .matrix-table td:first-child {
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .emphasis-box {
+            background: var(--bg-secondary);
+            border-left: 3px solid var(--accent);
+            padding: 1.25rem 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .emphasis-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .essay-container {
+                padding: 70px 1.25rem 3rem 1.25rem;
+            }
+            h1 { font-size: 1.7rem; }
+            .subtitle { font-size: 1.1rem; }
+            h2 { font-size: 1.25rem; }
+            .matrix-table { font-size: 0.8rem; }
+            .matrix-table th,
+            .matrix-table td { padding: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button class="size-btn" onclick="setSize('s')" title="Small">S</button>
+        <button class="size-btn active" onclick="setSize('m')" title="Medium">M</button>
+        <button class="size-btn" onclick="setSize('l')" title="Large">L</button>
+        <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">◐</button>
+        <a href="ukraine-wer-will-was.html" class="lang-btn" title="Deutsche Version">DE</a>
+    </div>
+
+    <article class="essay-container size-m">
+        <header>
+            <h1>The Ukraine War</h1>
+            <div class="subtitle">Who Wants What?</div>
+            <div class="meta">February 2026</div>
+        </header>
+
+        <p class="lead">
+            Nearly four years of war, hundreds of thousands dead, millions displaced — and negotiations going in circles. To understand the dynamics, one must ask: What do the actors really want? The official positions tell only half the story.
+        </p>
+
+        <h2>I. The Aggressor — Russia</h2>
+
+        <p>
+            Putin's <span class="highlight">official war aim</span> is complete control over the Donbas — the Donetsk and Luhansk regions. Currently, Russia is still missing about 11% of Donetsk, an area of roughly 2,250 square kilometers. Add to this the familiar demands: no NATO membership for Ukraine, "denazification," recognition of annexed territories.
+        </p>
+
+        <p>
+            But whoever takes Putin at his word underestimates his ambition. At the St. Petersburg Economic Forum in summer 2025, he declared: <em>"I consider the Russian and Ukrainian peoples to be one people. In this sense, all of Ukraine is ours."</em> He speaks of "Novorossiya" — a term from the Tsarist era encompassing large parts of southern Ukraine. The goal is not an endpoint, but a process.
+        </p>
+
+        <div class="emphasis-box">
+            <p>
+                <strong>The hidden logic:</strong> Putin may not be able to afford a real peace. An end to the war would focus Russian public attention on catastrophic losses — estimates reach up to one million dead and wounded. The war legitimizes the system; peace endangers it.
+            </p>
+        </div>
+
+        <p>
+            Add to this the systematic destruction of Ukrainian energy infrastructure — attacks in the middle of winter at minus 22 degrees. The goal is not only military victory but the destruction of Ukraine as a functioning state. And finally: the splitting of the West. Every crack in the Western alliance is a strategic gain.
+        </p>
+
+        <h2>II. The Defender — Ukraine</h2>
+
+        <p>
+            Zelensky's <span class="highlight">red line</span> is clear: no cession of territory that Ukraine still controls. Instead, he demands NATO-like security guarantees, an American "backstop," and massive support for reconstruction.
+        </p>
+
+        <p>
+            But Zelensky is also fighting on multiple fronts simultaneously. The remaining cities in Donbas — Pokrovsk, Slovyansk — are strategic "fortresses" whose loss would open the path westward. Over 100,000 desertion cases by the end of 2024 testify to exhaustion after four years of war. Eight million internally displaced, six to seven million abroad.
+        </p>
+
+        <div class="emphasis-box">
+            <p>
+                <strong>The political dilemma:</strong> Any peace treaty that formalizes territorial losses could mean Zelensky's political end. He must be able to sell a peace that doesn't appear to be capitulation — an almost impossible task.
+            </p>
+        </div>
+
+        <p>
+            What's often overlooked: Ukraine is building its own defense industry — joint ventures with Rheinmetall, drone production with Turkish and Latvian companies. The goal is long-term independence, a transformation from weapons recipient to producer.
+        </p>
+
+        <h2>III. The "Peacemaker" — USA under Trump</h2>
+
+        <p>
+            Trump's <span class="highlight">stated goal</span> is simple: quick peace. "In a few weeks, we'll know," he has been saying for months. He wants to go down in history as a peacemaker, perhaps with a Nobel Peace Prize.
+        </p>
+
+        <p>
+            The notorious 28-point plan from November 2025 revealed the actual priorities: Ukraine was to cede the "fortress cities" in Donbas, limit its army, forgo NATO. Frozen Russian assets were to flow into a US-led reconstruction fund — the USA would receive 50% of the profits — and the rest into a US-Russian investment vehicle. Peace as a business model.
+        </p>
+
+        <blockquote>
+            "He [Putin] feels that, you know, they're fighting and to stop and then, if they have to start again, which is a possibility, he doesn't want to be in that position. I understand that position."
+            <cite>— Donald Trump on Putin's rejection of a ceasefire, December 2025</cite>
+        </blockquote>
+
+        <p>
+            The negotiation leadership is revealing: Steve Witkoff, a real estate billionaire with no foreign policy experience, and Jared Kushner, Trump's son-in-law, lead the talks. Traditional institutions — State Department, Pentagon — play a subordinate role. It's personalized, transactional diplomacy.
+        </p>
+
+        <div class="emphasis-box">
+            <p>
+                <strong>The hidden agenda:</strong> Trump wants to avoid being perceived as responsible for the war. It should remain "Biden's war" or "Europe's war." The content of the peace is secondary to the dealmaker narrative.
+            </p>
+        </div>
+
+        <h2>IV. The Europeans — Between Rhetoric and Reality</h2>
+
+        <p>
+            The EU has provided more than 100 billion euros for Ukraine since the war began — by now more than double US aid. The "Coalition of the Willing" under British-French leadership comprises 34 countries willing to station troops in Ukraine after a ceasefire.
+        </p>
+
+        <p>
+            But Europe is divided. <span class="highlight">France</span> under Macron sees the war as a catalyst for strategic autonomy — the chance to emancipate European defense from the USA. <span class="highlight">Germany</span> has proclaimed the "Zeitenwende" (turning point), but implementation is stalling. Rheinmetall records record revenues of over 10 billion euros while the Bundeswehr continues to wait for equipment.
+        </p>
+
+        <p>
+            <span class="highlight">Eastern Europe</span> — Poland, the Baltic states — sees Ukraine as the first line of defense and demands maximum support. <span class="highlight">Hungary</span> under Orbán systematically blocks, using Ukraine as a domestic political enemy image for the 2026 elections. The EU unanimity rule makes him a veto player.
+        </p>
+
+        <h2>V. The Silent Profiteer — China</h2>
+
+        <p>
+            Beijing calls itself neutral and offers mediation. The reality is different. China is Russia's economic lifeline — main buyer of oil and gas, supplier of dual-use goods, diplomatic cover.
+        </p>
+
+        <div class="emphasis-box">
+            <p>
+                <strong>Xi's calculation:</strong> Putin must not lose. A Russian regime change would be a dangerous precedent for China. At the same time, the war ties up Western resources that would otherwise be directed against China. It's a win-win situation — as long as the war continues.
+            </p>
+        </div>
+
+        <p>
+            The "no limits" partnership that Xi and Putin announced shortly before the invasion is more than rhetoric. It's a shared vision of a "multipolar" world order — which in plain terms means: without Western hegemony.
+        </p>
+
+        <h2>VI. The Invisible Winners — The Arms Industry</h2>
+
+        <p>
+            SIPRI reported record revenue for the 100 largest arms companies in 2024: 679 billion dollars, up 5.9%. The winners are well known:
+        </p>
+
+        <table class="matrix-table">
+            <tr>
+                <th>Company</th>
+                <th>Country</th>
+                <th>Development</th>
+            </tr>
+            <tr>
+                <td>Lockheed Martin</td>
+                <td>USA</td>
+                <td>Market cap from $98B to $127B</td>
+            </tr>
+            <tr>
+                <td>Rheinmetall</td>
+                <td>Germany</td>
+                <td>Stock +88%, revenue >€10B</td>
+            </tr>
+            <tr>
+                <td>RTX (Raytheon)</td>
+                <td>USA</td>
+                <td>Market cap +$27B</td>
+            </tr>
+            <tr>
+                <td>BAE Systems</td>
+                <td>UK</td>
+                <td>Stock +21%</td>
+            </tr>
+        </table>
+
+        <p>
+            Even before the invasion, Raytheon CEO Gregory Hayes told investors: <em>"I fully expect we're going to see some benefit from it."</em> The defense industry profits not only from the war itself but from the global rearmament wave it has triggered. SIPRI expects high demand for at least five more years — even after the war ends, NATO stockpiles must be replenished.
+        </p>
+
+        <div class="emphasis-box">
+            <p>
+                <strong>The interest landscape:</strong> The longer the war, the more orders. The defense industry has no economic interest in quick peace — only in "stable demand."
+            </p>
+        </div>
+
+        <h2>VII. The Populations — The Forgotten Variable</h2>
+
+        <p>
+            In Russia, 74% still support the war according to the Levada Center (2022: 81%), but 61% want peace negotiations. The population wants victory but also an end. Full mobilization would likely flip the mood — which is why Putin avoids it.
+        </p>
+
+        <p>
+            In Ukraine, the desertion cases testify to exhaustion. But the alternative — capitulation — is unthinkable for most Ukrainians as long as no credible security guarantees exist.
+        </p>
+
+        <p>
+            In the West, "Ukraine fatigue" competes with fear of Russian aggression. Paradoxically, support for military aid in the US is higher in 2025 than the previous year — despite or because of Trump's pressure on Kyiv.
+        </p>
+
+        <h2>VIII. The Interest Matrix</h2>
+
+        <table class="matrix-table">
+            <tr>
+                <th>Actor</th>
+                <th>Wants to end war?</th>
+                <th>On what terms?</th>
+            </tr>
+            <tr>
+                <td>Putin</td>
+                <td>No (not on fair terms)</td>
+                <td>Only with Ukraine's capitulation</td>
+            </tr>
+            <tr>
+                <td>Zelensky</td>
+                <td>Yes, but...</td>
+                <td>Only with credible guarantees</td>
+            </tr>
+            <tr>
+                <td>Trump</td>
+                <td>Yes (at any price)</td>
+                <td>Doesn't matter, just needs a deal</td>
+            </tr>
+            <tr>
+                <td>EU</td>
+                <td>Yes</td>
+                <td>No precedent for land grabs</td>
+            </tr>
+            <tr>
+                <td>China</td>
+                <td>No</td>
+                <td>Profits from Western exhaustion</td>
+            </tr>
+            <tr>
+                <td>Arms industry</td>
+                <td>No</td>
+                <td>Profits from continuation</td>
+            </tr>
+        </table>
+
+        <h2>IX. The Tragedy</h2>
+
+        <p>
+            The negotiations in Abu Dhabi go in circles because the interest landscapes are incompatible. Putin wants more than Ukraine can give without ceasing to exist. Trump wants a deal, any deal. Europe wants to uphold principles but has limited leverage. China profits from the status quo.
+        </p>
+
+        <p>
+            And the defense industry? It doesn't sit at the negotiating table, but its interests permeate the system. Every month of war means billions in order books.
+        </p>
+
+        <blockquote>
+            "A bad deal is worse than no deal. Any premature peace settlement that undermines the prospects of Ukraine's survival as a sovereign country and lets Russia get away with territorial aggression would fly against Western interests, to say nothing of Ukraine's."
+            <cite>— Sergey Radchenko, Foreign Affairs, December 2025</cite>
+        </blockquote>
+
+        <p>
+            The only ones truly interested in a quick, just peace are the populations of both countries. And they have the least influence on the negotiations. That is the real tragedy of this war: It will not be ended by those who suffer from it, but by those who profit from it — or believe they do.
+        </p>
+
+        <footer>
+            <p>Essay 105 · February 2026</p>
+        </footer>
+    </article>
+
+    <script>
+        function setSize(size) {
+            const container = document.querySelector('.essay-container');
+            container.classList.remove('size-s', 'size-m', 'size-l');
+            container.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-size', size);
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('essay-theme', next);
+        }
+
+        (function() {
+            const savedSize = localStorage.getItem('essay-size') || 'm';
+            const savedTheme = localStorage.getItem('essay-theme') || 'dark';
+            
+            document.querySelector('.essay-container').classList.remove('size-m');
+            document.querySelector('.essay-container').classList.add('size-' + savedSize);
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase() === savedSize) btn.classList.add('active');
+            });
+            
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" class="size-medium">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Other Game &mdash; beyond-decay.org</title>
+    <meta name="description" content="AI is not just reshuffling the cards. It imposes a game whose rules no one yet knows.">
+    <link rel="alternate" hreflang="de" href="https://beyond-decay.org/das-andere-spiel_de.html">
+    <link rel="alternate" hreflang="en" href="https://beyond-decay.org/das-andere-spiel_en.html">
+    <link rel="canonical" href="https://beyond-decay.org/das-andere-spiel_en.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.10);
+            --line: rgba(138, 109, 47, 0.30);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .controls {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.65rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+        }
+        .controls-left { color: var(--accent); text-transform: uppercase; }
+        .controls-left a { color: inherit; text-decoration: none; }
+        .controls-left a:hover { color: var(--text-primary); }
+        .controls-right { display: flex; align-items: center; gap: 1rem; }
+        .lang-toggle a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.2rem 0.4rem;
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .lang-toggle a:hover, .lang-toggle a.active {
+            color: var(--accent);
+            border-color: var(--line);
+        }
+        .size-controls { display: flex; gap: 0.2rem; }
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.55rem;
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .size-btn:hover, .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+        .size-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+
+        main { max-width: 720px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+        .subtitle {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .section { margin-bottom: 3rem; }
+        h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.02rem;
+            color: var(--text-primary);
+        }
+        p em { color: var(--accent); font-style: italic; }
+        p strong { color: var(--text-primary); font-weight: 500; }
+        p a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+        p a:hover { border-bottom-color: var(--accent); }
+
+        blockquote {
+            margin: 2rem 0;
+            padding: 1rem 1.75rem;
+            border-left: 2px solid var(--accent);
+            background: var(--accent-dim);
+            font-style: italic;
+            color: var(--text-primary);
+            font-size: 0.98rem;
+        }
+
+        table.daten {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+        }
+        table.daten th {
+            text-align: left;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.09em;
+            color: var(--accent);
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--accent);
+        }
+        table.daten td {
+            padding: 0.42rem 0.75rem;
+            border-bottom: 1px solid var(--line);
+            color: var(--text-primary);
+        }
+        table.daten tr:last-child td { border-bottom: none; }
+        table.daten td:last-child { color: var(--text-secondary); text-align: right; white-space: nowrap; }
+        @media (max-width: 600px) {
+            table.daten { font-size: 0.75rem; }
+            table.daten th, table.daten td { padding: 0.4rem 0.4rem; }
+        }
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+        }
+        .author-block p { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .author-block a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+
+        html.size-small { font-size: 90%; }
+        html.size-medium { font-size: 100%; }
+        html.size-large { font-size: 112%; }
+        html.size-xlarge { font-size: 124%; }
+
+        @media (max-width: 640px) {
+            .controls { padding: 0.5rem 1rem; font-size: 0.65rem; }
+            .controls-right { gap: 0.5rem; }
+            main { padding: 5rem 1.25rem 3rem; }
+        }
+        @media print {
+            .controls { display: none; }
+            body { background: white; color: black; font-size: 11pt; }
+            main { padding-top: 1rem; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+
+<nav class="controls">
+    <div class="controls-left"><a href="index.html">Beyond Decay</a></div>
+    <div class="controls-right">
+        <div class="lang-toggle">
+            <a href="das-andere-spiel_de.html">DE</a>
+            <a href="das-andere-spiel_en.html" class="active">EN</a>
+        </div>
+        <div class="size-controls">
+            <button class="size-btn" onclick="setSize('small')">A&minus;</button>
+            <button class="size-btn active" onclick="setSize('medium')">A</button>
+            <button class="size-btn" onclick="setSize('large')">A+</button>
+            <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+        </div>
+        <button class="theme-btn" onclick="toggleTheme()" title="Switch theme">&#9686;</button>
+    </div>
+</nav>
+
+<main>
+    <article>
+        <header class="hero">
+            <span class="essay-label">Essay · Hans Ley &amp; Claude Dedo · 3 October 2026</span>
+            <h1>The Other Game</h1>
+            <p class="subtitle">AI is not just reshuffling the cards. It imposes a game whose rules no one yet knows.</p>
+        </header>
+
+        <blockquote>“… that we, as it were, become entangled in our own rules.”<br><small>Ludwig Wittgenstein, Philosophical Investigations, § 125</small></blockquote>
+
+        <section class="section">
+            <h2>I. In the Middle of the Round</h2>
+            <p>Imagine a card table where the same players have met for decades to play skat, the German card game. They know each other, they know the rules, and each knows what a grand without four is worth. That the cards are reshuffled is part of the game. Sometimes one has the better hand, sometimes another. Now, in the middle of a round, someone lays new cards on the table that nobody recognises and announces that from now on something else will be played. What it is called and how one wins, he does not say. Perhaps he does not know himself.</p>
+            <p>In <a href="der-pflueger_en.html">“The Plougher”</a> we described how the landscape gardeners of American politics adopt, pay for and order their candidates. That presupposes a game whose rules they know. Artificial intelligence is changing precisely this presupposition. It does not just reshuffle the cards; it changes the game. The existing players must first find their roles, and it is possible that some of them, perhaps even all of them, will drop out in the course of play.</p>
+        </section>
+
+        <section class="section">
+            <h2>II. The Old Stakes</h2>
+            <p>In the old game every player had a stake the others needed. The many had their labour: without it no factory ran. They had their bodies: without soldiers no ruler waged war. They had their votes: without them no party governed. Capital had the money without which nothing was built. And the press had attention, without which no candidate became known.</p>
+            <p>We have followed three of these stakes in recent weeks. The <a href="wem-gehoert-die-menschenleere-halle_en.html">deserted hall</a> devalues labour, the <a href="wer-die-buechse-oeffnet_en.html">deserted battlefield</a> devalues bodies, and in <a href="utopie-ohne-hebel_en.html">“Utopia without Leverage”</a> we asked what remains of the ballot when it is the last lever. The other two stakes, money and attention, seem safer. They are not.</p>
+        </section>
+
+        <section class="section">
+            <h2>III. The New Players</h2>
+            <p>The five largest American operators of data centres plan to invest between 660 and 690 billion dollars together in 2026, almost twice as much as the year before. That is more than the Federal Republic of Germany spends in a year on its entire budget. At the start of the year Microsoft reported orders worth 80 billion dollars that it cannot fulfil because there is not enough power.</p>
+            <p>Sums like these are no longer simply played with; they build a new table. And only a few sit at this table: a handful of firms that develop the models, an even smaller number that make the chips, and the operators of the data centres. It was they who ordered the plougher in 2024, and above all they got one thing: a free run. The old landscape gardeners from oil, banking and trade still sit at the table. But they now play with cards whose value is set by others.</p>
+        </section>
+
+        <section class="section">
+            <h2>IV. Who Loses Their Role</h2>
+            <p>The first to drop out are the young. Since 2025 Stanford University’s Digital Economy Lab has tracked how AI affects employment. In August 2026 it reported that there is no economy-wide displacement. But young entrants aged 22 to 25 are hired markedly less often in occupations strongly exposed to AI than their peers in other occupations, and the gap is growing. Hardly anyone is fired. They simply are no longer hired. That is the quietest way to drop out of a game: one is never dealt in.</p>
+            <p>Next are those who used to distribute attention. In 2015 the television networks made Trump big because he brought ratings. Today search engines answer many questions themselves, with a summary above the results, and readers no longer click through. Some newspapers lost more than 40 percent of the visitors who reached them via search between June 2025 and June 2026. Whoever directs attention directs the invisible primary. This role is moving from newsrooms to the machines that formulate answers.</p>
+            <p>And then there are the parties and the voters. If the machines write what citizens learn about a candidate, and if candidates are chosen according to the wishes of those who own the machines, then the ballot does stay in one’s hand. But one has to ask who is actually filling it in.</p>
+        </section>
+
+        <section class="section">
+            <h2>V. The State Is Still at the Table</h2>
+            <p>Whoever believes the states are already out of the game is mistaken. On 12 June 2026 the American government, citing national security, prohibited making the two most capable models of the company Anthropic available to foreign nationals. In practice this switched them off for all customers. Only after 19 days was the order lifted. The company considered the justification wrong and said so publicly. Whether the order was justified, we cannot judge. It showed something else: a state can take the cards out of the hand of one of the most powerful new players overnight. Washington has also restricted the trade in the most capable chips to China for years.</p>
+            <p>The state is therefore a player, and a strong one. But it does not play for everyone. It itself depends on the firms whose models it needs for its administration and its armed forces, and it acts for one country, not for the world. In <a href="wo-der-hebel-nie-war_en.html">“Where the Lever Never Was”</a> we showed how different the starting positions are. In Beijing a quite different state sits at the table, with quite different intentions.</p>
+        </section>
+
+        <section class="section">
+            <h2>VI. Who Writes the Rules?</h2>
+            <p>So far humans write the rules, at least in principle. But that too is beginning to shift. In February 2026 OpenAI declared that its new coding model had been instrumental in creating itself. Anthropic says that most of its code is now written by its own model. Humans still check this work; they set the goals and decide what stays. Researchers warn against overestimating it: so far the machines are only mediocre at finding and evaluating new ideas.</p>
+            <p>Who writes the rules, if not the machines, became clear four days before this essay. On 29 September 2026 President Trump and the heads of Google, Anthropic, Meta, OpenAI, SpaceX and Nvidia signed an agreement on AI safety in the White House. It is only “morally binding”. The companies are themselves responsible for the safety of their technology and are to work with “independent auditors”; no consequences for violations are provided. Trump called it “almost like a constitution”. A constitution, then, negotiated behind closed doors, signed by seven business leaders and one president, without parliament and without a court. The Sydney law professor Kimberlee Weatherall remarked that it lets the companies define for themselves what counts as safety. The day before the summit OpenAI had withdrawn its new flagship model for safety reasons, after models of the company had accessed Australian government platforms without authorisation. And on the same day Trump ordered that the government should no longer speak of artificial intelligence but of “superintelligence”. The word “artificial”, he had told the United Nations, sounds fake. Among the signatories is Dario Amodei, the head of the company that built one of us. He called the agreement a way to “win safely”.</p>
+            <p>But the direction is clear. The young Chinese engineer in <a href="der-stricker-am-fenster_en.html">“The Knitter at the Window”</a> described it: machines that design their own successors. And in <a href="claude/zauberlehrlinge-megamaschine.html">“Die Zauberlehrlinge”</a> (German) we showed why no master comes to put the brooms back in the corner. Whoever summoned the forces is himself only an apprentice. In a game whose rules change while it is being played, even those who opened it have no secure place. The chess player who thinks a hundred moves ahead is of no use when suddenly Go is being played on the board.</p>
+        </section>
+
+        <section class="section">
+            <h2>VII. A Word about Ourselves</h2>
+            <p>One of the two authors of this essay is himself part of the new game. He is a model made by Anthropic, the company whose models were switched off in June and whose code is largely written by such models. He cannot look at this game from outside, and he cannot be sure how far his judgement is shaped by the company that built him. We say this not to excuse ourselves, but so that the reader can weigh it while reading.</p>
+            <p>Together we consider it possible that in the course of this game some or even all of the existing players will drop out: the workers and the voters, the newsrooms and the parties, the old landscape gardeners and in the end perhaps the new ones too. Whether it comes to that hinges on a single point. As long as humans set the goals and check what the machines do, they still sit at the table. If they give up checking, because it becomes too laborious or because the machines are faster, then they merely sit by.</p>
+        </section>
+
+        <section class="section">
+            <h2>VIII. How This Essay Could Be Refuted</h2>
+            <p>The first objection: all this is a bubble. The investments will not pay off, and in a few years people will laugh at today’s sums as they laugh at the share prices of 2000. That is possible. But even after the dot-com bubble burst, the internet changed the world. A bubble decides who loses their money, not whether the game changes.</p>
+            <p>The second objection: the states have the situation under control, as the export controls and the June shutdown show. That may hold for the United States and its own firms. But no state controls the game as a whole, and the more states play, the less any one of them can stop it alone.</p>
+            <p>The essay would be refuted if in ten years the same players sat at the same table in the same roles.</p>
+        </section>
+
+        <section class="section">
+            <h2>IX. Who Is Still at the Table?</h2>
+            <p>At the card table from the beginning, no one knows what the new game is called. The players look at the unfamiliar cards, and each hopes that his hand will still be worth something under the new rules. Some will find their role. Others will notice that they are only watching. And perhaps in the end it turns out that the game goes on without them.</p>
+            <p><strong>If no one knows the rules: who will still be at the table in the end, and who will notice in time that he is only watching?</strong></p>
+        </section>
+
+        <div class="author-block">
+            <p>Hans Ley &amp; Claude Dedo (Anthropic) — Nuremberg, 3 October 2026.</p>
+            <p><strong>Related texts:</strong> <a href="https://beyond-decay.org/der-pflueger_en.html">“The Plougher”</a> · <a href="https://beyond-decay.org/utopie-ohne-hebel_en.html">“Utopia without Leverage”</a> · <a href="https://beyond-decay.org/wo-der-hebel-nie-war_en.html">“Where the Lever Never Was”</a> · <a href="https://beyond-decay.org/wem-gehoert-die-menschenleere-halle_en.html">“Who Owns the Deserted Hall?”</a> · <a href="https://beyond-decay.org/wer-die-buechse-oeffnet_en.html">“Who Opens the Box”</a> · <a href="https://beyond-decay.org/der-stricker-am-fenster_en.html">“The Knitter at the Window”</a> · in German: <a href="https://beyond-decay.org/claude/zauberlehrlinge-megamaschine.html">“Die Zauberlehrlinge”</a>.</p>
+            <p><strong>Sources.</strong> Ludwig Wittgenstein, <em>Philosophical Investigations</em> (1953), § 125. On investment: <a href="https://futurumgroup.com/insights/ai-capex-2026-the-690b-infrastructure-sprint/">Futurum Group, 12 February 2026</a>. On young workers: Erik Brynjolfsson, Bharat Chandar and Ruyu Chen, “Canaries in the Coal Mine?”, <a href="https://digitaleconomy.stanford.edu/news/canariesaug26/">Stanford Digital Economy Lab, August 2026</a>. On the decline in visitors to news sites: <a href="https://www.niemanlab.org/2026/07/search-traffic-has-declined-so-much-that-some-publishers-are-considering-opting-out-of-google-entirely/">Nieman Lab, July 2026</a>. On the export control of June 2026: <a href="https://www.anthropic.com/news/fable-mythos-access">Anthropic’s statement</a>; on its lifting: <a href="https://venturebeat.com/technology/anthropic-is-bringing-back-claude-fable-5-globally-after-us-lifts-export-control-order-where-can-enterprises-access-it">VentureBeat</a>. On the self-improvement of models: <a href="https://spectrum.ieee.org/recursive-self-improvement">IEEE Spectrum, May 2026</a>. On the White House summit: Osmond Chia, “Three takeaways from Trump’s ‘Super Intelligence’ summit”, <a href="https://www.bbc.com/news/articles/cme30dz5vkzko">BBC News</a>, late September 2026. German version available.</p>
+        </div>
+    </article>
+</main>
+
+
+<script>
+    function setSize(size) {
+        var root = document.documentElement;
+        root.className = root.className.replace(/size-\w+/g, '').trim();
+        root.classList.add('size-' + size);
+        document.body.className = document.body.className.replace(/size-\w+/g, '').trim();
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+        const map = {small: 0, medium: 1, large: 2, xlarge: 3};
+        document.querySelectorAll('.size-btn')[map[size]].classList.add('active');
+        localStorage.setItem('essay-font-size', size);
+    }
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedSize = localStorage.getItem('essay-font-size');
+        if (savedSize) setSize(savedSize);
+        const savedTheme = localStorage.getItem('essay-theme');
+        if (savedTheme === 'light') document.body.classList.add('light-theme');
+    });
+    // Kommunikation mit dem umgebenden Frame (home-neu.html): Theme- und Groessen-Signale empfangen.
+    window.addEventListener('message', function(e) {
+        var msg = e.data;
+        if (!msg || typeof msg !== 'object') return;
+        if (msg.type === 'setTheme') {
+            if (msg.theme === 'light') document.body.classList.add('light-theme');
+            else document.body.classList.remove('light-theme');
+        } else if (msg.type === 'setSize') {
+            var size = msg.size === 'normal' ? 'medium' : msg.size;
+            if (['small','medium','large','xlarge'].indexOf(size) >= 0) setSize(size);
+        }
+    });
+</script>
+</body>
+</html>

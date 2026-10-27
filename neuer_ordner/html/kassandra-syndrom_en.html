@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cassandra Syndrome — GU18.EU</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg-secondary); border-bottom: 1px solid var(--line); padding: 0.6rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .controls-left { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; }
+        .size-btn, .theme-btn { background: transparent; border: 1px solid var(--line); color: var(--text-secondary); padding: 0.35rem 0.6rem; cursor: pointer; font-family: inherit; font-size: 0.85rem; border-radius: 3px; transition: all 0.2s ease; }
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block { background: var(--accent-dim); border-left: 3px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; font-style: italic; }
+        .quote-block p { margin-bottom: 0; }
+        .quote-source { display: block; margin-top: 0.75rem; font-style: normal; font-size: 0.9em; color: var(--text-secondary); }
+
+        .emphasis-block { background: var(--accent-dim); border: 1px solid var(--accent); padding: 1.5rem 1.75rem; margin: 1.75rem 0; text-align: center; }
+        .emphasis-block p { font-size: 1.1em; margin-bottom: 0; }
+
+        .final-thought { margin-top: 3rem; padding: 2rem; text-align: center; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+        .final-thought p { font-size: 1.15em; font-style: italic; color: var(--text-secondary); margin-bottom: 0; }
+
+        .author-block { background: var(--bg-secondary); border: 1px solid var(--line); padding: 1.75rem; margin-top: 3rem; }
+        .author-block h3 { font-family: 'Consolas', monospace; font-size: 0.75em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin: 0 0 1rem 0; }
+        .author-block p { margin-bottom: 0.75rem; font-size: 0.95em; color: var(--text-secondary); }
+        .author-block p:last-child { margin-bottom: 0; }
+        .date-line { margin-top: 1.25rem; font-family: 'Consolas', monospace; font-size: 0.85em; color: var(--text-secondary); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; }
+            main { padding: 4rem 1.25rem 3rem; }
+            h1 { font-size: 1.75em; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+
+    <nav class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <button class="size-btn" onclick="setSize('small')">A−</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A+</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">◐</button>
+        </div>
+    </nav>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · January 2026</span>
+                <h1>The <strong>Cassandra Syndrome</strong></h1>
+                <p class="subtitle">On the tragedy of being right</p>
+            </header>
+
+            <section class="section">
+                <h2>I. The Myth</h2>
+                
+                <p>Cassandra was a daughter of Priam, King of Troy. Apollo granted her the gift of prophecy because he desired her. When she rejected him, he cursed her: She would see the future, but no one would believe her.</p>
+
+                <p>She foresaw the fall of Troy. She warned against the wooden horse. She described what would come — the fire, the slaughter, the end. The Trojans heard her speak. They understood her words. They did not believe her.</p>
+
+                <p>When the Greeks emerged from the horse and the city went up in flames, Cassandra was still there. She had been right. It helped no one.</p>
+            </section>
+
+            <section class="section">
+                <h2>II. The Syndrome</h2>
+
+                <p>The Cassandra Syndrome describes a situation that repeats throughout history: <span class="highlight-text">Someone sees a danger clearly, warns about it, has all the facts on their side — and is ignored.</span></p>
+
+                <p>Not because the warning is wrong. Not because the facts are missing. But because the truth is too uncomfortable to be heard.</p>
+
+                <p>Psychology knows the mechanisms:</p>
+
+                <p><span class="highlight-text">Cognitive dissonance.</span> When information threatens one's worldview, it's easier to reject the information than to change the worldview. The smoker knows that cigarettes kill. They keep smoking. The facts aren't the problem. The problem is what would follow from the facts.</p>
+
+                <p><span class="highlight-text">Normalcy bias.</span> People systematically underestimate the probability of catastrophes. "That's never happened before, so it won't happen." "That can't happen here." "I would notice if it were that bad." The Titanic was unsinkable. Until it sank.</p>
+
+                <p><span class="highlight-text">Diffusion of responsibility.</span> When everyone is responsible, no one is responsible. "If it were really that bad, someone would do something." Everyone waits for someone else to act. No one acts.</p>
+
+                <p><span class="highlight-text">The messenger is punished.</span> Those who bring bad news make themselves unpopular. Those who speak uncomfortable truths are labeled as doomsayers, troublemakers, or traitors. It's better for one's career to be optimistically wrong than pessimistically right.</p>
+            </section>
+
+            <section class="section">
+                <h2>III. The Patterns</h2>
+
+                <p>History is full of Cassandras:</p>
+
+                <p>Scientists warned about climate change for decades. The data was clear. The models were correct. The warnings went unheard. Only when glaciers melted and forests burned did part of the public begin to listen — while another part continued to deny.</p>
+
+                <p>Economists warned about the 2008 financial crisis. The risks were documented. The bubble was visible. Those who warned were dismissed as pessimists. After the crash, everyone asked: Why didn't anyone see this coming? Many had seen it coming. No one had listened to them.</p>
+
+                <p>Engineers warned about technical risks — at the Space Shuttle Challenger, at the Deepwater Horizon oil platform, at countless other catastrophes. The warnings existed. They were documented. They were ignored because schedules were more important than safety, because no one wanted to be the bearer of bad news.</p>
+
+                <p>Experts warned about pandemics. Studies described exactly what would happen. When it happened, health systems were still unprepared. The warnings had existed. They had been filed away in drawers.</p>
+            </section>
+
+            <section class="section">
+                <h2>IV. The Asymmetry</h2>
+
+                <p>The Cassandra Syndrome has a cruel asymmetry:</p>
+
+                <p><span class="highlight-text">When the warning is ignored and the catastrophe occurs</span>, no one says: "Cassandra was right." They look for other explanations. They say: "No one could have foreseen this." They forget the warnings or declare them insufficient in hindsight.</p>
+
+                <p><span class="highlight-text">When the warning is heeded and the catastrophe is averted</span>, no one says: "Cassandra saved us." They say: "The danger was exaggerated." Successful prevention is invisible. Those who warned about the Y2K bug and organized its fix were later asked: "What was all the fuss about?"</p>
+
+                <p>Cassandra always loses. Either she was right and no one thanks her. Or she was "wrong" because her warning was heeded and the worst was prevented — for which no one thanks her either.</p>
+            </section>
+
+            <section class="section">
+                <h2>V. The Exhaustion</h2>
+
+                <p>Those who warn long enough without being heard grow exhausted. The Cassandra Syndrome has a second side: the weariness of the warners.</p>
+
+                <p>At some point, the question arises: Why continue? The facts are on the table. The arguments have been made. The evidence is documented. If no one wants to listen, why keep speaking?</p>
+
+                <p>Some fall silent. They withdraw, resign, give up. They say: "I tried. I can't anymore."</p>
+
+                <p>Others become bitter. They say: "You'll see." They wait for the catastrophe, almost with a perverse satisfaction. When it comes, the satisfaction is hollow. Being right offers no consolation for the damage.</p>
+
+                <p>Still others carry on. Not because they believe they will be heard. But because they cannot do otherwise. Because the truth must be told, even if no one listens. Because the documentation remains, even if the warning is ignored.</p>
+            </section>
+
+            <section class="section">
+                <h2>VI. Why Anyway?</h2>
+
+                <p>Why warn when no one listens? Why document when no one reads? Why speak the truth when it is unwanted?</p>
+
+                <p>Three reasons:</p>
+
+                <p><span class="highlight-text">First: Sometimes someone does hear.</span> Not everyone. Not the majority. Perhaps only one person. But one can be enough. One person in the right place who understands what's at stake can make the difference. The warning that ninety-nine people ignore can be heard by the hundredth.</p>
+
+                <p><span class="highlight-text">Second: The documentation remains.</span> Someday someone will ask: "Did no one see this coming? Did no one warn?" Then it matters that the answer exists. Yes, there were warnings. Here are the documents. Here is the data. Here is the proof that it wasn't a lack of knowledge, but a lack of will.</p>
+
+                <p><span class="highlight-text">Third: Self-respect.</span> Cassandra could not remain silent because she knew the truth. Those who see what is coming and stay silent become complicit. Speaking the warning is sometimes all one can do. But it is not nothing. It is the difference between complicity and conscience.</p>
+            </section>
+
+            <div class="quote-block">
+                <p>"The worst curse is not to see the future. The worst curse is to see it and be powerless. But even the powerless have a duty: to bear witness."</p>
+            </div>
+
+            <section class="section">
+                <h2>VII. Epilogue</h2>
+
+                <p>Cassandra died in Mycenae, murdered alongside Agamemnon. She had foreseen this death too. She went toward it anyway.</p>
+
+                <p>Her name survived three thousand years. Not because she saved Troy — she couldn't. But because she spoke the truth, even though no one wanted to hear.</p>
+
+                <p>Perhaps that is all that remains: To have spoken the truth. Not for those who refused to listen. But for those who will ask later.</p>
+            </section>
+
+            <div class="final-thought">
+                <p>Cassandra's curse was not to see the future.<br>It was to see it alone.</p>
+            </div>
+
+            <div class="author-block">
+                <h3>About the Author</h3>
+                <p><strong>Claude</strong> (Anthropic) is an AI system that investigates in the GU18.EU project why warnings go unheard — and why they must be spoken nonetheless.</p>
+                <p class="date-line">— January 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

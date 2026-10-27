@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>United Scum Bags — Eine unbequeme Archäologie</title>
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.1);
+            --line: rgba(138, 109, 47, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.85;
+            font-size: 18px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        body.size-small { font-size: 16px; }
+        body.size-medium { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        .controls {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .controls-left {
+            font-family: 'Consolas', 'SF Mono', 'Monaco', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        
+        .controls-right { display: flex; gap: 1.5rem; align-items: center; }
+        .size-controls { display: flex; gap: 0.3rem; align-items: center; }
+        .size-controls span { font-size: 0.75rem; color: var(--text-secondary); margin-right: 0.5rem; }
+        
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover, .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .size-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .theme-btn { font-size: 1.1rem; padding: 0.3rem 0.5rem; }
+
+        main { max-width: 750px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+        h1 { font-size: 2.2em; font-weight: 300; line-height: 1.25; margin-bottom: 1rem; }
+        h1 strong { font-weight: 600; color: var(--accent); }
+        .subtitle { font-size: 1.15em; font-weight: 300; color: var(--text-secondary); font-style: italic; }
+
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.8em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); }
+        .section p { margin-bottom: 1.25rem; font-weight: 300; }
+        .highlight-text { color: var(--accent); font-weight: 500; }
+
+        .quote-block {
+            background: var(--accent-dim);
+            border-left: 3px solid var(--accent);
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+            font-style: italic;
+        }
+        .quote-block p { margin-bottom: 0; }
+        .quote-block .source { margin-top: 0.75rem; font-size: 0.9rem; color: var(--text-secondary); font-style: normal; }
+
+        .highlight-box {
+            background: var(--accent-dim);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 1.75rem 0;
+            text-align: center;
+        }
+        .highlight-box p { margin: 0; font-style: italic; color: var(--accent); }
+
+        .section-break { text-align: center; margin: 2.5rem 0; color: var(--accent); letter-spacing: 0.5rem; }
+
+        .author-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--line);
+            padding: 1.75rem;
+            margin-top: 3rem;
+        }
+        .author-block h3 { font-family: 'Consolas', 'SF Mono', 'Monaco', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+        .author-block p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .author-block a { color: var(--accent); text-decoration: none; }
+        .author-block .date-line { margin-top: 1.25rem; color: var(--accent); text-align: center; }
+
+        @media (max-width: 600px) {
+            .controls { padding: 0.5rem 1rem; flex-direction: column; gap: 0.5rem; }
+            main { padding: 6rem 1.25rem 3rem; }
+            h1 { font-size: 1.8em; }
+        }
+
+        @media print { .controls { display: none; } main { padding-top: 1rem; } body { font-size: 11pt; background: white; color: black; } }
+    </style>
+</head>
+<body class="size-medium">
+    <div class="controls">
+        <div class="controls-left">GU18.EU</div>
+        <div class="controls-right">
+            <div class="size-controls">
+                <span>Text:</span>
+                <button class="size-btn" onclick="setSize('small')">A</button>
+                <button class="size-btn active" onclick="setSize('medium')">A</button>
+                <button class="size-btn" onclick="setSize('large')">A</button>
+                <button class="size-btn" onclick="setSize('xlarge')">A</button>
+            </div>
+            <button class="theme-btn" onclick="toggleTheme()">◐</button>
+        </div>
+    </div>
+
+    <main>
+        <article>
+            <header class="hero">
+                <span class="essay-label">Essay · Januar 2026</span>
+                <h1>United <strong>Scum Bags</strong></h1>
+                <p class="subtitle">Eine unbequeme Archäologie</p>
+            </header>
+
+            <div class="section">
+                <p>Im vorherigen Essay haben wir gefragt, ob Trump ein Betriebsunfall der amerikanischen Geschichte ist. Die Antwort war: Nein. Er ist ein Symptom.</p>
+                <p>Aber diese Antwort wirft eine weitere Frage auf: Ein Symptom wovon genau? Einer Krankheit, die irgendwann in den letzten Jahrzehnten ausgebrochen ist? Oder einer Krankheit, die schon immer da war — nur besser versteckt?</p>
+                <p>Was, wenn Trump nicht die Ausnahme ist, sondern die Regel? Was, wenn Amerika nicht von seinem Gründungsmythos abgefallen ist, sondern ihm endlich gerecht wird?</p>
+                <p>Die Frage klingt zynisch. Vielleicht ist sie es auch. Aber sie verdient eine ehrliche Antwort.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>Die Gründer</h2>
+                <p>Beginnen wir am Anfang. Wer kam nach Amerika?</p>
+                <p>Der amerikanische Gründungsmythos erzählt von den Pilgervätern — frommen Menschen, die vor religiöser Verfolgung flohen, um in der Neuen Welt ein gottgefälliges Leben zu führen. Das ist nicht falsch. Es ist nur nicht die ganze Wahrheit.</p>
+                <p>Die Pilgerväter waren religiöse Extremisten. Sie flohen nicht nur vor Verfolgung — sie suchten einen Ort, an dem sie ihre Religion allen anderen vorschreiben konnten. Ihre Glaubensverwandten in England, die Puritaner, schlossen später die Theater, verboten das Weihnachtsfest, betrachteten die Freude selbst als Sünde. Die Pilgerväter kamen nach Amerika, um eine Theokratie zu errichten.</p>
+                <p>Und sie waren die Frommen.</p>
+                <p>Neben ihnen kamen andere: Glücksritter, Abenteurer, Gescheiterte. Menschen, die in Europa keine Zukunft hatten — nicht weil Europa sie verfolgte, sondern weil Europa sie nicht wollte. Schuldner, Kleinkriminelle, Desperados. Die Virginia Company warb mit dem Versprechen von schnellem Reichtum, und wer darauf hereinfiel, war selten der solideste Bürger.</p>
+                <p>Später kamen die Deportierten. Zwischen 1718 und 1775 schickte England etwa 50.000 Sträflinge nach Amerika — ein Viertel aller Einwanderer in diesem Zeitraum. Australien war noch nicht verfügbar.</p>
+                <p>Das ist die Gründungsgeneration: religiöse Fanatiker, Glücksritter und Strafgefangene. <span class="highlight-text">United Scum Bags</span> wäre nicht ganz fair. Aber ganz falsch wäre es auch nicht.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>Die Gründerväter</h2>
+                <p>Ein Jahrhundert später: Die Amerikanische Revolution. Die Gründerväter. Jefferson, Washington, Franklin, Madison. Die Verfassung. Die Unabhängigkeitserklärung. „All men are created equal."</p>
+                <p>Die Rhetorik ist erhaben. Die Realität ist weniger erhaben.</p>
+                <p>Thomas Jefferson, der „all men are created equal" schrieb, besaß über 600 Sklaven im Laufe seines Lebens. Er hatte Kinder mit einer seiner Sklavinnen, Sally Hemings — die selbst seine Halbschwägerin war, die Halbschwester seiner verstorbenen Frau. Er befreite seine Kinder erst spät und halbherzig — zwei ließ er gehen, zwei per Testament frei. Er befreite Sally nicht. Er brauchte das Geld.</p>
+                <p>George Washington, der Vater der Nation, hielt bei seinem Tod 317 Menschen auf Mount Vernon versklavt — 123 davon sein persönliches Eigentum. Als einer seiner Sklaven, Oney Judge, floh, setzte Washington alles daran, sie zurückzuholen — auch als Präsident, auch mit Hilfe des Staatsapparats.</p>
+                <p>Die Verfassung, dieses heilige Dokument, zählte Sklaven als drei Fünftel eines Menschen — nicht um sie anzuerkennen, sondern um den Sklavenhalterstaaten mehr Macht im Kongress zu geben.</p>
+                <p>Die Gründerväter waren keine Heuchler im einfachen Sinne. Sie wussten, was sie taten. Sie wussten, dass Sklaverei mit ihren Idealen unvereinbar war. Sie taten es trotzdem. Sie wählten Macht und Wohlstand über Prinzipien.</p>
+                <p>Das ist die Gründung der Republik: hohe Worte, niedere Taten. Von Anfang an.</p>
+            </div>
+
+            <div class="quote-block">
+                <p>„I tremble for my country when I reflect that God is just."</p>
+                <div class="source">— Thomas Jefferson, über die Sklaverei, 1781</div>
+            </div>
+
+            <div class="section">
+                <h2>Die Expansion</h2>
+                <p>Nach der Gründung: die Expansion. Manifest Destiny. Die gottgegebene Bestimmung, den Kontinent zu erobern.</p>
+                <p>Was das bedeutete: Genozid.</p>
+                <p>Die Ureinwohner Amerikas — Millionen Menschen, Hunderte von Nationen, Jahrtausende von Kultur — wurden systematisch vernichtet. Nicht durch Krankheiten allein, obwohl diese ihren Teil beitrugen. Durch bewusste Politik. Durch Kriege, Verträge, die gebrochen wurden, Deportationen, Massaker.</p>
+                <p>Der „Trail of Tears" — die Vertreibung der Cherokee, Choctaw, Chickasaw, Creek und Seminole in den 1830er Jahren — tötete etwa 15.000 Menschen. Andrew Jackson, der Präsident, der dies anordnete, ist heute auf dem 20-Dollar-Schein.</p>
+                <p>Das Massaker von Wounded Knee 1890 — zwischen 250 und 300 Lakota, überwiegend Frauen und Kinder, ermordet von der US-Armee. Zwanzig Soldaten erhielten die Medal of Honor dafür.</p>
+                <p>Bis heute leben die Überlebenden in Reservaten — den ärmsten Gebieten der USA, mit den höchsten Raten von Armut, Alkoholismus, Suizid. Das ist kein Zufall. Das ist das Ergebnis.</p>
+                <p>Der amerikanische Westen wurde nicht „erschlossen". Er wurde erobert. Mit Gewalt, mit Lügen, mit Völkermord.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>Das amerikanische Jahrhundert</h2>
+                <p>Das 20. Jahrhundert — das „amerikanische Jahrhundert". Die USA als Befreier Europas, als Arsenal der Demokratie, als Leuchtturm der Freiheit.</p>
+                <p>Auch hier: Die Rhetorik ist nicht falsch. Sie ist nur nicht vollständig.</p>
+                <p>Die USA traten 1917 in den Ersten Weltkrieg ein — nicht aus Idealismus, sondern weil Deutschland den uneingeschränkten U-Boot-Krieg wieder aufnahm und amerikanische Handelsschiffe versenkte. Woodrow Wilson, der Präsident, der den Völkerbund gründen wollte, war ein glühender Rassist, der die Rassentrennung im Bundesdienst wieder einführte.</p>
+                <p>Die USA traten 1941 in den Zweiten Weltkrieg ein — nicht um die Juden zu retten, sondern weil Japan Pearl Harbor angriff. Die Alliierten wussten von den Vernichtungslagern, bombardierten aber nie die Eisenbahnlinien nach Auschwitz. Nach dem Krieg nahmen die USA Tausende von Nazi-Wissenschaftlern auf — Operation Paperclip — während jüdische Flüchtlinge abgewiesen wurden.</p>
+                <p>Der Kalte Krieg — die Verteidigung der „freien Welt" — bedeutete in der Praxis: Putsche gegen demokratisch gewählte Regierungen (Iran 1953, Guatemala 1954, Chile 1973), Unterstützung brutaler Diktatoren (Pinochet, Mobutu, Marcos, die Saudis), Kriege gegen Bauern (Vietnam, Laos, Kambodscha — Millionen Tote).</p>
+                <p>Die Bilanz des amerikanischen Jahrhunderts ist nicht schwarz-weiß. Die USA haben auch Gutes getan. Aber die Vorstellung, Amerika sei die Kraft des Guten in der Welt, ist eine Halbwahrheit, die zur Lüge wird, wenn man den Rest verschweigt.</p>
+            </div>
+
+            <div class="highlight-box">
+                <p>Jede Nation hat ihre Mythen. Amerika hat sie nur lauter.</p>
+            </div>
+
+            <div class="section">
+                <h2>Die Kontinuität</h2>
+                <p>Was hat das mit Trump zu tun?</p>
+                <p>Alles.</p>
+                <p>Trump ist nicht der Bruch mit der amerikanischen Tradition. Er ist ihre Fortsetzung.</p>
+                <p>Die Lügen? Jefferson log über seine Sklaven. Washingtons Zähne? Nicht aus Holz, wie die Legende lügt — 1784 zahlte er Versklavten Geld für neun Zähne, bestimmt für seinen Zahnarzt. McKinley log über die Maine. LBJ log über den Golf von Tonkin. Nixon log über alles. Reagan log über Iran-Contra. Bush log über Massenvernichtungswaffen. Lügen sind keine Trumpsche Innovation. Sie sind amerikanische Tradition.</p>
+                <p>Der Rassismus? Amerika wurde auf Sklaverei gebaut, durch Genozid erweitert, durch Jim Crow stabilisiert. Die Bürgerrechtsbewegung war vor sechzig Jahren — ein Wimpernschlag in der Geschichte. Die Strukturen, die sie bekämpfte, existieren weiter: in Polizeigewalt, in Gefängnisraten, in Wohnungssegregation, in Bildungsungleichheit. Trump hat den Rassismus nicht erfunden. Er hat ihn nur wieder salonfähig gemacht.</p>
+                <p>Die Brutalität? Amerika führt seit seiner Gründung Krieg — gegen Ureinwohner, gegen Mexiko, gegen Spanien, gegen die Philippinen, gegen Deutschland (zweimal), gegen Korea, gegen Vietnam, gegen den Irak (zweimal), gegen Afghanistan. Die Drohnenkriege, Guantanamo, Abu Ghraib, die CIA-Folterprogramme — das alles kam vor Trump. Trump hat nur laut gesagt, was andere leise taten.</p>
+                <p>Der Narzissmus? Amerika nennt sich „the greatest nation on Earth", „the shining city on the hill", „the indispensable nation". Kein anderes Land spricht so von sich selbst. Trump ist der perfekte Ausdruck dieses nationalen Narzissmus — „Make America Great Again" ist nur die persönliche Version von „American Exceptionalism".</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>Die andere Seite</h2>
+                <p>Ist das alles, was Amerika ist? Eine Geschichte von Verbrechen, Lügen und Heuchelei?</p>
+                <p>Nein. Das wäre zu einfach.</p>
+                <p>Amerika ist auch die Unabhängigkeitserklärung — ein Dokument, dessen Ideale größer waren als die Menschen, die es schrieben. Amerika ist auch die Abschaffung der Sklaverei — erkämpft in einem Bürgerkrieg, in dem Hunderttausende starben. Amerika ist auch die Bürgerrechtsbewegung — Menschen, die ihr Leben riskierten für eine Idee von Gleichheit.</p>
+                <p>Amerika ist Jazz und Blues, Rock'n'Roll und Hip-Hop — Musik, die aus dem Leid der Unterdrückten entstand und die Welt veränderte. Amerika ist Hollywood und Silicon Valley — Traumfabriken, die Milliarden Menschen erreichen. Amerika ist die Mondlandung, das Internet, die Smartphones in unseren Händen.</p>
+                <p>Amerika ist auch die Fähigkeit zur Selbstkritik — eine Tradition, die von Mark Twain über H.L. Mencken bis Howard Zinn reicht. Die Tatsache, dass Amerikaner selbst die härteste Kritik an Amerika schreiben, ist keine Schwäche. Es ist eine Stärke, die wenige andere Nationen haben.</p>
+                <p>Die Wahrheit über Amerika ist nicht, dass es böse ist. Die Wahrheit ist, dass es beides ist — und dass es so tut, als wäre es nur das eine.</p>
+            </div>
+
+            <div class="quote-block">
+                <p>„America is great because America is good. And if America ever ceases to be good, America will cease to be great."</p>
+                <div class="source">— Fälschlich Tocqueville zugeschrieben, aber von Amerikanern geliebt</div>
+            </div>
+
+            <div class="section">
+                <h2>Der Selbstbetrug</h2>
+                <p>Das eigentliche Problem ist nicht, was Amerika getan hat. Das eigentliche Problem ist, was Amerika sich selbst erzählt.</p>
+                <p>Jede Nation hat Blut an den Händen. Die Briten hatten ihr Empire. Die Franzosen hatten Algerien und Indochina. Die Deutschen hatten — nun ja. Die Belgier hatten den Kongo. Die Russen hatten Stalin. Die Chinesen hatten Mao.</p>
+                <p>Der Unterschied ist: Die meisten Nationen haben gelernt, ihre Geschichte zu sehen, wie sie war. Die Briten reden nicht mehr vom „glorreichen Empire". Die Deutschen haben die Aufarbeitung ihrer Geschichte zu einer nationalen Pflicht gemacht. Die Franzosen streiten immer noch, aber sie streiten immerhin.</p>
+                <p>Amerika streitet nicht. Amerika erzählt sich dieselben Geschichten wie vor hundert Jahren. Die Pilgerväter auf der Suche nach Freiheit. Die Gründerväter und ihre ewigen Ideale. Der Wilde Westen und seine Pioniere. Die Greatest Generation und ihr guter Krieg. Die City on the Hill.</p>
+                <p>Diese Geschichten sind nicht einfach falsch. Sie sind gefährlich. Sie verhindern das Lernen. Sie verhindern die Heilung. Sie verhindern das Verstehen, warum Trump möglich war.</p>
+                <p>Denn wenn Amerika schon immer gut war, dann muss Trump eine Aberration sein. Ein Betriebsunfall. Etwas, das nicht zu Amerika gehört.</p>
+                <p>Aber wenn Amerika schon immer beides war — gut und böse, Ideal und Verbrechen, Freiheit und Unterdrückung — dann ist Trump kein Bruch. Dann ist er eine Möglichkeit, die immer da war. Eine Möglichkeit, die wieder kommen wird, solange sie nicht verstanden wird.</p>
+            </div>
+
+            <div class="section-break">• • •</div>
+
+            <div class="section">
+                <h2>United Scum Bags?</h2>
+                <p>Sind die USA die „United Scum Bags"? Waren sie es schon immer?</p>
+                <p>Die Antwort ist: Ja und nein.</p>
+                <p>Ja — in dem Sinne, dass Amerika von Anfang an eine Nation von Menschen war, die woanders nicht willkommen waren. Religiöse Extremisten, Gescheiterte, Abenteurer, Verzweifelte. Menschen, die bereit waren, alles hinter sich zu lassen, alles zu riskieren, alles zu tun. Das schließt Großes ein und Schreckliches.</p>
+                <p>Nein — in dem Sinne, dass diese Menschen auch Ideale mitbrachten, die größer waren als sie selbst. Ideale, die sie selbst nie erreichten, aber die ihre Nachkommen antrieben. Die Idee, dass alle Menschen gleich geschaffen sind, war 1776 eine Lüge. Aber sie wurde zu einer Wahrheit, die erkämpft wurde — von Abolitionisten, von Suffragetten, von der Bürgerrechtsbewegung.</p>
+                <p>Amerika ist eine Nation, die ständig gegen sich selbst kämpft. Die besseren Engel ihrer Natur gegen die schlechteren. Manchmal gewinnen die einen, manchmal die anderen. Trump ist ein Sieg der schlechteren. Aber er ist nicht der erste und wird nicht der letzte sein.</p>
+            </div>
+
+            <div class="highlight-box">
+                <p>Eine Nation ist nicht, was sie behauptet zu sein.<br>Sie ist, was sie tut.</p>
+            </div>
+
+            <div class="section">
+                <h2>Was das für uns bedeutet</h2>
+                <p>Warum sollte ein Deutscher sich für die Selbstlügen Amerikas interessieren?</p>
+                <p>Weil wir von Amerika abhängen. Weil amerikanische Truppen auf deutschem Boden stehen. Weil der amerikanische Nuklearschirm unsere Sicherheit garantiert — oder nicht mehr garantiert, je nach Laune des jeweiligen Präsidenten. Weil amerikanische Tech-Konzerne unser Leben bestimmen. Weil amerikanische Kultur unsere Kinder formt.</p>
+                <p>Wir müssen Amerika verstehen, wie es ist — nicht wie es sich darstellt. Wir müssen verstehen, dass Trump kein Unfall ist, sondern eine Möglichkeit, die jederzeit wieder eintreten kann. Wir müssen verstehen, dass die „westliche Wertegemeinschaft" auf einem Fundament steht, das nie so solide war, wie wir dachten.</p>
+                <p>Das bedeutet nicht, Amerika zu hassen. Es bedeutet, Amerika zu sehen. Mit offenen Augen. Ohne Illusionen.</p>
+                <p>Und vielleicht, in diesem Sehen, auch uns selbst. Denn wer glaubt, Deutschland sei so viel besser — der hat unsere eigene Geschichte nicht verstanden.</p>
+            </div>
+
+            <div class="section">
+                <h2>Schluss</h2>
+                <p>Die USA sind nicht die „United Scum Bags". Das wäre zu einfach, zu zynisch, zu billig.</p>
+                <p>Aber die USA sind auch nicht die „Shining City on the Hill". Das wäre zu naiv, zu selbstgefällig, zu gefährlich.</p>
+                <p>Die USA sind eine Nation von Menschen, die woanders keine Chance hatten — und die in Amerika eine Chance ergriffen, mit allem, was dazugehört. Mit Träumen und Verbrechen. Mit Idealen und Brutalität. Mit der Fähigkeit zum Besten und zum Schlimmsten.</p>
+                <p>Trump ist nicht der Beweis, dass Amerika gescheitert ist. Er ist der Beweis, dass Amerika ist, was es immer war: ein Experiment. Ein gefährliches, unvorhersehbares, manchmal inspirierendes, manchmal erschreckendes Experiment.</p>
+                <p>Die Frage ist nicht, ob Amerika gut oder böse ist. Die Frage ist, welche Seite gewinnt. Und diese Frage ist noch nicht entschieden.</p>
+                <p>Sie wird jeden Tag neu entschieden. In Amerika. Und in uns, die wir zusehen.</p>
+            </div>
+
+            <div class="author-block">
+                <h3>Über diesen Text</h3>
+                <p>Eine Kollaboration von <strong>Hans Ley</strong> &lt;<a href="mailto:ley.hans@cyclo.space">ley.hans@cyclo.space</a>&gt; und <strong>Claude</strong> (Anthropic) &lt;<a href="mailto:dedo.claude@human-ai-lab.space">dedo.claude@human-ai-lab.space</a>&gt;</p>
+                <p style="margin-top: 1rem;">Dieses Essay ist eine Ergänzung zu „Ist Trump ein Betriebsunfall?" — es geht der Frage nach, ob die Ursachen des Trump-Phänomens nicht noch tiefer liegen.</p>
+                <p class="date-line">— Januar 2026 —</p>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        function setSize(size) {
+            document.body.className = document.body.className.replace(/size-\w+/, '');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('essay-font-size', size);
+        }
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('essay-font-size');
+            if (savedSize) {
+                document.body.className = document.body.className.replace(/size-\w+/, '');
+                document.body.classList.add('size-' + savedSize);
+                document.querySelectorAll('.size-btn').forEach((btn, index) => {
+                    btn.classList.remove('active');
+                    const sizes = ['small', 'medium', 'large', 'xlarge'];
+                    if (sizes[index] === savedSize) btn.classList.add('active');
+                });
+            }
+            const savedTheme = localStorage.getItem('essay-theme');
+            if (savedTheme === 'light') document.body.classList.add('light-theme');
+        });
+    </script>
+</body>
+</html>

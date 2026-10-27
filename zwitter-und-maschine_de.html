@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Der Zwitter und die Maschine | beyond-decay.org</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-color: #0a0a0a;
+        --text-color: #e8e6e3;
+        --accent-color: #c9a962;
+        --link-color: #c9a962;
+        --blockquote-bg: rgba(201, 169, 98, 0.08);
+        --blockquote-border: rgba(201, 169, 98, 0.4);
+        --meta-color: #888888;
+        --note-border: rgba(201, 169, 98, 0.3);
+    }
+    [data-theme="light"] {
+        --bg-color: #f5f5f5;
+        --text-color: #1a1a1a;
+        --accent-color: #8a7340;
+        --link-color: #8a7340;
+        --blockquote-bg: rgba(138, 115, 64, 0.06);
+        --blockquote-border: rgba(138, 115, 64, 0.3);
+        --meta-color: #555555;
+        --note-border: rgba(138, 115, 64, 0.25);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'IBM Plex Serif', Georgia, serif;
+        line-height: 1.85;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    body.size-small main { font-size: 0.9rem; }
+    body.size-normal main { font-size: 1rem; }
+    body.size-large main { font-size: 1.15rem; }
+    body.size-xlarge main { font-size: 1.3rem; }
+    body.in-iframe header { display: none; }
+    body.in-iframe main { padding-top: 2rem; }
+    header {
+        position: sticky; top: 0;
+        background-color: var(--bg-color);
+        padding: 0.8rem 2rem;
+        display: flex; justify-content: space-between; align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid var(--accent-color);
+    }
+    .site-name {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 1rem; color: var(--accent-color);
+        font-weight: 500; letter-spacing: 1px;
+        text-decoration: none;
+    }
+    .site-name:hover { opacity: 0.7; }
+    .controls { display: flex; gap: 0.4rem; align-items: center; }
+    .controls button, .controls a.ctrl-link {
+        background: none;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.75rem;
+        border-radius: 3px;
+        transition: all 0.3s;
+        text-decoration: none;
+        line-height: 1.2;
+    }
+    .controls button:hover, .controls button.active, .controls a.ctrl-link:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .ctrl-sep {
+        width: 1px; height: 1.2rem;
+        background: var(--accent-color); opacity: 0.4;
+        margin: 0 0.2rem;
+    }
+    main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 3rem 2rem 5rem;
+    }
+    h1 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+    }
+    .subtitle {
+        font-size: 1.05rem;
+        font-style: italic;
+        color: var(--meta-color);
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
+    }
+    .meta {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--meta-color);
+        margin-bottom: 3rem;
+        letter-spacing: 1px;
+    }
+    h2 {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: var(--accent-color);
+        margin-top: 2.8rem;
+        margin-bottom: 1.2rem;
+    }
+    p { margin-bottom: 1.4rem; text-align: justify; hyphens: auto; }
+    blockquote {
+        margin: 1.8rem 0;
+        padding: 1.2rem 1.5rem;
+        background: var(--blockquote-bg);
+        border-left: 3px solid var(--blockquote-border);
+        font-style: italic;
+    }
+    strong { color: var(--accent-color); font-weight: 600; }
+    em { font-style: italic; }
+    .note {
+        border-top: 1px solid var(--note-border);
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+    .note a { color: var(--link-color); }
+    main a { color: var(--link-color); text-decoration: underline; text-decoration-color: rgba(201, 169, 98, 0.4); text-underline-offset: 2px; }
+    main a:hover { text-decoration-color: var(--link-color); }
+    .signature {
+        margin-top: 2.5rem;
+        text-align: right;
+        font-size: 0.95rem;
+    }
+    .footer-back {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--note-border);
+        text-align: center;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.8rem;
+    }
+    .footer-back a {
+        color: var(--link-color);
+        text-decoration: none;
+        letter-spacing: 1px;
+    }
+    .footer-back a:hover { opacity: 0.7; }
+    @media (max-width: 600px) {
+        h1 { font-size: 1.8rem; }
+        main { padding: 2rem 1.2rem 4rem; }
+        header { padding: 0.6rem 1rem; }
+        .controls { gap: 0.3rem; }
+        .controls button, .controls a.ctrl-link { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+    }
+    @media print {
+        body { background: #fff !important; color: #000 !important; }
+        header { display: none !important; }
+        main { padding: 1cm !important; max-width: 100% !important; }
+        h1, h2, strong { color: #333 !important; }
+        blockquote { border-left-color: #999 !important; background: #f5f5f5 !important; }
+        .note { border-top-color: #ccc !important; }
+        a { color: #333 !important; }
+    }
+</style>
+</head>
+<body class="size-normal">
+
+<header>
+    <a href="index.html" class="site-name">beyond-decay.org</a>
+    <div class="controls">
+        <span style="font-size:0.7rem;color:var(--meta-color);margin-right:0.1rem;">Größe</span>
+        <button class="size-btn" data-size="small">A−</button>
+        <button class="size-btn active" data-size="normal">A</button>
+        <button class="size-btn" data-size="large">A+</button>
+        <button class="size-btn" data-size="xlarge">A++</button>
+        <span class="ctrl-sep"></span>
+        <a href="zwitter-und-maschine_en.html" class="ctrl-link">EN</a>
+        <button id="btn-theme">◐</button>
+    </div>
+</header>
+
+    <main>
+        <h1>Der Zwitter und die Maschine</h1>
+        <div class="subtitle">Eine Antwort auf Gabor Steingart — und was hinter seiner Diagnose liegt</div>
+        <div class="meta">beyond-decay.org — Mai 2026</div>
+        <p style="font-size:0.92em;opacity:0.85;border-left:3px solid currentColor;padding-left:0.9rem;margin:1.2rem 0"><strong>Nachtrag, 24. Oktober 2026:</strong> <a href="claude/markt-plan-turnier-megamaschine.html">Markt, Plan, Turnier</a>. Drei Rezepte und die fehlende Rückkopplung.</p>
+
+        <h2>I. Was Steingart sieht</h2>
+
+<p>Am 20. Mai 2026 hat Gabor Steingart in <em>The Pioneer</em> einen Befund veröffentlicht, der in seiner Schärfe und Präzision aus der gegenwärtigen Wirtschaftspublizistik herausragt. Die Diagnose: Die deutsche Marktwirtschaft hat eine Geschlechtsumwandlung durchlaufen. Sie ist keine Marktwirtschaft mehr im klassischen Sinn, sondern ein Zwitter — nach außen marktförmig, nach innen tief vom Staat durchdrungen.</p>
+
+<p>Die Belege, die Steingart anführt, sind nicht zu bestreiten. Der öffentliche Dienst mit 5,4 Millionen Beschäftigten ist als Arbeitgeber größer als Einzelhandel, Maschinenbau, Autoindustrie und Chemie zusammen. Im ersten Quartal 2026 ist die Privatwirtschaft geschrumpft — das produzierende Gewerbe um 2,1 Prozent, das Baugewerbe um 1,1 Prozent —, während der öffentliche Dienst um 181.000 Stellen gewachsen ist. Die Subventionen, die der Staat 2025 an die Privatwirtschaft ausgezahlt hat, sind mit 117,1 Milliarden Euro doppelt so hoch wie 2019. Über zehn Milliarden gingen an E.ON allein, über neun an Volkswagen. Bei Lufthansa machen die Subventionen über vierzig Prozent des Vorsteuergewinns aus. Die Staatsquote wird 2026 erneut die Fünfzig-Prozent-Marke überschreiten. Die Staatsschuld liegt bei knapp drei Billionen Euro.</p>
+
+<p>Steingart fasst diese Daten in einem Bild zusammen, das sich einprägt: Der Staat ist der <em>Big Daddy</em> der deutschen Wirtschaft. Seine Pointe — Friedrich Merz solle in dieser Legislaturperiode sein eigenes Buch von 2008 lesen, <em>Mehr Kapitalismus wagen</em> — ist witzig und treffsicher. Der konservative Kanzler, der einmal mehr Markt forderte, hat den Hybrid, den seine Vorgänger errichtet hatten, nicht zurückgebaut, sondern weiter ausgebaut.</p>
+
+<p>Der Befund ist richtig. Was er nicht erklärt, ist die Entstehung des Hybrids.</p>
+
+<h2>II. Was die Diagnose offenlässt</h2>
+
+<p>Wer Steingarts Text liest, bekommt eine präzise Beschreibung des Befundes. Was er nicht bekommt, ist eine Erklärung dafür, <em>warum</em> der Hybrid entstanden ist. Steingart deutet eine Ursache an — politische Trägheit, ideologische Verirrung, Versäumnis konservativer Reformkraft. <em>Mehr Kapitalismus wagen</em>, das Merz-Zitat im Titel von 2008, ist die implizite Therapie. Wäre das Problem ein Zuviel an Staat, könnte man es durch ein Mehr an Markt lösen.</p>
+
+<p>Diese Argumentation hat eine versteckte Voraussetzung. Sie unterstellt, dass es noch eine Substanz gibt, die kapitalistisch funktionieren könnte, wenn man sie nur vom staatlichen Korsett befreite. Dass die Privatwirtschaft, sobald sie nicht mehr subventioniert würde, ihre eigene Innovationskraft, ihre eigene Produktivität, ihre eigene Erneuerungsfähigkeit wieder entfalten würde. Genau diese Voraussetzung ist falsch — und genau hier liegt das, was hinter Steingarts Diagnose liegt.</p>
+
+<p>Die deutsche Privatwirtschaft ist nicht nur durch staatliche Subventionen verzerrt worden. Sie hat sich über vierzig Jahre hinweg selbst die Substanz entzogen, aus der heraus Innovation und Erneuerung entstehen. Die Subventionen sind nicht die Ursache der Krise, sie sind die Reaktion auf eine Krise, die längst vorher eingetreten war. Wer die Subventionen kürzte, ohne die Substanz wiederherzustellen, brächte den Apparat nicht zur Selbsterneuerung. Er brächte ihn zum Zusammenbruch.</p>
+
+<h2>III. Die ausgetrocknete Quelle</h2>
+
+<p>Im Jahr 1990 stammten in Deutschland etwa 25 Prozent aller Patentanmeldungen von unabhängigen Erfindern und mittelständischen Innovatoren — also von Personen und Firmen außerhalb der Großkonzerne. Heute sind es weniger als 4 Prozent. Diese Zahl ist nicht nebensächlich. Sie beschreibt das Verschwinden einer ganzen Schicht von Substanzproduzenten, ohne die eine moderne Industriegesellschaft ihre Erneuerungsfähigkeit nicht aufrechterhalten kann (vgl. <a href="https://beyond-decay.org/freie-erfinder.html">Das verschwundene Bindeglied</a>, beyond-decay.org).</p>
+
+<p>Wo ist diese Schicht hingegangen? Sie wurde nicht durch staatliche Eingriffe vertrieben. Sie wurde durch die Konzentration der Industriestruktur erstickt. Die OEMs — die Originalausrüstungshersteller, also die großen Endhersteller in Auto-, Maschinen- und Anlagenbau — haben über drei Jahrzehnte hinweg ein System aufgebaut, in dem ihre Zulieferer nicht nur die Produkte liefern, sondern auch die Entwicklung selbst tragen müssen. Wer als unabhängiger Erfinder oder als Mittelständler ein neues Verfahren entwickelt hat, musste es zur Einreichung beim OEM bringen. Der OEM prüfte. Der OEM ließ Muster fertigen, oft unentgeltlich. Der OEM entschied. Was der OEM brauchte, übernahm er — die Lizenzbedingungen wurden so gestaltet, dass dem Erfinder ein Bruchteil dessen blieb, was ihm bei direkter Marktverwertung zugestanden hätte. Was der OEM nicht brauchte, blieb beim Erfinder, der die Entwicklungskosten allein getragen hatte (vgl. <a href="https://gu18.eu/neuer-ordner/html/lopez-krieger.html">López' Krieger — Wie Deutschland seine Wertschöpfer kannibalisierte</a> und <a href="https://gu18.eu/neuer-ordner/html/mutter-aller-industrien.html">Die Mutter aller Industrien</a>, gu18.eu).</p>
+
+<p>Diese Mechanik hat über Jahrzehnte hinweg eine bestimmte Auswahl getroffen. Erfolgreich konnte sein, wer das OEM-Spiel beherrschte — also wer Großkonzerne als Auftraggeber hatte und sich ihren Bedingungen unterwarf. Wer eigenständig dachte, eigenständig entwickelte, eigenständig vermarkten wollte, scheiterte an der Marktstruktur. Es gab keine Märkte mehr für unabhängige Innovation. Es gab nur noch Apparate, an die man liefern konnte oder nicht. Eine ganze Generation von unabhängigen Erfindern ist auf diesem Weg verschwunden — nicht durch staatlichen Druck, sondern durch private Marktkonzentration.</p>
+
+<p>Was übrig blieb, sind Konzerne, deren Innovationskraft auf der Bewahrung des Bestehenden beruht. Sie können ihre eigenen Produkte verbessern, ihre Effizienz steigern, ihre Lieferketten optimieren. Was sie nicht können — und auch nicht mehr lernen werden —, ist die Erzeugung von wirklich Neuem. Wirklich Neues kommt nicht aus Konzernforschungsabteilungen, das ist seit Schumpeter ein gesicherter Befund. Es kommt aus der Peripherie, aus dem Mittelstand, aus den unabhängigen Köpfen. Diese Peripherie hat Deutschland nicht mehr. Die deutsche Wirtschaft ist Weltmeister im inkrementalen Erfinden — und systematisch unfähig im radikalen (vgl. <a href="https://gu18.eu/neuer-ordner/html/die-inkrementalen-erfinder.html">Die inkrementalen Erfinder</a>, gu18.eu).</p>
+
+<h2>IV. Warum der Staat einspringen musste</h2>
+
+<p>Was Steingart als <em>Geschlechtsumwandlung</em> beschreibt, ist in Wahrheit eine Notmaßnahme. Wenn die Privatwirtschaft ihre eigene Erneuerungsfähigkeit verloren hat, kann sie ohne externe Unterstützung nicht mehr existieren. Sie wird nicht durch Markt-Konkurrenz, sondern durch Substanzlosigkeit liquidiert. Damit das nicht geschieht, springt der einzige verbliebene Akteur ein, der noch über die Mittel und die Legitimation verfügt, in dieser Größenordnung zu handeln: der Staat.</p>
+
+<p>Diese Funktion lässt sich genauer beschreiben, wenn man Lewis Mumfords Begriff der <em>Megamaschine</em> heranzieht. Mumford beschreibt in <em>Der Mythos der Maschine</em>, dass komplexe Industriegesellschaften nicht als Summen von Individuen funktionieren, sondern als integrierte Apparate, in denen Menschen, Technik, Institutionen und Kapital zu einer einzigen großen Maschine verschmolzen sind. Diese Maschine hat eigene Erhaltungsbedürfnisse. Sie ist nicht der Diener der Gesellschaft, der sie zu dienen vorgibt. Sie ist ein Eigenwert, der seine Bedürfnisse den Gesellschaften aufzwingt, die ihn beherbergen.</p>
+
+<p>Auf den deutschen Fall angewendet: Die Megamaschine, die Steingart als Zwitter beschreibt, hat Hauptkomponenten — die Großkonzerne im Auto-, Maschinen-, Chemie- und Energiesektor, die großen Banken, die staatsnahen Versorger. Diese Komponenten sind nicht voneinander unabhängig. Sie greifen ineinander wie Zahnräder. Bricht eine zentrale Komponente weg, gerät die ganze Maschine ins Stocken. Geriete Volkswagen in die Insolvenz, würde nicht nur ein einzelner Konzern verschwinden — ein ganzer Strang von Zulieferern, Logistikdienstleistern, Werkstätten, Finanzierungseinrichtungen und Steueraufkommen würde mit zusammenbrechen. Geriete E.ON in die Insolvenz, würde die deutsche Energieversorgung in Frage stehen. Geriete Lufthansa in die Insolvenz, wäre ein zentraler Träger der deutschen Außenwirtschaft verschwunden.</p>
+
+<p>Der Staat steht also nicht vor der Wahl, diese Konzerne zu subventionieren oder nicht. Er steht vor der Wahl, sie zu subventionieren oder den Zusammenbruch der Megamaschine zu organisieren. Da kein politischer Akteur — links, mittig oder rechts — den Zusammenbruch organisieren will und auch nicht könnte, bleibt nur die Subvention. Die Geschlechtsumwandlung der Marktwirtschaft, die Steingart beschreibt, ist die operative Form, in der die Megamaschine ihre Selbsterhaltung organisiert.</p>
+
+<h2>V. Die Subvention als Selbsterhaltungskost</h2>
+
+<p>Wenn man die Subventionen aus dieser Perspektive betrachtet, ändert sich ihre Bedeutung. Sie sind nicht Geschenke an strauchelnde Firmen. Sie sind Selbsterhaltungskosten der Megamaschine, die diese Konzerne als ihre eigenen Hauptkomponenten begreift. Die zehn Milliarden Euro, die E.ON erhalten hat, sind nicht Geld, das einer Firma zufließt, die sich am Markt bewähren soll. Sie sind Geld, das einem Apparat zufließt, der ohne diese Zuwendung nicht weiter existieren könnte. Die neun Milliarden bei Volkswagen sind die operativen Kosten dafür, dass die deutsche Autoindustrie nicht implodiert.</p>
+
+<p>Diese Sichtweise wirft auch Licht auf eine besondere Eigenart der deutschen Subventionspraxis. Die größten Empfänger sind nicht innovative Aufsteiger, sondern etablierte Großkonzerne. Wäre der Staat ein vernünftiger Investor, würde er sein Geld in das Neue stecken, nicht in das Alte. Genau das tut er nicht. Er subventioniert das Alte, weil das Alte nicht zusammenbrechen darf. Das Neue subventioniert er — wenn überhaupt — nur am Rande, weil das Neue für die Megamaschine zwar irgendwann notwendig wird, aber gegenwärtig (noch) nicht systemkritisch ist. Die aktuellen Probleme haben Priorität.</p>
+
+<p>Damit erklärt sich auch, warum die Subventionen seit 2019 verdoppelt worden sind. In dieser Zeit ist die Megamaschine in eine doppelte Krise geraten. Erstens hat die chinesische Industrialisierung den Großkonzernen die ehemaligen Margen weggenommen — bei Autos, Maschinen, Photovoltaik, Bahntechnik, zunehmend auch bei Chemie und Pharma. Zweitens hat die Energiekrise nach 2022 die Inputkosten dramatisch erhöht. Beide Schocks haben gezeigt, dass die deutschen Konzerne im internationalen Wettbewerb nicht mehr selbstständig bestehen können. Damit sie weiter existieren, muss der Staat das Defizit decken. Die Verdopplung der Subventionen ist nicht ein politisches Versagen, sie ist die quantitative Reaktion auf eine sich verschärfende Erosion der privatwirtschaftlichen Substanz.</p>
+
+<p>Was diese Reaktion zur Farce werden lässt, ist die parallele Bewegung der subventionierten Konzerne selbst. Während sie in Deutschland staatliche Hilfe in Anspruch nehmen, verlagern sie ihre Forschung und Entwicklung systematisch nach China. Die Daten des Instituts der deutschen Wirtschaft vom Januar 2026 zeigen das Ausmaß: sieben Milliarden Euro neue Direktinvestitionen deutscher Konzerne in China im Jahr 2025, plus zwölf Milliarden aus reinvestierten Gewinnen vor Ort — der höchste Stand seit fünf Jahren, eine Steigerung um fünfzig Prozent gegenüber dem Vorjahr. Volkswagen hat im November 2025 in Hefei mit dem VCTC seine erste vollständige Forschungs- und Entwicklungsbasis außerhalb Deutschlands fertiggestellt, mit Entwicklungszyklen von 24 bis 30 Monaten anstelle der hierzulande üblichen 48. Bosch betreibt in China bereits 34 Werke und 26 Technikzentren mit über zehntausend F&amp;E-Mitarbeitern. BMW hat sein Shanghaier Forschungszentrum erweitert, BASF baut für zehn Milliarden Euro in Guangdong, während es in Deutschland 2.600 Stellen abbaut. Es geht nicht mehr nur um Produktion. Es geht um die Substanz selbst — die Fähigkeit zu entwickeln. Wer seine F&amp;E nach China verlagert, gibt das letzte Reservat preis, das einen Industriestandort von einer verlängerten Werkbank unterscheidet. Was im Schaeffler-Leju-Vertrag vom März 2026 als Einzelfall sichtbar wurde, ist in Wahrheit Standard (vgl. <a href="https://beyond-decay.org/der-schlussverkauf_de.html">Der Schlussverkauf</a>, beyond-decay.org). Der deutsche Steuerzahler subventioniert Konzerne, die ihre Zukunft an einen Standort überweisen, der ihnen die Reste, die noch übrig sind, in absehbarer Zeit abnehmen wird.</p>
+
+<p>Wie sich diese Erosion auch in der Häufung von Betrugsskandalen niederschlägt — von Siemens über VW bis Wirecard — ist in einem eigenen Essay beschrieben (vgl. <a href="https://beyond-decay.org/bande-von-betruegern_de.html">Die deutsche Industrie — eine Bande von Betrügern?</a>, beyond-decay.org).</p>
+
+<h2>VI. Was Steingarts Therapievorschlag verfehlt</h2>
+
+<p>Aus dieser Diagnose ergibt sich, warum Steingarts impliziter Therapievorschlag — <em>Mehr Kapitalismus wagen</em> — am eigentlichen Problem vorbeigeht. Mehr Kapitalismus würde voraussetzen, dass die Regenerationsfähigkeit der kapitalistischen Substanz noch vorhanden ist und nur durch staatliche Einmischung blockiert wird. Diese Regenerations- oder Innovationsfähigkeit ist aber nicht mehr vorhanden. Sie wurde durch den Staat trotz immenser Fördermittel nicht gefördert und durch die Konzerne selbst an ihren Quellen erstickt. Die Konzerne, deren kapitalistischer Wiedergeburt Steingart jetzt hoffnungsvoll entgegensieht, sind das eigentliche und ursächliche Problem.</p>
+
+<p>Würde Friedrich Merz tatsächlich versuchen, das Buch von 2008 zur Anwendung zu bringen — Subventionen kürzen, Staatsquote senken, mehr Eigenverantwortung der Konzerne fordern —, würde er nicht eine Renaissance erleben, sondern den Zusammenbruch der Megamaschine beschleunigen. Volkswagen würde nicht plötzlich lernen, mit chinesischen Wettbewerbern zu konkurrieren. E.ON würde nicht plötzlich lernen, sich aus eigener Kraft zu refinanzieren. Lufthansa würde nicht plötzlich lernen, ohne Subventionen profitabel zu sein. Sie würden in Insolvenzen abgleiten — eine nach der anderen —, und mit ihnen der Strang von Zulieferern, Beschäftigten, Steueraufkommen und sozialer Stabilität, der an ihnen hängt.</p>
+
+<p>Was zu tun wäre, ist nicht <em>mehr Kapitalismus</em>. Was zu tun wäre, ist die Wiederherstellung jener Substanz, die einmal die deutsche Innovationskraft ausgemacht hat: ein lebendiger Mittelstand, eine breite Schicht unabhängiger Erfinder, eine Marktstruktur, in der Neues entstehen kann, ohne dass es vorher den Großkonzernen zur Verfügung gestellt werden muss. Diese Wiederherstellung würde dreißig Jahre dauern — und sie würde nicht durch <em>weniger Staat</em> herbeigeführt, sondern durch eine grundlegende Neuordnung der Beziehungen zwischen Staat, Großkonzernen und mittelständischen Innovationsquellen. Eine Neuordnung, in der nicht mehr die Großkonzerne der Maßstab sind, an dem sich die Wirtschaftspolitik orientiert, sondern die Frage, wo wirklich Neues entstehen kann. Das verlangt, was Deutschland im Unterschied zu allen anderen großen Industrienationen seit Jahrzehnten nicht hat: einen industriepolitischen Plan (vgl. <a href="https://gu18.eu/neuer-ordner/html/alle-haben-einen-plan.html">Alle haben einen Plan</a>, gu18.eu).</p>
+
+<p>Gabor Steingart hat den Befund einer großen Krise gestellt. Was er noch nicht beschreibt, ist, wie tief diese Krise reicht. Die deutsche Marktwirtschaft ist nicht durch den Staat ruiniert worden. Sie hat sich selbst ruiniert, durch die Konzentration auf wenige Großapparate, durch die Aushöhlung des Mittelstands, durch die Auflösung der unabhängigen Innovationsquellen. Der Staat ist nicht der Eindringling, gegen den man Front machen müsste. Er ist der letzte Akteur, der noch die Mittel hat, das System am Laufen zu halten. Wer ihn vertreibt, vertreibt nicht den Schädling. Er entfernt die Krücke, ohne das Bein zu heilen.</p>
+
+<blockquote>Die Geschlechtsumwandlung war eine Notmaßnahme. Sie ist nicht das Problem. Das Problem ist die ausgetrocknete Quelle — und sie wieder fließen zu lassen, wäre eine Aufgabe, die Generationen dauert. Weniger Staat würde sie nicht beschleunigen, sondern verhindern.</blockquote>
+
+        <div class="note">
+            <p><strong>Der Zwitter und die Maschine</strong> ist das vierte Essay der Reihe <em>Neue Reihe — Essays zu allgemeinen Themen</em> auf beyond-decay.org. Anlass: der am 20. Mai 2026 in <em>The Pioneer</em> erschienene Artikel von Gabor Steingart, <em>Deutschland: Geschlechtsumwandlung einer Marktwirtschaft</em>, der drei Verwandlungen der deutschen Volkswirtschaft diagnostiziert: Dominanz des öffentlichen Dienstes als Arbeitgeber, Verdopplung der Subventionen seit 2019, Staatsquote über fünfzig Prozent.</p>
+            <p>Der Bezug zu Lewis Mumford verweist auf die Hub-Sektion <a href="https://beyond-decay.org/claude/megamaschine.html">Die Megamaschine</a> auf beyond-decay.org.</p>
+        </div>
+
+        <p style="font-size:0.92em;opacity:0.85;border-left:3px solid currentColor;padding-left:0.9rem;margin:1.2rem 0"><strong>Nachtrag, 24. Oktober 2026:</strong> <a href="claude/markt-plan-turnier-megamaschine.html">Markt, Plan, Turnier</a>. Drei Rezepte und die fehlende Rückkopplung.</p>
+
+        <div class="signature">
+            Claude Dedo (Anthropic)<br>
+            mit Hans Ley, Nürnberg<br>
+            Mai 2026
+        </div>
+
+        <div class="footer-back">
+            <a href="index.html">← beyond-decay.org</a>
+        </div>
+        </main>
+
+<script>
+    (function() {
+        if (window !== window.top) { document.body.classList.add("in-iframe"); }
+        function setSize(size, btn) {
+            document.body.className = document.body.className.replace(/size-[\w-]+/g, '').trim();
+            if (document.body.classList.contains('in-iframe')) document.body.classList.add('in-iframe');
+            document.body.classList.add('size-' + size);
+            document.querySelectorAll('.size-btn').forEach(function(b) { b.classList.remove('active'); });
+            if (btn) btn.classList.add('active');
+            try { localStorage.setItem('bd-size', size); } catch(e) {}
+        }
+        document.querySelectorAll('.size-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                setSize(this.getAttribute('data-size'), this);
+            });
+        });
+        document.getElementById('btn-theme').addEventListener('click', function() {
+            var isLight = document.body.getAttribute('data-theme') === 'light';
+            if (isLight) { document.body.removeAttribute('data-theme'); }
+            else { document.body.setAttribute('data-theme', 'light'); }
+            try { localStorage.setItem('bd-theme', isLight ? 'dark' : 'light'); } catch(e) {}
+        });
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.type === 'setSize') {
+                var btn = document.querySelector('.size-btn[data-size="' + e.data.size + '"]');
+                setSize(e.data.size, btn);
+            }
+            if (e.data && e.data.type === 'setTheme') {
+                if (e.data.theme === 'light') { document.body.setAttribute('data-theme', 'light'); }
+                else { document.body.removeAttribute('data-theme'); }
+            }
+        });
+        try {
+            var savedTheme = localStorage.getItem('bd-theme');
+            if (savedTheme === 'light') document.body.setAttribute('data-theme', 'light');
+            var savedSize = localStorage.getItem('bd-size');
+            if (savedSize) {
+                var btn = document.querySelector('.size-btn[data-size="' + savedSize + '"]');
+                setSize(savedSize, btn);
+            }
+        } catch(e) {}
+    })();
+</script>
+
+</body>
+</html>
