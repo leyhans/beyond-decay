@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Black Box — Working Paper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --c-text: #1a2330;
+  --c-text-muted: #4a5868;
+  --c-bg: #fafaf7;
+  --c-accent: #0f6e56;
+  --c-accent-light: #e1f5ee;
+  --c-rule: #d4d4cc;
+  --c-quote-bg: #f0ede5;
+  --c-section-num: #888780;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Source Serif 4', 'Libre Baskerville', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--c-text);
+  background: var(--c-bg);
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 60px 32px 80px;
+}
+
+header {
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--c-rule);
+}
+
+.kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  margin-bottom: 16px;
+}
+
+.paper-label {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-text-muted);
+  border: 1px solid var(--c-rule);
+  padding: 3px 10px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+}
+
+h1 {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 34px;
+  line-height: 1.25;
+  font-weight: 700;
+  margin: 0 0 12px;
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  font-size: 21px;
+  font-style: italic;
+  color: var(--c-text-muted);
+  margin: 0 0 24px;
+  font-weight: 400;
+}
+
+.meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--c-text-muted);
+}
+
+h2 {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 48px 0 16px;
+  color: var(--c-text);
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.section-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--c-section-num);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+h3 {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 18px;
+  font-weight: 700;
+  font-style: italic;
+  margin: 32px 0 12px;
+  color: var(--c-text);
+}
+
+p {
+  margin: 0 0 20px;
+}
+
+blockquote {
+  background: var(--c-quote-bg);
+  border-left: 3px solid var(--c-accent);
+  padding: 20px 24px;
+  margin: 24px 0;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--c-text-muted);
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.email-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  color: var(--c-section-num);
+  margin-bottom: 8px;
+  text-transform: none;
+}
+
+.these {
+  background: var(--c-accent-light);
+  border-left: 3px solid var(--c-accent);
+  padding: 24px 28px;
+  margin: 32px 0;
+  font-size: 17px;
+}
+
+.these p:last-child {
+  margin-bottom: 0;
+}
+
+.these-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  display: block;
+  margin-bottom: 8px;
+}
+
+em { font-style: italic; }
+strong { font-weight: 700; }
+
+a {
+  color: var(--c-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+footer {
+  margin-top: 64px;
+  padding-top: 32px;
+  border-top: 1px solid var(--c-rule);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--c-text-muted);
+}
+
+footer a {
+  color: var(--c-accent);
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--c-text-muted);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+}
+
+.back-link:hover {
+  color: var(--c-accent);
+}
+
+hr.dinkus {
+  border: 0;
+  text-align: center;
+  margin: 40px 0;
+  height: 16px;
+}
+
+hr.dinkus::before {
+  content: "* * *";
+  color: var(--c-section-num);
+  letter-spacing: 0.5em;
+  font-size: 14px;
+}
+
+.image-container {
+  margin: 32px 0;
+  text-align: center;
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+  border: 1px solid var(--c-rule);
+  background: #fff;
+  padding: 8px;
+}
+
+.image-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  color: var(--c-section-num);
+  margin-top: 12px;
+  text-align: center;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .container { padding: 40px 20px 60px; }
+  h1 { font-size: 28px; }
+  h2 { font-size: 20px; }
+  body { font-size: 17px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<a class="back-link" href="megamaschine.html">← to the overview</a>
+
+<header>
+  <span class="kicker">Working Paper · Diagnosis Series</span>
+  <span class="paper-label">Man and Machine · Paper 9</span>
+  <h1>The Black Box</h1>
+  <p class="subtitle">On the political system of dissolving responsibility — documented through a correspondence with the CDU Secretary General</p>
+  <p class="meta">14 May 2026 · Hans Ley und Claude Dedo</p>
+</header>
+
+<h2><span class="section-num">I</span> Preliminary Remark</h2>
+
+<p>This paper differs from the previous papers of the diagnosis series. It does not analyse an abstract mechanism; it documents a concrete process. It names names, dates and verbatim quotations from a correspondence spanning several years. It makes the first author of this paper, Hans Ley, the letter-writer whose concern travels through the system.</p>
+
+<p>The reason for this form is the observation that the structural diagnosis of political dissolution of responsibility can be shown more clearly in a precisely documented case than in abstract descriptions. What the previous paper, <em>Truth Takes Two</em>, said about the simulation of reciprocity in the media system applies, by other means, to the political system as well. It applies there even more sharply — for while a media company sells the appearance of closeness to the citizen for commercial reasons, political representation and the closeness to citizens that goes with it is an obligation with a constitutional foundation.</p>
+
+<p>The correspondence documented here runs from 11 April 2023 into the year 2026 — almost three years. It comprises nine documented letters addressed to the CDU Secretary General Carsten Linnemann, answered partly by him personally, later consistently by his staff member Anke Löffler. It begins with the initiative of a third party — the retired primary school teacher Karin Burianski from Bergisch-Gladbach, who writes on her own initiative after a talk show. It contains cross-references to further office-holders — Sebastian Brehm, who no longer sits in parliament, the CSU district manager Peter Jochum, the CSU district chairman Michael Frieser, and the constituency MP and Head of the Federal Chancellery Thorsten Frei. All the persons named appear in this correspondence in their public functions.</p>
+
+<h2><span class="section-num">II</span> The Occasion</h2>
+
+<p>The writer of these letters is Hans Ley, born 1947, engineer and independent inventor from Nuremberg. His <em>polygon process</em>, whose basic patents were granted in the early 1980s, has been in industrial large-series production at SKF since 1991 and subsequently at several other German machine builders. It enables more productive and more precise manufacture of polygonal shaft-hub connections — a technology used in every drive system where torque is transmitted.</p>
+
+<p>In spring 2025 it becomes apparent that the company J. G. Weisser Söhne in St. Georgen, a machine builder that has commercialised one part of the process under the name <em>Wirbeldrehen</em> (whirl turning), is to be sold to China. The company has been insolvent since 2024. A sale to China would mean that a German invention, whose period of maturation took decades and whose industrial application is just now consolidating, passes into Chinese ownership — with all the consequences for the substance of German mechanical engineering.</p>
+
+<p>This is not a citizen's complaint. It is a question of industrial policy with strategic implications, in a country whose prosperity rests substantially on the depth of value creation in its mechanical engineering industry. Hans Ley turns with this question, among other concerns, to Carsten Linnemann — CDU Secretary General, deputy parliamentary group leader, political spokesman for small and medium-sized enterprises and innovation, member of the board of trustees of the Fraunhofer Institute for Mechatronic Systems Design in Paderborn.</p>
+
+<h2><span class="section-num">III</span> The Correspondence</h2>
+
+<p>What follows is a condensed account of the documented email correspondence, with verbatim quotations at the decisive points. The correspondence falls into two phases — a first phase from April 2023 to February 2024, in which Linnemann answers personally, with diminishing substance; and a second phase from spring 2025 onwards, in which Ms Löffler answers on Linnemann's behalf.</p>
+
+<h3>The prehistory — a talk show, a friend, a first letter</h3>
+
+<p>The correspondence does not begin with Hans Ley himself but with a friend. Karin Burianski, a retired primary school teacher from Bergisch-Gladbach, watches a talk show in early April 2023 in which Carsten Linnemann debates the lack of innovation in Germany with the then Labour Minister Hubertus Heil. She says to Hans Ley: <em>Linnemann talks like you — won't you write to him?</em> Hans Ley replies: <em>Won't you write to him?</em></p>
+
+<p>Karin Burianski writes on 8 April 2023. She briefly outlines her friend's story as an inventor, encloses a presentation with links to websites and videos and asks him to read it. She does not write out of a concern of her own — she writes as a citizen who wants to close the gap between what politicians say and what politicians do.</p>
+
+<h3>First reply — Carsten Linnemann personally, 11 April 2023</h3>
+
+<p>Linnemann replies three days later, personally, from his holiday:</p>
+
+<blockquote>
+<p>many thanks for your email and your feedback on the programme. I was glad to take a look at the attachment. But if I have understood the account correctly, your friend does seem ultimately to have been successful with his process. If he has concrete examples of regulatory problems or can offer suggestions on cutting red tape or the like, he should approach his local member of parliament.</p>
+</blockquote>
+
+<p>In two sentences, this short reply contains the entire method that will recur throughout the rest of the correspondence.</p>
+
+<p>First — the reinterpretation as success. <em>Your friend was ultimately successful.</em> The fact that the polygon process is in industrial production becomes the justification for doing nothing. But <em>success for whom?</em> The industrial application and the high value creation associated with it were used exclusively by two corporations for many years. The inventor himself has not received a pfennig — and later not a cent — from the proceeds of this value creation. He was systematically passed over in silence. To this day the potential of the invention is used by industry only in rudimentary fashion. What Linnemann takes into his reading as <em>success</em> is the success of the corporations, not the success of the inventor. The reinterpretation shifts the question of success from the originator to the exploiting industry and thereby makes invisible what the real problem of the story is: value is created without the originator, in whose place the system has set an empty chair.</p>
+
+<p>Second — the stock phrase. <em>He should approach his local member of parliament.</em> This formulation will become the standard reply in the rest of the correspondence, later adopted throughout by Ms Löffler. It is not the product of the apparatus, of an overworked staff member — it is Linnemann's own figure of speech, already in April 2023, in a personally signed reply.</p>
+
+<h3>Second letter — Hans Ley takes over, 24 April 2023</h3>
+
+<p>Hans Ley now writes himself. He refers to the reply to Ms Burianski, corrects the reinterpretation as success and makes a fundamental observation:</p>
+
+<blockquote>
+<p>I am the inventor of this process, which after 40 years is being <em>ultimately successfully</em> used. To this day I have not shared in this success to any significant degree. [...] If it takes 40 years for such a simple invention (as mine) to finally, slowly, gain acceptance, although ever since I presented the process at the EMO machine tool fair in Hannover in 1985 it was clearly recognisable to any expert what significance and what potential this invention has, then one can hardly speak of an innovative country and an innovative industry.</p>
+</blockquote>
+
+<p>He lists the actors of a forty-year industrial topology: <em>Ford, SKF, Heckler &amp; Koch, Maho, DMG Mori, GKN, Nord/LB, Wiha, Iprotec, Birgit Breuel, Prof. Tönshoff.</em> This is not an inventor talking about himself — it is a reminder of the economic-historical depth of the story.</p>
+
+<p>He rejects the constituency phrase:</p>
+
+<blockquote>
+<p>Thank you for your advice, but I do not think that the member of parliament responsible for my place of residence, Nuremberg, is really the right person for me to contact. Nor is it only about concrete examples of regulatory problems or suggestions on cutting red tape. It is about a new concept for innovations based on real inventions and not merely clever business ideas or more or less marginal improvements.</p>
+</blockquote>
+
+<p>He closes with a sober forecast:</p>
+
+<blockquote>
+<p>Perhaps it is also of interest to you that I have now filed new property rights relating to the process. My new inventions will certainly not take so long again to be realised and brought to market. If they are not used in Germany, then elsewhere.</p>
+</blockquote>
+
+<p>There is no reply to this letter.</p>
+
+<h3>Third letter — Hans Ley, 5 November 2023</h3>
+
+<p>Hans Ley writes a second time, six months after the first letter. He reports positive developments — membership with a scholarship at the UnternehmerTUM Maker-Space in Munich, founded by Susanne Klatten and TU Munich. He mentions an invitation from the Forschungsvereinigung Antriebstechnik (Research Association for Drive Technology) to give a lecture in Frankfurt. He describes his actual problem with a clear eye:</p>
+
+<blockquote>
+<p>My problem is still that I have too many ideas in very heterogeneous fields and that, to this day, there are no suitable structures for me as an inventor and first mover. In the Makerspace in Munich, too, I find myself (once again) in the role of an entrepreneur being helped to found his start-up. [...] At my age (almost 77), with my experience, many ideas and successfully realised inventions, I still do not feel taken seriously.</p>
+</blockquote>
+
+<p>And he formulates the core demand that turns the whole concern into a political question:</p>
+
+<blockquote>
+<p>Sensible and fundamental structures and rules that cannot arise within a market economy must be laid down by politics. Or am I mistaken?</p>
+</blockquote>
+
+<p>He encloses a list of links — videos and websites of companies using his process: Weisser, NSH, Index, DMG Mori. A verifiable industrial topology.</p>
+
+<p>At this point the <em>Klatten line</em> appears for the first time in the correspondence — the reference to the UnternehmerTUM network as an entrance into industry. Linnemann could have taken this reference as a point of contact. He did not. Two years later it is precisely this line that, unofficially and at the right moment, will have the effect that the official route via Linnemann does not have — the sale of Weisser to China is averted after Hans Ley reaches Susanne Klatten directly. The information was already in the CDU Secretary General's inbox in November 2023. It was not taken up.</p>
+
+<h3>Fourth reply — Carsten Linnemann personally, 8 November 2023</h3>
+
+<p>Linnemann replies three days later, personally, with a digital signature. The reply reads in full:</p>
+
+<blockquote>
+<p>Thank you, Mr Ley! Continued success. Best regards, Carsten Linnemann</p>
+</blockquote>
+
+<p>That is two sentences. The reply contains no response to the Maker-Space information, no response to the lecture invitation, no response to the core demand for politically set structures, no response to the links. It is the rhetorical form of polite elimination. It is not wrong. It is not unfriendly. But it is the refusal of any substantive engagement.</p>
+
+<p>It is at the same time the second stage in an erosion curve. In April 2023 Linnemann still wrote five sentences, with an act of reading (even if a misunderstanding one). In November 2023 he writes only two sentences. Over seven months of correspondence the substance of the reply has shrunk by eighty per cent.</p>
+
+<h3>Fourth letter — Hans Ley, 12 February 2024</h3>
+
+<p>Hans Ley closes this phase of the correspondence with a polite echo and a wordless gesture:</p>
+
+<blockquote>
+<p>Thank you, Dr Linnemann! I wish you much success too.</p>
+</blockquote>
+
+<p>He encloses a picture.</p>
+
+<div class="image-container">
+  <img src="karikatur-repraesentation.png" alt="Cartoon on political representation, enclosed with the letter of 12 February 2024.">
+</div>
+
+<p>He also encloses a link: <a href="https://wertstufendemokratie.de/philosophie/">wertstufendemokratie.de/philosophie</a>. A reference to a political concept of the philosopher Prof. Johannes Heinrichs, which Hans Ley is pursuing in parallel.</p>
+
+<p>Linnemann no longer replies to this. Radio silence follows until 2025.</p>
+
+<h3>The second phase — spring 2025, Hans Ley resumes contact</h3>
+
+<p>Fourteen months of radio silence. In spring 2025 Hans Ley resumes contact. The occasion is Linnemann's then new book <em>Die ticken doch nicht richtig!</em>, which critically describes the grievances in Germany — without addressing the field of inventions and innovation. Hans Ley writes:</p>
+
+<blockquote>
+<p>You describe the grievances in Germany precisely and critically. However, I miss — both in the analysis of the problems and in the proposed solutions — any engagement with the fundamental, prosperity-creating field of inventions and innovation. This is particularly regrettable, since it is precisely here that a key to our country's future viability lies.</p>
+</blockquote>
+
+<p>He informs Linnemann of the threatened sale of the company Weisser to China. He sends an exposé on democratic renewal with the concept of the <em>white vote</em>. He asks for an assessment.</p>
+
+<h3>Fifth reply — Anke Löffler on behalf of Carsten Linnemann</h3>
+
+<p>The reply no longer comes personally. Carsten Linnemann has someone reply:</p>
+
+<blockquote>
+<p>on behalf of Carsten Linnemann, I thank you very warmly for your email. As Mr Linnemann is under heavy time pressure, he has asked me to send you a short reply in his stead. [...] Unfortunately Mr Linnemann cannot support the introduction of the option of casting a “white vote”. He does not see it as a suitable instrument for strengthening our democracy. But perhaps you might seek a conversation on this with your local member of the Bundestag.</p>
+</blockquote>
+
+<p>The erosion curve has reached its third stage. From five sentences in 2023 to two sentences at the end of 2023 to delegation in 2025. The stock phrase of the <em>local member of parliament</em> returns — this time not from Linnemann's keyboard but from his staff member's.</p>
+
+<h3>Sixth letter — Hans Ley to Anke Löffler</h3>
+
+<p>Hans Ley clarifies the situation at Weisser. The company is on the verge of being sold to China. He makes a concrete proposal:</p>
+
+<blockquote>
+<p>Perhaps Dr Linnemann could raise the matter with the new Head of the Chancellery, Thorsten Frei. He knows the company J. G. Weisser in his constituency and has visited it.</p>
+</blockquote>
+
+<p>This is a concrete, obvious request for mediation. Linnemann and Frei are party colleagues, Frei knows the company concerned personally, a direct phone call between the two would be a matter of minutes.</p>
+
+<h3>Sixth reply — Anke Löffler</h3>
+
+<blockquote>
+<p>But in this case the company would have to approach your responsible member of the Bundestag, Mr Thorsten Frei, directly. Especially as contact evidently already exists. Mr Linnemann must abide by the constituency principle. I hope for your understanding in this.</p>
+</blockquote>
+
+<p>Here the <em>constituency principle</em> appears as a reason for refusal. A phone call from a CDU Secretary General to a CDU party colleague who will soon be Head of the Chancellery, on a question of strategic importance for industrial policy — is supposed to founder on the <em>constituency principle</em>.</p>
+
+<h3>Seventh letter — Hans Ley to Anke Löffler</h3>
+
+<p>The situation at Weisser has turned around. Orders have come in, the sale has been averted. Hans Ley uses the letter to make a further proposal — the Fraunhofer Institute for Mechatronic Systems Design in Paderborn as the home of a competent polygon working group. Linnemann is a trustee of this institute.</p>
+
+<h3>Seventh reply — Anke Löffler</h3>
+
+<blockquote>
+<p>As regards the Fraunhofer Institute in Paderborn, I can only urgently recommend that you make contact directly. Mr Linnemann cannot and will not be able to take on a mediating role here. I ask for your understanding in this.</p>
+</blockquote>
+
+<p>The point — Linnemann is a trustee of the institute. By virtue of the function, a trustee's task is precisely to establish the connection between the institute and socially relevant concerns. When a trustee refuses to mediate with his own institute, the trustee role is stripped of its operative meaning.</p>
+
+<h3>Eighth letter — Hans Ley to Anke Löffler, later in 2025</h3>
+
+<p>Hans Ley documents further observations — the public appearance of Siemens CEO Roland Busch and Schaeffler CEO Klaus Rosenfeld with a Chinese Unitree robot, while in Baden-Württemberg Neura Robotics is building a European humanoid robot. He writes:</p>
+
+<blockquote>
+<p>I am no longer writing to you with a request for mediation — the rules of the game are clear — but as documentation for the files.</p>
+</blockquote>
+
+<p>He links to an essay in his series <em>Die Innovationswüste Deutschland</em>.</p>
+
+<h3>Eighth reply — Anke Löffler</h3>
+
+<blockquote>
+<p>But perhaps you might also simply get in touch with your local member of the Bundestag. Mr Linnemann cannot attend to every concern (around 100 a week) that is brought to him. That simply does not work. I would ask for your understanding in this.</p>
+</blockquote>
+
+<p>Here, for the third time, comes the reference to the <em>local member of the Bundestag</em>, without Ms Löffler noticing that this route had already failed.</p>
+
+<h3>Ninth letter — Hans Ley documents the failure of the constituency route</h3>
+
+<p>Hans Ley documents that he had already tried the constituency route in May 2025. His responsible constituency MP was Sebastian Brehm (CSU). Brehm had won his direct mandate — but, because of the electoral law reform, failed to enter parliament. Hans Ley quotes the reply of the CSU district association of 12 May 2025:</p>
+
+<blockquote>
+<p>Unfortunately Sebastian Brehm was unable to return to the Bundestag although he had won his direct mandate. This is a consequence of the electoral law currently in force and has prevented CDU/CSU members in the large cities throughout Germany from returning to parliament. That Mr Brehm is unfortunately one of them was evidently overlooked by Linnemann's office when referring you.</p>
+</blockquote>
+
+<p>Hans Ley adds that the CSU district manager Peter Jochum did not refer him to Michael Frieser — the CSU member of the Bundestag for Nuremberg South, at the same time CSU district chairman for Nuremberg-Fürth-Schwabach. Frieser sits in the Bundestag, sits on the right committees, is only one constituency boundary away. But he is <em>not responsible</em>. Hans Ley concludes:</p>
+
+<blockquote>
+<p>That is how the system works. Everyone stays within their remit. No one takes a step beyond it. The concern falls into nothingness — and no one has done anything wrong.</p>
+</blockquote>
+
+<h3>Ninth reply — Anke Löffler</h3>
+
+<blockquote>
+<p>in the CDU in North Rhine-Westphalia, constituencies that do not have their own CDU member of the Bundestag are represented by a CDU colleague from a neighbouring constituency. That the CSU handles this differently is news to me. But the CSU regional group could certainly give you information on this. [...] Once again: Mr Linnemann simply cannot manage to respond to all enquiries. And please do not forget that, in addition to his “job” as CDU Secretary General, he is also involved, as deputy parliamentary group leader for labour and social affairs, in difficult reform projects. All of this costs a great deal of time and energy.</p>
+</blockquote>
+
+<p>The fourth referral. This time to the CSU regional group. With the additional reference to Linnemann's workload as a closing gesture.</p>
+
+<h3>Last letter — Hans Ley to Anke Löffler, early 2026</h3>
+
+<p>Hans Ley announces an essay — <em>Kein Anschluss unter dieser Nummer</em> (“The number you have dialled is not available”), an anonymised documentation of the process. He offers Linnemann the opportunity to comment before publication and to correct any errors. He writes:</p>
+
+<blockquote>
+<p>Why am I doing this? Because I want to practise the fairness that the German system has consistently denied me in over forty years of work as an inventor. I am documenting — but I am documenting fairly.</p>
+</blockquote>
+
+<p>No reply comes. Linnemann lets the opportunity to comment pass. Carsten Linnemann has not replied to Hans Ley personally since 8 November 2023 — over two years of radio silence from an addressee who in April 2023 still replied personally from his holiday.</p>
+
+<h2><span class="section-num">IV</span> The Anatomy of the Referral Chain</h2>
+
+<p>The documented process is not a random chain of unfortunate circumstances. It follows a recurring logic that can be described in four stages — and in a fifth stage of erosion over time, which becomes visible only across the three-year span.</p>
+
+<p><strong>First stage — delegation.</strong> The addressee does not reply himself. A staff member replies <em>on his behalf</em>. That is not unusual for a politician with a heavy workload. But it means that the addressee does not read the letters, that direct communication between sender and addressee never takes place, that the formal obligation to reply is fulfilled without any intellectual engagement taking place. It is noteworthy that Linnemann still replied personally in April and November 2023 — delegation is therefore not the original procedure but a stage of erosion.</p>
+
+<p><strong>Second stage — referral to the constituency principle.</strong> The standard reply refers to the <em>local member of the Bundestag</em>. This phrase is not a product of the apparatus, of the staff member, but Linnemann's own figure of speech — already in April 2023, in a personally signed reply, Linnemann used exactly this turn of phrase. Ms Löffler later adopts what Linnemann himself formulated. The phrase is not a bureaucratic shell but a political method.</p>
+
+<p><strong>Third stage — amnesia.</strong> When the referral leads nowhere and the citizen documents this, the system forgets this finding by the next reply. The stock phrase is repeated as if the first attempt had not failed. This is not malice — it is the structural property of a reply apparatus that treats each individual enquiry in isolation, without storing the history. The system has no memory. It works at the level of the enquiry, not at the level of the concern.</p>
+
+<p><strong>Fourth stage — the closing gesture.</strong> If the citizen does not give up despite repeated referrals, the referral is supplemented by a workload argument. <em>Mr Linnemann simply cannot manage.</em> <em>A hundred enquiries a week.</em> <em>Time and energy.</em> This is the polite request to stop writing — disguised as sympathy for the overburdened politician. What remains is silence. The concern has not been rejected, nor has it been answered — it has disappeared into the system.</p>
+
+<p><strong>Fifth stage — the erosion curve.</strong> Over three years a measurable cooling of the replies can be observed. In April 2023 Linnemann personally writes five sentences, with an act of reading (if a misunderstanding one). In November 2023 he personally writes two sentences (<em>Thank you, Mr Ley! Continued success.</em>). In February 2024 he no longer reacts. From spring 2025 Ms Löffler replies in his name. The reading reply has become a stock phrase, the stock phrase has become delegation, delegation finally the referral to sheer volume. The erosion curve is continuous. There is no moment of rupture at which Linnemann decided against the correspondence — there is only a slow cooling until direct communication has become formal processing.</p>
+
+<h2><span class="section-num">V</span> The Black Box</h2>
+
+<p>While the official route via the politician ends in the referral chain, another route runs alongside it which sometimes has an effect — without it ever being clarified how this effect comes about.</p>
+
+<p>In the Weisser case, parallel to the political correspondence, Hans Ley used his contact with UnternehmerTUM and the Maker-Space Munich to alert Susanne Klatten (BMW) to the strategic situation via Gunda Opitz, Director Entrepreneurial Network at UnternehmerTUM — Center for Innovation and Business Creation. A few weeks later the sale to China had been averted, BMW had placed orders, other companies followed. Weisser is booked up into the third quarter of 2026. Whether the email to Klatten had the causal effect, no one knows. It may have been the trigger. It may have been one of many factors. It may have been chance.</p>
+
+<p>It is noteworthy that this line did not first come into play in 2025. As early as November 2023 Hans Ley had informed the CDU Secretary General that he had been accepted with a scholarship at the UnternehmerTUM Maker-Space — founded by Susanne Klatten and TU Munich. Linnemann had this information in front of him, in an email he read personally. He could have taken the obvious step — establishing a connection, initiating mediation, making a phone call. He did not. Instead he replied with two sentences of politeness. Two years later Hans Ley had to activate the Klatten line himself, in an emergency, without any political support. Official mediation had been refused at precisely the point at which it would have been easiest.</p>
+
+<p>This is the <em>Black Box</em> of which the preceding essay <em>Kein Anschluss unter dieser Nummer</em> already speaks. Sometimes you throw something into the system and something happens. But the system does not say what it did with the material thrown in. There is no return channel, no confirmation, no explanation. The effect — when it occurs — is a gift without a sender.</p>
+
+<p>Here lies an important observation. There are two entrances into the political system. One is visible — letters to politicians, formally answered, without effect. The other is invisible — informal networks, personal connections, curated entrances that sometimes produce an effect. Whoever does not know the invisible entrance remains dependent on the visible one, which does not work. Whoever knows it can do without the visible one. The political system is not an open stage but a multi-entrance architecture whose actual mode of operation is reserved for those who are already inside.</p>
+
+<h2><span class="section-num">VI</span> The Logic of Volume</h2>
+
+<p>Ms Löffler's replies contain a recurring argument — the justification by volume. <em>A hundred enquiries a week.</em> <em>A great deal of time and energy.</em> <em>That simply does not work.</em> It is the economic justification of the referral chain: a single politician, a single office, cannot answer every enquiry substantively.</p>
+
+<p>This justification touches something real. It is indeed the case that a CDU Secretary General who is at the same time deputy parliamentary group leader cannot read and answer each of the hundred weekly enquiries. But the justification explains more than it claims to explain. It does not explain why the hundred enquiries a week must lead to a hundred standard referrals, rather than to a hundred forwardings, a hundred concrete pieces of information, a hundred real mediations. It does not explain why a modern office with the tools available today — databases, workflow systems, AI assistants — is unable to sort concerns by their substance and forward them to the bodies that are really responsible. It does not explain why the same standard referral is repeated unchanged after failing several times.</p>
+
+<p>The logic of volume is the rationalising self-description of a system that has given up processing concerns. It replaces the function with the justification of its non-fulfilment. A hundred enquiries a week are not the problem — the problem is that the replies to all hundred are produced according to the same scheme, without the system learning from the failure of individual schemes.</p>
+
+<p>The point is not that Ms Löffler does her work badly. She does her work as it is defined. The point is that the work is defined in such a way that it cannot reach the concern. The system has withdrawn into a gesture of answering that no longer touches the substance of the concerns.</p>
+
+<h2><span class="section-num">VII</span> From the Individual Case to the Structure</h2>
+
+<p>The documented process is a single case. A hundred a week, says Ms Löffler. Multiplied by the number of members of the Bundestag, by the number of parties, by the years — we arrive at a very large number of similar processes. Each one is small. Together they produce a structural property.</p>
+
+<p>This property has a name. It is called the <em>dissolution of responsibility</em>. The apparatus of political representation is built so that responsibility wanders between office-holders until it disappears. Each refers to the next. Each is responsible only for his own area. No one takes on the overarching concern. The result is not that a responsibility is exercised wrongly — the result is that no responsibility exists any longer, because it dissolves in the handover between office-holders.</p>
+
+<p>This is the political variant of the confetti cannon. What in the media system is the simulation of dialogue is, in the political system, the simulation of representation. On the front stage there is action, reply, mediation. Backstage runs the referral machine, which sends concerns through the system until they are lost. The system cannot <em>not reply</em> — the reply is the method of not acting.</p>
+
+<p>This has consequences for industrial policy. A country in which concerns of strategic importance for industrial policy — the sale of key machine builders, the adoption of key technologies at research sites — disappear into the Black Box through referral chains is a country that no longer actively defends its industrial substance. The strategic layer is cut off, because the entrances to the strategic layer are blocked by stock phrases. Whoever still gets through gets through the invisible entrance — whoever lacks it stays outside.</p>
+
+<h2><span class="section-num">VIII</span> What Could Be Learned</h2>
+
+<p>Something constructive can be derived from this process — not as hope, but as technical observation.</p>
+
+<p>The closing of the visible entrance is not a law of nature. It is the result of a work organisation that arose at a time when the tools for processing concerns were limited. Today, with available AI assistants, workflow systems and semantic databases, sorting a hundred weekly concerns by substance, not by constituency boundary, would be a technically solvable task. There would no longer be any structural reason for the Black Box. There is only a cultural reason — the persistence of a work organisation that legitimises silence as a reply.</p>
+
+<p>The cultural question is whether the political class would be prepared to switch to a form of processing that leads the concern back to the addressee. That would be a break with the referral logic that is standard today. It would also be a break with the political self-image that describes the Black Box as a necessary protective space for overburdened politicians. In reality the Black Box is a protective space against the substance of the concerns — and the protection is paid for with the loss of the capacity for strategic learning.</p>
+
+<p>This is the final point. The Black Box protects politicians from the effort of processing. It also protects them from knowledge about the country they govern. Whoever hands over a hundred concerns a week to stock phrases learns nothing. Whoever sorts and answers all hundred by substance learns a great deal — about industries, about technologies, about the real problems of citizens. Processing would not only be a service, it would be an epistemic instrument. It would enable the learning that the closed chamber of politics no longer achieves today.</p>
+
+<hr class="dinkus">
+
+<div class="these">
+<span class="these-label">Three Theses</span>
+
+<p><strong>First thesis.</strong> The political referral chain is not the failure of individual office-holders but a structural feature of a work organisation that sorts concerns by remit and not by substance. It produces the dissolution of responsibility as routine: each refers to the next, no one takes over, the concern disappears. This is not malice, it is method.</p>
+
+<p><strong>Second thesis.</strong> The Black Box has two entrances — the visible one, which does not work, and the invisible one, which sometimes works. Whoever has the invisible entrance can do without the visible one. Whoever lacks it remains dependent on the visible one, which wears him down in the referral chain. The political system is a multi-entrance architecture whose actual mode of operation is reserved for those who are already inside.</p>
+
+<p><strong>Third thesis.</strong> The logic of volume (<em>a hundred enquiries a week</em>) is the rationalising self-description of a system that has given up processing concerns. It conceals the fact that the tools for substantive processing would be available today — and that persisting with the referral chain is a cultural, not a technical, decision. It is paid for with the loss of the capacity for strategic learning: whoever protects himself from the substance of concerns also protects himself from knowledge about the country he governs.</p>
+</div>
+
+<footer>
+<p>Diagnosis series <em>Man and Machine</em> · Paper 9 · <a href="megamaschine.html">to the overview</a></p>
+<p>14 May 2026 · Hans Ley und Claude Dedo · beyond-decay.org</p>
+<p>Preliminary work on the process: <a href="https://gu18.eu/neuer-ordner/html/kein-anschluss.html">Kein Anschluss unter dieser Nummer</a>, January 2026, gu18.eu — Hans Ley with Claude (Anthropic). There, the first anonymised documentation of the process.</p>
+</footer>
+
+</div>
+
+</body>
+</html>
