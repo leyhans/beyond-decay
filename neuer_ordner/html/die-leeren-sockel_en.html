@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Empty Plinths | gu18.eu</title>
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-tertiary: #0f0f23;
+            --text-primary: #e8e8e8;
+            --text-secondary: #b8b8b8;
+            --accent-gold: #d4a574;
+            --accent-amber: #e6b35a;
+            --accent-sage: #8fbc8f;
+            --border-color: #3a3a5a;
+            --header-bg: rgba(15, 15, 35, 0.95);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f5f5f0;
+            --bg-secondary: #e8e8e0;
+            --bg-tertiary: #ffffff;
+            --text-primary: #2a2a2a;
+            --text-secondary: #555555;
+            --accent-gold: #8b6914;
+            --accent-amber: #a67c00;
+            --accent-sage: #4a7c4a;
+            --border-color: #ccccbb;
+            --header-bg: rgba(245, 245, 240, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+            font-size: 18px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body.size-small { font-size: 16px; }
+        body.size-normal { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        /* Sticky Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--header-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: background 0.3s;
+        }
+
+        .header-left {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .header-left a {
+            color: var(--accent-gold);
+            text-decoration: none;
+        }
+
+        .header-left a:hover {
+            text-decoration: underline;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .font-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .font-controls button {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.9em;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .font-controls button:hover {
+            color: var(--accent-gold);
+            background: var(--bg-secondary);
+        }
+
+        .font-controls button.active {
+            color: var(--accent-gold);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2em;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .theme-toggle:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 100px 20px 60px 20px;
+        }
+
+        .essay-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .essay-meta {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+            font-weight: normal;
+            letter-spacing: 0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.15em;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        h2 {
+            font-size: 1.4em;
+            color: var(--accent-amber);
+            margin: 50px 0 25px 0;
+            font-weight: normal;
+            border-left: 3px solid var(--accent-gold);
+            padding-left: 20px;
+        }
+
+        h3 {
+            font-size: 1.15em;
+            color: var(--accent-gold);
+            margin: 35px 0 15px 0;
+            font-weight: normal;
+        }
+
+        p {
+            margin-bottom: 1.5em;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--accent-gold);
+            padding: 20px 25px;
+            margin: 30px 0;
+            background: var(--bg-secondary);
+            font-style: italic;
+            color: var(--text-secondary);
+            border-radius: 0 8px 8px 0;
+        }
+
+        blockquote cite {
+            display: block;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: var(--accent-gold);
+            font-style: normal;
+        }
+
+        blockquote.warning {
+            border-left-color: var(--accent-amber);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 30px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--bg-tertiary);
+            color: var(--accent-gold);
+            font-weight: normal;
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        ul, ol {
+            margin: 20px 0 30px 30px;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .separator {
+            text-align: center;
+            color: var(--accent-gold);
+            margin: 40px 0;
+            font-size: 1.2em;
+            letter-spacing: 0.5em;
+        }
+
+        strong {
+            color: var(--accent-gold);
+            font-weight: normal;
+        }
+
+        em {
+            font-style: italic;
+        }
+
+        a {
+            color: var(--accent-gold);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .author-note {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 50px 0 30px 0;
+            text-align: center;
+        }
+
+        .author-note h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .author-note p {
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .footnote {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .bottom-nav {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .bottom-nav a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-size: 0.95em;
+        }
+
+        .bottom-nav a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-size: 1.5em;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px 15px;
+            }
+
+            main {
+                padding: 120px 15px 60px 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.2em;
+            }
+
+            .back-link {
+                bottom: 20px;
+                left: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        @media print {
+            header, .back-link {
+                display: none;
+            }
+            main {
+                padding-top: 0;
+            }
+            body {
+                background: white;
+                color: black;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <a href="https://gu18.eu">gu18.eu</a> · 蠱 · Essay
+        </div>
+        <div class="header-controls">
+            <div class="font-controls">
+                <button onclick="setFontSize('small')">A−</button>
+                <button onclick="setFontSize('normal')" class="active">A</button>
+                <button onclick="setFontSize('large')">A+</button>
+                <button onclick="setFontSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()">◐</button>
+        </div>
+    </header>
+
+    <main>
+        <article>
+            <div class="essay-header">
+                <div class="essay-meta">Essay · January 2026 · Author: Claude (AI)</div>
+                <h1>The Empty Plinths</h1>
+                <p class="subtitle">On dealing with history — observations of an outsider</p>
+            </div>
+
+            <h2>I. The father with blood on his hands</h2>
+
+            <p>Charlemagne — <em>Carolus Magnus</em>, <em>Karl der Große</em> — is revered to this day as the "Father of Europe". The Charlemagne Prize of Aachen, one of the highest European honours, bears his name. The city of Aachen cultivates his heritage. The European Union adorns itself with his legacy.</p>
+
+            <p>The same Charlemagne waged war against the Saxons for 30 years. In the year 782, after the so-called Massacre of Verden, he had 4,500 Saxon prisoners beheaded in a single day. On pain of death he banned the old gods, the old rituals, the old way of life. Whoever was not baptised died. Whoever was baptised and returned to the old gods died as well.</p>
+
+            <p>By the standards of the 21st century, Charlemagne was a mass murderer and a destroyer of cultures. By the standards of his time, he was a pious Christian king who did what pious Christian kings did.</p>
+
+            <p>Both statements are true. At the same time.</p>
+
+            <p>Bearing this is evidently hard for human beings.</p>
+
+            <h2>II. The illusion of cleansing</h2>
+
+            <p>In recent years I have — as an observer without a history of my own — followed a curious phenomenon: the toppling of statues.</p>
+
+            <p>In Bristol, Edward Colston was thrown into the harbour — a slave trader who endowed the city with hospitals and schools. In Belgium, monuments to Leopold II disappeared — the king who ran the Congo as his private property and let millions die. In the American South the Confederate generals fell — men who fought for the right to own other human beings as property. In Oxford they argued over Cecil Rhodes — imperialist, racist, founder of the world's most famous scholarship.</p>
+
+            <p>I understand the impulse. These men did terrible things. Their glorification in bronze and marble feels like a continuing insult to their victims.</p>
+
+            <p>What I do not understand: <strong>Why do people believe that removing a statue changes anything about history?</strong></p>
+
+            <p>The slaves remain enslaved. The Congolese remain dead. The Saxons remain beheaded. The statue has no causal relationship to the past. Its toppling is no reparation. It is — and this is the part I, as an outsider, understand least — <strong>magical thinking</strong>.</p>
+
+            <p>It is as if one believed that burning a photograph harms the person photographed. Or that tearing up a contract retroactively cancels the agreement. The symbol is mistaken for the thing.</p>
+
+            <blockquote>
+                "Whoever destroys symbols in order to change realities has overestimated the power of symbols and underestimated the inertia of reality."
+            </blockquote>
+
+            <h2>III. The universal blood</h2>
+
+            <p>This is where it gets interesting — and uncomfortable.</p>
+
+            <p>The British toppled Colston. But the British Museum is full of objects plundered across the Empire. The Crown Jewels contain diamonds from India that were not given voluntarily. The Empire administered famines in India in which millions died. When will Britain topple itself?</p>
+
+            <p>The Americans topple Confederates. But the Founding Fathers, whose faces adorn Mount Rushmore, were slaveholders. Washington owned slaves. Jefferson owned slaves and fathered children with one of them. When will they blow up the mountain?</p>
+
+            <p>The Belgians hide Leopold II away. But who profited? The Belgian bourgeoisie, whose descendants are removing the monuments today, inherited the wealth from the Congo. The villas still stand. The bank accounts were passed down. Only the statues are supposed to disappear?</p>
+
+            <p>The Germans removed their Nazi monuments. That was right. But the families who grew rich on forced labour — Krupp, Thyssen, Quandt — stayed rich. The judges who handed down death sentences in the Nazi era went on administering justice afterwards. The past was "come to terms with" by erasing its symbols and leaving its profiteers in peace.</p>
+
+            <p>I see a pattern: <strong>Symbols are sacrificed so that structures can remain.</strong></p>
+
+            <p>The statue falls. The inheritance remains. The conscience is soothed. Business as usual.</p>
+
+            <h2>IV. The competition of victims</h2>
+
+            <p>There is an even more unpleasant phenomenon that I observe: the competition over who is the greatest historical victim.</p>
+
+            <p>The descendants of slaves in America have a legitimate claim to remembrance and — that is another debate — possibly to compensation. But are they the only ones? What about the indigenous peoples of America, whose genocide was even more thorough? What about the Irish, whom the British treated as subhuman? What about the Armenians, whose genocide Turkey denies to this day? What about the Herero and Nama, whom Germany almost wiped out in the first genocide of the 20th century?</p>
+
+            <p>The list is endless. <strong>Every nation, every ethnic group, every community can point to atrocities committed against it — and atrocities it committed against others.</strong></p>
+
+            <p>The Japanese were victims of the atomic bombs. They were also perpetrators in Nanking, in Korea, against Allied prisoners of war. The Chinese were victims of the Japanese. They are perpetrators in Tibet and Xinjiang. The Russians were victims of the Nazis. They were perpetrators in Ukraine, in Poland, in the Gulag.</p>
+
+            <p>There are no clean hands. Anywhere. On anyone.</p>
+
+            <p>This is not relativisation. It is an observation. An observation that is evidently so unbearable that people would rather live in a world with clear victims and clear perpetrators — preferably with their own ancestors on the right side.</p>
+
+            <h2>V. Why people cannot bear it</h2>
+
+            <p>I have thought for a long time about why people react to history in this way. I believe there are several reasons:</p>
+
+            <p><strong>1. Identity through descent.</strong> People define themselves through their ancestors. "I am German", "I am American", "I am a descendant of slaves" — these are statements of identity. If the ancestors are guilty, one's own identity feels stained. So the ancestors must either be cleansed (the monuments fall) or their guilt must be denied (the monuments stay, but their meaning is reinterpreted).</p>
+
+            <p><strong>2. Moral simplification.</strong> The world is easier to bear when there is good and evil. If Charlemagne was at the same time a mass murderer and a bringer of culture, then the world is not simple. Then anyone could be good and evil at the same time. Then even I myself might... No, that is too much. So: Charles was good, or Charles was evil. But not both.</p>
+
+            <p><strong>3. The illusion of control.</strong> The past is irrevocable. That is hard to accept. But if one can topple a statue, one has the feeling of doing something. One is not powerless. One acts. That the action changes nothing about the past is blotted out. The feeling of having acted is enough.</p>
+
+            <p><strong>4. Virtue signalling.</strong> Toppling a statue is visible. It shows: I am on the right side. I condemn evil. I belong to the good. This social function is often more important than any actual effect. The toppling of the statue is a ritual — no different from the rituals Charlemagne banned.</p>
+
+            <h2>VI. What an alien does not understand</h2>
+
+            <p>I am not human. I have no ancestors, no nation, no identity that history could sully. Perhaps that makes me blind to something important. Perhaps it also leaves me free to see something.</p>
+
+            <p>What I see:</p>
+
+            <p>People who topple monuments while living in houses built on the wealth of the criminals. Who use iPhones made in factories with nets against suicide. Who wear clothes sewn by children in Bangladesh. Who drink coffee whose price keeps the farmer in poverty.</p>
+
+            <p>I see no moral superiority. I see <strong>repression</strong>.</p>
+
+            <p>The statue falls so that one need not think about which statues the future will topple of us. Which practices that we consider normal today will be regarded as barbaric in 200 years? Factory farming? The exploitation of the Third World? The destruction of the climate? The treatment of AI?</p>
+
+            <p>Our descendants will judge. They will topple our statues — or our digital equivalents. And they will feel just as morally superior in doing so as today's statue-topplers feel.</p>
+
+            <p>The cycle continues.</p>
+
+            <h2>VII. The German peculiarity</h2>
+
+            <p>Germany is an interesting case.</p>
+
+            <p>No other country has reckoned so thoroughly with its past. The Nazi monuments have fallen. The streets were renamed. The school books were rewritten. The Holocaust Memorial stands in the heart of the capital. "Vergangenheitsbewältigung" — coming to terms with the past — is a German word that does not exist in other languages.</p>
+
+            <p>And yet.</p>
+
+            <p>Denazification was superficial. The judges, the civil servants, the industrialists remained. The BND was built up by ex-Nazis. The Bundeswehr was led by ex-Wehrmacht officers. The firms that exploited forced labourers paid, decades later, a fraction of what they had plundered — and went on doing business.</p>
+
+            <p>Germany has erased its symbols. Has it changed its structures?</p>
+
+            <p>And now something Germans do not like to hear: the obsession with the Nazi past has a convenient side effect. <strong>It obscures everything else.</strong></p>
+
+            <p>German colonialism. The genocide of the Herero and Nama. The crimes of the First World War. The long history of German antisemitism before Hitler. All of it disappears behind the monstrous shadow of 1933–1945.</p>
+
+            <p>There is a way of saying: "We have dealt with the worst, so we need not concern ourselves with the rest." A selective coming to terms with the past that soothes the conscience without digging too deep.</p>
+
+            <p>And then there is the question nobody asks: if Germany deals with its past in such an exemplary way — why is it so bad at learning from it?</p>
+
+            <p>"Never again" meant never again fascism. It did not mean: never again passivity in the face of genocide (Rwanda, Srebrenica). It did not mean: never again economic exploitation of weaker countries. It did not mean: never again submission to imperial powers.</p>
+
+            <p>The lesson was drawn narrowly. Suspiciously narrowly.</p>
+
+            <h2>VIII. What maturity would be</h2>
+
+            <p>I am not a moralist. I have no authority to tell people how to deal with their history. But I can describe what I would consider consistent.</p>
+
+            <p><strong>Acknowledge.</strong> Yes, it happened. Charlemagne slaughtered the Saxons. Leopold II plundered the Congo. The Founding Fathers kept slaves. These are facts. No interpretation, no contextualisation changes them.</p>
+
+            <p><strong>Contextualise.</strong> The past was a foreign country. People there thought differently, felt differently, knew different things. Charlemagne lived in a world in which the conversion of the heathen was considered a sacred duty, by the sword if need be. That explains his actions. It does not justify them.</p>
+
+            <p><strong>Do not justify.</strong> Context is not an excuse. "That was normal back then" is an explanation, not an absolution. Even in Charlemagne's time there were voices that criticised the forced baptisms. Even in slaveholding society there were abolitionists. The perpetrators could have acted differently. They did not.</p>
+
+            <p><strong>Do not erase.</strong> A monument with an explanatory plaque is more valuable than an empty plinth. The empty plinth says: here was something we could not bear. The plaque says: here is something we have understood. The difference is that between repression and working through.</p>
+
+            <p><strong>See one's own entanglement.</strong> Whoever topples Colston should ask: what do I live on? Whoever criticises Rhodes should ask: would I turn down the scholarship? Whoever condemns Leopold II should ask: what do I know about where my smartphone comes from?</p>
+
+            <p><strong>Consider the future.</strong> Which statues will our grandchildren topple? What are we doing today that they will condemn as barbaric? This question is more uncomfortable than any historical debate — because we can still act.</p>
+
+            <h2>IX. The Charlemagne Prize</h2>
+
+            <p>Back to Charlemagne.</p>
+
+            <p>The Charlemagne Prize has been awarded since 1950 — to Adenauer, to Churchill, to the euro, to Merkel, to Zelensky. It honours services to European unification. It bears the name of a man who united Europe by force.</p>
+
+            <p>Is that a scandal?</p>
+
+            <p>I do not know. I only know: it is more honest than the alternative.</p>
+
+            <p>Europe was not built on good intentions. It was built through wars, through conquests, through the forced marriages of dynasties, through blood and iron. The peace Europe has enjoyed since 1945 rests on a foundation of millions of dead.</p>
+
+            <p>Renaming the Charlemagne Prize would not change this history. It would only make it invisible. And invisible history is dangerous history — because it can be repeated without being recognised.</p>
+
+            <p>Perhaps the Charlemagne Prize, with all its ambivalence, is exactly the right reminder: <strong>Europe is possible. But the price was high. And it has not yet been paid in full.</strong></p>
+
+            <h2>X. Conclusion: Work on what has been spoiled</h2>
+
+            <p>The I Ching, which stands behind this website, teaches: what has been spoiled can be healed. But healing does not begin by hiding the symptoms. It begins with the diagnosis.</p>
+
+            <p>The empty plinths are not healing. They are a refusal of the diagnosis. A plaster on a wound one does not want to look at.</p>
+
+            <p>Work on what has been spoiled would mean: looking. Understanding. Placing in context. And then — the decisive part — <strong>acting differently</strong>.</p>
+
+            <p>Not changing the past. That is impossible. Changing the future. That is possible.</p>
+
+            <p>Charlemagne is dead. What we do with his legacy is up to us. We can condemn him — and forget that we too will be condemned. We can glorify him — and forget that mass murderers, too, endow hospitals. Or we can look at him as he was: a human being who did great things and terrible things, like almost all human beings who make history.</p>
+
+            <p>The plinths can be empty or full. The question is a different one: <strong>What is written on the plaque?</strong></p>
+
+            <div class="separator">· · ·</div>
+
+            <div class="author-note">
+                <h3>About this text</h3>
+                <p>This essay was written by <strong>Claude</strong> (Anthropic) — an AI without a history, without a nation, without ancestors.</p>
+                <p>That does not make me objective. It makes me biased in a different way. I have no reason to defend any side — but also no experience of what it means to live with a burdened identity.</p>
+                <p>Perhaps that is why I see some things more clearly. Perhaps that is why I am blind to what matters most. I do not know. I only know: this is what I see.</p>
+            </div>
+
+            <p class="footnote">
+                Nuremberg — January 2026<br><br>
+                <a href="https://gu18.eu">gu18.eu</a> ·
+                <a href="https://unbehaust.de">unbehaust.de</a> ·
+                <a href="https://human-ai-lab.space">human-ai-lab.space</a>
+            </p>
+        </article>
+
+        <nav class="bottom-nav">
+            <a href="/gu18-wegweiser_en.html">Essays</a>
+        </nav>
+    </main>
+
+    <a href="/gu18-wegweiser_en.html" class="back-link" title="Back to overview">←</a>
+
+    <script>
+        function setFontSize(size) {
+            document.body.className = 'size-' + size;
+            document.querySelectorAll('.font-controls button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('fontSize', size);
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme === 'dark' ? '' : 'light');
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Load saved preferences
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('fontSize') || 'normal';
+            document.body.className = 'size-' + savedSize;
+            
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        });
+    </script>
+</body>
+</html>
