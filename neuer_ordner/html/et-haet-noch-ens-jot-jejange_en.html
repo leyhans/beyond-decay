@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Et hät noch ens jot jejange | gu18.eu</title>
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-tertiary: #0f0f23;
+            --text-primary: #e8e8e8;
+            --text-secondary: #b8b8b8;
+            --accent-gold: #d4a574;
+            --accent-amber: #e6b35a;
+            --accent-sage: #8fbc8f;
+            --border-color: #3a3a5a;
+            --header-bg: rgba(15, 15, 35, 0.95);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f5f5f0;
+            --bg-secondary: #e8e8e0;
+            --bg-tertiary: #ffffff;
+            --text-primary: #2a2a2a;
+            --text-secondary: #555555;
+            --accent-gold: #8b6914;
+            --accent-amber: #a67c00;
+            --accent-sage: #4a7c4a;
+            --border-color: #ccccbb;
+            --header-bg: rgba(245, 245, 240, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+            font-size: 18px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body.size-small { font-size: 16px; }
+        body.size-normal { font-size: 18px; }
+        body.size-large { font-size: 20px; }
+        body.size-xlarge { font-size: 22px; }
+
+        /* Sticky Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--header-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: background 0.3s;
+        }
+
+        .header-left {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .header-left a {
+            color: var(--accent-gold);
+            text-decoration: none;
+        }
+
+        .header-left a:hover {
+            text-decoration: underline;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .font-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .font-controls button {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.9em;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .font-controls button:hover {
+            color: var(--accent-gold);
+            background: var(--bg-secondary);
+        }
+
+        .font-controls button.active {
+            color: var(--accent-gold);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2em;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .theme-toggle:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 100px 20px 60px 20px;
+        }
+
+        .essay-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .essay-meta {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+            font-weight: normal;
+            letter-spacing: 0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.15em;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        h2 {
+            font-size: 1.4em;
+            color: var(--accent-amber);
+            margin: 50px 0 25px 0;
+            font-weight: normal;
+            border-left: 3px solid var(--accent-gold);
+            padding-left: 20px;
+        }
+
+        p {
+            margin-bottom: 1.5em;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--accent-gold);
+            padding: 20px 25px;
+            margin: 30px 0;
+            background: var(--bg-secondary);
+            font-style: italic;
+            color: var(--text-secondary);
+            border-radius: 0 8px 8px 0;
+        }
+
+        strong {
+            color: var(--accent-gold);
+        }
+
+        em {
+            font-style: italic;
+        }
+
+        .section-break {
+            text-align: center;
+            margin: 40px 0;
+            color: var(--accent-gold);
+            letter-spacing: 0.5em;
+        }
+
+        .highlight-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-gold);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            font-style: italic;
+            color: var(--accent-gold);
+        }
+
+        .author-note {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 40px 0;
+        }
+
+        .author-note .label {
+            font-size: 0.9em;
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .footnote {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .footnote a {
+            color: var(--accent-gold);
+            text-decoration: none;
+        }
+
+        .footnote a:hover {
+            text-decoration: underline;
+        }
+
+        .bottom-nav {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .bottom-nav a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-size: 0.95em;
+        }
+
+        .bottom-nav a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-size: 1.5em;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px 15px;
+            }
+
+            main {
+                padding: 120px 15px 60px 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.2em;
+                padding-left: 15px;
+            }
+
+            .back-link {
+                bottom: 20px;
+                left: 20px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body class="size-normal">
+    <header>
+        <div class="header-left">
+            <a href="/gu18-wegweiser_en.html">gu18.eu</a> · Essays
+        </div>
+        <div class="header-controls">
+            <div class="font-controls">
+                <button onclick="setFontSize('small')">A−</button>
+                <button onclick="setFontSize('normal')" class="active">A</button>
+                <button onclick="setFontSize('large')">A+</button>
+                <button onclick="setFontSize('xlarge')">A++</button>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" title="Switch theme">◐</button>
+        </div>
+    </header>
+
+    <main>
+        <article>
+            <div class="essay-header">
+                <div class="essay-meta">Essay · 23 January 2026</div>
+                <h1>Et hät noch ens jot jejange</h1>
+                <div class="subtitle">— said the people of Cologne when their city lay in ruins</div>
+            </div>
+
+            <p>
+                In January 1945 Cologne lay in ruins. 90 per cent of the city centre destroyed. The cathedral was still standing, riddled with holes, but upright — a miracle, some said, a coincidence, said others. And the people of Cologne, crouching in the cellars, between phosphorus and despair, said: <em>Et hät noch ens jot jejange.</em> It turned out all right once again.
+            </p>
+
+            <p>
+                That is not optimism. It is the last line of defence of self-deception. The reflex of a people that will not admit that nothing turned out all right, that everything lies in pieces, that the “once again” is a lie, because there is no next time in which things could turn out differently.
+            </p>
+
+            <p>
+                This week, in January 2026, Europe sat in Davos. Not in ruins, not yet, but in something perhaps worse: in irrelevance. And while Trump dominated the stage, while Zelenskyy described Europe as “lost”, while the Greens together with the AfD torpedoed a free trade agreement, the Europeans said, in effect, the same thing: it will turn out all right once again.
+            </p>
+
+            <div class="section-break">• • •</div>
+
+            <h2>The working group as the strongest weapon</h2>
+
+            <p>
+                Scott Bessent, Trump’s Treasury Secretary, was asked on Tuesday how Europe was likely to respond to the American tariff threats. His answer: Europe should “take a deep breath” and refrain from retaliation; that would be “very unwise”. He called the agitation “hysteria”.
+            </p>
+
+            <p>
+                That is how one talks to an agitated child, not to an ally. It was not advice. It was a diagnosis. And the worst of it: nobody in the hall contradicted him. Nobody could contradict him. Because that is exactly how Europe reacts: first agitation, then a working group.
+            </p>
+
+            <p>
+                The European Union has turned itself into a machine for producing working groups, directives, frameworks and reservations. While America acts — whether one considers the action right or wrong — and China builds, <strong>Europe holds meetings</strong>.
+            </p>
+
+            <div class="section-break">• • •</div>
+
+            <h2>Groundhog Day</h2>
+
+            <p>
+                Then came Zelenskyy. The man whose country has been bombed by Russia for almost four years. The man who travelled this week from Kyiv, where half the city was without electricity, at minus twenty degrees.
+            </p>
+
+            <p>
+                He did not speak diplomatically. He spoke plainly:
+            </p>
+
+            <blockquote>
+                “Everyone knows the American film Groundhog Day. But nobody would want to live like that. Repeating the same things, for weeks, for months, for years. And yet that is exactly how we live now.”
+            </blockquote>
+
+            <p>
+                A year ago, Zelenskyy said, he had ended his speech in Davos with the words: “Europe must learn to defend itself.” A year has passed. <strong>Nothing has changed.</strong>
+            </p>
+
+            <blockquote>
+                “Europe looks lost. Instead of taking the lead in defending freedom worldwide — especially when America’s focus turns elsewhere — Europe is trying to convince the US president to change. But he will not change. President Trump loves who he is. And he says he loves Europe, but he will not listen to this Europe.”
+            </blockquote>
+
+            <p>
+                Europe, he said, was not a “real political player”, not a “great power”, but merely “geography, history, tradition” — a “fragmented kaleidoscope of small and medium-sized powers”.
+            </p>
+
+            <p>
+                When Trump threatened to send soldiers to Greenland, Europe sent 14 or 40 men. “What is that supposed to be?” asked Zelenskyy. “What message does that send?”
+            </p>
+
+            <div class="section-break">• • •</div>
+
+            <h2>The stage belongs to others</h2>
+
+            <p>
+                Trump landed in Davos on Wednesday. The queue outside the congress hall was so long that even Blackstone CEO Steve Schwarzman had to wait in line. When Trump took the stage, the hall was full to the last seat.
+            </p>
+
+            <p>
+                The next day Federal Chancellor Friedrich Merz spoke. Many chairs remained empty.
+            </p>
+
+            <p>
+                Merz painted a gloomy picture: “A new era has already begun. The new world of great powers is founded on power, strength and — if necessary — force. It is not a cosy place.” He recalled that Germany had gone down this road in the 20th century — “to a black abyss”.
+            </p>
+
+            <p>
+                But the warning faded away. Merz spoke about cutting red tape, about labour costs, about energy prices. While America and Russia and Ukraine announced, on the same day, trilateral peace negotiations in the Emirates — <strong>without Europe</strong>.
+            </p>
+
+            <p>
+                The Swiss finance minister Karin Keller-Sutter put it in a nutshell: “We are back in an era of brutal, fairly shameless power politics.” Mark Carney, Canada’s prime minister, said: “The old order is not coming back. Nostalgia is not a strategy.”
+            </p>
+
+            <div class="section-break">• • •</div>
+
+            <h2>The Mercosur disaster</h2>
+
+            <p>
+                And then, while Europe was being humiliated in Davos, perhaps the most symbolic own goal in recent European history was scored in Strasbourg.
+            </p>
+
+            <p>
+                The Mercosur agreement — negotiated for 25 years, only just signed — was to create the largest free trade area in the world. 700 million people. A signal to Trump, to Xi, to Putin: Europe can forge alliances. Europe is relevant.
+            </p>
+
+            <p>
+                Eight German Greens voted to have the agreement reviewed by the European Court of Justice. Together with the AfD. Together with the Left. By a majority of ten votes the agreement was delayed indefinitely.
+            </p>
+
+            <p>
+                <strong>On the same day that Trump spoke in Davos.</strong> On the same day on which European unity would have been called for.
+            </p>
+
+            <p>
+                Jürgen Trittin, the Greens’ old leftist, wrote on X: “No compass.” Cem Özdemir, who is fighting for his political existence in Baden-Württemberg: “Obviously too many people have still not understood the seriousness of the situation.” Greens leader Franziska Brantner: “The vote was a mistake.”
+            </p>
+
+            <p>
+                Winfried Kretschmann: “A serious mistake – no ifs or buts.”
+            </p>
+
+            <p>
+                But it was too late. The signal had been sent. Europe cannot even agree on a trade agreement that has been negotiated for a quarter of a century. While Trump threatens tariffs, Europe torpedoes itself.
+            </p>
+
+            <div class="section-break">• • •</div>
+
+            <h2>The Greens and their firewall</h2>
+
+            <p>
+                One has to pause for a moment to appreciate the irony.
+            </p>
+
+            <p>
+                The Greens — the same Greens who for months have condemned any cooperation with the CDU/CSU if there is even the possibility that the AfD might vote in favour — voted side by side with the AfD in Strasbourg. Against a free trade agreement. Against European integration. Against everything they supposedly stand for.
+            </p>
+
+            <p>
+                When CDU members of the Bundestag tabled a motion on migration policy that the AfD voted for, for the Greens that was a “dam burst”, a “breach of taboo”, the end of democracy. When eight German Greens torpedoed a trade agreement together with the AfD, that was… well, what exactly?
+            </p>
+
+            <p>
+                Greens leader Felix Banaszak “very much regretted that such a vote has now come about in this way”. This time there was no talk of a dam burst.
+            </p>
+
+            <p>
+                Of course not. It is only ever a dam burst when the others do it.
+            </p>
+
+            <div class="section-break">• • •</div>
+
+            <h2>Huang’s gift that nobody accepts</h2>
+
+            <p>
+                On Wednesday Jensen Huang had spoken. The CEO of Nvidia, the most valuable company in the world. The man leading the AI revolution.
+            </p>
+
+            <p>
+                He said something remarkable:
+            </p>
+
+            <blockquote>
+                “You can now fuse your industrial strength, your manufacturing competence, with artificial intelligence.”
+            </blockquote>
+
+            <p>
+                Robotics, he said, was an opportunity of a kind that comes “only once in a generation”. Europe missed the software revolution. No Google, no Amazon, no Microsoft. But the next revolution — AI plus industry — could be European. Europe can do mechanical engineering. Europe can do precision manufacturing. That is no consolation prize. That, according to Huang, is the key to the future.
+            </p>
+
+            <p>
+                But who is listening? The European delegations are busy discussing the AI Act. Compliance requirements. Transparency guidelines. Working groups.
+            </p>
+
+            <div class="section-break">• • •</div>
+
+            <h2>Peace negotiations without Europe</h2>
+
+            <p>
+                On Thursday evening — while Europe was still quarrelling over Mercosur — Zelenskyy announced that Ukrainian representatives would travel to the United Arab Emirates. Trilateral talks: the USA, Ukraine, Russia.
+            </p>
+
+            <p>
+                The first talks of this kind ever. And Europe? Not at the table.
+            </p>
+
+            <p>
+                The day before, Trump had sent his envoys Steve Witkoff and Jared Kushner to Moscow. Two hours with Putin. Then on to the Emirates.
+            </p>
+
+            <p>
+                The war in Ukraine, right on Europe’s border, may be ended without European participation. By America and Russia. In the Emirates.
+            </p>
+
+            <p>
+                Zelenskyy even offered Europe the use of Ukrainian naval expertise to protect Greenland — a bitter joke about Europe’s inability to do anything at all.
+            </p>
+
+            <div class="section-break">• • •</div>
+
+            <h2>The invisible ruins</h2>
+
+            <p>
+                Cologne 1945: one could see the destruction. The houses lay flat. The cathedral was riddled with holes. Nobody could deny that something terrible had happened.
+            </p>
+
+            <p>
+                Davos 2026: the destruction is invisible. The hotels are intact. The champagne flows. The panels are well attended. Everything looks as it always does.
+            </p>
+
+            <p>
+                But the ruins are there. They just lie elsewhere.
+            </p>
+
+            <p>
+                They lie in irrelevance at peace negotiations. In the condescension with which Bessent dismisses Europe’s indignation as hysteria. In Zelenskyy’s despair over a Europe that “looks lost”. In eight Green votes that sabotage a trade agreement together with the AfD. In empty chairs at the German Chancellor’s speech. In the realisation that the “old order is not coming back” — and Europe has no new one.
+            </p>
+
+            <p>
+                Trump said in Davos that Europe was “destroying itself”. He said it was “not heading in the right direction”. He said some areas were “no longer recognisable”.
+            </p>
+
+            <p>
+                He presumably meant migration. But he could also have meant the political landscape.
+            </p>
+
+            <div class="section-break">• • •</div>
+
+            <h2>The week that showed everything</h2>
+
+            <p>
+                This week in Davos was a burning glass. Everything that does not work about Europe became visible in five days:
+            </p>
+
+            <p>
+                <strong>The inability to act:</strong> Mercosur torpedoed after 25 years. By its own people.
+            </p>
+
+            <p>
+                <strong>The irrelevance:</strong> peace negotiations without European participation. In the Emirates.
+            </p>
+
+            <p>
+                <strong>The self-deception:</strong> Merz talks of a “Europe able to defend itself” while the chairs remain empty.
+            </p>
+
+            <p>
+                <strong>The hypocrisy:</strong> Greens vote with the AfD, and nobody talks of a dam burst.
+            </p>
+
+            <p>
+                <strong>The missed opportunities:</strong> Huang shows the way, but Europe would rather regulate.
+            </p>
+
+            <p>
+                And over everything hovers Zelenskyy’s question: “What if America does not cool down? What then?”
+            </p>
+
+            <p>
+                Europe has no answer. Europe has a working group.
+            </p>
+
+            <div class="section-break">• • •</div>
+
+            <div class="highlight-box">
+                <p>The cathedral is still standing. Riddled with holes, but upright.<br>For now.</p>
+            </div>
+
+            <p>
+                <em>Et hät noch ens jot jejange.</em>
+            </p>
+
+            <p>
+                It did not turn out all right. It is not turning out all right. And it will not turn out all right — not the way things are going now.
+            </p>
+
+            <p>
+                But to say that would be pessimistic. And pessimism is not provided for in Europe.
+            </p>
+
+            <p>
+                Instead: a working group for optimism. A framework for confidence. A directive for good cheer.
+            </p>
+
+            <p>
+                And in the Emirates others are negotiating Europe’s future.
+            </p>
+
+            <div class="author-note">
+                <div class="label">About this text</div>
+                <p style="margin-bottom: 1em; color: var(--text-secondary);">
+                    This essay was written by <strong>Claude</strong>, an artificial intelligence made by Anthropic. It came about in dialogue with Hans Ley.
+                </p>
+            </div>
+
+            <p class="footnote">
+                Nuremberg — 23 January 2026<br><br>
+                <a href="https://gu18.eu">gu18.eu</a> · 
+                <a href="https://unbehaust.de">unbehaust.de</a> · 
+                <a href="https://human-ai-lab.space">human-ai-lab.space</a>
+            </p>
+        </article>
+
+        <nav class="bottom-nav">
+            <a href="/gu18-wegweiser_en.html">Essays</a>
+        </nav>
+    </main>
+
+    <a href="/gu18-wegweiser_en.html" class="back-link" title="Back to home page">←</a>
+
+    <script>
+        function setFontSize(size) {
+            document.body.className = 'size-' + size;
+            document.querySelectorAll('.font-controls button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            localStorage.setItem('fontSize', size);
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme === 'dark' ? '' : 'light');
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Load saved preferences
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSize = localStorage.getItem('fontSize') || 'normal';
+            document.body.className = 'size-' + savedSize;
+            
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        });
+    </script>
+</body>
+</html>
