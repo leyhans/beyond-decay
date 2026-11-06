@@ -1,0 +1,236 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Neuwerden</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Neuwerden – ein Planspiel für vernetztes Denken nach der Methode von Frederic Vester. Hans Ley & Claude Dedo, beyond-decay.org">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: links Steuerpult, rechts Wirkungskette und Verlauf; darunter Protokoll, Karten und Anleitung */
+:root{
+ --bg:#f2f3ef;--surface:#fff;--fg:#1d2320;--muted:#5d6964;--line:#d6dad3;--accent:#355f8c;--accent-soft:#e4ecf4;--warn:#b5651d;--bad:#a8322d;--good:#2f7d4f;
+ --c1:#355f8c;--c2:#2f7d4f;--c3:#7a4b9c;--c4:#c08a12;--c5:#4d5c58;--c6:#a8322d;--c7:#b04a7a;--c8:#1d8a8a;
+ --f-display:"Literata",Georgia,serif;--f-body:"IBM Plex Sans",system-ui,sans-serif;--f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#131715;--surface:#1b201e;--fg:#e5e8e3;--muted:#9ba69f;--line:#303834;--accent:#86b3e0;--accent-soft:#1f2c3a;--warn:#e0a060;--bad:#f07c74;--good:#7cc39c;--c1:#86b3e0;--c2:#7cc39c;--c3:#c39be3;--c4:#e8c25a;--c5:#aab7b2;--c6:#f07c74;--c7:#e88bb7;--c8:#62d0d0;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#131715;--surface:#1b201e;--fg:#e5e8e3;--muted:#9ba69f;--line:#303834;--accent:#86b3e0;--accent-soft:#1f2c3a;--warn:#e0a060;--bad:#f07c74;--good:#7cc39c;--c1:#86b3e0;--c2:#7cc39c;--c3:#c39be3;--c4:#e8c25a;--c5:#aab7b2;--c6:#f07c74;--c7:#e88bb7;--c8:#62d0d0;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:14px;line-height:1.4;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-block:14px 32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:12px}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px}
+h1{font-family:var(--f-display);font-size:1.5rem;margin:0}
+.sub{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:minmax(0,430px) minmax(0,1fr);gap:12px}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px;display:grid;gap:10px;min-width:0}
+h2{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0;font-weight:600}
+.meta{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--f-mono);font-size:13px}
+.meta b{font-size:18px;color:var(--accent)}
+.state{display:grid;gap:5px}
+.row{display:grid;grid-template-columns:140px 1fr 34px;align-items:center;gap:8px}
+.lbl{font-size:13px;white-space:nowrap}
+.lbl small{color:var(--muted)}
+.bar{position:relative;height:12px;background:var(--bg);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.bar i{position:absolute;inset:0 auto 0 0;border-radius:2px}
+.row .v{font-family:var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
+.alloc{display:grid;gap:6px}
+.arow{display:grid;grid-template-columns:140px auto 1fr;align-items:center;gap:8px}
+.step{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.step button{font:inherit;width:30px;height:28px;border:0;background:var(--bg);color:var(--fg);cursor:pointer;font-size:16px}
+.step button:disabled{opacity:.35;cursor:default}
+.step output{min-width:38px;text-align:center;font-family:var(--f-mono)}
+.hint{font-size:12px;color:var(--muted)}
+.btns{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{font:inherit;font-weight:600;border:1px solid var(--accent);background:var(--accent);color:var(--bg);border-radius:6px;padding:7px 14px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:disabled{opacity:.4;cursor:default}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.chain{font-family:var(--f-mono);font-size:12.5px;display:grid;gap:2px;max-height:380px;overflow:auto}
+.chain div{display:grid;grid-template-columns:minmax(0,1fr) 48px 70px;gap:6px;padding:3px 6px;border-radius:4px}
+.chain div:nth-child(odd){background:var(--bg)}
+.chain .zero{color:var(--muted)}
+.chain .stop{background:var(--bad)!important;color:var(--bg)}
+.chain .head{font-weight:600;background:var(--accent-soft)!important}
+.chart svg{width:100%;height:auto;display:block}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:12px;height:3px;border-radius:2px;display:inline-block}
+.banner{padding:10px 12px;border-radius:6px;background:var(--accent-soft);font-size:14px}
+.banner.end{border:1px solid var(--bad)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-family:var(--f-mono);font-size:12px;font-variant-numeric:tabular-nums}
+th,td{padding:4px 6px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th{color:var(--muted);font-family:var(--f-body);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+th:first-child,td:first-child{text-align:left}
+details summary{cursor:pointer}
+.rules{font-size:13.5px;max-width:80ch;display:grid;gap:6px}
+.rules p{margin:0}
+.note{font-size:12px;color:var(--muted);max-width:90ch;margin:0}
+.note a{color:var(--accent)}
+</style>
+<div class="wrap">
+ <header>
+  <h1>Neuwerden</h1>
+  <span class="sub">Ein Planspiel für vernetztes Denken nach der Methode von Frederic Vester · Hans Ley &amp; Claude Dedo · <a href="https://beyond-decay.org" style="color:inherit">beyond-decay.org</a></span>
+ </header>
+ <div class="grid">
+  <section class="panel">
+   <div class="meta"><span>Jahr <b id="round">0</b>/20</span><span>Haushaltspunkte <b id="points">10</b></span><span>Lebensbilanz <b id="score">–</b></span></div>
+   <h2>Zustand des Landes</h2>
+   <div class="state" id="state"></div>
+   <h2>Haushalt verteilen</h2>
+   <div class="alloc" id="alloc"></div>
+   <div class="hint" id="used"></div>
+   <div class="btns"><button class="btn" id="go" type="button">Jahr ausführen</button><button class="btn ghost" id="reset" type="button">Neues Spiel</button><label class="hint" style="display:inline-flex;gap:6px;align-items:center;cursor:pointer"><input type="checkbox" id="cards" checked> Ereigniskarten jedes 3. Jahr</label></div>
+  </section>
+  <section class="panel">
+   <div id="banner" class="banner"></div>
+   <h2>Was in diesem Jahr geschah</h2>
+   <div class="chain" id="chain"></div>
+   <h2>Verlauf</h2>
+   <div class="chart" id="chart"></div>
+   <div class="legend" id="legend"></div>
+  </section>
+ </div>
+ <section class="panel">
+  <details open><summary><h2 style="display:inline">So wird gespielt</h2></summary>
+  <div class="rules" style="margin-top:8px">
+   <p>Du regierst das kleine Land Neuwerden zwanzig Jahre lang. Jedes Jahr verteilst du deine Haushaltspunkte auf fünf Bereiche, die du direkt beeinflussen kannst: Wirtschaft, Naturschutz, Bildung, Versorgung (Gesundheit, Wohnen, Pflege) und Infrastruktur. Die Wirtschaft kannst du auch bremsen; das kostet ebenfalls Punkte.</p>
+   <p>Drei Größen kannst du nicht direkt steuern: die Umweltlast, die Bevölkerung und das Vertrauen der Bürger. Sie verändern sich nur über die Wirkungen der anderen. Manche Wirkungen kommen verzögert: Die Umweltlast schadet der Versorgung erst im Folgejahr, Bildung stärkt die Wirtschaft erst nach zwei Jahren.</p>
+   <p>Das Spiel endet, wenn die Wirtschaft zusammenbricht oder überhitzt (unter 0 oder über 30), die Versorgung auf null fällt, die Umweltlast 30 übersteigt, die Bevölkerung ausstirbt oder 50 überschreitet, das Vertrauen unter −10 fällt oder der Haushalt ins Minus rutscht. Wer zwanzig Jahre durchhält, hat gewonnen. Die Lebensbilanz zählt Versorgung, Vertrauen, saubere Umwelt und Bildung zusammen. Die meisten scheitern beim ersten Mal nach wenigen Jahren. Das ist gewollt.</p>
+  </div></details>
+ </section>
+ <section class="panel">
+  <h2>Protokoll</h2>
+  <div class="tbl"><table><thead><tr><th>Jahr</th><th>Wirtsch.</th><th>Natursch.</th><th>Bildung</th><th>Versorg.</th><th>Infrastr.</th><th>Umweltlast</th><th>Bevölk.</th><th>Vertrauen</th><th>Punkte</th><th>Bilanz</th></tr></thead><tbody id="log"></tbody></table></div>
+ </section>
+ <section class="panel">
+  <details><summary><h2 style="display:inline">Die 30 Ereigniskarten</h2></summary><div class="tbl" style="margin-top:8px"><table><thead><tr><th>Karte</th><th style="text-align:left">Text</th><th style="text-align:left">Wirkung</th></tr></thead><tbody id="cardlist"></tbody></table></div></details>
+ </section>
+ <p class="note">Neuwerden ist ein eigenständiges Spiel mit eigenem Modell, eigenen Wirkungsregeln und eigenen Ereigniskarten. Es folgt der Methode des vernetzten Denkens, die Frederic Vester (1925–2003) entwickelt hat, und ist ihm gewidmet. Es steht in keiner Verbindung zu den Spielen „Ökolopoly“ und „ecopolicy“ und deren Rechteinhabern. Hintergrund: <a href="https://beyond-decay.org/vergessener-denker_de.html">Ein vergessener Denker</a>.</p>
+ <p class="note"><strong>Neuwerden ist gemeinfrei.</strong> Wir verzichten auf alle Rechte an Spiel, Modell und Ereigniskarten (<a href="https://creativecommons.org/publicdomain/zero/1.0/deed.de">CC0 1.0</a>). Jeder darf es ohne Anfrage nutzen, verändern, übersetzen und weitergeben, auch im Unterricht und auch kommerziell.</p>
+</div>
+<script>
+const K=['W','N','B','V','I','L','P','T'];
+const NAME={W:'Wirtschaft',N:'Naturschutz',B:'Bildung',V:'Versorgung',I:'Infrastruktur',L:'Umweltlast',P:'Bevölkerung',T:'Vertrauen'};
+const MIN={W:0,N:0,B:0,V:0,I:0,L:0,P:0,T:-10}, MAX={W:30,N:30,B:30,V:30,I:30,L:30,P:50,T:30};
+const START={W:12,N:3,B:6,V:9,I:10,L:12,P:20,T:5};
+const STEER=['W','N','B','V','I'];
+const FAIL_LO={W:1,V:1,P:1,T:1}, FAIL_HI={W:1,L:1,P:1};
+const COL={W:'--c1',N:'--c2',B:'--c3',V:'--c4',I:'--c5',L:'--c6',P:'--c7',T:'--c8'};
+const BAD_HIGH={L:true};
+function rules(s,h,add){
+ const prev=h.length?h[h.length-1]:s, prev2=h.length>1?h[h.length-2]:prev;
+ add('Infrastruktur altert','I',()=>s.I>4?-1:0);
+ add('Wirtschaft → Umweltlast','L',()=>Math.round(2*(s.W/12)**2));
+ add('Infrastruktur → Wirtschaft','W',()=>s.I>=20?2:s.I>=10?1:0);
+ add('Infrastruktur → Umweltlast','L',()=>s.I>=15?1:0);
+ add('Naturschutz → Umweltlast','L',()=>-Math.round(s.N/4));
+ add('Naturschutz → Wirtschaft (Auflagen)','W',()=>s.N>22?-1:0);
+ add('Umwelt reinigt sich – oder kippt','L',()=>s.L>=24?2:(s.L<20&&s.L>0)?-1:0);
+ add('Umweltlast des Vorjahres → Versorgung','V',()=>{const L=prev.L;return L<10?0:L<15?-1:L<20?-2:L<24?-3:-5});
+ add('Bildung verfällt ohne Pflege','B',()=>(s.B<5&&s.B>0)?-1:0);
+ add('Bildung von vor zwei Jahren → Wirtschaft','W',()=>Math.floor(prev2.B/10));
+ add('Engpässe bremsen die Wirtschaft','W',()=>(s.W>=24?-1:0)+(s.P<15?-1:0));
+ add('Versorgung und Bildung → Bevölkerung','P',()=>Math.round((s.V-10)/5)+(s.B<10?2:s.B<18?1:s.B>=22?-1:0));
+ add('Dichte → Umweltlast','L',()=>s.P>30?1:0);
+ add('Dichte → Versorgung','V',()=>s.P>25?-Math.floor((s.P-25)/6):0);
+ add('Versorgung → Vertrauen','T',()=>s.V<6?-3:s.V<10?-1:s.V<16?0:s.V<22?1:2);
+ add('Umweltlast → Vertrauen','T',()=>s.L>=22?-2:s.L>=16?-1:0);
+}
+function budgetParts(s){return [['Steuern aus der Wirtschaft',Math.floor(s.W/4)],['Beiträge der Bevölkerung',Math.floor(s.P/10)],['Vertrauen der Bürger',s.T>=15?2:s.T>=5?1:s.T<0?-2:0],['Unterhalt der Infrastruktur',-Math.floor(s.I/8)],['Unterhalt der Versorgung',-Math.floor(s.V/10)]]}
+const score=s=>Math.round((s.V+s.T+(30-s.L)+s.B/2)*10)/10;
+const CARDS=[
+['Dürresommer','Ernten fallen aus, die Flüsse führen wenig Wasser.',{V:-2,L:1}],
+['Neue Kläranlage','Die Kreisstadt nimmt eine moderne Kläranlage in Betrieb.',{L:-2}],
+['Rohstoffe werden teuer','Die Weltmarktpreise für Metalle und Energie steigen.',{W:-2}],
+['Exportboom','Die Nachfrage aus dem Ausland zieht kräftig an.',{W:2,L:1}],
+['Grippewelle','Ein harter Winter mit vielen Krankheitsfällen.',{V:-1,P:-1}],
+['Volkshochschulen voll','Abendkurse sind ausgebucht, die Bibliotheken verlängern ihre Öffnungszeiten.',{B:2}],
+['Bestechung im Bauamt','Ein Korruptionsskandal erschüttert das Vertrauen in die Verwaltung.',{T:-3}],
+['Bürgerenergie','Genossenschaften bauen gemeinsam Solar- und Windanlagen.',{T:2,L:-1}],
+['Chemieunfall','Aus einem Werk entweichen giftige Stoffe in den Fluss.',{L:3,T:-1}],
+['Mehrwegpflicht','Einwegverpackungen werden landesweit verboten.',{L:-2,W:-1}],
+['Babyboom','Nach Jahren der Unsicherheit gründen viele junge Paare Familien.',{P:2}],
+['Ganztagsschulen','Die Gemeinden bauen Ganztagsschulen mit Mittagessen und Betreuung.',{B:1,V:1}],
+['Fachkräfte wandern zu','Gut ausgebildete Menschen ziehen ins Land.',{P:2,W:1}],
+['Die Jungen gehen','Viele junge Leute verlassen das Land wegen besserer Chancen im Ausland.',{P:-2,B:-1}],
+['Kulturfestival','Ein großes Fest zieht Besucher aus dem ganzen Land an.',{T:1,V:1}],
+['Streik','Die Beschäftigten der Industrie legen wochenlang die Arbeit nieder.',{W:-2,T:-1}],
+['Automatisierungswelle','Fabriken ersetzen Arbeitsplätze durch Maschinen.',{W:2,T:-1}],
+['Hochwasser','Ein Jahrhunderthochwasser beschädigt Straßen, Brücken und Häuser.',{I:-2,V:-1}],
+['Stiftung spendet','Eine private Stiftung finanziert Gemeinschaftsprojekte.',{ap:3}],
+['Haushaltssperre','Unerwartete Schulden zwingen zu harten Kürzungen.',{ap:-3}],
+['Prestigeprojekt scheitert','Ein teures Großprojekt wird nie fertig.',{ap:-2,T:-2}],
+['Filtertechnik','Eine Hochschule entwickelt einen billigen, wirksamen Abgasfilter.',{L:-2}],
+['Billigimporte','Günstige Waren aus dem Ausland verdrängen heimische Produkte.',{W:-1,V:1}],
+['Aufklärungskampagne','Zeitungen und Sender berichten ein Jahr lang über Umweltfragen.',{B:1,T:1}],
+['Falschmeldungen','Im Netz verbreiten sich Gerüchte, die niemand mehr einfangen kann.',{T:-2,B:-1}],
+['Ein ruhiges Jahr','Nichts Besonderes geschieht.',{}],
+['Ölpreisschock','Ein Konflikt im Ausland verteuert Energie schlagartig.',{W:-2,V:-1}],
+['Verschmutzter Fluss','Das Nachbarland leitet ungeklärte Abwässer in den gemeinsamen Fluss.',{L:2}],
+['Klimaabkommen','Das Land verpflichtet sich international zu weniger Emissionen.',{L:-1,W:-1,T:1}],
+['Ehrenamt blüht','Vereine, Nachbarschaftshilfe und Tafeln gewinnen viele neue Helfer.',{V:1,T:1}]];
+const effTxt=e=>{const p=[];for(const k in e){const d=e[k];p.push((k==='ap'?'Haushaltspunkte':NAME[k])+' '+(d>0?'+':'')+d)}return p.length?p.join(', '):'keine'};
+let deck=[],st,act,hist,done;
+function shuffle(){deck=CARDS.map((c,i)=>i);for(let i=deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[deck[i],deck[j]]=[deck[j],deck[i]]}}
+const banner=(t,end)=>{const b=document.getElementById('banner');b.textContent=t;b.className='banner'+(end?' end':'')};
+const used=()=>STEER.reduce((a,k)=>a+Math.abs(act[k]),0);
+function reset(){shuffle();st={s:{...START},h:[],year:0,points:10,score:null};act={W:0,N:0,B:0,V:0,I:0};hist=[{y:0,s:{...START},p:10,b:null}];done=false;
+ document.getElementById('chain').innerHTML='<div class="zero"><span>Noch kein Jahr gespielt.</span><span></span><span></span></div>';
+ banner('Verteile deine 10 Haushaltspunkte. Achte auf die drei Größen, die du nicht direkt steuern kannst.',false);render()}
+function colorFor(k,v){const r=(v-MIN[k])/(MAX[k]-MIN[k]);const d=BAD_HIGH[k]?Math.max(0,r*2-1)*1.2:Math.abs(r-.5)*2;return d>.8?'var(--bad)':d>.55?'var(--warn)':'var(--good)'}
+function render(){
+ document.getElementById('round').textContent=st.year;document.getElementById('points').textContent=st.points;
+ document.getElementById('score').textContent=st.score==null?'–':st.score;
+ const se=document.getElementById('state');se.innerHTML='';
+ K.forEach(k=>{const v=st.s[k]+(STEER.includes(k)?act[k]:0);const pct=(v-MIN[k])/(MAX[k]-MIN[k])*100;const r=document.createElement('div');r.className='row';
+  r.innerHTML=`<span class="lbl">${NAME[k]}${STEER.includes(k)?'':' <small>indirekt</small>'}</span><span class="bar" title="${MIN[k]} bis ${MAX[k]}"><i style="width:${Math.max(2,Math.min(100,pct))}%;background:${colorFor(k,v)}"></i></span><span class="v">${v}</span>`;se.appendChild(r)});
+ const al=document.getElementById('alloc');al.innerHTML='';
+ STEER.forEach(k=>{const v=st.s[k]+act[k];const r=document.createElement('div');r.className='arow';
+  const canPlus=!done&&v<MAX[k]&&(used()<st.points||(k==='W'&&act.W<0));
+  const canMinus=!done&&(k==='W'?(v>MIN.W&&(act.W>0||used()<st.points)):act[k]>0);
+  r.innerHTML=`<span class="lbl">${NAME[k]}${k==='W'?' <small>auch bremsen</small>':''}</span><span class="step"><button type="button" data-k="${k}" data-d="-1" aria-label="${NAME[k]} verringern" ${canMinus?'':'disabled'}>−</button><output>${act[k]>0?'+':''}${act[k]}</output><button type="button" data-k="${k}" data-d="1" aria-label="${NAME[k]} erhöhen" ${canPlus?'':'disabled'}>+</button></span><span class="hint">${st.s[k]} → ${v}</span>`;al.appendChild(r)});
+ al.querySelectorAll('button').forEach(b=>b.onclick=()=>{act[b.dataset.k]+=+b.dataset.d;render()});
+ document.getElementById('used').textContent=`Verplant ${used()} von ${st.points} Punkten. Nicht verplante Punkte bleiben im Haushalt.`;
+ document.getElementById('go').disabled=done;drawChart();drawLog();
+}
+function step(){
+ const s={...st.s};STEER.forEach(k=>s[k]+=act[k]);
+ const lines=[];let stop=null;
+ const add=(lab,k,fn)=>{const d=fn();const before=s[k];s[k]+=d;if(s[k]<MIN[k]&&!FAIL_LO[k])s[k]=MIN[k];if(s[k]>MAX[k]&&!FAIL_HI[k])s[k]=MAX[k];lines.push({lab,k,d,res:`${before}→${s[k]}`})};
+ const check=()=>{for(const k of K){if(s[k]<MIN[k]&&!FAIL_LO[k])s[k]=MIN[k];if(s[k]>MAX[k]&&!FAIL_HI[k])s[k]=MAX[k]}for(const k of K)if(s[k]<MIN[k]||s[k]>MAX[k]){stop=`${NAME[k]} ist mit ${s[k]} aus dem Bereich ${MIN[k]} bis ${MAX[k]} gefallen.`;for(let i=lines.length-1;i>=0;i--)if(lines[i].k===k&&lines[i].d){lines[i].stop=true;break}return}};
+ const snap={...s};rules(s,st.h,add);check();
+ const year=st.year+1;let pts=st.points-used();let card=null;
+ if(!stop&&document.getElementById('cards').checked&&year%3===0){if(!deck.length)shuffle();card=CARDS[deck.pop()];lines.push({lab:'Ereignis: '+card[0],head:true});
+  for(const k in card[2]){const d=card[2][k];if(k==='ap'){pts+=d;lines.push({lab:'Haushaltspunkte',d,res:''})}else add(NAME[k],k,()=>d)}check()}
+ let endMsg=stop;
+ if(!stop){lines.push({lab:'Haushalt für das nächste Jahr',head:true});budgetParts(s).forEach(([l,d])=>{lines.push({lab:l,d,res:''});pts+=d});
+  if(pts<0){endMsg='Der Haushalt ist ins Minus gerutscht.'}else if(pts>30)pts=30}
+ for(const k of K)s[k]=Math.max(MIN[k],Math.min(MAX[k],s[k]));
+ const h=st.h.concat([snap]);const sc=score(s);
+ if(!endMsg&&year>=20)endMsg=null;
+ done=!!endMsg||year>=20;
+ st={s,h,year,points:endMsg?0:Math.max(0,pts),score:sc};act={W:0,N:0,B:0,V:0,I:0};
+ hist.push({y:year,s:{...s},p:st.points,b:sc});
+ document.getElementById('chain').innerHTML=lines.map(l=>l.head?`<div class="head"><span>${l.lab}</span><span></span><span></span></div>`:`<div class="${l.stop?'stop':l.d===0?'zero':''}"><span>${l.lab}</span><span>${l.d>0?'+':''}${l.d}</span><span>${l.res}</span></div>`).join('');
+ const cardTxt=card?` Ereignis „${card[0]}“: ${card[1]}`:'';
+ if(endMsg)banner(`Das Spiel endet im Jahr ${year}. ${endMsg}${cardTxt} Lebensbilanz ${sc}.`,true);
+ else if(year>=20)banner(`Geschafft: Neuwerden hat zwanzig Jahre überstanden. Lebensbilanz ${sc}.${cardTxt}`,false);
+ else banner(`Jahr ${year} ist gerechnet.${cardTxt} Für das nächste Jahr stehen ${st.points} Haushaltspunkte bereit.`,false);
+ render();
+}
+function drawChart(){
+ const W=640,H=200,pad=30,R=Math.max(20,hist.length-1);
+ const x=r=>pad+(W-pad-6)*r/R,y=(k,v)=>H-24-(H-34)*(v-MIN[k])/(MAX[k]-MIN[k]);
+ let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Verlauf der acht Größen, jeweils auf ihren Bereich bezogen">`;
+ ['Min','Mitte','Max'].forEach((t,i)=>{const yy=H-24-(H-34)*i/2;s+=`<line x1="${pad}" x2="${W-6}" y1="${yy}" y2="${yy}" stroke="var(--line)"/><text x="${pad-4}" y="${yy+4}" text-anchor="end" font-size="10" fill="var(--muted)">${t}</text>`});
+ for(let r=0;r<=R;r+=5)s+=`<text x="${x(r)}" y="${H-8}" text-anchor="middle" font-size="10" fill="var(--muted)">${r}</text>`;
+ K.forEach(k=>{s+=`<polyline points="${hist.map(h=>x(h.y).toFixed(1)+','+y(k,h.s[k]).toFixed(1)).join(' ')}" fill="none" stroke="var(${COL[k]})" stroke-width="1.8"/>`;const l=hist[hist.length-1];s+=`<circle cx="${x(l.y)}" cy="${y(k,l.s[k])}" r="2.8" fill="var(${COL[k]})"/>`});
+ document.getElementById('chart').innerHTML=s+'</svg>';
+ document.getElementById('legend').innerHTML=K.map(k=>`<span><i style="background:var(${COL[k]})"></i>${NAME[k]}</span>`).join('');
+}
+function drawLog(){document.getElementById('log').innerHTML=hist.map(h=>`<tr><td>${h.y}</td>${K.map(k=>`<td>${h.s[k]}</td>`).join('')}<td>${h.p}</td><td>${h.b==null?'–':h.b}</td></tr>`).join('')}
+document.getElementById('cardlist').innerHTML=CARDS.map(c=>`<tr><td>${c[0]}</td><td style="text-align:left;white-space:normal">${c[1]}</td><td style="text-align:left">${effTxt(c[2])}</td></tr>`).join('');
+document.getElementById('go').onclick=step;document.getElementById('reset').onclick=reset;
+reset();
+</script>
+
+</body></html>
