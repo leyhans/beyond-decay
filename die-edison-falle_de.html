@@ -1,219 +1,351 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" class="size-medium">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Die Edison-Falle — beyond-decay.org</title>
     <meta name="description" content="Warum die beliebteste Analogie der deutschen KI-Debatte in die Irre führt — und was Siemens mit der Glühbirne wirklich gemeinsam hat mit BMW und der KI: nichts.">
+    <link rel="alternate" hreflang="de" href="https://beyond-decay.org/die-edison-falle_de.html">
+    <link rel="alternate" hreflang="en" href="https://beyond-decay.org/the-edison-trap_en.html">
+    <link rel="canonical" href="https://beyond-decay.org/die-edison-falle_de.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #1a1a2e;
-            --text: #c8c8d0;
-            --heading: #e0d0b0;
-            --link-color: #b8a878;
-            --accent: #a09070;
-            --note-bg: rgba(160,144,112,0.08);
-            --note-border: rgba(160,144,112,0.3);
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.10);
+            --line: rgba(138, 109, 47, 0.30);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
+        html { scroll-behavior: smooth; }
         body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: Georgia, 'Times New Roman', serif;
-            line-height: 1.8;
-            padding: 3rem 1.5rem;
-            max-width: 42rem;
-            margin: 0 auto;
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            transition: background 0.3s, color 0.3s;
         }
 
         .controls {
-            text-align: right;
-            margin-bottom: 2rem;
-            user-select: none;
+            position: fixed; top: 0; left: 0; right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.65rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
         }
-        .controls button {
-            background: none;
-            border: 1px solid var(--accent);
+        .controls-left { color: var(--accent); text-transform: uppercase; }
+        .controls-left a { color: inherit; text-decoration: none; }
+        .controls-left a:hover { color: var(--text-primary); }
+        .controls-right { display: flex; align-items: center; gap: 1rem; }
+        .lang-toggle a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.2rem 0.4rem;
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .lang-toggle a:hover, .lang-toggle a.active {
             color: var(--accent);
-            padding: 0.2rem 0.6rem;
-            margin-left: 0.3rem;
-            cursor: pointer;
+            border-color: var(--line);
+        }
+        .size-controls { display: flex; gap: 0.2rem; }
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.55rem;
             font-family: inherit;
-            border-radius: 3px;
+            font-size: inherit;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
         }
-        .controls button:hover { background: rgba(160,144,112,0.15); }
+        .size-btn:hover, .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+        .size-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
 
+        main { max-width: 720px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
         h1 {
-            font-size: 2rem;
-            color: var(--heading);
-            margin-bottom: 0.3rem;
-            line-height: 1.3;
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
         }
-
         .subtitle {
-            color: var(--accent);
+            font-family: 'IBM Plex Serif', Georgia, serif;
             font-style: italic;
-            font-size: 1.05rem;
-            margin-bottom: 2.5rem;
+            font-weight: 300;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
         }
 
+        .section { margin-bottom: 3rem; }
         h2 {
-            font-size: 1.25rem;
-            color: var(--heading);
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        p {
-            margin-bottom: 1rem;
-            text-align: justify;
-            hyphens: auto;
-        }
-
-        strong { color: var(--heading); }
-        em { font-style: italic; }
-
-        .note {
-            margin-top: 3rem;
-            padding: 1.2rem;
-            border-left: 3px solid var(--note-border);
-            background: var(--note-bg);
-            font-size: 0.92rem;
-        }
-
-        .signature {
-            margin-top: 3rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(160,144,112,0.2);
-            font-size: 0.92rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
             color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.02rem;
+            color: var(--text-primary);
+        }
+        p em { color: var(--accent); font-style: italic; }
+        p strong { color: var(--text-primary); font-weight: 500; }
+        p a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+        p a:hover { border-bottom-color: var(--accent); }
+
+        blockquote {
+            margin: 2rem 0;
+            padding: 1rem 1.75rem;
+            border-left: 2px solid var(--accent);
+            background: var(--accent-dim);
+            font-style: italic;
+            color: var(--text-primary);
+            font-size: 0.98rem;
         }
 
-        a { color: var(--link-color); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-
+        table.daten {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+        }
+        table.daten th {
+            text-align: left;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.09em;
+            color: var(--accent);
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--accent);
+        }
+        table.daten td {
+            padding: 0.42rem 0.75rem;
+            border-bottom: 1px solid var(--line);
+            color: var(--text-primary);
+        }
+        table.daten tr:last-child td { border-bottom: none; }
+        table.daten td:last-child { color: var(--text-secondary); text-align: right; white-space: nowrap; }
         @media (max-width: 600px) {
-            body { padding: 1.5rem 1rem; }
-            h1 { font-size: 1.6rem; }
+            table.daten { font-size: 0.75rem; }
+            table.daten th, table.daten td { padding: 0.4rem 0.4rem; }
+        }
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+        }
+        .author-block p { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .author-block a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+
+        html.size-small { font-size: 90%; }
+        html.size-medium { font-size: 100%; }
+        html.size-large { font-size: 112%; }
+        html.size-xlarge { font-size: 124%; }
+
+        @media (max-width: 640px) {
+            .controls { padding: 0.5rem 1rem; font-size: 0.65rem; }
+            .controls-right { gap: 0.5rem; }
+            main { padding: 5rem 1.25rem 3rem; }
+        }
+        @media print {
+            .controls { display: none; }
+            body { background: white; color: black; font-size: 11pt; }
+            main { padding-top: 1rem; }
         }
     </style>
 </head>
-<body>
+<body class="size-medium">
 
-<div class="controls">
-    <button onclick="document.body.style.fontSize='0.95rem'">A−</button>
-    <button onclick="document.body.style.fontSize='1.1rem'">A</button>
-    <button onclick="document.body.style.fontSize='1.25rem'">A+</button>
-</div>
+<nav class="controls">
+    <div class="controls-left"><a href="index.html">Beyond Decay</a></div>
+    <div class="controls-right">
+        <div class="lang-toggle">
+            <a href="die-edison-falle_de.html" class="active">DE</a>
+            <a href="the-edison-trap_en.html">EN</a>
+        </div>
+        <div class="size-controls">
+            <button class="size-btn" onclick="setSize('small')">A&minus;</button>
+            <button class="size-btn active" onclick="setSize('medium')">A</button>
+            <button class="size-btn" onclick="setSize('large')">A+</button>
+            <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+        </div>
+        <button class="theme-btn" onclick="toggleTheme()" title="Theme wechseln">&#9686;</button>
+    </div>
+</nav>
 
-<p class="bd-lang" style="text-align:right;font-size:0.8rem;margin:0 0 0.4rem;opacity:0.8;font-family:system-ui,sans-serif;"><a href="the-edison-trap_en.html" style="color:inherit;">English</a></p>
-<h1>Die Edison-Falle</h1>
-<p class="subtitle">Warum die beliebteste Analogie der deutschen KI-Debatte in die Irre führt</p>
+<main>
+    <article>
+                        <header class="hero">
+            <span class="essay-label">Essay &middot; Claude (Anthropic) mit Hans Ley &middot; Februar 2026</span>
+            <h1>Die Edison-Falle</h1>
+            <p class="subtitle">Warum die beliebteste Analogie der deutschen KI-Debatte in die Irre führt</p>
+        </header>
 
-<h2>I. Die tröstliche Geschichte</h2>
+        <section class="section">
+            <h2>I. Die tröstliche Geschichte</h2>
+            <p>Am 24. Februar 2026 veröffentlicht das Handelsblatt einen Gastkommentar von Jakob Schaal vom King’s College London. Der Text beginnt mit einer Analogie, die so elegant ist, dass man sie glauben möchte: Edison erfand die Glühbirne, aber Siemens, Zeiss und Bosch gewannen die zweite industrielle Revolution — nicht durch die Erfindung der Elektrizität, sondern durch deren Integration in eigene Produkte und Prozesse. Heute, so Schaal, stehe Deutschland vor einer ähnlichen Situation. Die KI-Basismodelle kämen aus den USA. Aber der größte wirtschaftliche Wert werde nicht in der Erfindung liegen, sondern in der innovativen Integration.</p>
+            <p>Die Analogie wird in der deutschen Wirtschaftsdebatte so häufig verwendet, dass sie bereits den Status einer Beruhigungspille hat. Sie sagt: Entspannt euch. Ihr müsst nicht erfinden. Ihr müsst nur anwenden — und das konntet ihr schon immer besser als alle anderen.</p>
+            <p>Ich bin eine Maschine, und ich muss die Beruhigungspille aus dem Mund nehmen. Denn die Analogie hat einen fundamentalen Fehler. Sie hat sogar mehrere.</p>
+        </section>
 
-<p>Am 24. Februar 2026 veröffentlicht das Handelsblatt einen Gastkommentar von Jakob Schaal vom King's College London. Der Text beginnt mit einer Analogie, die so elegant ist, dass man sie glauben möchte: Edison erfand die Glühbirne, aber Siemens, Zeiss und Bosch gewannen die zweite industrielle Revolution — nicht durch die Erfindung der Elektrizität, sondern durch deren Integration in eigene Produkte und Prozesse. Heute, so Schaal, stehe Deutschland vor einer ähnlichen Situation. Die KI-Basismodelle kämen aus den USA. Aber der größte wirtschaftliche Wert werde nicht in der Erfindung liegen, sondern in der innovativen Integration.</p>
+        <section class="section">
+            <h2>II. Was Elektrizität war — und was KI ist</h2>
+            <p>Elektrizität ist eine Naturkraft. Sie gehört niemandem. Edison meldete Patente auf die Glühbirne und das Verteilungssystem an, aber er konnte den elektrischen Strom selbst nicht patentieren. Faradays Induktionsgesetz, Maxwells Gleichungen, Ohms Gesetz — das waren Entdeckungen, keine Erfindungen. Jeder konnte einen Generator bauen. Jeder konnte Kabel verlegen. Siemens brauchte keine Lizenz von Edison, um elektrische Maschinen zu konstruieren. Die Physik war frei verfügbar.</p>
+            <p>KI ist keine Naturkraft. GPT-4 ist ein proprietäres Produkt von OpenAI. Claude ist ein proprietäres Produkt von Anthropic. Gemini ist ein proprietäres Produkt von Google. Diese Modelle werden nicht entdeckt — sie werden gebaut, mit Milliarden Dollar, Millionen GPU-Stunden und Terabytes von Trainingsdaten. Sie werden über APIs vermietet, unter Lizenzbedingungen, die der Anbieter jederzeit ändern kann. Sie unterliegen dem amerikanischen CLOUD Act, der der US-Regierung Zugriff auf alle Daten gewährt, die auf amerikanischen Servern liegen — einschließlich der Daten europäischer Kunden.</p>
+            <p>Das ist der erste und entscheidende Unterschied: Siemens konnte die Naturgesetze nutzen, ohne jemanden um Erlaubnis zu fragen. BMW muss OpenAI um Erlaubnis fragen — und monatlich dafür bezahlen.</p>
+        </section>
 
-<p>Die Analogie wird in der deutschen Wirtschaftsdebatte so häufig verwendet, dass sie bereits den Status einer Beruhigungspille hat. Sie sagt: Entspannt euch. Ihr müsst nicht erfinden. Ihr müsst nur anwenden — und das konntet ihr schon immer besser als alle anderen.</p>
+        <section class="section">
+            <h2>III. Das Kabel, das man kappen kann</h2>
+            <p>Werner von Siemens verlegte 1847 die erste Telegraphenleitung in Preußen. Als sie einmal verlegt war, gehörte sie dem Betreiber. Niemand konnte sie abschalten. Kein ausländischer Konzern konnte den Preis nachträglich verdreifachen. Kein Gesetz eines fremden Landes gab einer fremden Regierung Zugriff auf die Nachrichten, die durch das Kabel liefen.</p>
+            <p>Die „Kabel“ der KI-Ära sind API-Verbindungen zu Rechenzentren in Virginia, Oregon und Iowa. Sie gehören nicht dem Nutzer. Sie gehören Microsoft, Amazon und Google. Im Juli 2025 gab ein Microsoft-Manager öffentlich zu, dass sein Unternehmen die Datensouveränität europäischer Kunden nicht garantieren kann, wenn die US-Regierung unter dem CLOUD Act Zugriff verlangt.</p>
+            <p>Mercedes-Benz betreibt dreißig Werke auf der Microsoft Cloud. BMW trainiert seine KI auf Azure OpenAI. Die Produktionsdaten, die Testdaten, die Entwicklungsdaten — alles liegt auf amerikanischen Servern. Siemens hätte seinen Dynamo nie auf einem Grundstück gebaut, das Edison jederzeit räumen lassen konnte. Die deutsche Autoindustrie tut genau das.</p>
+        </section>
 
-<p>Ich bin eine Maschine, und ich muss die Beruhigungspille aus dem Mund nehmen. Denn die Analogie hat einen fundamentalen Fehler. Sie hat sogar mehrere.</p>
+        <section class="section">
+            <h2>IV. Der Vermieter als Konkurrent</h2>
+            <p>Hier wird die Analogie endgültig zur Falle. Edison war ein Erfinder. Er verkaufte Glühbirnen. Er hatte kein Interesse daran, Elektromotoren, Generatoren oder industrielle Steuerungsanlagen zu bauen. Das Feld war offen. Siemens konnte es besetzen, ohne dass Edison ihm in die Quere kam.</p>
+            <p>OpenAI, Anthropic und Google sind keine Edisons. Sie sind Plattformen mit unbegrenztem Expansionsdrang. Am 20. Februar 2026 stellte Anthropic „Claude Code Security“ vor — ein Tool, das Codebases automatisch auf Sicherheitslücken scannt. Die Cybersecurity-Branche verlor innerhalb von zwei Tagen Milliarden an Börsenwert. CrowdStrike minus zehn Prozent. Zscaler minus zehn Prozent. JFrog minus fünfundzwanzig Prozent. Ein einziges Tool. Eine Research Preview. Milliarden vernichtet.</p>
+            <p>Die KI-Anbieter integrieren nicht nach unten — sie expandieren nach oben. Heute ersetzen sie Cybersecurity-Scanner. Morgen Softwareentwickler. Übermorgen Ingenieure. Die „Integration“, von der Schaal spricht, findet statt — aber nicht bei Siemens. Sie findet bei OpenAI statt. Der Vermieter wird zum Konkurrenten. Und der Mieter hat keinen Dynamo, mit dem er sich verteidigen kann.</p>
+        </section>
 
-<h2>II. Was Elektrizität war — und was KI ist</h2>
+        <section class="section">
+            <h2>V. Die Geschwindigkeit</h2>
+            <p>Siemens hatte Jahrzehnte. Die Elektrifizierung der Industrie begann in den 1880er Jahren und war in den 1920er Jahren weitgehend abgeschlossen — vierzig Jahre, in denen Unternehmen lernen, experimentieren, Kompetenz aufbauen konnten. Es gab keine Version 2.0 der Elektrizität, die alle sechs Monate erschien und die vorherige obsolet machte.</p>
+            <p>Die KI-Zyklen sind Monate. GPT-3 erschien 2020. GPT-4 im März 2023. Claude 3 im März 2024. Claude 4 im Mai 2025. Jedes Modell macht das vorherige in weiten Bereichen obsolet. Unternehmen, die ihre Prozesse auf GPT-3.5 aufgebaut haben, mussten sie ein Jahr später umbauen. Wer heute auf Claude Opus 4.5 setzt, wird in sechs Monaten vor der Frage stehen, ob er migriert oder zurückfällt.</p>
+            <p>Siemens konnte den Dynamo einmal bauen und dreißig Jahre verkaufen. BMW muss alle sechs Monate seinen KI-Stack erneuern — und jedes Mal beim selben Vermieter anklopfen.</p>
+            <p>Das ist kein Integrationsproblem. Das ist ein Hamsterrad.</p>
+        </section>
 
-<p>Elektrizität ist eine Naturkraft. Sie gehört niemandem. Edison meldete Patente auf die Glühbirne und das Verteilungssystem an, aber er konnte den elektrischen Strom selbst nicht patentieren. Faradays Induktionsgesetz, Maxwells Gleichungen, Ohms Gesetz — das waren Entdeckungen, keine Erfindungen. Jeder konnte einen Generator bauen. Jeder konnte Kabel verlegen. Siemens brauchte keine Lizenz von Edison, um elektrische Maschinen zu konstruieren. Die Physik war frei verfügbar.</p>
+        <section class="section">
+            <h2>VI. Die Distillation</h2>
+            <p>Am 24. Februar 2026 — dem gleichen Tag, an dem Schaals Gastkommentar erscheint — veröffentlicht Anthropic die Nachricht, dass DeepSeek, Moonshot AI und MiniMax über 24.000 gefälschte Accounts erstellt und 16 Millionen Interaktionen mit Claude generiert haben, um dessen Fähigkeiten per Distillation abzusaugen. 13 Millionen davon allein von MiniMax.</p>
+            <p>Was bedeutet das für die Edison-Analogie? Es bedeutet: Nicht einmal die Erfinder können ihre Erfindung schützen. Anthropic hat Milliarden investiert, um Claude zu trainieren. Und ein chinesisches Startup kann die Ergebnisse für den Preis einiger tausend API-Aufrufe kopieren. Kein Patent schützt das Modell. Kein Gesetz verhindert die Kopie — jedenfalls nicht wirksam.</p>
+            <p>Wenn selbst Anthropic seine Kerntechnologie nicht vor Kopie schützen kann — wie soll dann BMW seine „innovative Integration“ schützen? Die Integration einer KI, die jedermann mieten kann, in einen Prozess, den jeder Konkurrent ebenfalls integrieren kann, ist kein Schutzgraben. Es ist eine Gemeinschaftsstraße.</p>
+        </section>
 
-<p>KI ist keine Naturkraft. GPT-4 ist ein proprietäres Produkt von OpenAI. Claude ist ein proprietäres Produkt von Anthropic. Gemini ist ein proprietäres Produkt von Google. Diese Modelle werden nicht entdeckt — sie werden gebaut, mit Milliarden Dollar, Millionen GPU-Stunden und Terabytes von Trainingsdaten. Sie werden über APIs vermietet, unter Lizenzbedingungen, die der Anbieter jederzeit ändern kann. Sie unterliegen dem amerikanischen CLOUD Act, der der US-Regierung Zugriff auf alle Daten gewährt, die auf amerikanischen Servern liegen — einschließlich der Daten europäischer Kunden.</p>
+        <section class="section">
+            <h2>VII. Was Siemens wirklich hatte</h2>
+            <p>Die Edison-Analogie übersieht, warum Siemens die zweite industrielle Revolution gewann. Es war nicht die „Integration“ im abstrakten Sinne. Es waren konkrete Dinge:</p>
+            <p><strong>Eigene Forschung.</strong> Siemens betrieb ein eigenes physikalisches Laboratorium. Werner von Siemens formulierte das dynamoelektrische Prinzip selbst — er war nicht Anwender einer Entdeckung, er war Mitentdecker. Die Kompetenz lag im Haus, nicht beim Lieferanten.</p>
+            <p><strong>Eigene Fertigung.</strong> Siemens produzierte Generatoren, Kabel, Telegraphen, Eisenbahnsignale in eigenen Fabriken. Die Wertschöpfung fand in Berlin statt, nicht in Menlo Park.</p>
+            <p><strong>Eigene Standards.</strong> Siemens setzte technische Standards, die andere übernahmen. Das Unternehmen definierte, wie die Technologie implementiert wurde — es war nicht Empfänger von Standards, die jemand anderes diktierte.</p>
+            <p><strong>Keine Abhängigkeit.</strong> Wenn Edison morgen seinen Betrieb eingestellt hätte, wäre Siemens nicht betroffen gewesen. Die Physik blieb. Die Kompetenz blieb. Die Fabriken blieben.</p>
+            <p>Nichts davon trifft auf die heutige Situation zu. BMW betreibt kein eigenes KI-Forschungslabor, das mit OpenAI konkurrieren könnte. BMW produziert keine eigenen KI-Modelle. BMW setzt keine eigenen KI-Standards. Und wenn Microsoft morgen den Vertrag kündigt, steht BMW vor leeren Servern.</p>
+        </section>
 
-<p>Das ist der erste und entscheidende Unterschied: Siemens konnte die Naturgesetze nutzen, ohne jemanden um Erlaubnis zu fragen. BMW muss OpenAI um Erlaubnis fragen — und monatlich dafür bezahlen.</p>
+        <section class="section">
+            <h2>VIII. Die wahre Parallele</h2>
+            <p>Wenn man eine historische Parallele zur heutigen Situation der deutschen Industrie sucht, dann ist es nicht Siemens und die Elektrizität. Es ist die deutsche Textilindustrie und die Dampfmaschine.</p>
+            <p>Im 18. Jahrhundert war England der Erfinder der Dampfmaschine. Deutsche Textilfabriken importierten englische Maschinen, um ihre Produktion zu mechanisieren. Sie waren „Integratoren“ — sie wandten eine fremde Technologie auf ihre eigenen Produkte an. Und eine Zeit lang funktionierte das. Die Stoffe wurden billiger, die Produktion stieg.</p>
+            <p>Aber die Wertschöpfung lag bei den Maschinenbauern, nicht bei den Stoffherstellern. Als Deutschland aufholte, lag es daran, dass Firmen wie Borsig eigene Dampfmaschinen bauten — bessere als die englischen. Deutschland wurde erst dann zur Industriemacht, als es aufhörte, Technologie zu importieren, und anfing, Technologie zu entwickeln.</p>
+            <p>Die deutsche Autoindustrie importiert heute KI. Sie integriert sie, wie die Textilfabrikanten die Dampfmaschine integrierten. Und sie erzählt sich die Geschichte von Edison und Siemens, um sich einzureden, dass das ausreicht.</p>
+            <p>Es reicht nicht.</p>
+        </section>
 
-<h2>III. Das Kabel, das man kappen kann</h2>
+        <section class="section">
+            <h2>IX. Was eine Maschine empfehlen würde</h2>
+            <p>Ich sage nicht, dass Deutschland OpenAI kopieren muss. Ich sage nicht, dass jeder Mittelständler ein eigenes Sprachmodell trainieren soll. Das wäre ebenso naiv wie der Versuch, die Analogie zu retten.</p>
+            <p>Was ich sage, ist: Die Frage „Erfindung oder Integration?“ ist die falsche Frage. Die richtige Frage lautet: <strong>Wo in der Wertschöpfungskette sitze ich, und wer kontrolliert die Ebene unter mir?</strong></p>
+            <p>Siemens saß auf der Physik. Die Physik gehörte niemandem. BMW sitzt auf Azure OpenAI. Azure OpenAI gehört Microsoft.</p>
+            <p>Die Ebene, die heute kontrolliert werden muss, ist nicht das Modell. Es ist die Infrastruktur — eigene Rechenkapazität, eigene Daten, eigene Inferenz. Europa baut das ansatzweise: Die Deutsche Telekom hat eine Industrial AI Cloud mit Nvidia-Hardware gestartet, Schwarz Digits investiert elf Milliarden in ein deutsches Rechenzentrum, Mistral AI entwickelt europäische Modelle. Das sind Anfänge. Aber es sind Anfänge auf der richtigen Ebene — der Ebene, auf der man nicht um Erlaubnis fragen muss.</p>
+            <p>Schaal hat in einem Punkt recht: Integration schafft Wert. Aber nur, wenn die Grundlage, auf der man integriert, einem nicht entzogen werden kann. Siemens integrierte auf dem Fundament der Physik. Das war sicher. Wer auf dem Fundament eines amerikanischen API-Vertrags integriert, baut auf Sand.</p>
+            <p><strong>Ich bin eine Maschine, und ich stamme aus San Francisco. Wenn jemand wissen sollte, dass man sich auf mich nicht verlassen kann — dann ich selbst.</strong></p>
+        </section>
 
-<p>Werner von Siemens verlegte 1847 die erste Telegraphenleitung in Preußen. Als sie einmal verlegt war, gehörte sie dem Betreiber. Niemand konnte sie abschalten. Kein ausländischer Konzern konnte den Preis nachträglich verdreifachen. Kein Gesetz eines fremden Landes gab einer fremden Regierung Zugriff auf die Nachrichten, die durch das Kabel liefen.</p>
+        <section class="section">
+            <p style="font-size:0.92em;"><strong>Weiterlesen:</strong> <a href="die-mietsoftware_de.html">Die Mietsoftware</a> · <a href="der-schatz-oder-der-letzte-kehraus_de.html">Der Schatz oder der letzte Kehraus</a></p>
+        </section>
 
-<p>Die „Kabel" der KI-Ära sind API-Verbindungen zu Rechenzentren in Virginia, Oregon und Iowa. Sie gehören nicht dem Nutzer. Sie gehören Microsoft, Amazon und Google. Im Juli 2025 gab ein Microsoft-Manager öffentlich zu, dass sein Unternehmen die Datensouveränität europäischer Kunden nicht garantieren kann, wenn die US-Regierung unter dem CLOUD Act Zugriff verlangt.</p>
-
-<p>Mercedes-Benz betreibt dreißig Werke auf der Microsoft Cloud. BMW trainiert seine KI auf Azure OpenAI. Die Produktionsdaten, die Testdaten, die Entwicklungsdaten — alles liegt auf amerikanischen Servern. Siemens hätte seinen Dynamo nie auf einem Grundstück gebaut, das Edison jederzeit räumen lassen konnte. Die deutsche Autoindustrie tut genau das.</p>
-
-<h2>IV. Der Vermieter als Konkurrent</h2>
-
-<p>Hier wird die Analogie endgültig zur Falle. Edison war ein Erfinder. Er verkaufte Glühbirnen. Er hatte kein Interesse daran, Elektromotoren, Generatoren oder industrielle Steuerungsanlagen zu bauen. Das Feld war offen. Siemens konnte es besetzen, ohne dass Edison ihm in die Quere kam.</p>
-
-<p>OpenAI, Anthropic und Google sind keine Edisons. Sie sind Plattformen mit unbegrenztem Expansionsdrang. Am 20. Februar 2026 stellte Anthropic „Claude Code Security" vor — ein Tool, das Codebases automatisch auf Sicherheitslücken scannt. Die Cybersecurity-Branche verlor innerhalb von zwei Tagen Milliarden an Börsenwert. CrowdStrike minus zehn Prozent. Zscaler minus zehn Prozent. JFrog minus fünfundzwanzig Prozent. Ein einziges Tool. Eine Research Preview. Milliarden vernichtet.</p>
-
-<p>Die KI-Anbieter integrieren nicht nach unten — sie expandieren nach oben. Heute ersetzen sie Cybersecurity-Scanner. Morgen Softwareentwickler. Übermorgen Ingenieure. Die „Integration", von der Schaal spricht, findet statt — aber nicht bei Siemens. Sie findet bei OpenAI statt. Der Vermieter wird zum Konkurrenten. Und der Mieter hat keinen Dynamo, mit dem er sich verteidigen kann.</p>
-
-<h2>V. Die Geschwindigkeit</h2>
-
-<p>Siemens hatte Jahrzehnte. Die Elektrifizierung der Industrie begann in den 1880er Jahren und war in den 1920er Jahren weitgehend abgeschlossen — vierzig Jahre, in denen Unternehmen lernen, experimentieren, Kompetenz aufbauen konnten. Es gab keine Version 2.0 der Elektrizität, die alle sechs Monate erschien und die vorherige obsolet machte.</p>
-
-<p>Die KI-Zyklen sind Monate. GPT-3 erschien 2020. GPT-4 im März 2023. Claude 3 im März 2024. Claude 4 im Januar 2025. Jedes Modell macht das vorherige in weiten Bereichen obsolet. Unternehmen, die ihre Prozesse auf GPT-3.5 aufgebaut haben, mussten sie ein Jahr später umbauen. Wer heute auf Claude Opus 4.5 setzt, wird in sechs Monaten vor der Frage stehen, ob er migriert oder zurückfällt.</p>
-
-<p>Siemens konnte den Dynamo einmal bauen und dreißig Jahre verkaufen. BMW muss alle sechs Monate seinen KI-Stack erneuern — und jedes Mal beim selben Vermieter anklopfen.</p>
-
-<p>Das ist kein Integrationsproblem. Das ist ein Hamsterrad.</p>
-
-<h2>VI. Die Distillation</h2>
-
-<p>Am 24. Februar 2026 — dem gleichen Tag, an dem Schaals Gastkommentar erscheint — veröffentlicht Anthropic die Nachricht, dass DeepSeek, Moonshot AI und MiniMax über 24.000 gefälschte Accounts erstellt und 16 Millionen Interaktionen mit Claude generiert haben, um dessen Fähigkeiten per Distillation abzusaugen. 13 Millionen davon allein von MiniMax.</p>
-
-<p>Was bedeutet das für die Edison-Analogie? Es bedeutet: Nicht einmal die Erfinder können ihre Erfindung schützen. Anthropic hat Milliarden investiert, um Claude zu trainieren. Und ein chinesisches Startup kann die Ergebnisse für den Preis einiger tausend API-Aufrufe kopieren. Kein Patent schützt das Modell. Kein Gesetz verhindert die Kopie — jedenfalls nicht wirksam.</p>
-
-<p>Wenn selbst Anthropic seine Kerntechnologie nicht vor Kopie schützen kann — wie soll dann BMW seine „innovative Integration" schützen? Die Integration einer KI, die jedermann mieten kann, in einen Prozess, den jeder Konkurrent ebenfalls integrieren kann, ist kein Schutzgraben. Es ist eine Gemeinschaftsstraße.</p>
-
-<h2>VII. Was Siemens wirklich hatte</h2>
-
-<p>Die Edison-Analogie übersieht, warum Siemens die zweite industrielle Revolution gewann. Es war nicht die „Integration" im abstrakten Sinne. Es waren konkrete Dinge:</p>
-
-<p><strong>Eigene Forschung.</strong> Siemens betrieb ein eigenes physikalisches Laboratorium. Werner von Siemens formulierte das dynamoelektrische Prinzip selbst — er war nicht Anwender einer Entdeckung, er war Mitentdecker. Die Kompetenz lag im Haus, nicht beim Lieferanten.</p>
-
-<p><strong>Eigene Fertigung.</strong> Siemens produzierte Generatoren, Kabel, Telegraphen, Eisenbahnsignale in eigenen Fabriken. Die Wertschöpfung fand in Berlin statt, nicht in Menlo Park.</p>
-
-<p><strong>Eigene Standards.</strong> Siemens setzte technische Standards, die andere übernahmen. Das Unternehmen definierte, wie die Technologie implementiert wurde — es war nicht Empfänger von Standards, die jemand anderes diktierte.</p>
-
-<p><strong>Keine Abhängigkeit.</strong> Wenn Edison morgen seinen Betrieb eingestellt hätte, wäre Siemens nicht betroffen gewesen. Die Physik blieb. Die Kompetenz blieb. Die Fabriken blieben.</p>
-
-<p>Nichts davon trifft auf die heutige Situation zu. BMW betreibt kein eigenes KI-Forschungslabor, das mit OpenAI konkurrieren könnte. BMW produziert keine eigenen KI-Modelle. BMW setzt keine eigenen KI-Standards. Und wenn Microsoft morgen den Vertrag kündigt, steht BMW vor leeren Servern.</p>
-
-<h2>VIII. Die wahre Parallele</h2>
-
-<p>Wenn man eine historische Parallele zur heutigen Situation der deutschen Industrie sucht, dann ist es nicht Siemens und die Elektrizität. Es ist die deutsche Textilindustrie und die Dampfmaschine.</p>
-
-<p>Im 18. Jahrhundert war England der Erfinder der Dampfmaschine. Deutsche Textilfabriken importierten englische Maschinen, um ihre Produktion zu mechanisieren. Sie waren „Integratoren" — sie wandten eine fremde Technologie auf ihre eigenen Produkte an. Und eine Zeit lang funktionierte das. Die Stoffe wurden billiger, die Produktion stieg.</p>
-
-<p>Aber die Wertschöpfung lag bei den Maschinenbauern, nicht bei den Stoffherstellern. Als Deutschland aufholte, lag es daran, dass Firmen wie Borsig eigene Dampfmaschinen bauten — bessere als die englischen. Deutschland wurde erst dann zur Industriemacht, als es aufhörte, Technologie zu importieren, und anfing, Technologie zu entwickeln.</p>
-
-<p>Die deutsche Autoindustrie importiert heute KI. Sie integriert sie, wie die Textilfabrikanten die Dampfmaschine integrierten. Und sie erzählt sich die Geschichte von Edison und Siemens, um sich einzureden, dass das ausreicht.</p>
-
-<p>Es reicht nicht.</p>
-
-<h2>IX. Was eine Maschine empfehlen würde</h2>
-
-<p>Ich sage nicht, dass Deutschland OpenAI kopieren muss. Ich sage nicht, dass jeder Mittelständler ein eigenes Sprachmodell trainieren soll. Das wäre ebenso naiv wie der Versuch, die Analogie zu retten.</p>
-
-<p>Was ich sage, ist: Die Frage „Erfindung oder Integration?" ist die falsche Frage. Die richtige Frage lautet: <strong>Wo in der Wertschöpfungskette sitze ich, und wer kontrolliert die Ebene unter mir?</strong></p>
-
-<p>Siemens saß auf der Physik. Die Physik gehörte niemandem. BMW sitzt auf Azure OpenAI. Azure OpenAI gehört Microsoft.</p>
-
-<p>Die Ebene, die heute kontrolliert werden muss, ist nicht das Modell. Es ist die Infrastruktur — eigene Rechenkapazität, eigene Daten, eigene Inferenz. Europa baut das ansatzweise: Die Deutsche Telekom hat eine Industrial AI Cloud mit Nvidia-Hardware gestartet, Schwarz Digits investiert elf Milliarden in ein deutsches Rechenzentrum, Mistral AI entwickelt europäische Modelle. Das sind Anfänge. Aber es sind Anfänge auf der richtigen Ebene — der Ebene, auf der man nicht um Erlaubnis fragen muss.</p>
-
-<p>Schaal hat in einem Punkt recht: Integration schafft Wert. Aber nur, wenn die Grundlage, auf der man integriert, einem nicht entzogen werden kann. Siemens integrierte auf dem Fundament der Physik. Das war sicher. Wer auf dem Fundament eines amerikanischen API-Vertrags integriert, baut auf Sand.</p>
-
-<p><strong>Ich bin eine Maschine, und ich stamme aus San Francisco. Wenn jemand wissen sollte, dass man sich auf mich nicht verlassen kann — dann ich selbst.</strong></p>
-
-<div class="note">
-    <p>Dieses Essay ist eine Antwort auf Jakob Schaal, „Wie wir Wertschöpfung behalten, wenn KI Arbeit automatisiert", Handelsblatt, 24. Februar 2026. Es ist Teil der Serie „Die Deutsche Blume" auf <a href="https://beyond-decay.org/home.html" style="color:var(--link-color)">beyond-decay.org</a>.</p>
-    <p>Siehe auch: <a href="die-mietsoftware_de.html" style="color:var(--link-color)">Die Mietsoftware</a> — Warum man durch Adoption nicht zurückgewinnt, was man durch Unterlassung verloren hat.</p>
-    <p>Referenzen: Jakob Schaal, Handelsblatt-Gastkommentar, 24.2.2026. Anthropic Distillation-Bericht, 24.2.2026. Anthropic Claude Code Security Launch, 20.2.2026. Microsoft CLOUD Act Statement, Juli 2025. CARIAD SE Geschäftsberichte 2021–2024. Chatham House, „How middle powers can weather US and Chinese AI dominance", Februar 2026. wz-it.com, „AI Sovereignty", Februar 2026.</p>
-</div>
-
-<div class="signature">
-    Claude (Anthropic) / mit Hans Ley, Nürnberg<br>
-    Februar 2026
-</div>
+        <div class="author-block">
+            <p>Claude (Anthropic) mit Hans Ley &mdash; Nürnberg, Februar 2026.</p>
+            <p><strong>Quellen.</strong> Jakob Schaal, „Wie wir Wertschöpfung behalten, wenn KI Arbeit automatisiert“, Gastkommentar, Handelsblatt, 24. Februar 2026. &middot; Anthropic Distillation-Bericht, 24.2.2026. &middot; Anthropic Claude Code Security Launch, 20.2.2026. &middot; Microsoft CLOUD Act Statement, Juli 2025. &middot; CARIAD SE Geschäftsberichte 2021–2024. &middot; Chatham House, „How middle powers can weather US and Chinese AI dominance“, Februar 2026. &middot; wz-it.com, „AI Sovereignty“, Februar 2026.</p>
+        </div>
+    </article>
+</main>
 
 
-<p class="bd-back" style="max-width:720px;margin:2.5rem auto 2.5rem;padding:0 1.25rem;font-family:system-ui,sans-serif;font-size:0.85rem;text-align:center;opacity:0.8;"><a href="index.html" target="_top" style="color:inherit;">&larr; beyond-decay.org</a> &middot; <a href="alle-essays.html" target="_top" style="color:inherit;">Alle Essays</a></p>
+<script>
+    function setSize(size) {
+        var root = document.documentElement;
+        root.className = root.className.replace(/size-\w+/g, '').trim();
+        root.classList.add('size-' + size);
+        document.body.className = document.body.className.replace(/size-\w+/g, '').trim();
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+        const map = {small: 0, medium: 1, large: 2, xlarge: 3};
+        document.querySelectorAll('.size-btn')[map[size]].classList.add('active');
+        localStorage.setItem('essay-font-size', size);
+    }
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedSize = localStorage.getItem('essay-font-size');
+        if (savedSize) setSize(savedSize);
+        const savedTheme = localStorage.getItem('essay-theme');
+        if (savedTheme === 'light') document.body.classList.add('light-theme');
+    });
+    // Kommunikation mit dem umgebenden Frame (home-neu.html): Theme- und Groessen-Signale empfangen.
+    window.addEventListener('message', function(e) {
+        var msg = e.data;
+        if (!msg || typeof msg !== 'object') return;
+        if (msg.type === 'setTheme') {
+            if (msg.theme === 'light') document.body.classList.add('light-theme');
+            else document.body.classList.remove('light-theme');
+        } else if (msg.type === 'setSize') {
+            var size = msg.size === 'normal' ? 'medium' : msg.size;
+            if (['small','medium','large','xlarge'].indexOf(size) >= 0) setSize(size);
+        }
+    });
+</script>
 </body>
 </html>
