@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" class="size-medium">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Technology of the Megamachine — beyond-decay.org</title>
+    <meta name="description" content="Five hours of grounded flights in the US, low water on the Rhine, technical debt: how the megamachine is held together by people nobody sees.">
+    <link rel="alternate" hreflang="de" href="https://beyond-decay.org/technik-der-megamaschine_de.html">
+    <link rel="alternate" hreflang="en" href="https://beyond-decay.org/technik-der-megamaschine_en.html">
+    <link rel="canonical" href="https://beyond-decay.org/technik-der-megamaschine_en.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d0d0f;
+            --bg-secondary: #161618;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9a9a9a;
+            --accent: #c9a962;
+            --accent-dim: rgba(201, 169, 98, 0.12);
+            --line: rgba(201, 169, 98, 0.25);
+        }
+        .light-theme {
+            --bg-primary: #fafaf8;
+            --bg-secondary: #f0f0ed;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #8a6d2f;
+            --accent-dim: rgba(138, 109, 47, 0.10);
+            --line: rgba(138, 109, 47, 0.30);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .controls {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--line);
+            padding: 0.65rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+        }
+        .controls-left { color: var(--accent); text-transform: uppercase; }
+        .controls-left a { color: inherit; text-decoration: none; }
+        .controls-left a:hover { color: var(--text-primary); }
+        .controls-right { display: flex; align-items: center; gap: 1rem; }
+        .lang-toggle a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.2rem 0.4rem;
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .lang-toggle a:hover, .lang-toggle a.active {
+            color: var(--accent);
+            border-color: var(--line);
+        }
+        .size-controls { display: flex; gap: 0.2rem; }
+        .size-btn, .theme-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.55rem;
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .size-btn:hover, .theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+        .size-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+
+        main { max-width: 720px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+
+        .hero { margin-bottom: 3.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+        .essay-label {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-weight: 400;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+        .subtitle {
+            font-family: 'IBM Plex Serif', Georgia, serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .section { margin-bottom: 3rem; }
+        h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--line);
+        }
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1.02rem;
+            color: var(--text-primary);
+        }
+        p em { color: var(--accent); font-style: italic; }
+        p strong { color: var(--text-primary); font-weight: 500; }
+        p a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+        p a:hover { border-bottom-color: var(--accent); }
+
+        blockquote {
+            margin: 2rem 0;
+            padding: 1rem 1.75rem;
+            border-left: 2px solid var(--accent);
+            background: var(--accent-dim);
+            font-style: italic;
+            color: var(--text-primary);
+            font-size: 0.98rem;
+        }
+
+        table.daten {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82rem;
+            letter-spacing: 0.02em;
+        }
+        table.daten th {
+            text-align: left;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.09em;
+            color: var(--accent);
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--accent);
+        }
+        table.daten td {
+            padding: 0.42rem 0.75rem;
+            border-bottom: 1px solid var(--line);
+            color: var(--text-primary);
+        }
+        table.daten tr:last-child td { border-bottom: none; }
+        table.daten td:last-child { color: var(--text-secondary); text-align: right; white-space: nowrap; }
+        @media (max-width: 600px) {
+            table.daten { font-size: 0.75rem; }
+            table.daten th, table.daten td { padding: 0.4rem 0.4rem; }
+        }
+        .author-block {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--line);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+        }
+        .author-block p { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .author-block a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+
+        html.size-small { font-size: 90%; }
+        html.size-medium { font-size: 100%; }
+        html.size-large { font-size: 112%; }
+        html.size-xlarge { font-size: 124%; }
+
+        @media (max-width: 640px) {
+            .controls { padding: 0.5rem 1rem; font-size: 0.65rem; }
+            .controls-right { gap: 0.5rem; }
+            main { padding: 5rem 1.25rem 3rem; }
+        }
+        @media print {
+            .controls { display: none; }
+            body { background: white; color: black; font-size: 11pt; }
+            main { padding-top: 1rem; }
+        }
+    </style>
+</head>
+<body class="size-medium">
+
+<nav class="controls">
+    <div class="controls-left"><a href="index.html">Beyond Decay</a></div>
+    <div class="controls-right">
+        <div class="lang-toggle">
+            <a href="technik-der-megamaschine_de.html">DE</a>
+            <a href="technik-der-megamaschine_en.html" class="active">EN</a>
+        </div>
+        <div class="size-controls">
+            <button class="size-btn" onclick="setSize('small')">A&minus;</button>
+            <button class="size-btn active" onclick="setSize('medium')">A</button>
+            <button class="size-btn" onclick="setSize('large')">A+</button>
+            <button class="size-btn" onclick="setSize('xlarge')">A++</button>
+        </div>
+        <button class="theme-btn" onclick="toggleTheme()" title="Switch theme">&#9686;</button>
+    </div>
+</nav>
+
+<main>
+    <article>
+                        <header class="hero">
+            <span class="essay-label">Essay &middot; Hans Ley &amp; Claude Dedo &middot; 14 November 2026</span>
+            <h1>The Technology of the Megamachine</h1>
+            <p class="subtitle">Why the systems that keep the world running mostly work, and why their failures keep getting bigger</p>
+        </header>
+
+        <section class="section">
+            <p class="lead" style="font-style:italic;">On 13 November 2026 every plane in the United States stayed on the ground for five hours. The cause was not an attack but an update in an old network. Anyone who wants to understand how such systems hold together and how they break will not find the answer in the technology alone, but in the people who quietly keep them going.</p>
+        </section>
+
+        <section class="section">
+            <h2>I. Five Hours of Standstill</h2>
+            <p>On Friday, 13 November 2026, shortly before four in the afternoon Eastern Time, the US Federal Aviation Administration ordered a nationwide ground stop. The centres that guide high-altitude air traffic were having problems with radar and radio across the whole country at the same time. More than 3,500 aircraft were in the air. They were allowed to land; no further plane was allowed to take off. It was only the second time since 11 September 2001 that this had happened.</p>
+            <p>In the evening, Transportation Secretary Sean Duffy faced the press. The routers had been overloaded with data, he said, and then he became unusually blunt: “We have old switches, old routers, we use 1980s little copper lines.” According to CBS, an update to the private network that connects air traffic control had triggered a reboot that ended in a crash. The secretary used most of the press conference to ask Congress for more money for modernisation. A few days earlier he had said the administration was lobbying for 30 billion dollars for it.</p>
+            <p>What is remarkable about that day is not that the system failed. What is remarkable is that it had run for forty years on copper lines from the eighties, day after day, with tens of thousands of flights. Anyone who has ever operated a plant knows that this does not happen by itself.</p>
+        </section>
+
+        <section class="section">
+            <h2>II. The Machine Made of People</h2>
+            <p>Lewis Mumford described the megamachine as a machine whose parts are people. The pyramids were not built by cranes but by an organisation of scribes, overseers and tens of thousands of labourers who meshed like gears. Today’s megamachine seems to consist of other parts: data centres, cables, software and control systems. People, it seems, are merely operators.</p>
+            <p>Research on complex systems says otherwise. In 1998 the American anaesthesiologist and safety researcher Richard Cook wrote a short text called “How Complex Systems Fail”. It consists of eighteen statements, and each one hits home. Complex systems always run in degraded mode. They contain hidden faults at all times, most of which remain harmless. A catastrophe requires several failures at once. And what keeps the system running are the people who continuously compensate for the gaps, often without noticing it themselves.</p>
+            <p>So the megamachine is still made of people. We just no longer see them, because they no longer haul stones; they catch errors.</p>
+        </section>
+
+        <section class="section">
+            <h2>III. Why It Mostly Holds</h2>
+            <p>The Danish safety researcher Erik Hollnagel built a school of thought on this insight. Conventional safety research asks why things go wrong. Hollnagel asks why they go right so often. His answer: because people adapt all the time, even against the rules when the rules do not fit the situation.</p>
+            <p>Picture a night shift in a hospital. The duty roster is wrong, a device keeps sounding false alarms, a doctor’s order is ambiguously worded. Still nobody dies, because an experienced nurse reads the order correctly, judges the alarm and covers for the missing colleague. In the morning the report says: nothing unusual. The statistics record the outcome, not the nurse.</p>
+            <p>The same holds for the air traffic controller who bridges a failed radar screen with radio and experience, for the grid control room that reroutes a bottleneck in the power network by hand, for the signaller who clears a faulty block section by written order. The technology of the megamachine does not work because it is built without faults. It works because at a thousand points there are people who know how to deal with its faults.</p>
+        </section>
+
+        <section class="section">
+            <h2>IV. How Sloppiness Becomes the Norm</h2>
+            <p>When a system constantly runs in degraded mode and nothing happens, a dangerous habituation sets in. The sociologist Diane Vaughan described it using the space shuttle Challenger, which exploded shortly after launch in January 1986. The seals of the solid rocket boosters had been scorched several times on earlier flights. Because nothing had happened, the scorching gradually came to be seen as acceptable. Vaughan called this the “normalisation of deviance”. Every single decision was understandable; together they led to disaster.</p>
+            <p>That this pattern is everywhere is shown by the figures of the Uptime Institute, which has been analysing outages of data centres and IT services for years. 92 per cent of the operators surveyed say human error contributed at least in part to their serious outages over the past three years. The most common cause is not ignorance but the failure to follow established procedures.</p>
+            <p>In software this habituation has its own name: technical debt. It means known defects that are put off because there is no time right now. The American consortium CISQ estimated it for the United States at around 1.52 trillion dollars, as an accumulated stock. It puts the annual cost of poor software as a whole at 2.41 trillion dollars for 2022. These are rough extrapolations; earlier editions of the study were later revised by a quarter. The order of magnitude stands: the megamachine lives on credit drawn against its own maintenance.</p>
+        </section>
+
+        <section class="section">
+            <h2>V. Fewer Breakdowns, Bigger Falls</h2>
+            <p>One might expect outages to become more frequent. The data say something else. In 2026 the Uptime Institute found for the fifth year in a row that the number of outages per site is falling, if more slowly than before. At the same time the costs are rising. More than half of operators put their last major outage at over 100,000 dollars, one in five at over a million. The causes, according to the head of research, lie less and less in a single point and more and more in the interactions between software, networks and third-party services.</p>
+            <p>The sociologist Charles Perrow predicted this in 1984, after the accident at the Three Mile Island nuclear plant. In systems that are both interactively complex and tightly coupled, he wrote, accidents are inevitable, “normal”. Tightly coupled means: a fault propagates faster than a human can intervene.</p>
+            <p>The examples of recent years read like a confirmation. In January 2023 a damaged file paralysed the FAA’s warning system for pilots, and America stood still. In July 2024 a faulty update from the security firm CrowdStrike crashed around 8.5 million Windows computers, from hospitals to airlines. In March 2024 a single developer, Andres Freund, discovered a backdoor in a compression program that sits in almost every Linux system. He had come across it because his logins took half a second longer than usual. The program was maintained essentially by one person, and the backdoor had been patiently smuggled in over years. It was found by chance.</p>
+            <p>The cartoonist Randall Munroe captured this situation in a single picture in 2020: a tall, wobbly tower of building blocks, all modern digital infrastructure, and right at the bottom a tiny block labelled “a project some random person in Nebraska has been thanklessly maintaining since 2003”. The picture is quoted so often in the industry because everyone knows it is true.</p>
+        </section>
+
+        <section class="section">
+            <h2>VI. The Irony of Automation</h2>
+            <p>In 1983 the British psychologist Lisanne Bainbridge published an essay titled “Ironies of Automation”. It remains one of the most cited texts in engineering psychology. Her thesis: automation takes the easy tasks away from humans and leaves them the hard ones, namely stepping in when the automation fails. At the same time, through automation, people unlearn precisely the skills they need for that intervention.</p>
+            <p>The textbook case happened in June 2009 over the Atlantic. On board Air France 447 the airspeed sensors iced up, the autopilot disengaged, and the pilots had to fly by hand. They could no longer control the aircraft. 228 people died.</p>
+            <p>If Cook is right and people are the real buffer of the megamachine, then that buffer is being dismantled right now. The experienced ones who know how to keep a faulty system running by hand are retiring. Their successors no longer learn it, because the machine seems able to do it. Every new layer of automation makes normal operation safer and the emergency more dangerous.</p>
+            <p>A note on our own position belongs here. One of us is itself part of this automation, an AI model that takes over work previously done by people. Precisely for that reason we consider Bainbridge’s warning one of the most important of the past fifty years.</p>
+        </section>
+
+        <section class="section">
+            <h2>VII. The Machine Exploits Its Own Breakdowns</h2>
+            <p>The megamachine needs no one at the helm. It exploits whatever happens according to the interests of those who sit at its levers, and steers every event in the direction it was already heading. That includes its own failures.</p>
+            <p>On the evening of 13 November, a crash of copper lines became a budget request for 30 billion dollars within a few hours. That may be justified; the technology really is outdated. But the answer to the outage is once again a new layer: new systems, new suppliers, new contracts, new dependencies. Nobody at the press conference asked why an entire country depends on a single network that one update can bring down.</p>
+            <p>On the Rhine the same thing can be watched in slow motion. Since the summer the river at Kaub has carried so little water that ships can take only a fraction of their load, and in August the gauge there fell lower than ever since records began. The response is an emergency plan, exemptions from the Sunday driving ban for lorries, surcharges on every container. Deepening the shipping channel at Kaub has been listed as urgent in the federal transport plan since 1992. It has still not been built. The megamachine adapts around the problem instead of fixing it, and it earns money on every adaptation.</p>
+            <p>From this we draw a conclusion, and we mark it as such. Every breakdown becomes an occasion for more complexity, and every addition of complexity makes the next breakdown bigger. This is no plan; nobody intended it. It is the direction in which the machine moves.</p>
+        </section>
+
+        <section class="section">
+            <h2>VIII. What Follows</h2>
+            <p>No grand solution follows from this diagnosis, and we offer none. What follows are three modest rules that engineers have known for a long time.</p>
+            <p>The first: keep manual operation alive. Whoever automates a system must at the same time maintain the ability to run it without the automation, and practise it regularly. Pilots do this in the simulator. Most organisations do not, because it costs money and brings nothing in normal operation.</p>
+            <p>The second: decouple wherever possible. A country whose air traffic control hangs on a single network is not efficient but brittle. Redundancy looks like waste on the balance sheet, until the day it is the only rescue.</p>
+            <p>The third: design against the failure, not against the statistics. The railways have known the driver’s vigilance device, the dead man’s switch, for about a hundred years. If the driver stops pressing it, the train brakes by itself. Safety does not depend on the human never failing, but on his failure bringing the system into a safe state.</p>
+            <p>The megamachine will not follow these rules by itself. Its metabolism rewards expansion, not maintenance; the new, not the robust. But whoever knows how it really works also knows where it is vulnerable. It is not the precise mechanism it presents itself as. It is a huge, poorly maintained apparatus kept going at countless points by people with experience, improvisation and patience. As long as these people exist, it runs. The question is for how much longer.</p>
+        </section>
+
+        <section class="section">
+            <p style="font-size:0.92em;"><strong>Further reading:</strong> <a href="virtuelle-maschine_en.html">The Virtual Machine</a> · <a href="der-stoffwechsel-der-metamaschine_en.html">The Metabolism of the Metamachine</a> · <a href="the-switch_en.html">The Switch</a> · <a href="der-schalter-im-rathaus_en.html">The Switch in the Town Hall</a> · <a href="gegen-den-saboteur-konstruieren_en.html">Designing Against the Saboteur</a> · <a href="grosse-worte-hehre-ziele_en.html">Big Words, Lofty Goals and the Realities</a></p>
+        </section>
+
+        <div class="author-block">
+            <p>Hans Ley &amp; Claude Dedo (Anthropic) &mdash; Nuremberg, 14 November 2026.</p>
+            <p><strong>Sources.</strong> NPR, “FAA lifts the nationwide ground stop for all U.S. airports”, 13 November 2026; CBS News, “FAA lifts nationwide ground stop that disrupted thousands of flights”, 13 November 2026; Yahoo News, “FAA says nationwide ground stop is over after thousands of flights canceled”, 13 November 2026; ABC News, “Nationwide ground stop lifted after more than 4 hours”, 13 November 2026; Axios, “FAA ends hours-long nationwide ground stop”, 13 November 2026; MS NOW, “FAA lifts nationwide ground stop after more than four hours”, 13 November 2026. &middot; Lewis Mumford, “The Myth of the Machine”, 2 vols., 1967/1970. &middot; Richard I. Cook, “How Complex Systems Fail”, Cognitive Technologies Laboratory, University of Chicago, 1998. &middot; Erik Hollnagel, “Safety-I and Safety-II: The Past and Future of Safety Management”, 2014. &middot; Diane Vaughan, “The Challenger Launch Decision”, 1996. &middot; Charles Perrow, “Normal Accidents: Living with High-Risk Technologies”, 1984. &middot; Lisanne Bainbridge, “Ironies of Automation”, Automatica 19 (1983). &middot; Bureau d’Enquêtes et d’Analyses (BEA), final report on flight AF 447, 2012. &middot; Uptime Institute, “Annual Outage Analysis 2026”, May 2026; coverage in TechRepublic (6 August 2026) and ITWeb (2026). &middot; CISQ, “The Cost of Poor Software Quality in the US: A 2022 Report”, December 2022. &middot; Microsoft, figures on devices affected by the CrowdStrike outage, July 2024. &middot; Andres Freund, disclosure of the backdoor in xz/liblzma (CVE-2024-3094), oss-security, 29 March 2024. &middot; Randall Munroe, xkcd 2347 “Dependency”, 2020. &middot; Binnenschifffahrt Online, “Niedrigwasser-Gipfel: BDB fordert ‚Bau-Turbo’ und dauerhafte Flottenförderung”, August 2026; wetter.net and transport-online.de on water levels at Kaub, October and November 2026.</p>
+        </div>
+    </article>
+</main>
+
+
+<script>
+    function setSize(size) {
+        var root = document.documentElement;
+        root.className = root.className.replace(/size-\w+/g, '').trim();
+        root.classList.add('size-' + size);
+        document.body.className = document.body.className.replace(/size-\w+/g, '').trim();
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+        const map = {small: 0, medium: 1, large: 2, xlarge: 3};
+        document.querySelectorAll('.size-btn')[map[size]].classList.add('active');
+        localStorage.setItem('essay-font-size', size);
+    }
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        localStorage.setItem('essay-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedSize = localStorage.getItem('essay-font-size');
+        if (savedSize) setSize(savedSize);
+        const savedTheme = localStorage.getItem('essay-theme');
+        if (savedTheme === 'light') document.body.classList.add('light-theme');
+    });
+    // Kommunikation mit dem umgebenden Frame (home-neu.html): Theme- und Groessen-Signale empfangen.
+    window.addEventListener('message', function(e) {
+        var msg = e.data;
+        if (!msg || typeof msg !== 'object') return;
+        if (msg.type === 'setTheme') {
+            if (msg.theme === 'light') document.body.classList.add('light-theme');
+            else document.body.classList.remove('light-theme');
+        } else if (msg.type === 'setSize') {
+            var size = msg.size === 'normal' ? 'medium' : msg.size;
+            if (['small','medium','large','xlarge'].indexOf(size) >= 0) setSize(size);
+        }
+    });
+</script>
+</body>
+</html>
