@@ -313,6 +313,7 @@
 
 
 
+
   /* === Register-Modul === */
   .register { margin: -1.3rem 0 2.5rem 0; border: 1px solid var(--border); background: #0f0f0f; }
   .register-head { display:flex; justify-content:space-between; align-items:baseline; padding: 0.9rem 1.4rem 0.5rem 1.4rem; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; }
@@ -335,6 +336,10 @@
   .reg-term li a { color: var(--text); text-decoration:none; border-bottom: 1px solid var(--border); }
   .reg-term li a:hover { color: var(--gold); }
   .reg-term li .tag { font-family: var(--mono); font-size: 0.58rem; color: var(--muted); margin-left: 0.5rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .reg-bar { position: sticky; top: 0; z-index: 1; display:flex; justify-content:space-between; align-items:center; background:#0f0f0f; border-bottom: 1px solid var(--border); padding: 0.45rem 1.4rem; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; }
+  .reg-bar .bl { color: var(--gold); font-size: 0.95rem; }
+  .reg-bar button { background:transparent; border:1px solid var(--border); color: var(--muted); font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 0.7rem; cursor:pointer; }
+  .reg-bar button:hover { color: var(--gold); border-color: var(--gold); }
   .register-panel::-webkit-scrollbar { width: 6px; }
   .register-panel::-webkit-scrollbar-track { background: #0a0a0a; }
   .register-panel::-webkit-scrollbar-thumb { background: var(--border); }
@@ -1955,6 +1960,8 @@
 
 
 
+
+
 <!-- REGISTER-JS-START -->
 <script src="register-de.js"></script>
 <script>
@@ -1969,13 +1976,19 @@
       var b = document.createElement('button'); b.textContent = L; b.type = 'button';
       if (!by[L]) b.disabled = true;
       b.addEventListener('click', function() {
-        if (cur === b) { b.classList.remove('on'); panel.hidden = true; cur = null; return; }
+        if (cur === b) { close(); return; }
         if (cur) cur.classList.remove('on'); cur = b; b.classList.add('on'); show(L);
       });
       abc.appendChild(b);
     });
+    function close() { if (cur) cur.classList.remove('on'); cur = null; panel.hidden = true; }
+    document.addEventListener('keydown', function(ev) { if (ev.key === 'Escape' && !panel.hidden) close(); });
     function show(L) {
       panel.innerHTML = '';
+      var bar = document.createElement('div'); bar.className = 'reg-bar';
+      bar.innerHTML = '<span class="bl">' + L + '</span><button type="button">Schließen ✕</button>';
+      bar.lastChild.addEventListener('click', function() { var y = document.getElementById('register').getBoundingClientRect().top; close(); if (y < 0) document.getElementById('register').scrollIntoView(); });
+      panel.appendChild(bar);
       by[L].sort(function(a, b) { return a[0].localeCompare(b[0], 'de'); }).forEach(function(t) {
         var d = document.createElement('div'); d.className = 'reg-term';
         var b = document.createElement('button'); b.type = 'button';
