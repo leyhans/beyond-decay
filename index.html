@@ -309,6 +309,35 @@
   .lang-switch a { color: var(--muted); text-decoration: none; padding: 0.2rem 0.45rem; border: 1px solid transparent; }
   .lang-switch a:hover { color: var(--text); }
   .lang-switch a.active { color: var(--gold); border-color: var(--border); }
+
+
+
+
+  /* === Register-Modul === */
+  .register { margin: -1.3rem 0 2.5rem 0; border: 1px solid var(--border); background: #0f0f0f; }
+  .register-head { display:flex; justify-content:space-between; align-items:baseline; padding: 0.9rem 1.4rem 0.5rem 1.4rem; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; }
+  .register-head .label { color: var(--gold); }
+  .register-head .hint { color: var(--muted); letter-spacing: 0.08em; text-transform: none; font-size: 0.66rem; }
+  .register-abc { display:grid; grid-template-columns: repeat(auto-fill, minmax(1.5rem, 1fr)); gap: 0.1rem; padding: 0.2rem 1.1rem 0.8rem 1.1rem; }
+  .register-abc button { background:transparent; border:1px solid transparent; color: var(--text); font-family: var(--mono); font-size: 0.82rem; height: 1.75rem; cursor:pointer; padding:0; }
+  .register-abc button:hover:not(:disabled) { color: var(--gold); border-color: var(--border); }
+  .register-abc button.on, .register-abc button.on:hover { color: var(--bg); background: var(--gold); border-color: var(--gold); }
+  .register-abc button:disabled { color: #3a3a3a; cursor: default; }
+  .register-panel { border-top: 1px solid var(--border); max-height: 460px; overflow-y: auto; }
+  .register-panel[hidden] { display:none; }
+  .reg-term { border-bottom: 1px solid #1c1c1c; }
+  .reg-term > button { display:flex; justify-content:space-between; width:100%; background:transparent; border:none; color: var(--text); font-family: var(--serif); font-size: 0.95rem; text-align:left; padding: 0.45rem 1.4rem; cursor:pointer; }
+  .reg-term > button:hover, .reg-term.open > button { color: var(--gold); background:#141414; }
+  .reg-term .n { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); padding-left: 1rem; }
+  .reg-term ul { list-style:none; margin:0; padding: 0.2rem 1.4rem 0.8rem 2.4rem; display:none; }
+  .reg-term.open ul { display:block; }
+  .reg-term li { padding: 0.22rem 0; font-size: 0.85rem; line-height: 1.45; }
+  .reg-term li a { color: var(--text); text-decoration:none; border-bottom: 1px solid var(--border); }
+  .reg-term li a:hover { color: var(--gold); }
+  .reg-term li .tag { font-family: var(--mono); font-size: 0.58rem; color: var(--muted); margin-left: 0.5rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .register-panel::-webkit-scrollbar { width: 6px; }
+  .register-panel::-webkit-scrollbar-track { background: #0a0a0a; }
+  .register-panel::-webkit-scrollbar-thumb { background: var(--border); }
 </style>
 </head>
 <body>
@@ -1777,6 +1806,14 @@
     </div>
   </div>
 
+  <!-- REGISTER-START -->
+  <div class="register" id="register">
+    <div class="register-head"><span class="label">Register</span><span class="hint">Namen und Begriffe von A bis Z</span></div>
+    <div class="register-abc" id="regAbc"></div>
+    <div class="register-panel" id="regPanel" hidden></div>
+  </div>
+  <!-- REGISTER-END -->
+
   <div class="choices-wide vier">
 
     <a class="choice-wide weg" href="wo-anfangen.html">
@@ -1910,6 +1947,55 @@
     });
   })();
 </script>
+
+
+
+
+
+
+
+
+<!-- REGISTER-JS-START -->
+<script src="register-de.js"></script>
+<script>
+  (function() {
+    var R = window.BD_REG, abc = document.getElementById('regAbc'), panel = document.getElementById('regPanel');
+    if (!R || !abc) return;
+    var norm = function(s) { return s.charAt(0).toUpperCase().replace('Ä','A').replace('Ö','O').replace('Ü','U'); };
+    var by = {};
+    R.t.forEach(function(t) { var L = norm(t[0]); (by[L] = by[L] || []).push(t); });
+    var cur = null;
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(function(L) {
+      var b = document.createElement('button'); b.textContent = L; b.type = 'button';
+      if (!by[L]) b.disabled = true;
+      b.addEventListener('click', function() {
+        if (cur === b) { b.classList.remove('on'); panel.hidden = true; cur = null; return; }
+        if (cur) cur.classList.remove('on'); cur = b; b.classList.add('on'); show(L);
+      });
+      abc.appendChild(b);
+    });
+    function show(L) {
+      panel.innerHTML = '';
+      by[L].sort(function(a, b) { return a[0].localeCompare(b[0], 'de'); }).forEach(function(t) {
+        var d = document.createElement('div'); d.className = 'reg-term';
+        var b = document.createElement('button'); b.type = 'button';
+        b.innerHTML = '<span></span><span class="n">' + t[1].length + '</span>';
+        b.firstChild.textContent = t[0];
+        var ul = document.createElement('ul');
+        t[1].forEach(function(i) {
+          var e = R.e[i], li = document.createElement('li'), a = document.createElement('a');
+          a.href = e[0]; a.textContent = e[1]; li.appendChild(a);
+          if (e[2]) { var s = document.createElement('span'); s.className = 'tag'; s.textContent = e[2]; li.appendChild(s); }
+          ul.appendChild(li);
+        });
+        b.addEventListener('click', function() { d.classList.toggle('open'); });
+        d.appendChild(b); d.appendChild(ul); panel.appendChild(d);
+      });
+      panel.hidden = false; panel.scrollTop = 0;
+    }
+  })();
+</script>
+<!-- REGISTER-JS-END -->
 
 </body>
 </html>
