@@ -2089,6 +2089,45 @@
   })();
 </script>
 <!-- REGISTER-JS-END -->
+<!-- REG-LESER-START -->
+<style>
+  #leser { position: fixed; inset: 0; z-index: 2000; background: var(--bg); display: none; flex-direction: column; }
+  #leser.offen { display: flex; }
+  #leser-leiste { display: flex; align-items: center; gap: 1rem; padding: 0.55rem 1.2rem; background: #0f0f0f; border-bottom: 1px solid var(--gold); font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.06em; }
+  #leser-zu { background: rgba(201,169,98,0.12); border: 1px solid var(--gold); color: var(--gold); font-family: inherit; font-size: inherit; letter-spacing: inherit; padding: 0.35rem 0.9rem; cursor: pointer; text-transform: uppercase; }
+  #leser-zu:hover { background: var(--gold); color: var(--bg); }
+  #leser-titel { color: var(--muted); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .leser-aktionen { margin-left: auto; display: flex; gap: 0.5rem; flex-shrink: 0; }
+  .leser-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: inherit; font-size: inherit; letter-spacing: inherit; padding: 0.35rem 0.8rem; cursor: pointer; text-transform: uppercase; text-decoration: none; }
+  .leser-btn:hover, .leser-btn.ok { color: var(--gold); border-color: var(--gold); }
+  @media (max-width: 640px) { #leser-titel { display: none; } .leser-btn, #leser-zu { padding: 0.3rem 0.5rem; } }
+  #leser iframe { flex: 1; border: 0; width: 100%; }
+  body.leser-offen { overflow: hidden; }
+</style>
+<div id="leser"><div id="leser-leiste"><button id="leser-zu">&lsaquo;&nbsp;&nbsp;Zurück zum Register</button><span id="leser-titel"></span><span class="leser-aktionen"><button class="leser-btn" id="leser-link">Link kopieren</button><button class="leser-btn" id="leser-druck">Drucken</button><a class="leser-btn" id="leser-neu" target="_blank" rel="noopener">Eigenes Fenster</a></span></div><iframe id="leser-frame" title="Essay"></iframe></div>
+<script>
+(function(){var L=document.getElementById('leser'),F=document.getElementById('leser-frame'),T=document.getElementById('leser-titel'),N=document.getElementById('leser-neu'),P=document.getElementById('regPanel');
+  if(!L||!P)return;
+  function oeffnen(href,titel,push){F.dataset.href=href;try{F.contentWindow.location.replace(href)}catch(e){F.src=href}T.textContent=titel;N.href=href;L.classList.add('offen');document.body.classList.add('leser-offen');if(push)history.pushState({leser:href,titel:titel},'','#lesen')}
+  function schliessen(){L.classList.remove('offen');document.body.classList.remove('leser-offen');try{F.contentWindow.location.replace('about:blank')}catch(e){}}
+  P.addEventListener('click',function(e){var a=e.target.closest('a');if(!a||e.ctrlKey||e.metaKey||e.shiftKey||e.button)return;var h=a.getAttribute('href')||'';if(!/\.html(#.*)?$/.test(h)||/^https?:/.test(h))return;e.preventDefault();oeffnen(h,a.textContent,true)});
+  document.getElementById('leser-zu').addEventListener('click',function(){if(history.state&&history.state.leser)history.back();else schliessen()});
+  window.addEventListener('popstate',function(e){if(e.state&&e.state.leser)oeffnen(e.state.leser,e.state.titel,false);else schliessen()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&L.classList.contains('offen')){e.stopImmediatePropagation();document.getElementById('leser-zu').click()}},true);
+  var BL=document.getElementById('leser-link'),T0=BL.textContent;
+  function url(){return 'https://beyond-decay.org/'+(F.dataset.href||'')}
+  function ok(){BL.textContent='Kopiert ✓';BL.classList.add('ok');setTimeout(function(){BL.textContent=T0;BL.classList.remove('ok')},1800)}
+  BL.addEventListener('click',function(){var u=url();if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(u).then(ok,function(){window.prompt('Link:',u)})}else{window.prompt('Link:',u)}});
+  document.getElementById('leser-druck').addEventListener('click',function(){try{F.contentWindow.focus();F.contentWindow.print()}catch(e){window.open(url(),'_blank')}});
+  F.addEventListener('load',function(){var w;try{w=F.contentWindow.location}catch(e){return}
+    if(!w||w.protocol==='about:')return;var p=w.pathname.replace(/^\//,''),cur=(F.dataset.href||'').split('#')[0];
+    if(p===cur)return;
+    if(/\.html$/.test(p)&&!/^(index|index-en|home-neu)\.html$/.test(p)){F.dataset.href=p;var t='';try{t=F.contentWindow.document.title.split(/ [—|–] /)[0]}catch(e){}if(t)T.textContent=t;N.href=p;try{history.replaceState({leser:p,titel:t},'','#lesen')}catch(e){}}
+    else{window.location.href=w.href}});
+})();
+</script>
+<!-- REG-LESER-END -->
+
 
 </body>
 </html>
